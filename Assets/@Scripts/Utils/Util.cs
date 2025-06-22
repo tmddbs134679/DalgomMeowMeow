@@ -2,17 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Util : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+/*
+ * 자주쓰이는 범용적인 함수들 
+ */
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+public static class Util 
+{
+  
 }
