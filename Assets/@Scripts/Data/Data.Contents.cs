@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,6 +15,7 @@ namespace Data
         public float MaxHp;
         public float Hp;
         public float Atk;
+        public float Stamina;
         public float MoveSpeed;
         public float HpRate;
         public float AtkRate;
