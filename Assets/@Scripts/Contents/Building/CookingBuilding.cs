@@ -52,7 +52,6 @@ public class CookingBuilding : BuildingBase
         CurrentState = BuildingState.ReadyToCollect;
         // collectIcon.SetActive(true);
         
-        if (buildingRenderer != null)
             buildingRenderer.material.color = readyColor;
         
     }
@@ -64,8 +63,6 @@ public class CookingBuilding : BuildingBase
         Debug.Log(" 요리를 수확했습니다.");
         CurrentState = BuildingState.Producing;
         // collectIcon.SetActive(false);
-        
-        if (buildingRenderer != null)
             buildingRenderer.material.color = defaultColor;
     }
     
