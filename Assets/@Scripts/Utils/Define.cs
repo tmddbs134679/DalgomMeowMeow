@@ -20,7 +20,24 @@ using UnityEngine;
 
 public class Define 
 {
+    public enum EUIEvent
+    {
+        Click,
+        Preseed,
+        PointerDown,
+        PointerUp,
+        BeginDrag,
+        Drag,
+        EndDrag,
+    }
 
 
+    public enum EObjectType
+    {
+        None,
+        Character,
+        Building,
+        Enemy,
 
+    }
 }
