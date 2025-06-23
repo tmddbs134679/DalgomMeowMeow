@@ -6,6 +6,7 @@ using UnityEngine.AI;
 public class CharacterMove : MonoBehaviour
 {
     [SerializeField] private Vector3 _patrolRadius = new Vector3(2, 0, 2);
+    
     private NavMeshAgent agent;
     private float _patrolDelay = 1f;
     private float _patrolTimer = 0f;
@@ -14,6 +15,8 @@ public class CharacterMove : MonoBehaviour
     public GameObject cube2;
     public GameObject cube3;
     public GameObject cube4;
+
+    public bool _isHelloReady = true; 
 
 
 
@@ -78,11 +81,30 @@ public class CharacterMove : MonoBehaviour
         }
         return curPos;
     }
-
+    //////////////////////////////////////////////////////////////////////////////
     private void OnTriggerEnter(Collider other)
     {
-        //인사모션
+        if(other.TryGetComponent<CharacterMove>(out var others))
+        {
+            if(this._isHelloReady && others._isHelloReady && other.GetInstanceID() > this.GetInstanceID())
+            {
+                Debug.Log("Hello Motion Triggered with " + others.name);
+                _isHelloReady = false;
+                others._isHelloReady = false;
+                StartCoroutine(HelloMotion(others));
+            }
+        }
     }
+
+
+    private IEnumerator HelloMotion(CharacterMove other)
+    {
+        yield return new WaitForSeconds(10f);
+        _isHelloReady = true;
+        other._isHelloReady = true;
+    }
+
+
     //////////////////////////////////////////////////////////////////////////////
 
     [ContextMenu("Move 1")]
