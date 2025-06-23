@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 
 
@@ -18,6 +19,6 @@ public class CharacterStatSo : ScriptableObject
     public float AtkRate;
     public float MoveSpeedRate;
     public string IconLabel;
+    
 
-    //animator
 }
