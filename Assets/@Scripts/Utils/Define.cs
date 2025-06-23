@@ -4,13 +4,13 @@ using UnityEngine;
 
 
 /*
- * Define ½ºÅ©¸³Æ® »ç¿ë ±ÔÄ¢ ¿¹½Ã
- *  1. Àü¿ªÀû static º¯¼ö (º¯¼ö¸íÀº ´ë¹®ÀÚ, ¾ð´õ¹Ù È°¿ë)
+ * Define ï¿½ï¿½Å©ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¢ ï¿½ï¿½ï¿½ï¿½
+ *  1. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ static ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ë¹®ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ È°ï¿½ï¿½)
  *  ex) public static float POTION_COLLECT_DISTANCE = 2.6F;
  *  ex) public const string CHARACTER_ID = 51515;
  *  ex) public const string MONSTER_ID = "M05616";
  *  
- *  3. EnumÀÇ Ã¹ ±ÛÀÚ´Â ´ë¹®ÀÚ E¸¦ »ç¿ë, 0¹øÀº NoneÀ¸·Î ÀÏ´Ü °íÁ¤
+ *  3. Enumï¿½ï¿½ Ã¹ ï¿½ï¿½ï¿½Ú´ï¿½ ï¿½ë¹®ï¿½ï¿½ Eï¿½ï¿½ ï¿½ï¿½ï¿½, 0ï¿½ï¿½ï¿½ï¿½ Noneï¿½ï¿½ï¿½ï¿½ ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½
  *    public enum EState
  *    {
  *          None,
@@ -40,4 +40,17 @@ public class Define
         Enemy,
 
     }
+
+    public enum EAIState
+    {
+        Idle,
+        Playing,
+        Cooking,
+        Resting,
+        Delivery,
+        Collecting,
+        Farming,
+        Building,
+    }
+    
 }
