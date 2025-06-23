@@ -14,8 +14,8 @@ public class GridMap : MonoBehaviour
 
     void Awake()
     {
-        width = _arrayMapPos.posX.Length;
-        height = _arrayMapPos.posY.Length;
+        width = _arrayMapPos.Width;
+        height = _arrayMapPos.Height;
     }
     void Start()
     {
@@ -35,20 +35,14 @@ public class GridMap : MonoBehaviour
                 (x + z) * tileSize * 1f
                 );
                 Instantiate(tilePrefab, pos, Quaternion.identity, transform);
-            }
-        }
 
-        for (int x = 0; x < width; x++)
-        {
-            for (int z = 0; z < height; z++)
-            {
-                Vector3 pos = new Vector3
-                (
-                ((x + tileSize / 2) - (z + tileSize / 2)) * tileSize * 1f,
-                 0f,
-                ((x + tileSize / 2) + (z + tileSize / 2)) * tileSize * 1f
-                );
-                Instantiate(tilePrefab, pos, Quaternion.identity, transform);
+                Vector3 pos2 = new Vector3
+(
+((x + tileSize / 2) - (z + tileSize / 2)) * tileSize * 1f,
+ 0f,
+((x + tileSize / 2) + (z + tileSize / 2)) * tileSize * 1f
+);
+                Instantiate(tilePrefab, pos2, Quaternion.identity, transform);
             }
         }
     }
