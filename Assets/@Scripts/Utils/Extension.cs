@@ -2,17 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Extension : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+/*
+ *  기존 엔진 함수들을 확장해서 기능을 추가 하고 싶을 때 사용
+ */
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
+public static class Extension
+{
+ 
 }
