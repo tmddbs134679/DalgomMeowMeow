@@ -25,8 +25,16 @@ public class CharacterMove : MonoBehaviour
 
     private void Update()
     {
-        
+
     }
+
+    public void Move(Vector3 buildingPosition)
+    {
+        agent.ResetPath();
+        agent.SetDestination(buildingPosition);
+    }
+
+
 
     public void PatrolMove()
     {
