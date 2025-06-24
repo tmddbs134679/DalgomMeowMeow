@@ -20,8 +20,7 @@ public class CharacterAction : MonoBehaviour
     public void Deliver() => OnAction?.Invoke(Define.EAIState.Delivery);
 
     [ContextMenu("Collect")]
-
-public void Collect() => OnAction?.Invoke(Define.EAIState.Collecting);
+    public void Collect() => OnAction?.Invoke(Define.EAIState.Collecting);
     [ContextMenu("Farming")]
     public void Farm()    => OnAction?.Invoke(Define.EAIState.Farming);
     [ContextMenu("Building")]

@@ -14,15 +14,19 @@ public class AICharacter : MonoBehaviour
     [SerializeField] private CharacterStatSo _stat;
 
     public NavMeshAgent nav;
+    public BuildingBase currentBuilding;
+    private Collider _collider;
 
     [HideInInspector]
     public CharacterAction characterAction;
-    
-    
+
+
+    private bool _isHelloReady = true;
     private void Awake()
     {
         nav = GetComponent<NavMeshAgent>();
         characterAction = GetComponent<CharacterAction>();
+        _collider = GetComponentInChildren<Collider>();
         ControllerRegister();
     }
 
@@ -40,4 +44,34 @@ public class AICharacter : MonoBehaviour
         _controller.RegisterState(new CharacterPlayState(), this);
         _controller.RegisterState(new CharacterRestState(), this);
     }
+    
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.TryGetComponent<AICharacter>(out var others))
+        {
+            if(this._isHelloReady && others._isHelloReady && other.GetInstanceID() > this.GetInstanceID())
+            {
+                //애니메이션 적용
+                StartCoroutine(HelloMotion());
+                _isHelloReady = false;
+                others._isHelloReady = false;
+                StartCoroutine(HelloMotion(others));
+            }
+        }
+    }
+
+    private IEnumerator HelloMotion(AICharacter other)
+    {
+        yield return new WaitForSeconds(10f);
+        _isHelloReady = true;
+        other._isHelloReady = true;
+    }
+    
+    private IEnumerator HelloMotion()
+    {
+        float temp = _stat.MoveSpeed;
+        _stat.MoveSpeed = 0f;
+        yield return new WaitForSeconds(10f);
+    }
+    
 }

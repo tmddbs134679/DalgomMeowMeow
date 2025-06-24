@@ -6,7 +6,7 @@ public class BuildingManager : MonoBehaviour
 {
     public static BuildingManager Instance;
 
-    private List<BuildingBase> _buildings = new();
+    public List<BuildingBase> _buildings = new();
 
     void Awake()
     {

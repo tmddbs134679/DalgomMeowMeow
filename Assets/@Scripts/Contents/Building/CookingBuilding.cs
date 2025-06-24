@@ -52,7 +52,7 @@ public class CookingBuilding : BuildingBase
         CurrentState = BuildingState.ReadyToCollect;
         // collectIcon.SetActive(true);
         
-            buildingRenderer.material.color = readyColor;
+            /*buildingRenderer.material.color = readyColor;*/
         
     }
     
