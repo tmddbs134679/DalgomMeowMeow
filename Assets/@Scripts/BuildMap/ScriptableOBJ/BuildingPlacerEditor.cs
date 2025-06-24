@@ -1,5 +1,6 @@
 using UnityEditor;
 using UnityEngine;
+using System.Collections.Generic;
 
 [CustomEditor(typeof(BuildingPlacer))]
 public class BuildingPlacerEditor : Editor
@@ -12,20 +13,23 @@ public class BuildingPlacerEditor : Editor
 
         if (GUILayout.Button("📌 BuildSO 폴더에서 자동 등록"))
         {
-            string folderPath = "Assets/Scripts/BuildMap/ScriptableOBJ/BuildSO";
+            string folderPath = "Assets/@Scripts/BuildMap/ScriptableOBJ/BuildSO";
             string[] guids = AssetDatabase.FindAssets("t:TestBaseBuilding", new[] { folderPath });
 
-           // placer.buildingSOList = new List<TestBaseBuilding>();
+            List<TestBaseBuilding> soList = new List<TestBaseBuilding>();
 
             foreach (string guid in guids)
             {
-                string assetPath = AssetDatabase.GUIDToAssetPath(guid);
-                TestBaseBuilding so = AssetDatabase.LoadAssetAtPath<TestBaseBuilding>(assetPath);
-            //    if (so != null)
-                //    placer.buildingSOList.Add(so);
+                string path = AssetDatabase.GUIDToAssetPath(guid);
+                TestBaseBuilding so = AssetDatabase.LoadAssetAtPath<TestBaseBuilding>(path);
+                if (so != null)
+                    soList.Add(so);
             }
 
-          //  Debug.Log($"✅ {placer.buildingSOList.Count}개의 SO를 자동 등록했습니다.");
+            //  배열로 변환해서 넣기
+            placer.buildingSO = soList.ToArray();
+
+            Debug.Log($" {soList.Count}개의 SO가 자동 등록되었습니다.");
             EditorUtility.SetDirty(placer);
         }
     }

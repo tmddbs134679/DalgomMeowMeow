@@ -49,4 +49,14 @@ public class GridMap : MonoBehaviour
         }
     }
 
+    public void SaveMap()
+    {
+
+    }
+
+    public void LoadMap()
+    {
+        
+    }
+
 }
