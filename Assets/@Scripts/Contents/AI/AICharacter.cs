@@ -79,7 +79,7 @@ public class AICharacter : MonoBehaviour
 
     public void OnAnimalArrived()
     {
-        animalArrived?.Invoke();
+        AnimalArrived?.Invoke();
     }
 
     

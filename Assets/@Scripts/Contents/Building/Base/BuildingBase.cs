@@ -17,6 +17,8 @@ public abstract class BuildingBase : BaseObject
 
     [Header("생산 타이머")] public BuildingTimer Timer;
     public int StoredCount { get; protected set; } = 0; // 누적된 생산 수량
+    
+    protected AICharacter assignedAnimal;
 
     // [Header("동물 배치")]
     //protected Animal assignedAnimal;
@@ -31,6 +33,13 @@ public abstract class BuildingBase : BaseObject
     {
         Timer = new BuildingTimer(BuildingData.Interval);
         BuildingManager.Instance.Register(this);
+    }
+
+    public virtual void ConnectToAnimal()
+    {
+        // 이벤트 등록
+        //assignedAnimal.OnAnimalArrived += AssignAnimal;
+        //animal.OnUnassigned += HandleAnimalUnassigned;
     }
 
     public virtual void Unlock()
