@@ -20,6 +20,7 @@ public class AICharacter : MonoBehaviour
     [HideInInspector]
     public CharacterAction characterAction;
 
+    public event Action animalArrived;
 
     private bool _isHelloReady = true;
     private void Awake()
@@ -74,5 +75,11 @@ public class AICharacter : MonoBehaviour
         yield return new WaitForSeconds(3f);
         _stat.MoveSpeed = temp;
     }
+
+    public void OnAnimalArrived()
+    {
+        animalArrived?.Invoke();
+    }
+
     
 }

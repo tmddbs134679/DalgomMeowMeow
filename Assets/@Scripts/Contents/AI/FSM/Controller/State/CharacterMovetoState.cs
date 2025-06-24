@@ -26,7 +26,7 @@ public class AIMoveToTargetState : AIState
         if (Vector3.Distance(character.transform.position, targetPosition) < 2f)
         {
             Debug.Log("목적지 도착");
-            
+            character.OnAnimalArrived(); // 도착 처리 메소드 호출
             onArrived?.Invoke(); // 도착 콜백 실행
         }
     }
