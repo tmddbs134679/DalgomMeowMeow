@@ -14,7 +14,6 @@ public class AIState : BaseState<AICharacter>
 
     public override void OnExit()
     {
-        character.currentBuilding = null;
     }
     public Define.EAIState GetState() { return state; }
 }
