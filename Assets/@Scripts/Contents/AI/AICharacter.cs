@@ -52,7 +52,7 @@ public class AICharacter : MonoBehaviour
             if(this._isHelloReady && others._isHelloReady && other.GetInstanceID() > this.GetInstanceID())
             {
                 //애니메이션 적용
-                StartCoroutine(HelloMotion());
+                Debug.Log("Hello Motion Triggered with " + others.name);
                 _isHelloReady = false;
                 others._isHelloReady = false;
                 StartCoroutine(HelloMotion(others));
@@ -71,7 +71,8 @@ public class AICharacter : MonoBehaviour
     {
         float temp = _stat.MoveSpeed;
         _stat.MoveSpeed = 0f;
-        yield return new WaitForSeconds(10f);
+        yield return new WaitForSeconds(3f);
+        _stat.MoveSpeed = temp;
     }
     
 }
