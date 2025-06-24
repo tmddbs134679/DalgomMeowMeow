@@ -12,7 +12,7 @@ public class ArrayMapPosEditor : Editor
 
         if (GUILayout.Button("맵 초기화하기"))
         {
-            map.InitializeMap(5, 5); // 원하는 너비/높이로 설정
+            map.InitializeMap(); // 원하는 너비/높이로 설정
         }
     }
 }

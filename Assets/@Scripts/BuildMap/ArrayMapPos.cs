@@ -14,6 +14,8 @@ using UnityEditor;
 [CreateAssetMenu(menuName = "Map/TileMapData")]
 public class ArrayMapPos : ScriptableObject
 {
+    public int width;
+    public int height;
     public List<TileRow> rows;
 
     public int Width => rows?.Count > 0 ? rows[0].columns.Count : 0;
@@ -27,7 +29,7 @@ public class ArrayMapPos : ScriptableObject
         rows[y].columns[x].isBuild = tileData.isBuild;
     }
     #if UNITY_EDITOR
-    public void InitializeMap(int width, int height)
+    public void InitializeMap()
     {
         rows = new List<TileRow>();
         for (int y = 0; y < height; y++)
