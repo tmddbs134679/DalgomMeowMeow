@@ -11,10 +11,6 @@ public class AIState : BaseState<AICharacter>
     {
         this.character = owner;
     }
-
-    public override void OnExit()
-    {
-        character.currentBuilding = null;
-    }
+    
     public Define.EAIState GetState() { return state; }
 }

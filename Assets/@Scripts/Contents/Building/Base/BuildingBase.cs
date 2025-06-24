@@ -38,8 +38,8 @@ public abstract class BuildingBase : BaseObject
     public virtual void ConnectToAnimal()
     {
         // 이벤트 등록
-        //assignedAnimal.OnAnimalArrived += AssignAnimal;
-        //animal.OnUnassigned += HandleAnimalUnassigned;
+        assignedAnimal.AnimalArrived += AssignAnimal;
+        assignedAnimal.AnimalLeaved += UnassignAnimal;
     }
 
     public virtual void Unlock()
@@ -51,11 +51,11 @@ public abstract class BuildingBase : BaseObject
         CurrentState = BuildingState.Idle;
     }
     
-    public virtual void AssignAnimal()
+    public virtual void AssignAnimal(AICharacter animal)
     {
         Unlock();
     }
-    public virtual void UnassignAnimal()
+    public virtual void UnassignAnimal(AICharacter animal)
     {
         CurrentState = BuildingState.Idle;
     }
