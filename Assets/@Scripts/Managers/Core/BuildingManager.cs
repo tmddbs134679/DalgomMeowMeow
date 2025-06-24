@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +7,9 @@ public class BuildingManager : MonoBehaviour
 {
     public static BuildingManager Instance;
 
-    public List<BuildingBase> _buildings = new();
+    private List<BuildingBase> _buildings = new();
+    
+    public event Action<BuildingType> OnAnimalArrived;
 
     void Awake()
     {
@@ -32,10 +35,10 @@ public class BuildingManager : MonoBehaviour
     
     void Update()
     {
-        float dt = Time.deltaTime;
-        foreach (var b in _buildings.ToArray())
+        float deltaTime = Time.deltaTime;
+        foreach (var building in _buildings.ToArray())
         {
-            b.Tick(dt);
+            building.Tick(deltaTime);
         }
     }
 }
