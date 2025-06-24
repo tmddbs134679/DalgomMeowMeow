@@ -22,7 +22,7 @@ public class BuildingPlacer : MonoBehaviour
         Camera cam = Camera.main;
         Vector3 screenCenter = new Vector3(Screen.width / 2f, Screen.height / 2f, cam.nearClipPlane);
         Vector3 worldCenter = cam.ScreenToWorldPoint(screenCenter);
-     //   Instantiate(buildOBJ, worldCenter, Quaternion.identity);
+     //   Instantiate(buildOBJ[type], worldCenter, Quaternion.identity);
     }
 
     //건물설치재료판별
