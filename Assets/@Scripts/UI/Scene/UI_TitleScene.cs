@@ -35,11 +35,11 @@ public class UI_TitleScene : UI_Scene
         
         GetObject((int)GameObjects.Slider).GetComponent<Slider>().value = 0;
 
-        GetButton((int)Buttons.StartButton).gameObject.BindEvent(() =>
-        {
-            if (isPreload)
-                Managers.Scene.LoadScene(Define.EScene.FrameworkTestScene, transform);
-        });
+        //GetButton((int)Buttons.StartButton).gameObject.BindEvent(() =>
+        //{
+        //    if (isPreload)
+        //        Managers.Scene.LoadScene(Define.EScene.FrameworkTestScene, transform);
+        //});
 
         GetButton((int)Buttons.StartButton).gameObject.SetActive(false);
 
@@ -54,17 +54,17 @@ public class UI_TitleScene : UI_Scene
 
     private void Start()
     {
-        Managers.Resource.LoadAllAsync<Object>("PreLoad", (key, count, totalCount) =>
-        {
-            GetObject((int)GameObjects.Slider).GetComponent<Slider>().value = (float)count / totalCount;
-            if (count == totalCount)
-            {
-                isPreload = true;
-                GetButton((int)Buttons.StartButton).gameObject.SetActive(true);
-                Managers.Data.Init();
-                Managers.Game.Init();
-            }
-        });
+        //Managers.Resource.LoadAllAsync<Object>("PreLoad", (key, count, totalCount) =>
+        //{
+        //    GetObject((int)GameObjects.Slider).GetComponent<Slider>().value = (float)count / totalCount;
+        //    if (count == totalCount)
+        //    {
+        //        isPreload = true;
+        //        GetButton((int)Buttons.StartButton).gameObject.SetActive(true);
+        //        Managers.Data.Init();
+        //        Managers.Game.Init();
+        //    }
+        //});
     }
 
 
