@@ -35,11 +35,22 @@ public abstract class BuildingBase : BaseObject
         BuildingManager.Instance.Register(this);
     }
 
-    public virtual void ConnectToAnimal()
+    public virtual void ConnectToAnimal(AICharacter animal)
     {
-        // 이벤트 등록
+        if (animal == null) return;
+
+        assignedAnimal = animal;
         assignedAnimal.AnimalArrived += AssignAnimal;
         assignedAnimal.AnimalLeaved += UnassignAnimal;
+    }
+    public virtual void DisconnectAnimal()
+    {
+        if (assignedAnimal == null) return;
+
+        assignedAnimal.AnimalArrived -= AssignAnimal;
+        assignedAnimal.AnimalLeaved -= UnassignAnimal;
+
+        assignedAnimal = null;
     }
 
     public virtual void Unlock()
@@ -58,6 +69,7 @@ public abstract class BuildingBase : BaseObject
     public virtual void UnassignAnimal(AICharacter animal)
     {
         CurrentState = BuildingState.Idle;
+        DisconnectAnimal();
     }
     public abstract void Produce(); // 자식이 반드시 override
 

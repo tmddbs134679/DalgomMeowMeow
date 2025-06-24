@@ -28,7 +28,7 @@ namespace Scripts.Contents.AI.FSM.State
         public override void OnExit()
         {
             base.OnExit();
-            character.OnAnimalLeaved();
+            //character.OnAnimalLeaved();
         }
         
     }
