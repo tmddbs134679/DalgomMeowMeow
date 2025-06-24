@@ -20,8 +20,8 @@ public class AICharacter : MonoBehaviour
     [HideInInspector]
     public CharacterAction characterAction;
 
-    public event Action AnimalLeaved;
-    public event Action AnimalArrived;
+    public event Action<AICharacter> AnimalLeaved;
+    public event Action<AICharacter> AnimalArrived;
 
     private bool _isHelloReady = true;
     private void Awake()
@@ -79,8 +79,14 @@ public class AICharacter : MonoBehaviour
 
     public void OnAnimalArrived()
     {
-        animalArrived?.Invoke();
+        AnimalArrived?.Invoke(this);
     }
+
+    public void OnAnimalLeaved()
+    {
+        AnimalLeaved?.Invoke(this);
+    }
+
 
     
 }
