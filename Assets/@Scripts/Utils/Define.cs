@@ -71,4 +71,13 @@ public class Define
         Potato,
         Tomato,
     }
+
+    public enum EScene
+    {
+        None,
+        TitleScene,
+        LobbyScene,
+        GameScene,
+        FrameworkTestScene,
+    }
 }

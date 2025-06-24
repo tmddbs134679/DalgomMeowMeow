@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using Object = UnityEngine.Object;
+using UnityEngine.AddressableAssets;
 
 public class ResourceManager
 {
