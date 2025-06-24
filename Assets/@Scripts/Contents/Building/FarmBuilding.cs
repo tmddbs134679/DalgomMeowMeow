@@ -30,27 +30,32 @@ public class FarmBuilding : BuildingBase
         
         Debug.Log("농사 완성");
         
-        // 아이템 지급
-        Debug.Log("[인벤토리] 작물 아이템 지급!");
+        StoredCount++; //  생산 누적
+        
+        Debug.Log($"농사 완성! 누적 수량: {StoredCount}");
 
-        // 상태 전이
-        CurrentState = BuildingState.ReadyToCollect;
         // collectIcon.SetActive(true);
-        buildingRenderer.material.color = readyColor;
+        if (buildingRenderer != null)
+            buildingRenderer.material.color = readyColor;
     }
     public void Collect()
     {
-        if (CurrentState != BuildingState.ReadyToCollect) return;
+        if (StoredCount <= 0) return;
 
-        Debug.Log("✅ 작물을 수확했습니다.");
+        Debug.Log($" {StoredCount}개 야채를 수확했습니다!");
+
+        StoredCount = 0;
         CurrentState = BuildingState.Producing;
         // collectIcon.SetActive(false);
+        if (buildingRenderer != null)
             buildingRenderer.material.color = defaultColor;
     }
     public override void OnClick()
     {
-        if (CurrentState == BuildingState.ReadyToCollect)
+        if (StoredCount > 0)
+        {
             Collect();
+        }
     }
     
     private bool HasRequiredMaterials()
