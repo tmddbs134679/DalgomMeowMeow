@@ -13,73 +13,53 @@ public class CameraController : MonoBehaviour
     private bool isDragging = false;
     private Vector2 _touchStartPos;
 
+    [SerializeField] private DragController dragController;
     void Start()
     {
         _cam = Camera.main;
     }
 
-    void Update()
-    {
+   private bool _startedOnUI = false;
+
+void Update()
+{
 #if UNITY_EDITOR
-        if (Input.GetMouseButtonDown(0))
-        {
-            if (IsPointerOverUI()) return;
+    if (Input.GetMouseButtonDown(0))
+    {
+        _startedOnUI = IsPointerOverUI(); //  UI 위에서 눌렀는지 기록
+        if (_startedOnUI) return;
 
+        _dragOrigin = Input.mousePosition;
+        _touchStartPos = _dragOrigin;
+        isDragging = false;
+    }
+    else if (Input.GetMouseButton(0))
+    {
+        if (_startedOnUI) return; //  UI 위에서 시작했으면 아예 이동 막기
+
+        Vector3 delta = Input.mousePosition - _dragOrigin;
+        float dist = Vector2.Distance(Input.mousePosition, _touchStartPos);
+
+        if (dist > _clickThreshold && !dragController.isDragUse)
+        {
+            isDragging = true;
+            ApplyCameraMove(delta);
             _dragOrigin = Input.mousePosition;
-            _touchStartPos = _dragOrigin;
-            isDragging = false;
         }
-        else if (Input.GetMouseButton(0))
+    }
+    else if (Input.GetMouseButtonUp(0))
+    {
+        if (_startedOnUI) {
+            _startedOnUI = false; // 다시 초기화
+            return;
+        }
+
+        if (!isDragging)
         {
-            Vector3 delta = Input.mousePosition - _dragOrigin;
-            float dist = Vector2.Distance(Input.mousePosition, _touchStartPos);
-
-            if (dist > _clickThreshold)
-            {
-                isDragging = true;
-                ApplyCameraMove(delta);
-                _dragOrigin = Input.mousePosition;
-            }
+            ClickObject(Input.mousePosition);
         }
-        else if (Input.GetMouseButtonUp(0))
-        {
-            if (!isDragging)
-            {
-                ClickObject(Input.mousePosition);
-            }
-            isDragging = false;
-        }
-
-#else
-        if (Input.touchCount == 1)
-        {
-            Touch touch = Input.GetTouch(0);
-
-            if (IsPointerOverUI(touch.fingerId)) return;
-
-            if (touch.phase == TouchPhase.Began)
-            {
-                _touchStartPos = touch.position;
-                isDragging = false;
-            }
-            else if (touch.phase == TouchPhase.Moved)
-            {
-                float dist = Vector2.Distance(touch.position, _touchStartPos);
-                if (dist > _clickThreshold)
-                {
-                    isDragging = true;
-                    ApplyCameraMove(touch.deltaPosition);
-                }
-            }
-            else if (touch.phase == TouchPhase.Ended)
-            {
-                if (!isDragging)
-                {
-                    HandleTap(touch.position);
-                }
-                isDragging = false;
-            }
-        }
+        isDragging = false;
+    }
 #endif
     }
 

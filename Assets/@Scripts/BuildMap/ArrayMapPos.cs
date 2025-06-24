@@ -22,12 +22,11 @@ public class ArrayMapPos : ScriptableObject
     public int Height => rows?.Count ?? 0;
 
     public TileData GetTile(int x, int y) => rows[y].columns[x];
-
-    public void SetTile(TileData tileData, int x, int y)
+    public void SetTile(bool isbuild, int x, int y)
     {
-        rows[y].columns[x].isGround = tileData.isGround;
-        rows[y].columns[x].isBuild = tileData.isBuild;
+        rows[y].columns[x].isBuild = isbuild;
     }
+
     #if UNITY_EDITOR
     public void InitializeMap()
     {

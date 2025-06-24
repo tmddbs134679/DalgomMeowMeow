@@ -10,8 +10,11 @@ public class GridMap : MonoBehaviour
     public int height;
     public float tileSize = 1f;
 
-    public GameObject tilePrefab; // BoxCollider만 붙은 바닥 프리팹
+    // BoxCollider만 붙은 바닥 프리팹
+    public GameObject blue;
+    public GameObject red;
 
+    public GameObject tile = null;
     [SerializeField] private ArrayMapPos _arrayMapPos;
 
     void Awake()
@@ -30,23 +33,26 @@ public class GridMap : MonoBehaviour
         {
             for (int z = 0; z < height; z++)
             {
+                if (_arrayMapPos.GetTile(x, z).isBuild || _arrayMapPos.GetTile(x, z).isGround)
+                {
+                    tile = red;
+                }
+                else
+                {
+                    tile = blue;
+                }
+
                 Vector3 pos = new Vector3
                 (
-                (x - z) * tileSize * 1f,
-                 0f,
-                (x + z) * tileSize * 1f
+                    x * tileSize,
+                    0f,
+                    z * tileSize
                 );
-                Instantiate(tilePrefab, pos, Quaternion.identity, transform);
 
-                Vector3 pos2 = new Vector3
-(
-((x + tileSize / 2) - (z + tileSize / 2)) * tileSize * 1f,
- 0f,
-((x + tileSize / 2) + (z + tileSize / 2)) * tileSize * 1f
-);
-                Instantiate(tilePrefab, pos2, Quaternion.identity, transform);
+                Instantiate(tile, pos, Quaternion.identity, transform);
             }
         }
+
     }
 
     public void SaveMap()
@@ -56,7 +62,7 @@ public class GridMap : MonoBehaviour
 
     public void LoadMap()
     {
-        
+
     }
 
 }

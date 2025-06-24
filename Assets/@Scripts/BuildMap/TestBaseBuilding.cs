@@ -5,11 +5,11 @@ using UnityEngine;
 public enum EBuildType
 {
     NONE,
-    FARM,
     COOK,
+    FARM,
+    FISHING,
     PLAYGROUND,
     REST,
-    FISHING,
     SHOP,
     STORAGE
         

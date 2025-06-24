@@ -4,8 +4,9 @@ using UnityEngine;
 public class DragController : MonoBehaviour
 {
     private IDraggable currentTarget = null;
-    public LayerMask groundLayer; // 바닥에만 Ray 쏘게 하기
+    public LayerMask groundLayer;
 
+    public bool isDragUse=false;
     void Update()
     {
         Vector3 inputPos = Vector3.zero;
@@ -34,6 +35,7 @@ public class DragController : MonoBehaviour
             // 먼저 드래그 대상 체크
             if (Physics.Raycast(ray, out var hit))
             {
+                 
                 var draggable = hit.collider.GetComponent<IDraggable>();
                 if (draggable != null)
                 {
@@ -44,14 +46,16 @@ public class DragController : MonoBehaviour
         }
         else if (moved && currentTarget != null)
         {
+           isDragUse=true;
             // 이번엔 바닥만 체크
-            if (Physics.Raycast(ray, out var groundHit, 100f, groundLayer))
+            if (Physics.Raycast(ray, out var groundHit, 1000f, groundLayer))
             {
                 currentTarget.OnDrag(groundHit.point); // 바닥의 위치 전달
             }
         }
         else if (ended && currentTarget != null)
         {
+            isDragUse=false;
             currentTarget.OnDragEnd();
             currentTarget = null;
         }
