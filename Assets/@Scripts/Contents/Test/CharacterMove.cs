@@ -28,7 +28,7 @@ public class CharacterMove : MonoBehaviour
 
     private void Update()
     {
-
+        PatrolMove();
     }
 
     public void Move(Vector3 buildingPosition)

@@ -62,4 +62,13 @@ public class Define
         Vegetable,
         Fish
     }
+
+    public enum EItemID
+    {
+        Cabbage,
+        Carrot,
+        Onion,
+        Potato,
+        Tomato,
+    }
 }
