@@ -40,9 +40,11 @@ public class DataTransformer : EditorWindow
             cd.DataId = ConvertValue<int>(row[i++]);
             cd.PrefabLabel = ConvertValue<string>(row[i++]);
             cd.MaxHp = ConvertValue<float>(row[i++]);
+            cd.Hp = ConvertValue<float>(row[i++]);
             cd.Atk = ConvertValue<float>(row[i++]);
             cd.Stamina = ConvertValue<float>(row[i++]);
             cd.MoveSpeed = ConvertValue<float>(row[i++]);
+            cd.TotalExp = ConvertValue<float>(row[i++]);
             cd.HpRate = ConvertValue<float>(row[i++]);
             cd.AtkRate = ConvertValue<float>(row[i++]);
             cd.MoveSpeedRate = ConvertValue<float>(row[i++]);
