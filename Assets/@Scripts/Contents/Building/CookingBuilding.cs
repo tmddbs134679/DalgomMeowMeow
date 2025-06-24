@@ -8,6 +8,7 @@ public class CookingBuilding : BuildingBase
     [SerializeField] private Color defaultColor = Color.white;
     [SerializeField] private Color readyColor = Color.green;
     public GameObject collectIcon;
+
     
 
     public override void Init()
@@ -18,19 +19,7 @@ public class CookingBuilding : BuildingBase
             buildingRenderer.material.color = defaultColor;
     }
 
-    public override void OnClick()
-    {
-        if (CurrentState == BuildingState.ReadyToCollect)
-        {
-            Collect();
-        }
-        else
-        {
-            UI_BuildingInfo ui = FindObjectOfType<UI_BuildingInfo>();
-            if (ui != null)
-                ui.Open(this);
-        }
-    }
+
 
     public override void Produce()
     {
@@ -44,25 +33,36 @@ public class CookingBuilding : BuildingBase
         ConsumeMaterials();
         
         Debug.Log("요리 완성");
-        
-        // 아이템 지급
-        Debug.Log("[인벤토리] 스프 아이템 지급!");
 
-        // 상태 전이
-        CurrentState = BuildingState.ReadyToCollect;
+        StoredCount++; //  생산 누적
+        
+        Debug.Log($"요리 완성! 누적 수량: {StoredCount}");
+        
         // collectIcon.SetActive(true);
         
+        
+        if (buildingRenderer != null)
             buildingRenderer.material.color = readyColor;
         
     }
-    
+    public override void OnClick()
+    {
+        if (StoredCount > 0)
+        {
+            Collect();
+        }
+    }
     public void Collect()
     {
-        if (CurrentState != BuildingState.ReadyToCollect) return;
+        if (StoredCount <= 0) return;
 
-        Debug.Log(" 요리를 수확했습니다.");
+        Debug.Log($" {StoredCount}개 요리를 수확했습니다!");
+
+        
+        StoredCount = 0;
         CurrentState = BuildingState.Producing;
         // collectIcon.SetActive(false);
+        if (buildingRenderer != null)
             buildingRenderer.material.color = defaultColor;
     }
     
