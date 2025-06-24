@@ -2,25 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Resources;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Managers : MonoBehaviour
 {
     static Managers s_instance;
     static Managers Instance { get { Init(); return s_instance; } }
-
-    //Contents 
+    //Contents
     GameManager _game = new GameManager();
     public static GameManager Game { get { return Instance?._game; } }
-
-
     //Core
     DataManager _data = new DataManager();
     ResourceManager _resource = new ResourceManager();
-
-
-
+    MySceneManager _scene = new MySceneManager();
+    UIManager _ui = new UIManager();
     public static DataManager Data { get { return Instance?._data; } }
     public static ResourceManager Resource { get { return Instance?._resource; } }
+    public static MySceneManager Scene { get { return Instance?._scene; } }
+    public static UIManager UI { get { return Instance?._ui; } }
     public static void Init()
     {
         if (s_instance == null)
@@ -31,11 +30,8 @@ public class Managers : MonoBehaviour
                 go = new GameObject { name = "@Managers" };
                 go.AddComponent<Managers>();
             }
-
             DontDestroyOnLoad(go);
             s_instance = go.GetComponent<Managers>();
-
         }
     }
-
 }
