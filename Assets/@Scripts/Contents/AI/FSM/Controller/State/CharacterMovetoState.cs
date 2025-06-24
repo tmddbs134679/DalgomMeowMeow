@@ -14,6 +14,7 @@ public class AIMoveToTargetState : AIState
     public override void OnEnter()
     {
         base.OnEnter();
+        state = Define.EAIState.MoveTo;
         Debug.Log("이동 시작");
     }
 
@@ -23,10 +24,10 @@ public class AIMoveToTargetState : AIState
 
         Vector3 dir = (targetPosition - character.transform.position).normalized;
 
-        character.transform.position += dir * character.Stat.MoveSpeed; /** deltaTime;*/
+        character.transform.position += dir * character.Stat.MoveSpeed * deltaTime;
 
         // 일정 거리 이내면 도착한 것으로 판단
-        if (Vector3.Distance(character.transform.position, targetPosition) < 0.1f)
+        if (Vector3.Distance(character.transform.position, targetPosition) < 2f)
         {
             Debug.Log("목적지 도착");
             onArrived?.Invoke(); // 도착 콜백 실행

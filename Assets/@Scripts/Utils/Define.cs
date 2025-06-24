@@ -47,6 +47,12 @@ public class Define
         Idle,
         Cooking,
         MoveTo,
+        Playing,
+        Farming,
+        Resting,
+        Delivery,
+        Collecting,
+        Building,
         
     }
 }
