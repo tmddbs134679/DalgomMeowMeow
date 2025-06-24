@@ -41,4 +41,12 @@ public class Define
         Enemy,
 
     }
+
+    public enum EAIState
+    {
+        Idle,
+        Cooking,
+        MoveTo,
+        
+    }
 }
