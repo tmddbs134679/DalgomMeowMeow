@@ -37,13 +37,19 @@ public abstract class BuildingBase : BaseObject
     {
         CurrentState = BuildingState.Producing;
     }
-
+    public virtual void Lock()
+    {
+        CurrentState = BuildingState.Idle;
+    }
+    
     public virtual void AssignAnimal()
     {
-        //assignedAnimal = animal;
         Unlock();
     }
-
+    public virtual void UnassignAnimal()
+    {
+        CurrentState = BuildingState.Idle;
+    }
     public abstract void Produce(); // 자식이 반드시 override
 
     public virtual void Tick(float deltaTime)
