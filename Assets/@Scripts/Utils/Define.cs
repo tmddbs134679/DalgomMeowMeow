@@ -55,4 +55,14 @@ public class Define
         Building,
         
     }
+
+    public enum EScene
+    {
+        None,
+        TitleScene,
+        LobbyScene,
+        GameScene,
+        FrameworkTestScene,
+    }
+
 }
