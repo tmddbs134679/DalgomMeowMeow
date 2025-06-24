@@ -49,4 +49,13 @@ public class Define
         MoveTo,
         
     }
+
+    public enum EScene
+    {
+        None,
+        TitleScene,
+        LobbyScene,
+        GameScene,
+    }
+
 }
