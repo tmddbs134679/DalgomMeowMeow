@@ -20,7 +20,8 @@ public class AICharacter : MonoBehaviour
     [HideInInspector]
     public CharacterAction characterAction;
 
-    public event Action animalArrived;
+    public event Action AnimalLeaved;
+    public event Action AnimalArrived;
 
     private bool _isHelloReady = true;
     private void Awake()
