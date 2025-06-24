@@ -57,5 +57,20 @@ public static class Util
         return null;
     }
 
+    #region EventBus
+    public class AnimalArrivedAtBuildingEvent : BaseEvent
+    {
+        public AICharacter Animal;
+        public BuildingBase TargetBuilding;
+    }
+
+    public class BuildingProductionFinishedEvent : BaseEvent
+    {
+        public BuildingBase Building;
+        public AICharacter AssignedAnimal;
+    }
+
+    #endregion
+
 
 }
