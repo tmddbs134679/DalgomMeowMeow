@@ -1,11 +1,11 @@
 namespace Scripts.Contents.AI.FSM.State
 {
-    public class CharacterIdleState : AIState
+    public class CharacterBuildingState : AIState
     {
         public override void Init(AICharacter owner)
         {
             base.Init(owner);
-            state = Define.EAIState.Idle;
+            state = Define.EAIState.Building;
         }
         
         public override void OnEnter()
@@ -15,11 +15,6 @@ namespace Scripts.Contents.AI.FSM.State
         public override void OnUpdate(float deltaTime)
         {
             base.OnUpdate(deltaTime);
-        }
-
-        public override void OnExit()
-        {
-            base.OnExit();
         }
     }
 }
