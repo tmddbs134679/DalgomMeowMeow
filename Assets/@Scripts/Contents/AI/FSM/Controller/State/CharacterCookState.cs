@@ -15,7 +15,10 @@ namespace Scripts.Contents.AI.FSM.State
             base.OnEnter();
 
             if (character.Stat.Stamina > 33)
+            {
                 character.Stat.Stamina -= 33;
+
+            }
             else OnExit();
 
         }
