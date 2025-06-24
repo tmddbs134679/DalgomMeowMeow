@@ -11,6 +11,6 @@ public class StorageBuilding : BuildingBase
 
     public override void OnClick()
     {
-        throw new System.NotImplementedException();
+        
     }
 }

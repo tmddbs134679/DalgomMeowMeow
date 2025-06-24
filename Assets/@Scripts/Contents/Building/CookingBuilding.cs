@@ -8,7 +8,7 @@ public class CookingBuilding : BuildingBase
     [SerializeField] private Color defaultColor = Color.white;
     [SerializeField] private Color readyColor = Color.green;
     public GameObject collectIcon;
-    //요리재료로 요리를 만든다
+    
 
     public override void Init()
     {
