@@ -16,8 +16,7 @@ public enum EBuildType
     }
 public class TestBaseBuilding : MonoBehaviour
 {
-public GameObject Build { get; set; }
-public EBuildType Type { get; set; }
-public int PosX { get; set; }
-public int PosY { get; set; }
+public EBuildType EType { get; set; }
+public int sizeWidth { get; set; }
+public int sizeHeight { get; set; }
 }

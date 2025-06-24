@@ -6,16 +6,27 @@ using UnityEngine;
 
 public class BuildingPlacer : MonoBehaviour
 {
-    
-    TestBaseBuilding TestBaseBuilding;
-//건물종류선택
-    void SelectBuildingType(EBuildType eBuildType)
+
+    public GameObject[] buildOBJ;
+    TestBaseBuilding testBaseBuilding;
+
+
+
+    //건물종류선택
+    public void SelectBuildingType(int type)
     {
-        TestBaseBuilding.Type = eBuildType;
+              testBaseBuilding= buildOBJ[type].GetComponent<TestBaseBuilding>();
+
+
+      
+        Camera cam = Camera.main;
+        Vector3 screenCenter = new Vector3(Screen.width / 2f, Screen.height / 2f, cam.nearClipPlane);
+        Vector3 worldCenter = cam.ScreenToWorldPoint(screenCenter);
+     //   Instantiate(buildOBJ, worldCenter, Quaternion.identity);
     }
 
     //건물설치재료판별
-    void CheckBuildMaterials()
+   public void CheckBuildMaterials()
     {
 
     }
