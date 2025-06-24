@@ -75,14 +75,15 @@ public class AICharacter : MonoBehaviour
             {
                 //애니메이션 적용
                 Debug.Log("Hello Motion Triggered with " + others.name);
+                StartCoroutine(HelloMotion());
                 _isHelloReady = false;
                 others._isHelloReady = false;
-                StartCoroutine(HelloMotion(others));
+                StartCoroutine(HelloMotionReset(others));
             }
         }
     }
 
-    private IEnumerator HelloMotion(AICharacter other)
+    private IEnumerator HelloMotionReset(AICharacter other)
     {
         yield return new WaitForSeconds(10f);
         _isHelloReady = true;
@@ -115,6 +116,7 @@ public class AICharacter : MonoBehaviour
     public void UseStamina(float amount)
     {
         runtimeStat.Stamina = Mathf.Max(0, runtimeStat.Stamina - amount);
+        Debug.Log($"Stamina used: {amount}, Remaining: {runtimeStat.Stamina}");
     }
 
 

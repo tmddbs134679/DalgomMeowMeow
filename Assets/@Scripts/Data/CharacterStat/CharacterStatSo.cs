@@ -36,6 +36,8 @@ public class CharacterStatSo : ScriptableObject
         }
     }
 
+    [SerializeField]
+    private float atk;
     public float Atk
     {
         get => atk;
@@ -47,7 +49,7 @@ public class CharacterStatSo : ScriptableObject
         }
     }
     [SerializeField]
-    private float atk;
+    private float stamina;
 
     public float Stamina
     {
@@ -60,8 +62,6 @@ public class CharacterStatSo : ScriptableObject
         }
     }
 
-    [SerializeField]
-    private float stamina;
 
     [SerializeField]
     private float moveSpeed;
