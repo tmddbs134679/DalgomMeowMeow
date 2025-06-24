@@ -25,7 +25,6 @@ public abstract class BuildingBase : BaseObject
     {
         if (Timer == null)
             Init();
-        Unlock();
     }
 
     public virtual void Init()
@@ -42,6 +41,7 @@ public abstract class BuildingBase : BaseObject
     public virtual void AssignAnimal()
     {
         //assignedAnimal = animal;
+        Unlock();
     }
 
     public abstract void Produce(); // 자식이 반드시 override
