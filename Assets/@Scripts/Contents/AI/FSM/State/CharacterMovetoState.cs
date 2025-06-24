@@ -23,7 +23,7 @@ public class AIMoveToTargetState : AIState
 
         Vector3 dir = (targetPosition - character.transform.position).normalized;
 
-        character.transform.position += dir * character.Stat.MoveSpeed; * deltaTime;
+        character.transform.position += dir * character.Stat.MoveSpeed; /** deltaTime;*/
 
         // 일정 거리 이내면 도착한 것으로 판단
         if (Vector3.Distance(character.transform.position, targetPosition) < 0.1f)
