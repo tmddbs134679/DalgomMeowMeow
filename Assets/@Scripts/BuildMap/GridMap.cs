@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+//보여주기용 그리드맵,레이저 받고 프리뷰 저장하는 용도
 public class GridMap : MonoBehaviour
 {
     public int width;
@@ -45,6 +47,16 @@ public class GridMap : MonoBehaviour
                 Instantiate(tilePrefab, pos2, Quaternion.identity, transform);
             }
         }
+    }
+
+    public void SaveMap()
+    {
+
+    }
+
+    public void LoadMap()
+    {
+        
     }
 
 }
