@@ -13,9 +13,13 @@ namespace Scripts.Contents.AI.FSM.State
         public override void OnEnter()
         {
             base.OnEnter();
-            
-            if(character.Stat.Stamina > 33)
-            character.Stat.Stamina -= 33;
+
+            if (character.Stat.Stamina > 33)
+            {
+                character.Stat.Stamina -= 33;
+
+            }
+            else OnExit();
 
         }
 
@@ -26,8 +30,8 @@ namespace Scripts.Contents.AI.FSM.State
         
         public override void OnExit()
         {
-            
             base.OnExit();
+            //character.OnAnimalLeaved();
         }
         
     }

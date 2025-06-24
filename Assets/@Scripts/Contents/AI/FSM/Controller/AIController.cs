@@ -61,6 +61,7 @@ public class AIController : BaseController<AICharacter>
         {
             var nearestCookingBuilding = FindBuilding(BuildingManager.Instance._buildings, BuildingType.Cooking);
             aiCharacter.currentBuilding = nearestCookingBuilding;
+            aiCharacter.currentBuilding.ConnectToAnimal(aiCharacter);
             return nearestCookingBuilding.transform.position;
         }
 
