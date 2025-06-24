@@ -6,7 +6,7 @@ public class CameraController : MonoBehaviour
     public float _dragSpeed = 2f;
     public Vector2 minLimit = new Vector2(-10, -10);
     public Vector2 maxLimit = new Vector2(10, 10);
-    public float _clickThreshold = 10f; // Å¬¸¯ °£ÁÖ °Å¸®
+    public float _clickThreshold = 10f; // Å¬ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½
 
     private Camera _cam;
     private Vector3 _dragOrigin;
@@ -101,6 +101,10 @@ public class CameraController : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
             Debug.Log("Click on: " + hit.collider.name);
+            
+            var clickable = hit.collider.GetComponent<BaseObject>();
+            if (clickable != null)
+                clickable.OnClick();
         }
     }
 
