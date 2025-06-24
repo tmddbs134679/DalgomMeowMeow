@@ -17,6 +17,8 @@ public abstract class BuildingBase : BaseObject
 
     [Header("생산 타이머")] public BuildingTimer Timer;
     public int StoredCount { get; protected set; } = 0; // 누적된 생산 수량
+    
+    protected AICharacter assignedAnimal;
 
     // [Header("동물 배치")]
     //protected Animal assignedAnimal;
@@ -33,17 +35,30 @@ public abstract class BuildingBase : BaseObject
         BuildingManager.Instance.Register(this);
     }
 
+    public virtual void ConnectToAnimal()
+    {
+        // 이벤트 등록
+        assignedAnimal.AnimalArrived += AssignAnimal;
+        assignedAnimal.AnimalLeaved += UnassignAnimal;
+    }
+
     public virtual void Unlock()
     {
         CurrentState = BuildingState.Producing;
     }
-
-    public virtual void AssignAnimal()
+    public virtual void Lock()
     {
-        //assignedAnimal = animal;
+        CurrentState = BuildingState.Idle;
+    }
+    
+    public virtual void AssignAnimal(AICharacter animal)
+    {
         Unlock();
     }
-
+    public virtual void UnassignAnimal(AICharacter animal)
+    {
+        CurrentState = BuildingState.Idle;
+    }
     public abstract void Produce(); // 자식이 반드시 override
 
     public virtual void Tick(float deltaTime)
