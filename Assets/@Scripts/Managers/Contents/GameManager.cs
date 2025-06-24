@@ -21,6 +21,7 @@ public class GameManager
 {
     public GameData _gameData = new GameData();
 
+    public bool IsLoaded = false;
     #region Action
 
     public event Action OnResourcesChagned;
@@ -62,11 +63,38 @@ public class GameManager
     public void Init()
     {
         _path = Application.persistentDataPath + "/SaveData.json";
+
+        if (LoadGame())
+            return;
+
+        IsLoaded = true;
+
+        SaveGame();
+
     }
+
+
 
     public void SaveGame()
     {
         string jsonStr = JsonConvert.SerializeObject(_gameData);
         File.WriteAllText(_path, jsonStr);
     }
+    private bool LoadGame()
+    {
+   
+        if (File.Exists(_path) == false)
+            return false;
+
+
+        string fileStr = File.ReadAllText(_path);
+        GameData data = JsonConvert.DeserializeObject<GameData>(fileStr);
+        if (data != null)
+            _gameData = data;
+
+        IsLoaded = true;
+        return true;
+    }
+
+
 }
