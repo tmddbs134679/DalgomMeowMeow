@@ -16,6 +16,7 @@ public abstract class BuildingBase : BaseObject
     public BuildingState CurrentState = BuildingState.Locked;
 
     [Header("생산 타이머")] public BuildingTimer Timer;
+    public int StoredCount { get; protected set; } = 0; // 누적된 생산 수량
 
     // [Header("동물 배치")]
     //protected Animal assignedAnimal;
