@@ -1,0 +1,35 @@
+using System;
+using UnityEngine;
+public class AIMoveToTargetState : AIState
+{
+    private Vector3 targetPosition;
+    private Action onArrived;
+
+    public AIMoveToTargetState(Vector3 target, Action onArrivedCallback)
+    {
+        this.targetPosition = target;
+        this.onArrived = onArrivedCallback;
+    }
+
+    public override void OnEnter()
+    {
+        base.OnEnter();
+        Debug.Log("이동 시작");
+    }
+
+    public override void OnUpdate(float deltaTime)
+    {
+        base.OnUpdate(deltaTime);
+
+        Vector3 dir = (targetPosition - character.transform.position).normalized;
+
+        character.transform.position += dir * character.Stat.MoveSpeed; * deltaTime;
+
+        // 일정 거리 이내면 도착한 것으로 판단
+        if (Vector3.Distance(character.transform.position, targetPosition) < 0.1f)
+        {
+            Debug.Log("목적지 도착");
+            onArrived?.Invoke(); // 도착 콜백 실행
+        }
+    }
+}
