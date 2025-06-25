@@ -11,6 +11,7 @@ public class BattleCharacter : MonoBehaviour
     [SerializeField] private CharacterStatSo _data; // 캐릭터 스탯 데이터
     [SerializeField] private Color _damageColor = Color.red;
     [SerializeField] private float _flashDuration = 0.05f;
+    [SerializeField] private Color _originalColor;
 
 
     public float AttackDamage = 10f; // 공격력
@@ -54,6 +55,7 @@ public class BattleCharacter : MonoBehaviour
         _agent = GetComponent<NavMeshAgent>();
         _characterRenderer = GetComponentInChildren<Renderer>();
         _originalPosition = transform.localPosition;
+        _originalColor = _characterRenderer.material.color; // 원래 색상 저장
         _agent.speed = MoveSpeed; // NavMeshAgent의 이동 속도 설정
         _agent.stoppingDistance = _attackRange; // 공격 범위 내에서 멈추도록 설정
     }
@@ -235,12 +237,11 @@ public class BattleCharacter : MonoBehaviour
 
     private IEnumerator DamageFlash()
     {
-        var originalColor = _characterRenderer.material.color;
+        _characterRenderer.material.color = _originalColor;
         _characterRenderer.material.color = _damageColor;
-
         yield return new WaitForSeconds(_flashDuration);
+        _characterRenderer.material.color = _originalColor;
 
-        _characterRenderer.material.color = originalColor;
         _damageFlashCoroutine = null;
     }
 

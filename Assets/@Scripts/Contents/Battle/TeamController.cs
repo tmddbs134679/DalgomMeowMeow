@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -10,8 +9,12 @@ public class TeamController : MonoBehaviour
     [SerializeField] private TeamState _currentState;
     [SerializeField] private List<BattleCharacter> _members;
     [SerializeField] private float _moveSpeed = 2f;
-    private float _battleEndDelay = 1f;
-    private float _battleEndTimer = 0f;
+
+
+    private void Awake()
+    {
+        _members = GetComponentsInChildren<BattleCharacter>().ToList();
+    }
 
     private void Update()
     {
@@ -81,23 +84,13 @@ public class TeamController : MonoBehaviour
 
     private void HandleMemberBattleStateChanged(BattleCharacter member, bool isInBattle)
     {
-        if (isInBattle)
+        if (_members.All(m => m.IsInBattle))
         {
             EnterBattle();
-            _battleEndTimer = 0f;
         }
-        else if (_currentState == TeamState.Fighting && _members.All(m => !m.IsInBattle && !m.IsDead))
+        else if (_currentState == TeamState.Fighting && _members.All(m => !m.IsInBattle))
         {
-            // 모두 false인 상태가 지속되는지 타이머로 확인
-            if (_battleEndTimer == 0f)
-                _battleEndTimer = Time.time;
-
-            if (Time.time - _battleEndTimer >= _battleEndDelay)
-                ReturnToFormation();
-        }
-        else
-        {
-            _battleEndTimer = 0f; // 누군가 다시 true면 타이머 초기화
+            ReturnToFormation();
         }
     }
 
