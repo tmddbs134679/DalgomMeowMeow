@@ -2,6 +2,9 @@ using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
 
+/// <summary>
+/// BuildingPlacer 에디터
+/// </summary>
 [CustomEditor(typeof(BuildingPlacer))]
 public class BuildingPlacerEditor : Editor
 {

@@ -1,36 +1,50 @@
 using UnityEngine;
-
+using System;
+/// <summary>
+/// 건물 드래그앤드롭,그리드 스냅,건물 밑 타일 정보 반영
+/// </summary>
 public class DraggableObject : MonoBehaviour, IDraggable
 {
     public GameObject BuildActiontUI;
     [SerializeField] private float gridSize = 1f;         // 한 칸 크기
     [SerializeField] private float heightOffset = 0.5f;   // 바닥 위 높이
 
+    public bool isBuild;
     float offsetx;
     float offsety;
+    //드래그 스타트
     public void OnDragStart(Vector3 hitPos)
     {
         offsetx = (gameObject.transform.localScale.x % 2 == 0) ? (gridSize / 2f) : 0f;
         offsety = (gameObject.transform.localScale.z % 2 == 0) ? (gridSize / 2f) : 0f;
-        CheckTilesUnderBuilding();
+        isBuild = CheckTilesUnderBuilding();
 
-    Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.main,transform.position);
-    BuildActiontUI.transform.position = screenPos;
+
     }
 
+    //드래그
     public void OnDrag(Vector3 groundPos)
     {
 
         Vector3 snappedPos = GetSnappedPosition(groundPos);
         transform.position = snappedPos;
-        CheckTilesUnderBuilding();
+        isBuild = CheckTilesUnderBuilding();
 
-    Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.main,transform.position);
-    BuildActiontUI.transform.position = screenPos;
+        Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.main, transform.position);
+        BuildActiontUI.transform.position = screenPos;
     }
 
+    //드래그 드롭
     public void OnDragEnd() { }
 
+    public void OnLongPress()
+    {
+        Debug.Log("롱프레스 감지!");
+        BuildActiontUI.SetActive(true);
+        Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.main, transform.position);
+        BuildActiontUI.transform.position = screenPos;
+    }
+    //그리드 적용 스냅
     private Vector3 GetSnappedPosition(Vector3 targetPos)
     {
         float x = Mathf.Round(targetPos.x / gridSize) * gridSize + offsetx;
@@ -43,19 +57,39 @@ public class DraggableObject : MonoBehaviour, IDraggable
     [SerializeField] private Vector2 buildSize = new Vector2(1f, 1f); // 건축물 밑면 크기 (x, z)
     [SerializeField] private LayerMask tileLayer;
 
-    void CheckTilesUnderBuilding()
+    //건물밑 타일 판별후 정보전달
+    bool CheckTilesUnderBuilding()
     {
         Vector3 center = transform.position + Vector3.down * 0.5f;
-        Vector3 halfExtents = new Vector3(buildSize.x / 2f, 0.1f, buildSize.y / 2f); // 높이는 살짝만
+        Vector3 halfExtents = new Vector3(buildSize.x / 2.5f, 0.1f, buildSize.y / 2.5f);
 
         Collider[] hitColliders = Physics.OverlapBox(center, halfExtents, Quaternion.identity, tileLayer);
 
+        int allcheck = 0;
         foreach (Collider col in hitColliders)
         {
             if (col.CompareTag("Tile"))
             {
                 var tile = col.GetComponent<TileObjectData>();
-                tile.isCurrentbuild = true;
+                if (tile.isLoadBuild) allcheck++;
+            }
+        }
+        return allcheck == hitColliders.Length;
+    }
+
+    public void SetTileIsBuild()
+    {
+        Vector3 center = transform.position + Vector3.down * 0.5f;
+        Vector3 halfExtents = new Vector3(buildSize.x / 2.5f, 0.1f, buildSize.y / 2.5f);
+
+        Collider[] hitColliders = Physics.OverlapBox(center, halfExtents, Quaternion.identity, tileLayer);
+          foreach (Collider col in hitColliders)
+        {
+            if (col.CompareTag("Tile"))
+            {
+                var tile = col.GetComponent<TileObjectData>();
+                tile.isLoadBuild = true;
+                tile.SetTile();
             }
         }
     }

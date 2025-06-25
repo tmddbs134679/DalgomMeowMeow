@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-//보여주기용 그리드맵,레이저 받고 프리뷰 저장하는 용도
+/// <summary>
+/// 저장되어있는 데이터맵 가져와서 그리드맵 생성및 타일에 정보전달
+/// </summary>
 public class GridMap : MonoBehaviour
 {
     public int width;
@@ -14,13 +16,14 @@ public class GridMap : MonoBehaviour
     public GameObject blue;
     public GameObject red;
 
-    public GameObject tile = null;
+    public GameObject[,] tile = null;
     [SerializeField] private ArrayMapPos _arrayMapPos;
 
     void Awake()
     {
         width = _arrayMapPos.Width;
         height = _arrayMapPos.Height;
+        tile = new GameObject[width, height];
     }
     void Start()
     {
@@ -33,13 +36,15 @@ public class GridMap : MonoBehaviour
         {
             for (int z = 0; z < height; z++)
             {
-                if (_arrayMapPos.GetTile(x, z).isBuild || _arrayMapPos.GetTile(x, z).isGround)
+                if (_arrayMapPos.GetTile(x, z).isNotBuild || _arrayMapPos.GetTile(x, z).isNotGround)
                 {
-                    tile = red;
+                    tile[x, z] = red;
+                    tile[x, z].GetComponent<TileObjectData>().color = Color.red;
                 }
                 else
                 {
-                    tile = blue;
+                    tile[x, z] = blue;
+                    tile[x, z].GetComponent<TileObjectData>().color = Color.blue;
                 }
 
                 Vector3 pos = new Vector3
@@ -49,7 +54,8 @@ public class GridMap : MonoBehaviour
                     z * tileSize
                 );
 
-                Instantiate(tile, pos, Quaternion.identity, transform);
+                Instantiate(tile[x, z], pos, Quaternion.identity, transform);
+                tile[x, z].GetComponent<TileObjectData>().isLoadBuild = !_arrayMapPos.GetTile(x, z).isNotBuild;
             }
         }
 
@@ -62,7 +68,21 @@ public class GridMap : MonoBehaviour
 
     public void LoadMap()
     {
+        for (int x = 0; x < width; x++)
+        {
+            for (int z = 0; z < height; z++)
+            {
+                if (_arrayMapPos.GetTile(x, z).isNotBuild || _arrayMapPos.GetTile(x, z).isNotGround)
+                {
+                    tile[x, z].GetComponent<TileObjectData>().color = Color.red;
+                }
+                else
+                {
 
+                    tile[x, z].GetComponent<TileObjectData>().color = Color.blue;
+                }
+            }
+        }
     }
 
 }

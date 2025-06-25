@@ -11,6 +11,10 @@ using UnityEditor;
 //Width,Height 맵의 크기
 //rows[0].columns.Count =>첫 행의 리스트 크기를 가져와 열의 전체크기를 반환
 //rows?.Count ?? 0 => rows?.Count가  null일시 0반환
+
+/// <summary>
+/// 맵 저장 데이터
+/// </summary>
 [CreateAssetMenu(menuName = "Map/TileMapData")]
 public class ArrayMapPos : ScriptableObject
 {
@@ -24,7 +28,7 @@ public class ArrayMapPos : ScriptableObject
     public TileData GetTile(int x, int y) => rows[y].columns[x];
     public void SetTile(bool isbuild, int x, int y)
     {
-        rows[y].columns[x].isBuild = isbuild;
+        rows[y].columns[x].isNotBuild = isbuild;
     }
 
     #if UNITY_EDITOR
@@ -57,6 +61,6 @@ public class TileRow
 [Serializable]
 public class TileData
 {
-    public bool isGround;
-    public bool isBuild;
+    public bool isNotGround;
+    public bool isNotBuild;
 }
