@@ -138,5 +138,10 @@ public class AICharacter : MonoBehaviour
         runtimeStat.Hp += 10;
     }
 
+    public void OnDisable()
+    {
+        Controller?.Dispose();
+    }
+
 
 }

@@ -20,6 +20,14 @@ public class AIController : BaseController<AICharacter>
         aiCharacter.characterAction.OnAction += OnActionPerformed;
     }
 
+    public void Dispose()
+    {
+        if (aiCharacter != null && aiCharacter.characterAction != null)
+        {
+            aiCharacter.characterAction.OnAction -= OnActionPerformed;
+        }
+    }
+
 
     private void OnActionPerformed(Define.EAIState action) // 상태 변경에 따른 행동 처리
     {
@@ -44,7 +52,7 @@ public class AIController : BaseController<AICharacter>
             }
         });
 
-            RegisterState(moveState, aiCharacter);
+        RegisterState(moveState, aiCharacter);
         ChangeState(moveState.GetType().Name); // 이동 상태로 전환
     }
 
