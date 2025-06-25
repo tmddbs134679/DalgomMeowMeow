@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 namespace Scripts.Contents.AI.FSM.State
 {
@@ -13,25 +14,33 @@ namespace Scripts.Contents.AI.FSM.State
         public override void OnEnter()
         {
             base.OnEnter();
-
-            character.UseStamina(33);
-            
-
-
-            
-
-
+            character.UseStamina(30);
+            character.currentBuilding.ConnectToAnimal(character);
+            character.OnAnimalArrived(); // 도착 처리 메소드 호출
         }
 
         public override void OnUpdate(float deltaTime)
         {
             base.OnUpdate(deltaTime);
+            if (elapsedTime > character.currentBuilding.BuildingData.Interval)
+            {
+                character.Controller.ChangeState(nameof(CharacterIdleState));
+                return;
+            }
+          
         }
-        
+
         public override void OnExit()
         {
             base.OnExit();
-            //character.OnAnimalLeaved();
+            if (character.currentBuilding != null)
+            {
+                character.renderer.material.color = Color.white; // 색상 초기화
+                character.OnAnimalLeaved();
+                character.currentBuilding.DisconnectAnimal();
+                character.currentBuilding = null;
+            }
+
         }
         
     }

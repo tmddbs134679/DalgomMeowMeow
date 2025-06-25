@@ -40,5 +40,27 @@ namespace Data
     }
     #endregion
 
+    #region FoodData
+    public class FoodData
+    {
+        public int FoodId;
+        public string FoodName;
+        public string Description;
+        public Sprite Icon;
+        public int Price;
+    }
+    public class FoodDataLoader : ILoader<int, FoodData>
+    {
+        public List<FoodData> foods = new List<FoodData>();
 
+        public Dictionary<int, FoodData> MakeDict()
+        {
+            Dictionary<int, FoodData> dict = new Dictionary<int, FoodData>();
+            foreach (FoodData food in foods)
+                dict.Add(food.FoodId, food);
+            return dict;
+        }
+    }
+
+    #endregion
 }

@@ -1,14 +1,36 @@
 using UnityEngine;
 
 
+/// <summary>
+/// 드래그 시스템 ,cameracontroller와 상호작용
+/// </summary>
 public class DragController : MonoBehaviour
 {
     private IDraggable currentTarget = null;
     public LayerMask groundLayer;
 
-    public bool isDragUse=false;
+    public bool isDragUse = false;
+
+    public BuildingPlacer buildingPlacer;
+
+    public float longPressThreshold = 1.0f; // 몇 초 이상 눌러야 롱프레스인지
+    private bool isPointerDown = false;
+    private float pointerDownTimer = 0f;
     void Update()
     {
+        if (isPointerDown)
+        {
+            pointerDownTimer += Time.deltaTime;
+
+            if (pointerDownTimer >= longPressThreshold)
+            {
+                OnLongPress();
+                isPointerDown = false; // 1회 실행 후 초기화
+            }
+        }
+
+
+
         Vector3 inputPos = Vector3.zero;
         bool began = false, moved = false, ended = false;
 
@@ -16,7 +38,6 @@ public class DragController : MonoBehaviour
         {
             var touch = Input.GetTouch(0);
             inputPos = touch.position;
-
             began = touch.phase == TouchPhase.Began;
             moved = touch.phase == TouchPhase.Moved;
             ended = touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled;
@@ -32,10 +53,12 @@ public class DragController : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(inputPos);
         if (began)
         {
+            isPointerDown = true;
+            pointerDownTimer = 0f;
             // 먼저 드래그 대상 체크
             if (Physics.Raycast(ray, out var hit))
             {
-                 
+
                 var draggable = hit.collider.GetComponent<IDraggable>();
                 if (draggable != null)
                 {
@@ -46,7 +69,7 @@ public class DragController : MonoBehaviour
         }
         else if (moved && currentTarget != null)
         {
-           isDragUse=true;
+            isDragUse = true;
             // 이번엔 바닥만 체크
             if (Physics.Raycast(ray, out var groundHit, 1000f, groundLayer))
             {
@@ -55,9 +78,23 @@ public class DragController : MonoBehaviour
         }
         else if (ended && currentTarget != null)
         {
-            isDragUse=false;
+            isPointerDown = false;
+            pointerDownTimer = 0f;
+
+            isDragUse = false;
             currentTarget.OnDragEnd();
             currentTarget = null;
         }
+
+
+
+
+    }
+    private void OnLongPress()
+    {
+        // 여기에 열리는 창 코드 넣으면 됨
+        if (currentTarget != null)
+            currentTarget.OnLongPress();
+       // buildingPlacer.GetTempOBJ(currentTarget);
     }
 }

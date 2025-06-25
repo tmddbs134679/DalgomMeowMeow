@@ -17,6 +17,8 @@ public class AICharacter : MonoBehaviour
 
     [HideInInspector]
     public NavMeshAgent nav;
+    [HideInInspector]
+    public Renderer renderer;
     public BuildingBase currentBuilding;
     private Collider _collider;
 
@@ -41,6 +43,7 @@ public class AICharacter : MonoBehaviour
     private void Init()
     {
         nav = GetComponent<NavMeshAgent>();
+        renderer = GetComponent<Renderer>();
         characterAction = GetComponent<CharacterAction>();
         _collider = GetComponentInChildren<Collider>();
 
@@ -52,7 +55,7 @@ public class AICharacter : MonoBehaviour
         runtimeStat.OnStatChanged += ApplyStat;
 
         ApplyStat();
-
+        AIManager.Instance.Register(this);
         ControllerRegister();
     }
 
@@ -115,6 +118,10 @@ public class AICharacter : MonoBehaviour
 
     public void UseStamina(float amount)
     {
+        if (runtimeStat.Stamina - amount < 0)
+        {
+            return;
+        }
         runtimeStat.Stamina = Mathf.Max(0, runtimeStat.Stamina - amount);
         Debug.Log($"Stamina used: {amount}, Remaining: {runtimeStat.Stamina}");
     }
@@ -132,6 +139,12 @@ public class AICharacter : MonoBehaviour
     {
         runtimeStat.MoveSpeed += 1;
         runtimeStat.Hp += 10;
+    }
+
+    public void OnDisable()
+    {
+        AIManager.Instance.Unregister(this);
+        Controller?.Dispose();
     }
 
 
