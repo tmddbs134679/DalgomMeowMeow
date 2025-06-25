@@ -13,6 +13,7 @@ public class BattleCharacter : MonoBehaviour
     [SerializeField] private float _flashDuration = 0.05f;
     [SerializeField] private Color _originalColor;
 
+    public NavMeshAgent Agent { get; private set; } // NavMeshAgent 컴포넌트
 
     public float AttackDamage = 10f; // 공격력
     public float Heatlh = 100f; // 체력
@@ -23,7 +24,6 @@ public class BattleCharacter : MonoBehaviour
     public bool UsingSkill = false; // 스킬 사용 여부
 
     private float _attacktimer = 0f;
-    private NavMeshAgent _agent;
     private Transform _targetLocation;
     private BattleCharacter _targetCharacter; // 현재 타겟 캐릭터
     private Renderer _characterRenderer; // 캐릭터 렌더러
@@ -52,12 +52,12 @@ public class BattleCharacter : MonoBehaviour
 
     private void Awake()
     {
-        _agent = GetComponent<NavMeshAgent>();
+        Agent = GetComponent<NavMeshAgent>();
         _characterRenderer = GetComponentInChildren<Renderer>();
         _originalPosition = transform.localPosition;
         _originalColor = _characterRenderer.material.color; // 원래 색상 저장
-        _agent.speed = MoveSpeed; // NavMeshAgent의 이동 속도 설정
-        _agent.stoppingDistance = _attackRange; // 공격 범위 내에서 멈추도록 설정
+        Agent.speed = MoveSpeed; // NavMeshAgent의 이동 속도 설정
+        Agent.stoppingDistance = _attackRange; // 공격 범위 내에서 멈추도록 설정
     }
 
 
@@ -74,7 +74,7 @@ public class BattleCharacter : MonoBehaviour
                 SetTarget(newTarget);
                 if (_targetLocation != null)
                 {
-                    _agent.SetDestination(_targetLocation.position);
+                    Agent.SetDestination(_targetLocation.position);
                     IsInBattle = true; // 타겟이 생기면 전투 상태로 변경
                 }
             }
@@ -85,7 +85,7 @@ public class BattleCharacter : MonoBehaviour
 
             if (dist <= _attackRange)
             {
-                _agent.isStopped = true; //거리가 가까우면 공격
+                Agent.isStopped = true; //거리가 가까우면 공격
 
                 Vector3 direction = (_targetLocation.position - transform.position).normalized;
                 direction.y = 0; // y축 회전 배제
@@ -97,8 +97,8 @@ public class BattleCharacter : MonoBehaviour
             }
             else
             {
-                _agent.isStopped = false;
-                _agent.SetDestination(_targetLocation.position); // 계속 추적
+                Agent.isStopped = false;
+                Agent.SetDestination(_targetLocation.position); // 계속 추적
             }
         }
     }
@@ -154,7 +154,7 @@ public class BattleCharacter : MonoBehaviour
         {
             Debug.Log($"{name}: 타겟 {deadChar.name} 사망 감지 → 타겟 해제");
             SetTarget(null);
-            _agent.isStopped = false;
+            Agent.isStopped = false;
             IsInBattle = false; // 타겟이 사망하면 전투 상태 해제
         }
     }
@@ -201,7 +201,7 @@ public class BattleCharacter : MonoBehaviour
         IsDead = true;
 
         OnCharacterDied?.Invoke(this);
-        _agent.isStopped = true;
+        Agent.isStopped = true;
 
         Debug.Log($"{name} died.");
         gameObject.SetActive(false); // 또는 Destroy(gameObject);
@@ -221,14 +221,14 @@ public class BattleCharacter : MonoBehaviour
     public void ReturnToStartPosition()
     {
         Vector3 worldTarget = transform.parent.TransformPoint(_originalPosition);
-        _agent.isStopped = false; // NavMeshAgent가 이동을 시작할 수 있도록 설정
-        _agent.SetDestination(worldTarget);
+        Agent.isStopped = false; // NavMeshAgent가 이동을 시작할 수 있도록 설정
+        Agent.SetDestination(worldTarget);
     }
 
 
     public Vector3 GetOriginalWorldPosition()
     {
-        return transform.parent.TransformPoint(_originalPosition);
+        return this.transform.position;
     }
 
 

@@ -33,8 +33,12 @@ public class TeamController : MonoBehaviour
                 break;
 
             case TeamState.Returning:
+
                 if (AllReturned())
+                {
                     _currentState = TeamState.Moving;
+                    _members.ForEach(m => m.Agent.ResetPath());
+                }
                 break;
         }
     }
@@ -62,7 +66,9 @@ public class TeamController : MonoBehaviour
     private bool AllReturned()
     {
         return _members.All(m =>
-            Vector3.Distance(m.transform.position, m.GetOriginalWorldPosition()) < 0.2f);
+        !m.Agent.pathPending &&
+        m.Agent.remainingDistance <= m.Agent.stoppingDistance &&
+        m.Agent.velocity.sqrMagnitude == 0f);
     }
 
 
