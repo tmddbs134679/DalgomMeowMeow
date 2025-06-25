@@ -39,8 +39,7 @@ public abstract class BaseController<T> where T : MonoBehaviour
         previousState = currentState;
 
         currentState = registedState[newState];
-        currentState.OnEnter();
-    }
+        currentState.OnEnter(); }
 
     public BaseState<T> PreviousState()
     {

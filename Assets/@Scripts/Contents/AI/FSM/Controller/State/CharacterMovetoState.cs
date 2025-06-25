@@ -28,7 +28,7 @@ public class AIMoveToTargetState : AIState
         {
             isArrived = true;
             Debug.Log("목적지 도착");
-            character.OnAnimalArrived(); // 도착 처리 메소드 호출
+
             onArrived?.Invoke(); // 도착 콜백 실행
         }
     }
