@@ -115,6 +115,10 @@ public class AICharacter : MonoBehaviour
 
     public void UseStamina(float amount)
     {
+        if (runtimeStat.Stamina - amount < 0)
+        {
+            Controller.ChangeState(nameof(CharacterIdleState));
+        }
         runtimeStat.Stamina = Mathf.Max(0, runtimeStat.Stamina - amount);
         Debug.Log($"Stamina used: {amount}, Remaining: {runtimeStat.Stamina}");
     }
