@@ -2,13 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TileTriggerOn : MonoBehaviour
+public class TileObjectData : MonoBehaviour
 {
 
    public ArrayMapPos arrayMapPos;
-    void OnTriggerEnter(Collider other)
+    public bool isCurrentbuild;
+
+    public void SetTile()
     {
-        Debug.Log("건물과 충돌");
-        arrayMapPos.SetTile(true, (int)transform.position.x,(int) transform.position.z);
+        arrayMapPos.SetTile(isCurrentbuild, (int)transform.position.x, (int)transform.position.z);
     }
 }

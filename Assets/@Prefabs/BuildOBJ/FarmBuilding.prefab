@@ -11,9 +11,8 @@ GameObject:
   - component: {fileID: 3461391969846226374}
   - component: {fileID: 5289222086050249264}
   - component: {fileID: 4860048826991310301}
-  - component: {fileID: 7130214673140422499}
   - component: {fileID: -1949684592167558083}
-  - component: {fileID: -3529260886011463645}
+  - component: {fileID: 867387851631776429}
   m_Layer: 0
   m_Name: FarmBuilding
   m_TagString: Untagged
@@ -86,7 +85,26 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &7130214673140422499
+--- !u!114 &-1949684592167558083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 32036862332168101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac99a8473202cef4eb50b8d59c8062ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BuildActiontUI: {fileID: 0}
+  gridSize: 1
+  heightOffset: 0.5
+  buildSize: {x: 2, y: 2}
+  tileLayer:
+    serializedVersion: 2
+    m_Bits: 64
+--- !u!65 &867387851631776429
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -101,50 +119,9 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &-1949684592167558083
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 32036862332168101}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac99a8473202cef4eb50b8d59c8062ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gridSize: 1
-  heightOffset: -0.1
---- !u!54 &-3529260886011463645
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 32036862332168101}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
