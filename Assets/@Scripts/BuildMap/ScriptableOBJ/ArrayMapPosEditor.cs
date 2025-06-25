@@ -1,6 +1,9 @@
 using UnityEditor;
 using UnityEngine;
 
+/// <summary>
+/// ArrayMapPos 에디터
+/// </summary>
 [CustomEditor(typeof(ArrayMapPos))]
 public class ArrayMapPosEditor : Editor
 {
