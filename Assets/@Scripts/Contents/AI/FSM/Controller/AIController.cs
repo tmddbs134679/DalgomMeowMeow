@@ -21,7 +21,7 @@ public class AIController : BaseController<AICharacter>
     }
 
 
-    private void OnActionPerformed(Define.EAIState action)
+    private void OnActionPerformed(Define.EAIState action) // 상태 변경에 따른 행동 처리
     {
 
         Vector3 targetPos = FindNearestBuilding(action);
@@ -49,10 +49,8 @@ public class AIController : BaseController<AICharacter>
     }
 
 
-    private Vector3 FindNearestBuilding(Define.EAIState action)
+    private Vector3 FindNearestBuilding(Define.EAIState action) //  행동에 따른 가장 가까운 건물 위치 찾기
     {
-
-
         // 추후 BuildingManager 등에서 가져오면 됨
         if (action == Define.EAIState.Cooking)
         {
@@ -96,23 +94,23 @@ public class AIController : BaseController<AICharacter>
 
 
 
-        return Vector3.zero; // fallback
+        return Vector3.zero; 
     }
 
-    private BuildingBase FindBuilding(List<BuildingBase> buildings, BuildingType type)
+    private BuildingBase FindBuilding(List<BuildingBase> buildings, BuildingType type) // 가장 가까운 건물 찾기
     {
         return buildings.Where(x => x.BuildingData.BuildingType == type).
                 OrderBy(x => Vector3.Distance(x.transform.position, aiCharacter.transform.position)).
                 FirstOrDefault();
     }
 
-    public void Move(Vector3 buildingPosition)
+    public void Move(Vector3 buildingPosition) // 이동 메소드
     {
         aiCharacter.nav.ResetPath();
         aiCharacter.nav.SetDestination(buildingPosition);
     }
 
-    public void PatrolMove(float _patrolDelay)
+    public void PatrolMove(float _patrolDelay) // 순찰 이동 메소드
     {
         if (aiCharacter.nav.isPathStale)
         {

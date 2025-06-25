@@ -20,9 +20,9 @@ namespace Scripts.Contents.AI.FSM.State
         public override void OnUpdate(float deltaTime)
         {
             base.OnUpdate(deltaTime);
-            if (elapsedTime < 1f && character.Stat.Stamina > 5f)
+            if (elapsedTime > 1f && character.Stat.Stamina > 5f)
             {
-                character.UseStamina(1f);
+                character.UseStamina(5f);
                 elapsedTime = 0;
                 return;
             }
@@ -40,8 +40,8 @@ namespace Scripts.Contents.AI.FSM.State
             base.OnExit();
             if (character.currentBuilding != null)
             {
+                character.currentBuilding.DisconnectAnimal();
                 character.currentBuilding = null;
-                character.OnAnimalLeaved();
             }
 
         }
