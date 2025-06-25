@@ -1,35 +1,38 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
-public class FoodManager : MonoBehaviour
+using Data;
+public class FoodManager
 {
     
-    public GameObject[] ServeSlot;
-    private Image[] _serveSlotImages;
-    private Queue<FoodData> _foodQueue = new Queue<FoodData>();
+    //public GameObject[] ServeSlot;
+    //private Image[] _serveSlotImages;
+    private Queue<Food> _foodQueue = new Queue<Food>();
 
-    private void Awake()
-    {
-        SetComponent();
-    }
+    //private void Awake()
+    //{
+    //    SetComponent();
+    //}
 
-    private void SetComponent()
-    {
-        _serveSlotImages = new Image[ServeSlot.Length];
-        for (int i = 0; i < ServeSlot.Length; i++)
-        {
-            _serveSlotImages[i] = ServeSlot[i].GetComponent<Image>();
-        }
-    }
+    //private void SetComponent()
+    //{
+    //    _serveSlotImages = new Image[ServeSlot.Length];
+    //    for (int i = 0; i < ServeSlot.Length; i++)
+    //    {
+    //        _serveSlotImages[i] = ServeSlot[i].GetComponent<Image>();
+    //    }
+    //}
 
-    public void Enqueue(FoodData food)
+    public void Enqueue(Food food)
     {
         _foodQueue.Enqueue(food);
-        SetSprite();
+
+
+
+       // SetSprite();
     }
 
-    public FoodData Dequeue()
+    public Food Dequeue()
     {
         if (_foodQueue.Count == 0)
         {
@@ -37,48 +40,46 @@ public class FoodManager : MonoBehaviour
             return null;
         }
         var food = _foodQueue.Dequeue();
-        SetSprite();
+       // SetSprite();
         return food;
     }
 
     
-    public void SetSprite()
-    {
-        int index = 0;
-        foreach(var food in _foodQueue)
-        {
-            if(index >= ServeSlot.Length)
-                break;
+    //public void SetSprite()
+    //{
+    //    int index = 0;
+    //    foreach(var food in _foodQueue)
+    //    {
+    //        if(index >= ServeSlot.Length)
+    //            break;
 
-            _serveSlotImages[index].sprite = food.Icon;
-            ServeSlot[index].SetActive(true);
-            index++;
-        }
+    //        _serveSlotImages[index].sprite = food.Icon;
+    //        ServeSlot[index].SetActive(true);
+    //        index++;
+    //    }
 
-        for (; index < ServeSlot.Length; index++)
-        {
-            ServeSlot[index].SetActive(false);
-        }
-    }
-    [ContextMenu("큐 확인")]
-    public void QueueCheck()
-    {
-        foreach (var food in _foodQueue)
-        {
-            Debug.Log(food.name);
-        }
-    }
-    public void SlotOff()
-    {
-        foreach (var slot in ServeSlot)
-        {
-            slot.SetActive(false);
-        }
-    }
+    //    for (; index < ServeSlot.Length; index++)
+    //    {
+    //        ServeSlot[index].SetActive(false);
+    //    }
+    //}
 
-    public void Clear()
-    {
-        _foodQueue.Clear();
-        SlotOff();
-    }
+    //[ContextMenu("큐 확인")]
+    //public void QueueCheck()
+    //{
+        
+    //}
+    //public void SlotOff()
+    //{
+    //    foreach (var slot in ServeSlot)
+    //    {
+    //        slot.SetActive(false);
+    //    }
+    //}
+
+    //public void Clear()
+    //{
+    //    _foodQueue.Clear();
+    //    SlotOff();
+    //}
 }
