@@ -6,12 +6,12 @@ public class GachaGacha : MonoBehaviour
 {
     [SerializeField]private int[] gachaItems; 
 
-    [SerializeField]private CharacterStatSo[] statPool; //기본스탯 풀 1,2,3,4,5성 차이두기
+    //[SerializeField]private CharacterStatSo[] statPool; //기본스탯 풀 1,2,3,4,5성 차이두기
     //[SerializeField]private CharacterSkillSo[] skillPool; //기본스킬 풀 1,2,3,4,5성 차이두기
 
     //private List<newCat> gachaCats = new List<newCat>();
 
-    private float[] weights = new float[]
+    private float[] weights = new float[] //합이 1
     {
         0.35f, //1성 35%
         0.3f,  //2성 30%
@@ -20,7 +20,7 @@ public class GachaGacha : MonoBehaviour
         0.05f  //5성 5%
     }; 
 
-    public void RandomGacha()
+    public void RandomGacha()       //비중을 더해주면서 랜덤값을 추출해 어느 구간인지 나누는 작업
     {
         float totalWeight = 0f;
 
