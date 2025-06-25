@@ -15,24 +15,18 @@ namespace Scripts.Contents.AI.FSM.State
         {
             base.OnEnter();
             character.currentBuilding.ConnectToAnimal(character);
+            character.UseStamina(30);
         }
 
         public override void OnUpdate(float deltaTime)
         {
             base.OnUpdate(deltaTime);
-            if (elapsedTime > 1f && character.Stat.Stamina > 5f)
-            {
-                character.UseStamina(5f);
-                elapsedTime = 0;
-                return;
-            }
-            
-
-            if (character.Stat.Stamina <= 5)
+            if (elapsedTime > character.currentBuilding.BuildingData.Interval
+                || character.Stat.Stamina <= 5)
             {
                 character.Controller.ChangeState(nameof(CharacterIdleState));
-
             }
+          
         }
 
         public override void OnExit()
