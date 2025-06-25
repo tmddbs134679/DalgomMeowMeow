@@ -28,11 +28,7 @@ public abstract class BaseController<T> where T : MonoBehaviour
     {
         currentState?.OnUpdate(deltaTime);  
     }
-
-    public virtual void OnFixedUpdate()
-    {
-        currentState?.OnFixedUpdate();
-    }
+    
 
     public virtual void ChangeState(string newState)
     {

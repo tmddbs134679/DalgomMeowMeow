@@ -1,4 +1,5 @@
 using Unity.VisualScripting;
+using UnityEngine;
 using UnityEngine.TextCore.Text;
 
 namespace Scripts.Contents.AI.FSM.State
@@ -10,16 +11,30 @@ namespace Scripts.Contents.AI.FSM.State
             base.Init(owner);
             state = Define.EAIState.Idle;
         }
-        
+
         public override void OnEnter()
         {
             base.OnEnter();
         }
+
         public override void OnUpdate(float deltaTime)
         {
             base.OnUpdate(deltaTime);
+
             character.Controller.PatrolMove(2f);
-            
+
+            if (character.Stat.Stamina <= 5)
+            {
+                character.characterAction.Rest();
+                return;
+            }
+
+            if (character.Stat.Stamina > 6)
+            {
+                character.characterAction.Cook();
+                return;
+            }
+
         }
 
         public override void OnExit()
