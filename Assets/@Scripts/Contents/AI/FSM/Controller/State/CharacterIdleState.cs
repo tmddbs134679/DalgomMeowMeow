@@ -23,13 +23,13 @@ namespace Scripts.Contents.AI.FSM.State
 
             character.Controller.PatrolMove(2f);
 
-            if (character.Stat.Stamina <= 5)
+            if (character.Stat.Stamina <= 29f)
             {
                 character.characterAction.Rest();
                 return;
             }
 
-            if (character.Stat.Stamina > 6)
+            if (character.Stat.Stamina >= 30)
             {
                 character.characterAction.Cook();
                 return;

@@ -14,16 +14,15 @@ namespace Scripts.Contents.AI.FSM.State
         public override void OnEnter()
         {
             base.OnEnter();
+            character.UseStamina(30);
             character.currentBuilding.ConnectToAnimal(character);
             character.OnAnimalArrived(); // 도착 처리 메소드 호출
-            character.UseStamina(30);
         }
 
         public override void OnUpdate(float deltaTime)
         {
             base.OnUpdate(deltaTime);
-            if (elapsedTime > character.currentBuilding.BuildingData.Interval
-                || character.Stat.Stamina <= 5)
+            if (elapsedTime > character.currentBuilding.BuildingData.Interval)
             {
                 character.Controller.ChangeState(nameof(CharacterIdleState));
             }

@@ -17,7 +17,6 @@ public class AIMoveToTargetState : AIState
         base.OnEnter();
         state = Define.EAIState.MoveTo;
         character.Controller.Move(targetPosition);
-        Debug.Log("이동 시작");
     }
 
     public override void OnUpdate(float deltaTime)
@@ -27,7 +26,6 @@ public class AIMoveToTargetState : AIState
         if (Vector3.Distance(character.transform.position, targetPosition) < 2f)
         {
             isArrived = true;
-            Debug.Log("목적지 도착");
 
             onArrived?.Invoke(); // 도착 콜백 실행
         }
