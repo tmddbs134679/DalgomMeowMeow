@@ -15,6 +15,7 @@ namespace Scripts.Contents.AI.FSM.State
         {
             base.OnEnter();
             character.currentBuilding.ConnectToAnimal(character);
+            character.OnAnimalArrived(); // 도착 처리 메소드 호출
             character.UseStamina(30);
         }
 
@@ -34,6 +35,7 @@ namespace Scripts.Contents.AI.FSM.State
             base.OnExit();
             if (character.currentBuilding != null)
             {
+                character.OnAnimalLeaved();
                 character.currentBuilding.DisconnectAnimal();
                 character.currentBuilding = null;
             }
