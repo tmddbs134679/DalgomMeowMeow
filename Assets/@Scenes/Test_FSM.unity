@@ -210,6 +210,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BuildingData: {fileID: 11400000, guid: 73f651c0f30955049a4edd5c02cc9efb, type: 2}
   CurrentState: 0
+  assignedAnimal: {fileID: 0}
   buildingRenderer: {fileID: 0}
   defaultColor: {r: 1, g: 1, b: 1, a: 1}
   readyColor: {r: 0, g: 1, b: 0, a: 1}
@@ -440,6 +441,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BuildingData: {fileID: 11400000, guid: 73f651c0f30955049a4edd5c02cc9efb, type: 2}
   CurrentState: 0
+  assignedAnimal: {fileID: 0}
   buildingRenderer: {fileID: 0}
   defaultColor: {r: 1, g: 1, b: 1, a: 1}
   readyColor: {r: 0, g: 1, b: 0, a: 1}
@@ -551,7 +553,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!195 &187287005
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -600,6 +602,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originStat: {fileID: 11400000, guid: 7913dda2d8dea144da49d599e23469ac, type: 2}
   nav: {fileID: 0}
+  renderer: {fileID: 0}
   currentBuilding: {fileID: 0}
   characterAction: {fileID: 0}
 --- !u!136 &187287008
@@ -804,7 +807,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!195 &210376528
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -853,6 +856,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originStat: {fileID: 11400000, guid: 7913dda2d8dea144da49d599e23469ac, type: 2}
   nav: {fileID: 0}
+  renderer: {fileID: 0}
   currentBuilding: {fileID: 0}
   characterAction: {fileID: 0}
 --- !u!136 &210376531
@@ -1064,8 +1068,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BuildingData: {fileID: 11400000, guid: 3ecbe34224749b74aa1dc44b53602eda, type: 2}
   CurrentState: 0
+  assignedAnimal: {fileID: 0}
   buildingRenderer: {fileID: 0}
-  defaultColor: {r: 1, g: 1, b: 1, a: 1}
+  defaultColor: {r: 1, g: 1, b: 1, a: 0.39215687}
   readyColor: {r: 0, g: 1, b: 0, a: 1}
   collectIcon: {fileID: 0}
 --- !u!1 &218153804
@@ -1188,8 +1193,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BuildingData: {fileID: 11400000, guid: 3ecbe34224749b74aa1dc44b53602eda, type: 2}
   CurrentState: 0
+  assignedAnimal: {fileID: 0}
   buildingRenderer: {fileID: 0}
-  defaultColor: {r: 1, g: 1, b: 1, a: 1}
+  defaultColor: {r: 1, g: 1, b: 1, a: 0.39215687}
   readyColor: {r: 0, g: 1, b: 0, a: 1}
   collectIcon: {fileID: 0}
 --- !u!1 &239498272
@@ -1262,6 +1268,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originStat: {fileID: 11400000, guid: 7913dda2d8dea144da49d599e23469ac, type: 2}
   nav: {fileID: 0}
+  renderer: {fileID: 0}
   currentBuilding: {fileID: 0}
   characterAction: {fileID: 0}
 --- !u!136 &239498276
@@ -1387,6 +1394,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BuildingData: {fileID: 11400000, guid: 73f651c0f30955049a4edd5c02cc9efb, type: 2}
   CurrentState: 0
+  assignedAnimal: {fileID: 0}
   buildingRenderer: {fileID: 0}
   defaultColor: {r: 1, g: 1, b: 1, a: 1}
   readyColor: {r: 0, g: 1, b: 0, a: 1}
@@ -1498,7 +1506,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!195 &295818471
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1547,6 +1555,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originStat: {fileID: 11400000, guid: 7913dda2d8dea144da49d599e23469ac, type: 2}
   nav: {fileID: 0}
+  renderer: {fileID: 0}
   currentBuilding: {fileID: 0}
   characterAction: {fileID: 0}
 --- !u!136 &295818474
@@ -2099,8 +2108,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BuildingData: {fileID: 11400000, guid: 3ecbe34224749b74aa1dc44b53602eda, type: 2}
   CurrentState: 0
+  assignedAnimal: {fileID: 0}
   buildingRenderer: {fileID: 0}
-  defaultColor: {r: 1, g: 1, b: 1, a: 1}
+  defaultColor: {r: 1, g: 1, b: 1, a: 0.39215687}
   readyColor: {r: 0, g: 1, b: 0, a: 1}
   collectIcon: {fileID: 0}
 --- !u!1 &670214747
@@ -2137,6 +2147,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BuildingData: {fileID: 11400000, guid: 73f651c0f30955049a4edd5c02cc9efb, type: 2}
   CurrentState: 0
+  assignedAnimal: {fileID: 0}
   buildingRenderer: {fileID: 0}
   defaultColor: {r: 1, g: 1, b: 1, a: 1}
   readyColor: {r: 0, g: 1, b: 0, a: 1}
@@ -2248,7 +2259,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!195 &728727453
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2297,6 +2308,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originStat: {fileID: 11400000, guid: 7913dda2d8dea144da49d599e23469ac, type: 2}
   nav: {fileID: 0}
+  renderer: {fileID: 0}
   currentBuilding: {fileID: 0}
   characterAction: {fileID: 0}
 --- !u!136 &728727456
@@ -2475,6 +2487,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BuildingData: {fileID: 11400000, guid: 73f651c0f30955049a4edd5c02cc9efb, type: 2}
   CurrentState: 0
+  assignedAnimal: {fileID: 0}
   buildingRenderer: {fileID: 0}
   defaultColor: {r: 1, g: 1, b: 1, a: 1}
   readyColor: {r: 0, g: 1, b: 0, a: 1}
@@ -2586,7 +2599,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!195 &810142202
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2635,6 +2648,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originStat: {fileID: 11400000, guid: 7913dda2d8dea144da49d599e23469ac, type: 2}
   nav: {fileID: 0}
+  renderer: {fileID: 0}
   currentBuilding: {fileID: 0}
   characterAction: {fileID: 0}
 --- !u!136 &810142205
@@ -2747,7 +2761,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!195 &941119991
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2796,6 +2810,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originStat: {fileID: 11400000, guid: 7913dda2d8dea144da49d599e23469ac, type: 2}
   nav: {fileID: 0}
+  renderer: {fileID: 0}
   currentBuilding: {fileID: 0}
   characterAction: {fileID: 0}
 --- !u!136 &941119994
@@ -2908,7 +2923,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!195 &945272262
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2957,6 +2972,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originStat: {fileID: 11400000, guid: 7913dda2d8dea144da49d599e23469ac, type: 2}
   nav: {fileID: 0}
+  renderer: {fileID: 0}
   currentBuilding: {fileID: 0}
   characterAction: {fileID: 0}
 --- !u!136 &945272265
@@ -3069,7 +3085,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!195 &945836723
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -3118,6 +3134,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originStat: {fileID: 11400000, guid: 7913dda2d8dea144da49d599e23469ac, type: 2}
   nav: {fileID: 0}
+  renderer: {fileID: 0}
   currentBuilding: {fileID: 0}
   characterAction: {fileID: 0}
 --- !u!136 &945836726
@@ -3389,7 +3406,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!195 &1105232497
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -3438,6 +3455,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originStat: {fileID: 11400000, guid: 7913dda2d8dea144da49d599e23469ac, type: 2}
   nav: {fileID: 0}
+  renderer: {fileID: 0}
   currentBuilding: {fileID: 0}
   characterAction: {fileID: 0}
 --- !u!136 &1105232500
@@ -3550,7 +3568,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!195 &1132415835
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -3599,6 +3617,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originStat: {fileID: 11400000, guid: 7913dda2d8dea144da49d599e23469ac, type: 2}
   nav: {fileID: 0}
+  renderer: {fileID: 0}
   currentBuilding: {fileID: 0}
   characterAction: {fileID: 0}
 --- !u!136 &1132415838
@@ -3882,7 +3901,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!195 &1244421770
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -3931,6 +3950,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originStat: {fileID: 11400000, guid: 7913dda2d8dea144da49d599e23469ac, type: 2}
   nav: {fileID: 0}
+  renderer: {fileID: 0}
   currentBuilding: {fileID: 0}
   characterAction: {fileID: 0}
 --- !u!136 &1244421773
@@ -4109,6 +4129,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BuildingData: {fileID: 11400000, guid: 73f651c0f30955049a4edd5c02cc9efb, type: 2}
   CurrentState: 0
+  assignedAnimal: {fileID: 0}
   buildingRenderer: {fileID: 0}
   defaultColor: {r: 1, g: 1, b: 1, a: 1}
   readyColor: {r: 0, g: 1, b: 0, a: 1}
@@ -4273,7 +4294,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!195 &1383178119
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -4322,6 +4343,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originStat: {fileID: 11400000, guid: 7913dda2d8dea144da49d599e23469ac, type: 2}
   nav: {fileID: 0}
+  renderer: {fileID: 0}
   currentBuilding: {fileID: 0}
   characterAction: {fileID: 0}
 --- !u!136 &1383178122
@@ -4434,7 +4456,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!195 &1394290780
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -4483,6 +4505,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originStat: {fileID: 11400000, guid: 7913dda2d8dea144da49d599e23469ac, type: 2}
   nav: {fileID: 0}
+  renderer: {fileID: 0}
   currentBuilding: {fileID: 0}
   characterAction: {fileID: 0}
 --- !u!136 &1394290783
@@ -4608,6 +4631,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BuildingData: {fileID: 11400000, guid: 73f651c0f30955049a4edd5c02cc9efb, type: 2}
   CurrentState: 0
+  assignedAnimal: {fileID: 0}
   buildingRenderer: {fileID: 0}
   defaultColor: {r: 1, g: 1, b: 1, a: 1}
   readyColor: {r: 0, g: 1, b: 0, a: 1}
@@ -4871,8 +4895,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BuildingData: {fileID: 11400000, guid: 3ecbe34224749b74aa1dc44b53602eda, type: 2}
   CurrentState: 0
+  assignedAnimal: {fileID: 0}
   buildingRenderer: {fileID: 0}
-  defaultColor: {r: 1, g: 1, b: 1, a: 1}
+  defaultColor: {r: 1, g: 1, b: 1, a: 0.39215687}
   readyColor: {r: 0, g: 1, b: 0, a: 1}
   collectIcon: {fileID: 0}
 --- !u!1 &1628300855
@@ -4949,7 +4974,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!195 &1640882829
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -4998,6 +5023,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originStat: {fileID: 11400000, guid: 7913dda2d8dea144da49d599e23469ac, type: 2}
   nav: {fileID: 0}
+  renderer: {fileID: 0}
   currentBuilding: {fileID: 0}
   characterAction: {fileID: 0}
 --- !u!136 &1640882832
@@ -5110,7 +5136,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!195 &1683964535
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -5159,6 +5185,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originStat: {fileID: 11400000, guid: 7913dda2d8dea144da49d599e23469ac, type: 2}
   nav: {fileID: 0}
+  renderer: {fileID: 0}
   currentBuilding: {fileID: 0}
   characterAction: {fileID: 0}
 --- !u!136 &1683964538
@@ -5370,8 +5397,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BuildingData: {fileID: 11400000, guid: 3ecbe34224749b74aa1dc44b53602eda, type: 2}
   CurrentState: 0
+  assignedAnimal: {fileID: 0}
   buildingRenderer: {fileID: 0}
-  defaultColor: {r: 1, g: 1, b: 1, a: 1}
+  defaultColor: {r: 1, g: 1, b: 1, a: 0.39215687}
   readyColor: {r: 0, g: 1, b: 0, a: 1}
   collectIcon: {fileID: 0}
 --- !u!1 &1718144798
@@ -5427,6 +5455,51 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3, y: 3, z: 3}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &1747933717
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1747933719}
+  - component: {fileID: 1747933718}
+  m_Layer: 0
+  m_Name: AIManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1747933718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1747933717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84cb5037a2b79b1489f144bad00a82d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AllCharacters: []
+--- !u!4 &1747933719
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1747933717}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1748998365
 GameObject:
   m_ObjectHideFlags: 0
@@ -5448,7 +5521,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!195 &1748998366
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -5497,6 +5570,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originStat: {fileID: 11400000, guid: 7913dda2d8dea144da49d599e23469ac, type: 2}
   nav: {fileID: 0}
+  renderer: {fileID: 0}
   currentBuilding: {fileID: 0}
   characterAction: {fileID: 0}
 --- !u!136 &1748998369
@@ -5609,7 +5683,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!195 &1753789332
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -5658,6 +5732,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originStat: {fileID: 11400000, guid: 7913dda2d8dea144da49d599e23469ac, type: 2}
   nav: {fileID: 0}
+  renderer: {fileID: 0}
   currentBuilding: {fileID: 0}
   characterAction: {fileID: 0}
 --- !u!136 &1753789335
@@ -5742,7 +5817,7 @@ Transform:
   m_GameObject: {fileID: 1753789331}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.03, z: 14.38}
+  m_LocalPosition: {x: 29.33, y: 1.03, z: 14.38}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5833,7 +5908,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!195 &1833373338
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -5882,6 +5957,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originStat: {fileID: 11400000, guid: 7913dda2d8dea144da49d599e23469ac, type: 2}
   nav: {fileID: 0}
+  renderer: {fileID: 0}
   currentBuilding: {fileID: 0}
   characterAction: {fileID: 0}
 --- !u!136 &1833373341
@@ -6007,6 +6083,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BuildingData: {fileID: 11400000, guid: 73f651c0f30955049a4edd5c02cc9efb, type: 2}
   CurrentState: 0
+  assignedAnimal: {fileID: 0}
   buildingRenderer: {fileID: 0}
   defaultColor: {r: 1, g: 1, b: 1, a: 1}
   readyColor: {r: 0, g: 1, b: 0, a: 1}
@@ -6330,7 +6407,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!195 &2136949907
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -6379,6 +6456,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originStat: {fileID: 11400000, guid: 7913dda2d8dea144da49d599e23469ac, type: 2}
   nav: {fileID: 0}
+  renderer: {fileID: 0}
   currentBuilding: {fileID: 0}
   characterAction: {fileID: 0}
 --- !u!136 &2136949910
@@ -6512,3 +6590,4 @@ SceneRoots:
   - {fileID: 461098592}
   - {fileID: 1783941435}
   - {fileID: 306850556}
+  - {fileID: 1747933719}

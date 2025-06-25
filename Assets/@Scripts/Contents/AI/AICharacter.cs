@@ -17,6 +17,8 @@ public class AICharacter : MonoBehaviour
 
     [HideInInspector]
     public NavMeshAgent nav;
+    [HideInInspector]
+    public Renderer renderer;
     public BuildingBase currentBuilding;
     private Collider _collider;
 
@@ -41,6 +43,7 @@ public class AICharacter : MonoBehaviour
     private void Init()
     {
         nav = GetComponent<NavMeshAgent>();
+        renderer = GetComponent<Renderer>();
         characterAction = GetComponent<CharacterAction>();
         _collider = GetComponentInChildren<Collider>();
 
@@ -52,7 +55,7 @@ public class AICharacter : MonoBehaviour
         runtimeStat.OnStatChanged += ApplyStat;
 
         ApplyStat();
-
+        AIManager.Instance.Register(this);
         ControllerRegister();
     }
 
@@ -140,6 +143,7 @@ public class AICharacter : MonoBehaviour
 
     public void OnDisable()
     {
+        AIManager.Instance.Unregister(this);
         Controller?.Dispose();
     }
 

@@ -15,6 +15,7 @@ namespace Scripts.Contents.AI.FSM.State
         public override void OnEnter()
         {
             base.OnEnter();
+            character.renderer.material.color = Color.white; // 색상 초기화
         }
 
         public override void OnUpdate(float deltaTime)
@@ -23,15 +24,17 @@ namespace Scripts.Contents.AI.FSM.State
 
             character.Controller.PatrolMove(2f);
 
-            if (character.Stat.Stamina <= 29f)
+            if (character.Stat.Stamina <= 29f && character.Controller.FindBuilding(BuildingType.Resting) != null)
             {
+                character.renderer.material.color = Color.red; // 색상 변경
                 character.characterAction.Rest();
                 return;
             }
 
-            if (character.Stat.Stamina >= 30)
+            if (character.Stat.Stamina >= 30 && character.Controller.FindBuilding(BuildingType.Cooking) != null)
             {
                 character.characterAction.Cook();
+                character.renderer.material.color = Color.green;
                 return;
             }
 

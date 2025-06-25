@@ -63,7 +63,7 @@ public class AIController : BaseController<AICharacter>
         if (action == Define.EAIState.Cooking)
         {
 
-            var nearestCookingBuilding = FindBuilding(BuildingManager.Instance._buildings, BuildingType.Cooking);
+            var nearestCookingBuilding = FindBuilding(BuildingType.Cooking);
             aiCharacter.currentBuilding = nearestCookingBuilding;
             if (nearestCookingBuilding == null)
             {
@@ -75,7 +75,7 @@ public class AIController : BaseController<AICharacter>
 
         if (action == Define.EAIState.Farming)
         {
-            var nearestCookingBuilding = FindBuilding(BuildingManager.Instance._buildings, BuildingType.Farm);
+            var nearestCookingBuilding = FindBuilding(BuildingType.Farm);
             aiCharacter.currentBuilding = nearestCookingBuilding;
             if (nearestCookingBuilding == null)
             {
@@ -88,7 +88,7 @@ public class AIController : BaseController<AICharacter>
 
         if (action == Define.EAIState.Resting)
         {
-            var nearestCookingBuilding = FindBuilding(BuildingManager.Instance._buildings, BuildingType.Resting);
+            var nearestCookingBuilding = FindBuilding(BuildingType.Resting);
             aiCharacter.currentBuilding = nearestCookingBuilding;
             if (nearestCookingBuilding == null)
             {
@@ -97,17 +97,18 @@ public class AIController : BaseController<AICharacter>
             }
             return nearestCookingBuilding.transform.position;
         }
-
-
-
-
-
         return Vector3.zero; 
     }
 
-    private BuildingBase FindBuilding(List<BuildingBase> buildings, BuildingType type) // 가장 가까운 건물 찾기
+    public BuildingBase FindBuilding(BuildingType type) // 가장 가까운 건물 찾기
     {
-        return buildings.Where(x => x.BuildingData.BuildingType == type).
+        var allAssignedBuildings = new HashSet<BuildingBase>(
+        AIManager.Instance.AllCharacters
+            .Select(c => c.currentBuilding)
+            .Where(b => b != null)
+             );  
+
+         return BuildingManager.Instance._buildings.Where(x => x.BuildingData.BuildingType == type && !allAssignedBuildings.Contains(x)).
                 OrderBy(x => Vector3.Distance(x.transform.position, aiCharacter.transform.position)).
                 FirstOrDefault();
     }
