@@ -1,81 +1,118 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class BattleCharacter : MonoBehaviour
 {
-    [SerializeField] private float detectRange = 10f;
-    [SerializeField] private float attackRange = 1.5f;
-    [SerializeField] private float attackDelay = 1f; // 공격 딜레이 (초 단위)
-    
-    public float attackDamage = 10f; // 공격력
-    public float heatlh = 100f; // 체력
-    public float moveSpeed = 3.5f; // 이동 속도
+    [SerializeField] private float _detectRange = 10f;
+    [SerializeField] private float _attackRange = 1.5f;
+    [SerializeField] private float _attackDelay = 1f; // 공격 딜레이 (초 단위)
+    [SerializeField] private CharacterStatSo _data; // 캐릭터 스탯 데이터
+    [SerializeField] private Color _damageColor = Color.red;
+    [SerializeField] private float _flashDuration = 0.05f;
 
 
+    public float AttackDamage = 10f; // 공격력
+    public float Heatlh = 100f; // 체력
+    public float MoveSpeed = 3.5f; // 이동 속도
 
 
+    public string TargetLayer = "Enemy"; // 타겟 태그
+    public bool UsingSkill = false; // 스킬 사용 여부
 
-    private float attacktimer = 0f; 
+    private float _attacktimer = 0f;
+    private NavMeshAgent _agent;
+    private Transform _targetLocation;
+    private BattleCharacter _targetCharacter; // 현재 타겟 캐릭터
+    private Renderer _characterRenderer; // 캐릭터 렌더러
+    private Coroutine _damageFlashCoroutine; //피격 효과 코루틴
+    private Vector3 _originalPosition; // 원래 위치 저장
 
-    private NavMeshAgent agent;
-    private Transform targetEnemy;
+
+    public event Action<BattleCharacter> OnCharacterDied;
+    public event Action<BattleCharacter, bool> OnBattleStateChanged; 
+    public bool IsDead { get; private set; } = false;
+
+
+    private bool _isInBattle = false;
+    public bool IsInBattle { get => _isInBattle;
+        set
+        {
+            if (_isInBattle != value)
+            {
+                _isInBattle = value;
+                OnBattleStateChanged?.Invoke(this, _isInBattle);
+            }
+        }
+    }
+
 
 
     private void Awake()
     {
-        agent = GetComponent<NavMeshAgent>();
-        agent.speed = moveSpeed; // NavMeshAgent의 이동 속도 설정
-        agent.stoppingDistance = attackRange; // 공격 범위 내에서 멈추도록 설정
+        _agent = GetComponent<NavMeshAgent>();
+        _characterRenderer = GetComponentInChildren<Renderer>();
+        _originalPosition = transform.localPosition;
+        _agent.speed = MoveSpeed; // NavMeshAgent의 이동 속도 설정
+        _agent.stoppingDistance = _attackRange; // 공격 범위 내에서 멈추도록 설정
     }
-
 
 
     void Update()
     {
-        if (targetEnemy == null)
+        if (IsDead) return; // 캐릭터가 죽었으면 업데이트 중지
+
+
+        if (_targetLocation == null)
         {
-            targetEnemy = FindClosestEnemyInRange(detectRange);
-            if (targetEnemy != null)
-                agent.SetDestination(targetEnemy.position);
+            var newTarget = FindClosestEnemyInRange(_detectRange);
+            if (newTarget != null)
+            {
+                SetTarget(newTarget);
+                if (_targetLocation != null)
+                {
+                    _agent.SetDestination(_targetLocation.position);
+                    IsInBattle = true; // 타겟이 생기면 전투 상태로 변경
+                }
+            }
         }
         else
         {
-            float dist = Vector3.Distance(transform.position, targetEnemy.position);
+            float dist = Vector3.Distance(transform.position, _targetLocation.position);
 
-            if (dist <= attackRange)
+            if (dist <= _attackRange)
             {
-                agent.isStopped = true; //거리가 가까우면 공격
+                _agent.isStopped = true; //거리가 가까우면 공격
+
+                Vector3 direction = (_targetLocation.position - transform.position).normalized;
+                direction.y = 0; // y축 회전 배제
+
+                if (direction != Vector3.zero)
+                    transform.rotation = Quaternion.LookRotation(direction);    //공격시 타겟 바라봄
+
                 TryAttack();
             }
             else
             {
-                agent.isStopped = false;
-                agent.SetDestination(targetEnemy.position); // 계속 추적
+                _agent.isStopped = false;
+                _agent.SetDestination(_targetLocation.position); // 계속 추적
             }
         }
     }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, attackRange);
+        Gizmos.DrawWireSphere(transform.position, _attackRange);
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, detectRange);
+        Gizmos.DrawWireSphere(transform.position, _detectRange);
     }
 
-    private Transform FindClosestEnemyInRange(float range)
+
+    private Transform FindClosestEnemyInRange(float range)      //오버랩 스피어를 통해 적 탐지
     {
-        int enemyLayerMask = LayerMask.GetMask("Enemy");
-        Collider[] hits = Physics.OverlapSphere(transform.position, range, enemyLayerMask);
+        int targetLayerMask = LayerMask.GetMask(TargetLayer);
+        Collider[] hits = Physics.OverlapSphere(transform.position, range, targetLayerMask);
 
         Transform closest = null;
         float minDist = Mathf.Infinity;
@@ -93,14 +130,126 @@ public class BattleCharacter : MonoBehaviour
         return closest;
     }
 
+
+    private void SetTarget(Transform newTarget)     //탐지된 적의 죽음이벤트를 구독 or 구독해제
+    {
+        if (_targetLocation != null && _targetLocation.TryGetComponent<BattleCharacter>(out var oldChar))
+            oldChar.OnCharacterDied -= HandleTargetDeath;
+
+        _targetLocation = newTarget;
+
+        if (_targetLocation != null && _targetLocation.TryGetComponent<BattleCharacter>(out _targetCharacter))
+        {
+            _targetCharacter.OnCharacterDied += HandleTargetDeath;
+
+        }
+    }
+
+
+    private void HandleTargetDeath(BattleCharacter deadChar)
+    {
+        if (_targetLocation == deadChar.transform)
+        {
+            Debug.Log($"{name}: 타겟 {deadChar.name} 사망 감지 → 타겟 해제");
+            SetTarget(null);
+            _agent.isStopped = false;
+            IsInBattle = false; // 타겟이 사망하면 전투 상태 해제
+        }
+    }
+
+
+
+
     public void TryAttack()
     {
-        attacktimer += Time.deltaTime;
-        if (attacktimer >= attackDelay)
+        if (IsDead || UsingSkill) return; // 캐릭터가 죽었거나 스킬 사용 중이면 공격하지 않음
+
+        _attacktimer += Time.deltaTime;
+        if (_attacktimer >= _attackDelay)
         {
             //Attack();
-            Debug.Log("Attack! Damage: " + attackDamage);
-            attacktimer = 0f; // 공격 후 타이머 초기화
+            _targetCharacter.TakeDamage(this.AttackDamage); // 타겟의 체력 감소
+            _attacktimer = 0f; // 공격 후 타이머 초기화
         }
+    }
+
+
+    public void TakeDamage(float Damage)
+    {
+        if (IsDead) return; // 이미 죽은 캐릭터는 데미지를 받지 않음
+        Heatlh -= Damage; // 공격력만큼 체력 감소
+        if (Heatlh <= 0)
+        {
+            Die(); // 체력이 0 이하가 되면 죽음 처리
+        }
+        else
+        {
+            if (_damageFlashCoroutine != null)
+                StopCoroutine(_damageFlashCoroutine);
+
+            _damageFlashCoroutine = StartCoroutine(DamageFlash());
+        }
+    }
+
+
+
+    public void Die()
+    {
+        if (IsDead) return;
+        IsDead = true;
+
+        OnCharacterDied?.Invoke(this);
+        _agent.isStopped = true;
+
+        Debug.Log($"{name} died.");
+        gameObject.SetActive(false); // 또는 Destroy(gameObject);
+    }
+
+
+
+    private void OnDisable()
+    {
+        if (_targetLocation != null && _targetLocation.TryGetComponent<BattleCharacter>(out var targetChar))
+            targetChar.OnCharacterDied -= HandleTargetDeath;
+    }
+
+
+    /////////////////////////////////////////////////////////////  아군 전용 로직
+
+    public void ReturnToStartPosition()
+    {
+        Vector3 worldTarget = transform.parent.TransformPoint(_originalPosition);
+        _agent.isStopped = false; // NavMeshAgent가 이동을 시작할 수 있도록 설정
+        _agent.SetDestination(worldTarget);
+    }
+
+
+    public Vector3 GetOriginalWorldPosition()
+    {
+        return transform.parent.TransformPoint(_originalPosition);
+    }
+
+
+
+    ////////////////////////////////////////////////////////////////
+
+    private IEnumerator DamageFlash()
+    {
+        var originalColor = _characterRenderer.material.color;
+        _characterRenderer.material.color = _damageColor;
+
+        yield return new WaitForSeconds(_flashDuration);
+
+        _characterRenderer.material.color = originalColor;
+        _damageFlashCoroutine = null;
+    }
+
+
+
+    private IEnumerator SkillActive()
+    {
+        UsingSkill = true;
+        yield return new WaitForSeconds(1f); // 스킬 지속 시간 (예: 1초)
+        UsingSkill = false; // 스킬 사용 종료
     }
 }
