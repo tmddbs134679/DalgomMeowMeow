@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.NetworkInformation;
 using Scripts.Contents.AI.FSM.State;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -18,17 +19,21 @@ public class AIController : BaseController<AICharacter>
         this.aiCharacter = aiCharacter;
         aiCharacter.characterAction.OnAction += OnActionPerformed;
     }
-    
-    public override void OnUpdate(float deltaTime)
+
+    public void Dispose()
     {
-        base.OnUpdate(deltaTime);
+        if (aiCharacter != null && aiCharacter.characterAction != null)
+        {
+            aiCharacter.characterAction.OnAction -= OnActionPerformed;
+        }
     }
 
-    private void OnActionPerformed(Define.EAIState action)
+
+    private void OnActionPerformed(Define.EAIState action) // 상태 변경에 따른 행동 처리
     {
-        
+
         Vector3 targetPos = FindNearestBuilding(action);
-        
+
 
         var stateMap = new Dictionary<Define.EAIState, string>
         {
@@ -47,59 +52,74 @@ public class AIController : BaseController<AICharacter>
             }
         });
 
-        RegisterState(moveState, aiCharacter); // 상태 등록
+        RegisterState(moveState, aiCharacter);
         ChangeState(moveState.GetType().Name); // 이동 상태로 전환
     }
 
 
-    private Vector3 FindNearestBuilding(Define.EAIState action)
+    private Vector3 FindNearestBuilding(Define.EAIState action) //  행동에 따른 가장 가까운 건물 위치 찾기
     {
-        
-        
         // 추후 BuildingManager 등에서 가져오면 됨
         if (action == Define.EAIState.Cooking)
         {
-            var nearestCookingBuilding = FindBuilding(BuildingManager.Instance._buildings, BuildingType.Cooking);
+
+            var nearestCookingBuilding = FindBuilding(BuildingType.Cooking);
             aiCharacter.currentBuilding = nearestCookingBuilding;
-            aiCharacter.currentBuilding.ConnectToAnimal(aiCharacter);
+            if (nearestCookingBuilding == null)
+            {
+                Debug.LogWarning("해당 건물을 찾을 수 없습니다.");
+                return aiCharacter.transform.position;
+            }
             return nearestCookingBuilding.transform.position;
         }
 
         if (action == Define.EAIState.Farming)
         {
-            var nearestCookingBuilding = FindBuilding(BuildingManager.Instance._buildings, BuildingType.Farm);
+            var nearestCookingBuilding = FindBuilding(BuildingType.Farm);
             aiCharacter.currentBuilding = nearestCookingBuilding;
+            if (nearestCookingBuilding == null)
+            {
+                Debug.LogWarning("해당 건물을 찾을 수 없습니다.");
+                return aiCharacter.transform.position; 
+            }
             return nearestCookingBuilding.transform.position;
         }
 
-        if (action == Define.EAIState.Building)
+
+        if (action == Define.EAIState.Resting)
         {
-            var nearestCookingBuilding = FindBuilding(BuildingManager.Instance._buildings, BuildingType.Resting);
+            var nearestCookingBuilding = FindBuilding(BuildingType.Resting);
             aiCharacter.currentBuilding = nearestCookingBuilding;
+            if (nearestCookingBuilding == null)
+            {
+                Debug.LogWarning("해당 건물을 찾을 수 없습니다.");
+                return aiCharacter.transform.position; 
+            }
             return nearestCookingBuilding.transform.position;
         }
-            
-            
-            
-            
-
-        return Vector3.zero; // fallback
+        return Vector3.zero; 
     }
 
-    private BuildingBase FindBuilding(List<BuildingBase> buildings, BuildingType type)
+    public BuildingBase FindBuilding(BuildingType type) // 가장 가까운 건물 찾기
     {
-        return buildings.Where(x => x.BuildingData.BuildingType == type).
+        var allAssignedBuildings = new HashSet<BuildingBase>(
+        AIManager.Instance.AllCharacters
+            .Select(c => c.currentBuilding)
+            .Where(b => b != null)
+             );  
+
+         return BuildingManager.Instance._buildings.Where(x => x.BuildingData.BuildingType == type && !allAssignedBuildings.Contains(x)).
                 OrderBy(x => Vector3.Distance(x.transform.position, aiCharacter.transform.position)).
                 FirstOrDefault();
     }
-    
-    public void Move(Vector3 buildingPosition)
+
+    public void Move(Vector3 buildingPosition) // 이동 메소드
     {
         aiCharacter.nav.ResetPath();
         aiCharacter.nav.SetDestination(buildingPosition);
     }
 
-    public void PatrolMove(float _patrolDelay)
+    public void PatrolMove(float _patrolDelay) // 순찰 이동 메소드
     {
         if (aiCharacter.nav.isPathStale)
         {
@@ -107,7 +127,7 @@ public class AIController : BaseController<AICharacter>
         }
         else
         {
-             time += Time.deltaTime;
+            time += Time.deltaTime;
             if (time < _patrolDelay)
                 return;
             Patrol();
@@ -136,9 +156,9 @@ public class AIController : BaseController<AICharacter>
         return curPos;
     }
 }
-    
-  
 
-    
-    
-    
+
+
+
+
+

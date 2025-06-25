@@ -19,7 +19,6 @@ public abstract class BaseState<T>
         elapsedTime += deltaTime;
     }
 
-    public virtual void OnFixedUpdate() { }
 
     public virtual void OnExit() { }
 
