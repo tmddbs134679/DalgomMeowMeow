@@ -27,23 +27,36 @@ public class BattleCharacter : MonoBehaviour
     private BattleCharacter _targetCharacter; // 현재 타겟 캐릭터
     private Renderer _characterRenderer; // 캐릭터 렌더러
     private Coroutine _damageFlashCoroutine; //피격 효과 코루틴
-
-
-
+    private Vector3 _originalPosition; // 원래 위치 저장
 
 
     public event Action<BattleCharacter> OnCharacterDied;
+    public event Action<BattleCharacter, bool> OnBattleStateChanged; 
     public bool IsDead { get; private set; } = false;
+
+
+    private bool _isInBattle = false;
+    public bool IsInBattle { get => _isInBattle;
+        set
+        {
+            if (_isInBattle != value)
+            {
+                _isInBattle = value;
+                OnBattleStateChanged?.Invoke(this, _isInBattle);
+            }
+        }
+    }
+
 
 
     private void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
         _characterRenderer = GetComponentInChildren<Renderer>();
+        _originalPosition = transform.localPosition;
         _agent.speed = MoveSpeed; // NavMeshAgent의 이동 속도 설정
         _agent.stoppingDistance = _attackRange; // 공격 범위 내에서 멈추도록 설정
     }
-
 
 
     void Update()
@@ -58,7 +71,10 @@ public class BattleCharacter : MonoBehaviour
             {
                 SetTarget(newTarget);
                 if (_targetLocation != null)
+                {
                     _agent.SetDestination(_targetLocation.position);
+                    IsInBattle = true; // 타겟이 생기면 전투 상태로 변경
+                }
             }
         }
         else
@@ -84,13 +100,6 @@ public class BattleCharacter : MonoBehaviour
             }
         }
     }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
@@ -144,6 +153,7 @@ public class BattleCharacter : MonoBehaviour
             Debug.Log($"{name}: 타겟 {deadChar.name} 사망 감지 → 타겟 해제");
             SetTarget(null);
             _agent.isStopped = false;
+            IsInBattle = false; // 타겟이 사망하면 전투 상태 해제
         }
     }
 
@@ -204,7 +214,24 @@ public class BattleCharacter : MonoBehaviour
     }
 
 
+    /////////////////////////////////////////////////////////////  아군 전용 로직
 
+    public void ReturnToStartPosition()
+    {
+        Vector3 worldTarget = transform.parent.TransformPoint(_originalPosition);
+        _agent.isStopped = false; // NavMeshAgent가 이동을 시작할 수 있도록 설정
+        _agent.SetDestination(worldTarget);
+    }
+
+
+    public Vector3 GetOriginalWorldPosition()
+    {
+        return transform.parent.TransformPoint(_originalPosition);
+    }
+
+
+
+    ////////////////////////////////////////////////////////////////
 
     private IEnumerator DamageFlash()
     {
