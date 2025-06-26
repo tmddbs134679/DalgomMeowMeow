@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-
+using Data;
 public class UI_FoodItem : UI_Base
 {
     #region Enum
@@ -21,7 +21,7 @@ public class UI_FoodItem : UI_Base
     #endregion
 
     public Action OnClickFoodItem;
-    public FoodData _food;
+    public Food _food;
     private void Awake()
     {
         Init();
@@ -40,19 +40,21 @@ public class UI_FoodItem : UI_Base
         return true;
     }
 
-    public void SetInfo(FoodData food)
+    public void SetInfo(Food food)
     {
         _food = food;
 
-        GetImage((int)Images.FoodImage).sprite = _food.Icon;
-        GetText((int)Texts.FoodPriceText).text = _food.Price.ToString();
-
+        Sprite spr = Managers.Resource.Load<Sprite>(_food.FoodData.SpriteName);
+        GetImage((int)Images.FoodImage).sprite = spr;
+        GetText((int)Texts.FoodPriceText).text = _food.FoodData.Price.ToString();
     }
 
 
 
     void OnClickFoodItemButton()
     {
-       //¥©∏£∏È GameManager¿« µ∑¿∏∑Œ 
+        //¥©∏£∏È GameManager¿« µ∑¿∏∑Œ πŸ≤ﬁ.
+        Managers.Game.Gold += _food.FoodData.Price;
+
     }
 }

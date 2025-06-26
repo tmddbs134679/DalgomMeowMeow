@@ -41,23 +41,27 @@ namespace Data
     #endregion
 
     #region FoodData
+
+    [Serializable]
     public class FoodData
     {
-        public int FoodId;
-        public string FoodName;
+        public string DataId;
+        public string Name;
         public string Description;
-        public Sprite Icon;
+        public string SpriteName;
         public int Price;
     }
-    public class FoodDataLoader : ILoader<int, FoodData>
+
+    [Serializable]
+    public class FoodDataLoader : ILoader<string, FoodData>
     {
         public List<FoodData> foods = new List<FoodData>();
 
-        public Dictionary<int, FoodData> MakeDict()
+        public Dictionary<string, FoodData> MakeDict()
         {
-            Dictionary<int, FoodData> dict = new Dictionary<int, FoodData>();
+            Dictionary<string, FoodData> dict = new Dictionary<string, FoodData>();
             foreach (FoodData food in foods)
-                dict.Add(food.FoodId, food);
+                dict.Add(food.DataId, food);
             return dict;
         }
     }

@@ -9,9 +9,8 @@ public class UI_SaveTest : MonoBehaviour
 
     GameManager _game;
 
-    public Button plus;
-    public Button minus;   
-    public  TextMeshProUGUI _textMeshPro;
+    public GameObject storageobj;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -24,7 +23,28 @@ public class UI_SaveTest : MonoBehaviour
     {
         
     }
+    #region Cook
 
+    public Button CookButton;
+
+    public void Cook()
+    {
+        Debug.Log("Cook");
+        Food food = new Food("F0001");
+        Managers.Food.Enqueue(food);
+
+        UI_FoodItem item = Managers.UI.MakeSubItem<UI_FoodItem>(storageobj.transform);
+        item.SetInfo(food);
+
+    }
+
+
+    #endregion
+    #region SaveTest
+
+    public Button plus;
+    public Button minus;
+    public TextMeshProUGUI _textMeshPro;
     public void SaveButton()
     {
         _game.SaveGame();
@@ -39,4 +59,6 @@ public class UI_SaveTest : MonoBehaviour
     {
         _game.Gold--;
     }
+
+    #endregion
 }

@@ -11,11 +11,12 @@ public interface ILoader<key, Value>
 public class DataManager 
 {
     public Dictionary<int, Data.CreatureData> CreatureDic { get; private set; } = new Dictionary<int, Data.CreatureData>();
-
+    public Dictionary<string, Data.FoodData> FoodDic { get; private set; } = new Dictionary<string, Data.FoodData>();
 
     public void Init()
     {
         CreatureDic = LoadJson<Data.CreatureDataLoader, int, Data.CreatureData>("CreatureData").MakeDict();
+        FoodDic = LoadJson<Data.FoodDataLoader, string, Data.FoodData>("FoodData").MakeDict();
     }
 
 
@@ -25,4 +26,9 @@ public class DataManager
         TextAsset textAsset = Managers.Resource.Load<TextAsset>($"{path}");
         return JsonConvert.DeserializeObject<Loader>(textAsset.text);
     }
+
+
+
+
+
 }
