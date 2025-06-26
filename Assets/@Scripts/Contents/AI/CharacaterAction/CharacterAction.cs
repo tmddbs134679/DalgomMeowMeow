@@ -6,7 +6,8 @@ using UnityEngine;
 public class CharacterAction : MonoBehaviour
 {
     public event Action<Define.EAIState> OnAction;
-
+    [ContextMenu("Idle")]
+    public void Idle() => OnAction?.Invoke(Define.EAIState.Idle);
     [ContextMenu("Cook")]
     public void Cook() => OnAction?.Invoke(Define.EAIState.Cooking);
 

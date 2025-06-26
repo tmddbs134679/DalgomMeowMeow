@@ -1,4 +1,4 @@
-using Unity.VisualScripting;
+ï»¿using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 
@@ -15,7 +15,7 @@ namespace Scripts.Contents.AI.FSM.State
         public override void OnEnter()
         {
             base.OnEnter();
-            character.renderer.material.color = Color.white; // »ö»ó ÃÊ±âÈ­
+            character.animator.SetInteger("animation", 21); // Idle ì• ë‹ˆë©”ì´ì…˜ ì„¤ì •
         }
 
         public override void OnUpdate(float deltaTime)
@@ -26,7 +26,6 @@ namespace Scripts.Contents.AI.FSM.State
 
             if (character.Stat.Stamina <= 29f && character.Controller.FindAvailableBuilding(BuildingType.Resting) != null)
             {
-                character.renderer.material.color = Color.red; // »ö»ó º¯°æ
                 character.characterAction.Rest();
                 return;
             }
@@ -34,7 +33,6 @@ namespace Scripts.Contents.AI.FSM.State
             if (character.Stat.Stamina >= 30 && character.Controller.FindAvailableBuilding(BuildingType.Cooking) != null)
             {
                 character.characterAction.Cook();
-                character.renderer.material.color = Color.green;
                 return;
             }
 

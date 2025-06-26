@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.TextCore.Text;
 
 namespace Scripts.Contents.AI.FSM.State
@@ -17,6 +17,7 @@ namespace Scripts.Contents.AI.FSM.State
             character.UseStamina(30);
             character.currentBuilding.ConnectToAnimal(character);
             character.OnAnimalArrived(); // 도착 처리 메소드 호출
+            character.animator.SetInteger("animation", 42); // Cooking 애니메이션 설정
         }
 
         public override void OnUpdate(float deltaTime)
@@ -35,7 +36,6 @@ namespace Scripts.Contents.AI.FSM.State
             base.OnExit();
             if (character.currentBuilding != null)
             {
-                character.renderer.material.color = Color.white; // 색상 초기화
                 character.OnAnimalLeaved();
                 character.currentBuilding.DisconnectAnimal();
                 character.currentBuilding = null;
