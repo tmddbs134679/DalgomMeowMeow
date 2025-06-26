@@ -53,4 +53,22 @@ public class QuestManager : MonoBehaviour
             quest.Reward();
         }
     }
+    
+    public void TryActivateNext(string completedQuestId)
+    {
+        if (!_quests.TryGetValue(completedQuestId, out var completedQuest)) return;
+
+        int carriedProgress = completedQuest.Progress;
+        
+        foreach (var quest in _quests.Values)
+        {
+            if (quest.State == QuestProgressState.NotStarted &&
+                quest.QuestData.PreviousQuestId == completedQuestId)
+            {
+                quest.State = QuestProgressState.InProgress;
+                quest.SetProgress(carriedProgress); //  누적 진행도 반영
+                Debug.Log($"[퀘스트 시작] {quest.QuestData.Title} (진행도: {quest.Progress}/{quest.QuestData.GoalCount})");
+            }
+        }
+    }
 }

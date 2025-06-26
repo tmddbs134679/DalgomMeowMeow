@@ -15,4 +15,5 @@ public class QuestDataSO : ScriptableObject
     public TargetType TargetType; // 예: "Cat", "Soup"
     public int GoalCount;
     public RewardData Reward;
+    public string PreviousQuestId;
 }
