@@ -31,6 +31,7 @@ public class DraggableObject : MonoBehaviour, IDraggable
         isBuild = CheckTilesUnderBuilding();
 
         Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.main, transform.position);
+        if(BuildActiontUI!=null)
         BuildActiontUI.transform.position = screenPos;
     }
 
@@ -77,13 +78,14 @@ public class DraggableObject : MonoBehaviour, IDraggable
         return allcheck == hitColliders.Length;
     }
 
+//타일에 isLoadBuild값 전달후 SetTile()호출해 arrayMapPos맵데이터 갱신
     public void SetTileIsBuild()
     {
         Vector3 center = transform.position + Vector3.down * 0.5f;
         Vector3 halfExtents = new Vector3(buildSize.x / 2.5f, 0.1f, buildSize.y / 2.5f);
 
         Collider[] hitColliders = Physics.OverlapBox(center, halfExtents, Quaternion.identity, tileLayer);
-          foreach (Collider col in hitColliders)
+        foreach (Collider col in hitColliders)
         {
             if (col.CompareTag("Tile"))
             {

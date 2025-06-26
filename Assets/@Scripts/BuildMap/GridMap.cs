@@ -13,8 +13,7 @@ public class GridMap : MonoBehaviour
     public float tileSize = 1f;
 
     // BoxCollider만 붙은 바닥 프리팹
-    public GameObject blue;
-    public GameObject red;
+    public GameObject cube;
 
     public GameObject[,] tile = null;
     [SerializeField] private ArrayMapPos _arrayMapPos;
@@ -38,12 +37,12 @@ public class GridMap : MonoBehaviour
             {
                 if (_arrayMapPos.GetTile(x, z).isNotBuild || _arrayMapPos.GetTile(x, z).isNotGround)
                 {
-                    tile[x, z] = red;
+                    tile[x, z] = cube;
                     tile[x, z].GetComponent<TileObjectData>().color = Color.red;
                 }
                 else
                 {
-                    tile[x, z] = blue;
+                    tile[x, z] = cube;
                     tile[x, z].GetComponent<TileObjectData>().color = Color.blue;
                 }
 
@@ -54,8 +53,9 @@ public class GridMap : MonoBehaviour
                     z * tileSize
                 );
 
-                Instantiate(tile[x, z], pos, Quaternion.identity, transform);
+                GameObject spawnedTile = Instantiate(tile[x, z], pos, Quaternion.identity, transform);
                 tile[x, z].GetComponent<TileObjectData>().isLoadBuild = !_arrayMapPos.GetTile(x, z).isNotBuild;
+                tile[x, z] = spawnedTile;
             }
         }
 
@@ -81,6 +81,7 @@ public class GridMap : MonoBehaviour
 
                     tile[x, z].GetComponent<TileObjectData>().color = Color.blue;
                 }
+                tile[x, z].GetComponent<TileObjectData>().isLoadBuild = !_arrayMapPos.GetTile(x, z).isNotBuild;
             }
         }
     }

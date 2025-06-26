@@ -18,10 +18,13 @@ public class BuildingPlacer : MonoBehaviour
     public GameObject BuildActiontUI;
     public MoneyPreview moneyPreview;
     public GridMap gridMap;
+
+    public ArrayBuildPos arrayBuildPos;
     [SerializeField] private float _heightOffset = 0.5f;
+    private GameObject _tempOBJ; //프리뷰 오브젝트
+    private TestBaseBuilding _saveBuildingSO;
 
-    private GameObject _tempOBJ;
-
+private BuildData _buildData;
     private bool _isGold;
     private bool _isBuild;
 
@@ -40,7 +43,8 @@ public class BuildingPlacer : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(screenCenter);
         if (Physics.Raycast(ray, out var groundHit, 1000f, groundLayer))
         {
-            _tempOBJ = Instantiate(buildingSO[type].BuildOBJ, new Vector3(groundHit.point.x, groundHit.point.y + _heightOffset, groundHit.point.z), Quaternion.identity);
+            _saveBuildingSO = buildingSO[type];
+            _tempOBJ = Instantiate(buildingSO[type].previewOBJ, new Vector3(groundHit.point.x, groundHit.point.y + _heightOffset, groundHit.point.z), Quaternion.identity);
             _tempOBJ.GetComponent<DraggableObject>().BuildActiontUI = BuildActiontUI;
             BuildActiontUI.transform.position = screenCenter;
             BuildActiontUI.SetActive(true);
@@ -71,7 +75,11 @@ public class BuildingPlacer : MonoBehaviour
             // -=buildingSO[type].BuildOBJ.gold;
             moneyPreview.money -= 500;
             //건물 배치후 저장
-
+                    _buildData = new BuildData();
+            _buildData.posX = _tempOBJ.transform.position.x;
+            _buildData.posY =_tempOBJ.transform.position.z;
+            _buildData.testBaseBuilding = _saveBuildingSO;
+            arrayBuildPos.GetBuildData(_buildData);
             //배치한 자리에 있는 타일들에 isbuild체크
             _tempOBJ.GetComponent<DraggableObject>().SetTileIsBuild();
             gridMap.LoadMap();
