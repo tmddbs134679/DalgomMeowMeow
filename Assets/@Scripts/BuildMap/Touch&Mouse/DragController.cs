@@ -11,7 +11,8 @@ public class DragController : MonoBehaviour
 
     public bool isDragUse = false;
 
-    public BuildingPlacer buildingPlacer;
+    public GameObject BuildActiontUI;
+    public GameObject buildMap;
 
     public float longPressThreshold = 1.0f; // 몇 초 이상 눌러야 롱프레스인지
     private bool isPointerDown = false;
@@ -59,12 +60,14 @@ public class DragController : MonoBehaviour
             if (Physics.Raycast(ray, out var hit))
             {
 
-                var draggable = hit.collider.GetComponent<IDraggable>();
-                if (draggable != null)
-                {
-                    currentTarget = draggable;
-                    currentTarget.OnDragStart(hit.point);
-                }
+                    var draggable = hit.collider.GetComponent<IDraggable>();
+
+                    if (draggable != null)
+                    {
+                        currentTarget = draggable;
+                        currentTarget.OnDragStart(hit.point);
+                    }
+                
             }
         }
         else if (moved && currentTarget != null)
@@ -86,15 +89,10 @@ public class DragController : MonoBehaviour
             currentTarget = null;
         }
 
-
-
-
     }
     private void OnLongPress()
     {
-        // 여기에 열리는 창 코드 넣으면 됨
-        if (currentTarget != null)
-            currentTarget.OnLongPress();
-       // buildingPlacer.GetTempOBJ(currentTarget);
+            if (currentTarget != null)
+                currentTarget.OnLongPress();
     }
 }

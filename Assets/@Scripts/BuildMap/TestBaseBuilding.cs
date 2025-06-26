@@ -11,7 +11,8 @@ public enum EBuildType
     PLAYGROUND,
     REST,
     SHOP,
-    STORAGE
+    STORAGE,
+    LOAD
         
     }
 
@@ -22,13 +23,15 @@ public enum EBuildType
 [CreateAssetMenu(menuName = "Map/BuildOBJ")]
 public class TestBaseBuilding : ScriptableObject
 {
-    [SerializeField] private GameObject buildOBJ;
-    [SerializeField] private EBuildType eType;
-    [SerializeField] private int sizeWidth;
-    [SerializeField] private int sizeHeight;
+    [SerializeField] private GameObject _buildOBJ;
+    [SerializeField] private GameObject _previweOBJ;
+    [SerializeField] private EBuildType _eType;
+    [SerializeField] private int _sizeWidth;
+    [SerializeField] private int _sizeHeight;
 
-    public GameObject BuildOBJ { get => buildOBJ; set => buildOBJ = value; }
-    public EBuildType EType { get => eType; set => eType = value; }
-    public int SizeWidth { get => sizeWidth; set => sizeWidth = value; }
-    public int SizeHeight { get => sizeHeight; set => sizeHeight = value; }
+public GameObject buildOBJ{ get => _buildOBJ; set => _buildOBJ = value; }
+    public GameObject previewOBJ { get => _previweOBJ; set => _previweOBJ = value; }
+    public EBuildType eType { get => _eType; set => _eType = value; }
+    public int sizeWidth { get => _sizeWidth; set => _sizeWidth = value; }
+    public int sizeHeight { get => _sizeHeight; set => _sizeHeight = value; }
 }

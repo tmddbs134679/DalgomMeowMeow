@@ -14,7 +14,7 @@ public class BuildingPlacerEditor : Editor
 
         BuildingPlacer placer = (BuildingPlacer)target;
 
-        if (GUILayout.Button("📌 BuildSO 폴더에서 자동 등록"))
+        if (GUILayout.Button(" BuildSO 폴더에서 자동 등록"))
         {
             string folderPath = "Assets/@Scripts/BuildMap/ScriptableOBJ/BuildSO";
             string[] guids = AssetDatabase.FindAssets("t:TestBaseBuilding", new[] { folderPath });
