@@ -11,23 +11,30 @@ public class BattleCharacter : MonoBehaviour
     [SerializeField] private CharacterStatSo _data; // 캐릭터 스탯 데이터
     [SerializeField] private Color _damageColor = Color.red;
     [SerializeField] private float _flashDuration = 0.05f;
+    [SerializeField] private Color _originalColor;
 
+    public NavMeshAgent Agent { get; private set; } // NavMeshAgent 컴포넌트
 
     public float AttackDamage = 10f; // 공격력
     public float Heatlh = 100f; // 체력
     public float MoveSpeed = 3.5f; // 이동 속도
 
+    public bool HasLookedForward = true; // 전방을 바라봤는지 여부 (아군 전용 로직)
+
 
     public string TargetLayer = "Enemy"; // 타겟 태그
     public bool UsingSkill = false; // 스킬 사용 여부
+    
 
     private float _attacktimer = 0f;
-    private NavMeshAgent _agent;
     private Transform _targetLocation;
     private BattleCharacter _targetCharacter; // 현재 타겟 캐릭터
-    private Renderer _characterRenderer; // 캐릭터 렌더러
+    private SkinnedMeshRenderer[] _characterRenderer; // 캐릭터 렌더러
     private Coroutine _damageFlashCoroutine; //피격 효과 코루틴
-    private Vector3 _originalPosition; // 원래 위치 저장
+
+
+    public Animator Animator; // 애니메이터 컴포넌트
+    protected Vector3 _originalPosition; // 원래 위치 저장
 
 
     public event Action<BattleCharacter> OnCharacterDied;
@@ -51,11 +58,12 @@ public class BattleCharacter : MonoBehaviour
 
     private void Awake()
     {
-        _agent = GetComponent<NavMeshAgent>();
-        _characterRenderer = GetComponentInChildren<Renderer>();
+        Agent = GetComponent<NavMeshAgent>();
+        _characterRenderer = GetComponentsInChildren<SkinnedMeshRenderer>();
+        Animator = GetComponentInChildren<Animator>();
         _originalPosition = transform.localPosition;
-        _agent.speed = MoveSpeed; // NavMeshAgent의 이동 속도 설정
-        _agent.stoppingDistance = _attackRange; // 공격 범위 내에서 멈추도록 설정
+        Agent.speed = MoveSpeed; // NavMeshAgent의 이동 속도 설정
+        Agent.stoppingDistance = _attackRange; // 공격 범위 내에서 멈추도록 설정
     }
 
 
@@ -72,8 +80,9 @@ public class BattleCharacter : MonoBehaviour
                 SetTarget(newTarget);
                 if (_targetLocation != null)
                 {
-                    _agent.SetDestination(_targetLocation.position);
+                    Agent.SetDestination(_targetLocation.position);
                     IsInBattle = true; // 타겟이 생기면 전투 상태로 변경
+                    Animator.SetInteger("animation", 5); 
                 }
             }
         }
@@ -83,7 +92,7 @@ public class BattleCharacter : MonoBehaviour
 
             if (dist <= _attackRange)
             {
-                _agent.isStopped = true; //거리가 가까우면 공격
+                Agent.isStopped = true; //거리가 가까우면 공격
 
                 Vector3 direction = (_targetLocation.position - transform.position).normalized;
                 direction.y = 0; // y축 회전 배제
@@ -95,8 +104,8 @@ public class BattleCharacter : MonoBehaviour
             }
             else
             {
-                _agent.isStopped = false;
-                _agent.SetDestination(_targetLocation.position); // 계속 추적
+                Agent.isStopped = false;
+                Agent.SetDestination(_targetLocation.position); // 계속 추적
             }
         }
     }
@@ -150,9 +159,8 @@ public class BattleCharacter : MonoBehaviour
     {
         if (_targetLocation == deadChar.transform)
         {
-            Debug.Log($"{name}: 타겟 {deadChar.name} 사망 감지 → 타겟 해제");
             SetTarget(null);
-            _agent.isStopped = false;
+            Agent.isStopped = false;
             IsInBattle = false; // 타겟이 사망하면 전투 상태 해제
         }
     }
@@ -167,7 +175,7 @@ public class BattleCharacter : MonoBehaviour
         _attacktimer += Time.deltaTime;
         if (_attacktimer >= _attackDelay)
         {
-            //Attack();
+            Animator.SetInteger("animation", UnityEngine.Random.Range(1, 4)); // 공격 애니메이션 출력
             _targetCharacter.TakeDamage(this.AttackDamage); // 타겟의 체력 감소
             _attacktimer = 0f; // 공격 후 타이머 초기화
         }
@@ -180,7 +188,8 @@ public class BattleCharacter : MonoBehaviour
         Heatlh -= Damage; // 공격력만큼 체력 감소
         if (Heatlh <= 0)
         {
-            Die(); // 체력이 0 이하가 되면 죽음 처리
+            Invoke(nameof(Die),1f); // 체력이 0 이하가 되면 죽음 처리
+            Animator.SetInteger("animation", 0); // 죽음 애니메이션 출력
         }
         else
         {
@@ -193,15 +202,14 @@ public class BattleCharacter : MonoBehaviour
 
 
 
-    public void Die()
+    public virtual void Die()
     {
         if (IsDead) return;
         IsDead = true;
 
         OnCharacterDied?.Invoke(this);
-        _agent.isStopped = true;
+        Agent.isStopped = true;
 
-        Debug.Log($"{name} died.");
         gameObject.SetActive(false); // 또는 Destroy(gameObject);
     }
 
@@ -214,33 +222,23 @@ public class BattleCharacter : MonoBehaviour
     }
 
 
-    /////////////////////////////////////////////////////////////  아군 전용 로직
-
-    public void ReturnToStartPosition()
-    {
-        Vector3 worldTarget = transform.parent.TransformPoint(_originalPosition);
-        _agent.isStopped = false; // NavMeshAgent가 이동을 시작할 수 있도록 설정
-        _agent.SetDestination(worldTarget);
-    }
-
-
-    public Vector3 GetOriginalWorldPosition()
-    {
-        return transform.parent.TransformPoint(_originalPosition);
-    }
-
-
-
-    ////////////////////////////////////////////////////////////////
-
+   
     private IEnumerator DamageFlash()
     {
-        var originalColor = _characterRenderer.material.color;
-        _characterRenderer.material.color = _damageColor;
+        foreach (var renderer in _characterRenderer)
+        {
+            if (renderer != null && renderer.material.HasProperty("_BaseColor"))
+                renderer.material.SetColor("_BaseColor", _damageColor);
+        }
 
         yield return new WaitForSeconds(_flashDuration);
 
-        _characterRenderer.material.color = originalColor;
+        foreach (var renderer in _characterRenderer)
+        {
+            if (renderer != null && renderer.material.HasProperty("_BaseColor"))
+                renderer.material.SetColor("_BaseColor", Color.white);
+        }
+
         _damageFlashCoroutine = null;
     }
 

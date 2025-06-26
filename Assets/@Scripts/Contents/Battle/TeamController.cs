@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -8,10 +7,13 @@ public class TeamController : MonoBehaviour
     public enum TeamState { Moving, Fighting, Returning }
 
     [SerializeField] private TeamState _currentState;
-    [SerializeField] private List<BattleCharacter> _members;
     [SerializeField] private float _moveSpeed = 2f;
-    private float _battleEndDelay = 1f;
-    private float _battleEndTimer = 0f;
+    private List<PlayerCharacter> _members;
+
+    private void Awake()
+    {
+        _members = GetComponentsInChildren<PlayerCharacter>().ToList();
+    }
 
     private void Update()
     {
@@ -22,6 +24,11 @@ public class TeamController : MonoBehaviour
             GameOver();
             return;  // 더 이상 진행하지 않고 함수 종료
         }
+        if(Managers.Battle.Victory)
+        {
+            _members.ForEach(m => m.Animator.SetInteger("animation", 8));
+            return;
+        }
 
         switch (_currentState)
         {
@@ -30,8 +37,33 @@ public class TeamController : MonoBehaviour
                 break;
 
             case TeamState.Returning:
+
+                foreach (var m in _members)
+                {
+                    if (!m.HasLookedForward &&
+                        !m.Agent.pathPending &&
+                        m.Agent.remainingDistance <= m.Agent.stoppingDistance &&
+                        m.Agent.velocity.sqrMagnitude == 0f)
+                    {
+                        Vector3 forward = transform.forward;
+                        forward.y = 0f;
+
+                        if (forward != Vector3.zero)
+                            m.SmoothLookForward(forward);
+
+                        m.HasLookedForward = true;
+                    }
+                }
+
                 if (AllReturned())
+                {
                     _currentState = TeamState.Moving;
+                    _members.ForEach(m =>
+                    {
+                        m.Agent.ResetPath();
+                        m.Agent.speed = m.MoveSpeed;
+                    });
+                }
                 break;
         }
     }
@@ -59,7 +91,9 @@ public class TeamController : MonoBehaviour
     private bool AllReturned()
     {
         return _members.All(m =>
-            Vector3.Distance(m.transform.position, m.GetOriginalWorldPosition()) < 0.2f);
+        !m.Agent.pathPending &&
+        m.Agent.remainingDistance <= m.Agent.stoppingDistance &&
+        m.Agent.velocity.sqrMagnitude == 0f);
     }
 
 
@@ -81,23 +115,13 @@ public class TeamController : MonoBehaviour
 
     private void HandleMemberBattleStateChanged(BattleCharacter member, bool isInBattle)
     {
-        if (isInBattle)
+        if (_members.All(m => m.IsInBattle))
         {
             EnterBattle();
-            _battleEndTimer = 0f;
         }
-        else if (_currentState == TeamState.Fighting && _members.All(m => !m.IsInBattle && !m.IsDead))
+        else if (_currentState == TeamState.Fighting && _members.All(m => !m.IsInBattle))
         {
-            // 모두 false인 상태가 지속되는지 타이머로 확인
-            if (_battleEndTimer == 0f)
-                _battleEndTimer = Time.time;
-
-            if (Time.time - _battleEndTimer >= _battleEndDelay)
-                ReturnToFormation();
-        }
-        else
-        {
-            _battleEndTimer = 0f; // 누군가 다시 true면 타이머 초기화
+            ReturnToFormation();
         }
     }
 
