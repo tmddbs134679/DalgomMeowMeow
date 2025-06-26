@@ -33,7 +33,7 @@ public class BattleCharacter : MonoBehaviour
     private Coroutine _damageFlashCoroutine; //피격 효과 코루틴
 
 
-    protected Animator _animator; // 애니메이터 컴포넌트
+    public Animator Animator; // 애니메이터 컴포넌트
     protected Vector3 _originalPosition; // 원래 위치 저장
 
 
@@ -60,7 +60,7 @@ public class BattleCharacter : MonoBehaviour
     {
         Agent = GetComponent<NavMeshAgent>();
         _characterRenderer = GetComponentsInChildren<SkinnedMeshRenderer>();
-        _animator = GetComponentInChildren<Animator>();
+        Animator = GetComponentInChildren<Animator>();
         _originalPosition = transform.localPosition;
         Agent.speed = MoveSpeed; // NavMeshAgent의 이동 속도 설정
         Agent.stoppingDistance = _attackRange; // 공격 범위 내에서 멈추도록 설정
@@ -82,7 +82,7 @@ public class BattleCharacter : MonoBehaviour
                 {
                     Agent.SetDestination(_targetLocation.position);
                     IsInBattle = true; // 타겟이 생기면 전투 상태로 변경
-                    _animator.SetInteger("animation", 5); 
+                    Animator.SetInteger("animation", 5); 
                 }
             }
         }
@@ -159,7 +159,6 @@ public class BattleCharacter : MonoBehaviour
     {
         if (_targetLocation == deadChar.transform)
         {
-            Debug.Log($"{name}: 타겟 {deadChar.name} 사망 감지 → 타겟 해제");
             SetTarget(null);
             Agent.isStopped = false;
             IsInBattle = false; // 타겟이 사망하면 전투 상태 해제
@@ -176,7 +175,7 @@ public class BattleCharacter : MonoBehaviour
         _attacktimer += Time.deltaTime;
         if (_attacktimer >= _attackDelay)
         {
-            _animator.SetInteger("animation", UnityEngine.Random.Range(1, 4)); // 공격 애니메이션 출력
+            Animator.SetInteger("animation", UnityEngine.Random.Range(1, 4)); // 공격 애니메이션 출력
             _targetCharacter.TakeDamage(this.AttackDamage); // 타겟의 체력 감소
             _attacktimer = 0f; // 공격 후 타이머 초기화
         }
@@ -190,7 +189,7 @@ public class BattleCharacter : MonoBehaviour
         if (Heatlh <= 0)
         {
             Invoke(nameof(Die),1f); // 체력이 0 이하가 되면 죽음 처리
-            _animator.SetInteger("animation", 0); // 죽음 애니메이션 출력
+            Animator.SetInteger("animation", 0); // 죽음 애니메이션 출력
         }
         else
         {
@@ -211,7 +210,6 @@ public class BattleCharacter : MonoBehaviour
         OnCharacterDied?.Invoke(this);
         Agent.isStopped = true;
 
-        Debug.Log($"{name} died.");
         gameObject.SetActive(false); // 또는 Destroy(gameObject);
     }
 

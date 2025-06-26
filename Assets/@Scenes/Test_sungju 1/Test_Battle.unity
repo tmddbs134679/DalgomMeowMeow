@@ -133,8 +133,8 @@ GameObject:
   m_Component:
   - component: {fileID: 21347357}
   - component: {fileID: 21347360}
-  - component: {fileID: 21347359}
   - component: {fileID: 21347358}
+  - component: {fileID: 21347361}
   m_Layer: 27
   m_Name: Enemy3
   m_TagString: Untagged
@@ -180,31 +180,6 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &21347359
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 21347356}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5404da53391908d4d9b2655ec55d9c0a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _detectRange: 10
-  _attackRange: 1.5
-  _attackDelay: 1
-  _data: {fileID: 0}
-  _damageColor: {r: 1, g: 0, b: 0, a: 1}
-  _flashDuration: 0.05
-  _originalColor: {r: 0, g: 0, b: 0, a: 0}
-  AttackDamage: 10
-  Heatlh: 100
-  MoveSpeed: 3.5
-  HasLookedForward: 0
-  TargetLayer: Default
-  UsingSkill: 0
 --- !u!136 &21347360
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -228,6 +203,32 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &21347361
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 21347356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 260c535c7f7e8b740ae49a25645083cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _detectRange: 15
+  _attackRange: 1.75
+  _attackDelay: 1
+  _data: {fileID: 0}
+  _damageColor: {r: 1, g: 0, b: 0, a: 1}
+  _flashDuration: 0.05
+  _originalColor: {r: 0, g: 0, b: 0, a: 0}
+  AttackDamage: 10
+  Heatlh: 100
+  MoveSpeed: 3.5
+  HasLookedForward: 1
+  TargetLayer: Default
+  UsingSkill: 0
+  Animator: {fileID: 0}
 --- !u!1 &42498806
 GameObject:
   m_ObjectHideFlags: 0
@@ -276,6 +277,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemyCount: 0
+  Victory: 0
 --- !u!4 &205216950 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1692732260423604924, guid: 35c190690e9040546bddc6ffa09ad396, type: 3}
@@ -373,8 +375,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fbc8fe198387fc488e0b3062c624fff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _detectRange: 10
-  _attackRange: 1.5
+  _detectRange: 20
+  _attackRange: 1.75
   _attackDelay: 1
   _data: {fileID: 0}
   _damageColor: {r: 1, g: 0, b: 0, a: 1}
@@ -386,6 +388,7 @@ MonoBehaviour:
   HasLookedForward: 1
   TargetLayer: Enemy
   UsingSkill: 0
+  Animator: {fileID: 0}
 --- !u!1 &310652813
 GameObject:
   m_ObjectHideFlags: 0
@@ -478,8 +481,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fbc8fe198387fc488e0b3062c624fff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _detectRange: 10
-  _attackRange: 1.5
+  _detectRange: 20
+  _attackRange: 1.75
   _attackDelay: 1
   _data: {fileID: 0}
   _damageColor: {r: 1, g: 0, b: 0, a: 1}
@@ -491,6 +494,7 @@ MonoBehaviour:
   HasLookedForward: 1
   TargetLayer: Enemy
   UsingSkill: 0
+  Animator: {fileID: 0}
 --- !u!1001 &336590103
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -727,8 +731,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fbc8fe198387fc488e0b3062c624fff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _detectRange: 10
-  _attackRange: 1.5
+  _detectRange: 20
+  _attackRange: 1.75
   _attackDelay: 1
   _data: {fileID: 0}
   _damageColor: {r: 1, g: 0, b: 0, a: 1}
@@ -740,6 +744,7 @@ MonoBehaviour:
   HasLookedForward: 1
   TargetLayer: Enemy
   UsingSkill: 0
+  Animator: {fileID: 0}
 --- !u!1001 &513875643
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -889,8 +894,8 @@ GameObject:
   m_Component:
   - component: {fileID: 558290733}
   - component: {fileID: 558290736}
-  - component: {fileID: 558290735}
   - component: {fileID: 558290734}
+  - component: {fileID: 558290737}
   m_Layer: 27
   m_Name: Enemy2
   m_TagString: Untagged
@@ -936,31 +941,6 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &558290735
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 558290732}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5404da53391908d4d9b2655ec55d9c0a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _detectRange: 10
-  _attackRange: 1.5
-  _attackDelay: 1
-  _data: {fileID: 0}
-  _damageColor: {r: 1, g: 0, b: 0, a: 1}
-  _flashDuration: 0.05
-  _originalColor: {r: 0, g: 0, b: 0, a: 0}
-  AttackDamage: 10
-  Heatlh: 100
-  MoveSpeed: 3.5
-  HasLookedForward: 0
-  TargetLayer: Default
-  UsingSkill: 0
 --- !u!136 &558290736
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -984,6 +964,32 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &558290737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 558290732}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 260c535c7f7e8b740ae49a25645083cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _detectRange: 15
+  _attackRange: 1.75
+  _attackDelay: 1
+  _data: {fileID: 0}
+  _damageColor: {r: 1, g: 0, b: 0, a: 1}
+  _flashDuration: 0.05
+  _originalColor: {r: 0, g: 0, b: 0, a: 0}
+  AttackDamage: 10
+  Heatlh: 100
+  MoveSpeed: 3.5
+  HasLookedForward: 1
+  TargetLayer: Default
+  UsingSkill: 0
+  Animator: {fileID: 0}
 --- !u!1 &584029408
 GameObject:
   m_ObjectHideFlags: 0
@@ -1112,8 +1118,8 @@ GameObject:
   m_Component:
   - component: {fileID: 695758094}
   - component: {fileID: 695758097}
-  - component: {fileID: 695758096}
   - component: {fileID: 695758095}
+  - component: {fileID: 695758098}
   m_Layer: 27
   m_Name: Enemy3
   m_TagString: Untagged
@@ -1159,31 +1165,6 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &695758096
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 695758093}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5404da53391908d4d9b2655ec55d9c0a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _detectRange: 10
-  _attackRange: 1.5
-  _attackDelay: 1
-  _data: {fileID: 0}
-  _damageColor: {r: 1, g: 0, b: 0, a: 1}
-  _flashDuration: 0.05
-  _originalColor: {r: 0, g: 0, b: 0, a: 0}
-  AttackDamage: 10
-  Heatlh: 100
-  MoveSpeed: 3.5
-  HasLookedForward: 0
-  TargetLayer: Default
-  UsingSkill: 0
 --- !u!136 &695758097
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1207,6 +1188,32 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &695758098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 695758093}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 260c535c7f7e8b740ae49a25645083cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _detectRange: 15
+  _attackRange: 1.75
+  _attackDelay: 1
+  _data: {fileID: 0}
+  _damageColor: {r: 1, g: 0, b: 0, a: 1}
+  _flashDuration: 0.05
+  _originalColor: {r: 0, g: 0, b: 0, a: 0}
+  AttackDamage: 10
+  Heatlh: 100
+  MoveSpeed: 3.5
+  HasLookedForward: 1
+  TargetLayer: Default
+  UsingSkill: 0
+  Animator: {fileID: 0}
 --- !u!4 &830933639 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7767463951019252158, guid: 660a390e6536d514ba72d8aad6e39e0f, type: 3}
@@ -1581,8 +1588,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1214629804}
   - component: {fileID: 1214629807}
-  - component: {fileID: 1214629806}
   - component: {fileID: 1214629805}
+  - component: {fileID: 1214629808}
   m_Layer: 27
   m_Name: Enemy2
   m_TagString: Untagged
@@ -1628,31 +1635,6 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &1214629806
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1214629803}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5404da53391908d4d9b2655ec55d9c0a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _detectRange: 10
-  _attackRange: 1.5
-  _attackDelay: 1
-  _data: {fileID: 0}
-  _damageColor: {r: 1, g: 0, b: 0, a: 1}
-  _flashDuration: 0.05
-  _originalColor: {r: 0, g: 0, b: 0, a: 0}
-  AttackDamage: 10
-  Heatlh: 100
-  MoveSpeed: 3.5
-  HasLookedForward: 0
-  TargetLayer: Default
-  UsingSkill: 0
 --- !u!136 &1214629807
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1676,6 +1658,32 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1214629808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1214629803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 260c535c7f7e8b740ae49a25645083cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _detectRange: 15
+  _attackRange: 1.75
+  _attackDelay: 1
+  _data: {fileID: 0}
+  _damageColor: {r: 1, g: 0, b: 0, a: 1}
+  _flashDuration: 0.05
+  _originalColor: {r: 0, g: 0, b: 0, a: 0}
+  AttackDamage: 10
+  Heatlh: 100
+  MoveSpeed: 3.5
+  HasLookedForward: 1
+  TargetLayer: Default
+  UsingSkill: 0
+  Animator: {fileID: 0}
 --- !u!1001 &1215827054
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1904,8 +1912,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1399087788}
   - component: {fileID: 1399087791}
-  - component: {fileID: 1399087790}
   - component: {fileID: 1399087789}
+  - component: {fileID: 1399087792}
   m_Layer: 27
   m_Name: Enemy1
   m_TagString: Untagged
@@ -1951,31 +1959,6 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &1399087790
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1399087787}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5404da53391908d4d9b2655ec55d9c0a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _detectRange: 10
-  _attackRange: 1.5
-  _attackDelay: 1
-  _data: {fileID: 0}
-  _damageColor: {r: 1, g: 0, b: 0, a: 1}
-  _flashDuration: 0.05
-  _originalColor: {r: 0, g: 0, b: 0, a: 0}
-  AttackDamage: 10
-  Heatlh: 100
-  MoveSpeed: 3.5
-  HasLookedForward: 0
-  TargetLayer: Default
-  UsingSkill: 0
 --- !u!136 &1399087791
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1999,6 +1982,32 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1399087792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1399087787}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 260c535c7f7e8b740ae49a25645083cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _detectRange: 15
+  _attackRange: 1.75
+  _attackDelay: 1
+  _data: {fileID: 0}
+  _damageColor: {r: 1, g: 0, b: 0, a: 1}
+  _flashDuration: 0.05
+  _originalColor: {r: 0, g: 0, b: 0, a: 0}
+  AttackDamage: 10
+  Heatlh: 100
+  MoveSpeed: 3.5
+  HasLookedForward: 1
+  TargetLayer: Default
+  UsingSkill: 0
+  Animator: {fileID: 0}
 --- !u!1 &1402571540
 GameObject:
   m_ObjectHideFlags: 0
@@ -2869,8 +2878,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2010975384}
   - component: {fileID: 2010975387}
-  - component: {fileID: 2010975386}
   - component: {fileID: 2010975385}
+  - component: {fileID: 2010975388}
   m_Layer: 27
   m_Name: Enemy1
   m_TagString: Untagged
@@ -2916,31 +2925,6 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &2010975386
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2010975383}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5404da53391908d4d9b2655ec55d9c0a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _detectRange: 10
-  _attackRange: 1.5
-  _attackDelay: 1
-  _data: {fileID: 0}
-  _damageColor: {r: 1, g: 0, b: 0, a: 1}
-  _flashDuration: 0.05
-  _originalColor: {r: 0, g: 0, b: 0, a: 0}
-  AttackDamage: 10
-  Heatlh: 100
-  MoveSpeed: 3.5
-  HasLookedForward: 0
-  TargetLayer: Default
-  UsingSkill: 0
 --- !u!136 &2010975387
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2964,6 +2948,32 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2010975388
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2010975383}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 260c535c7f7e8b740ae49a25645083cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _detectRange: 15
+  _attackRange: 1.75
+  _attackDelay: 1
+  _data: {fileID: 0}
+  _damageColor: {r: 1, g: 0, b: 0, a: 1}
+  _flashDuration: 0.05
+  _originalColor: {r: 0, g: 0, b: 0, a: 0}
+  AttackDamage: 10
+  Heatlh: 100
+  MoveSpeed: 3.5
+  HasLookedForward: 1
+  TargetLayer: Default
+  UsingSkill: 0
+  Animator: {fileID: 0}
 --- !u!4 &2117870401 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3325280722496840288, guid: f513a4cd52fbb5e44aaa4c13892a74c6, type: 3}

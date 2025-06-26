@@ -24,6 +24,11 @@ public class TeamController : MonoBehaviour
             GameOver();
             return;  // 더 이상 진행하지 않고 함수 종료
         }
+        if(Managers.Battle.Victory)
+        {
+            _members.ForEach(m => m.Animator.SetInteger("animation", 8));
+            return;
+        }
 
         switch (_currentState)
         {

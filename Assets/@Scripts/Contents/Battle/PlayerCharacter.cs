@@ -11,7 +11,7 @@ public class PlayerCharacter : BattleCharacter
         Vector3 worldTarget = transform.parent.TransformPoint(_originalPosition);
         Agent.isStopped = false; // NavMeshAgent가 이동을 시작할 수 있도록 설정
         Agent.SetDestination(worldTarget);
-        _animator.SetInteger("animation", 4);
+        Animator.SetInteger("animation", 4);
         HasLookedForward = false; // 시작 위치로 돌아가면 전방을 바라보지 않음
         Agent.speed = MoveSpeed * 3;
     }

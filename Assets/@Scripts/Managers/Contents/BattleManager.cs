@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class BattleManager : MonoBehaviour
 {
-    [SerializeField] private int _enemyCount;
-    private bool _victory = false;
+    public int _enemyCount;
+    public bool Victory = false;
 
     private int enemyLayer;
 
@@ -31,7 +31,7 @@ public class BattleManager : MonoBehaviour
     {
         if (_enemyCount == 0)
         {
-            _victory = true;
+            Victory = true;
             Debug.Log("모든 적을 처치했습니다! 승리!");
         }
     }
