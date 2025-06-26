@@ -20,17 +20,25 @@ public class ArrayBuildPos : ScriptableObject
 {
     public List<BuildData> baseBuilding;
 
-   public void GetBuildData(BuildData buildData)
+    public void GetBuildData(BuildData buildData)
     {
         baseBuilding.Add(buildData);
     }
+
+#if UNITY_EDITOR
+    public void InitializeBuild()
+    {
+        baseBuilding.Clear();
+                EditorUtility.SetDirty(this);
+    }
+#endif
 }
 
 [Serializable]
 public class BuildData
 {
     public float posX;
-    public float posY;
+    public float posZ;
 
     public TestBaseBuilding testBaseBuilding;
 
