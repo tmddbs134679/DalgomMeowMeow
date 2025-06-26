@@ -4,7 +4,9 @@ using UnityEngine;
 public class QuestManager : MonoBehaviour
 {
     public static QuestManager Instance;
+    
     private Dictionary<string, Quest> _quests = new();
+    private Dictionary<(QuestConditionType, TargetType), List<Quest>> _questIndex = new();
 
     public List<QuestDataSO> questDataList;
 
@@ -17,18 +19,30 @@ public class QuestManager : MonoBehaviour
         }
         else Destroy(gameObject);
         foreach (var data in questDataList)
-            _quests[data.QuestId] = new Quest(data);
+        {
+            var quest = new Quest(data);
+            _quests[data.QuestId] = quest;
+
+            var key = (data.Condition, data.TargetType);
+
+            if (!_questIndex.ContainsKey(key))
+                _questIndex[key] = new List<Quest>();
+
+            _questIndex[key].Add(quest);
+        }
     }
 
-    public void OnEvent(string conditionType, string targetId)
+    public void OnEvent(QuestConditionType condition, TargetType target)
     {
-        foreach (var quest in _quests.Values)
-        {
-            if (quest.State != QuestProgressState.InProgress) continue;
-            if (quest.QuestData.Condition.ToString() != conditionType) continue;
-            if (quest.QuestData.TargetType.ToString() != targetId) continue;
+        var key = (condition, target);
+        if (!_questIndex.TryGetValue(key, out var questList)) return;
 
-            quest.AddProgress();
+        foreach (var quest in questList)
+        {
+            if (quest.State == QuestProgressState.InProgress)
+            {
+                quest.AddProgress();
+            }
         }
     }
 
