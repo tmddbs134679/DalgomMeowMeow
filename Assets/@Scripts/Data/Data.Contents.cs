@@ -10,29 +10,30 @@ namespace Data
     #region CreatureData
     public class CreatureData
     {
-        public int DataId;
+        public string DataId;
         public string PrefabLabel;
-        public float MaxHp;
-        public float Hp;
-        public float Atk;
-        public float Stamina;
-        public float MoveSpeed;
+        public string Name;
         public float TotalExp;
+        public float MaxHp;
+        public float Atk;
+        public float MaxStamina;
+        public float MoveSpeed;
         public float HpRate;
         public float AtkRate;
         public float MoveSpeedRate;
         public string IconLabel;
+        public List<string> SkillTypeList;
     }
 
     [Serializable]
 
-    public class CreatureDataLoader : ILoader<int, CreatureData>
+    public class CreatureDataLoader : ILoader<string, CreatureData>
     {
         public List<CreatureData> creatures = new List<CreatureData>();
 
-        public Dictionary<int, CreatureData> MakeDict()
+        public Dictionary<string, CreatureData> MakeDict()
         {
-            Dictionary<int, CreatureData> dict = new Dictionary<int, CreatureData>();
+            Dictionary<string, CreatureData> dict = new Dictionary<string, CreatureData>();
             foreach(CreatureData creature in creatures)
                 dict.Add(creature.DataId, creature);
             return dict;
