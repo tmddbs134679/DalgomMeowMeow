@@ -40,21 +40,28 @@ public class UI_FoodItem : UI_Base
         return true;
     }
 
-    public void SetInfo(Food food)
+    public void SetInfo(Food food, int text)
     {
+   
         _food = food;
 
         Sprite spr = Managers.Resource.Load<Sprite>(_food.FoodData.SpriteName);
+        name = text.ToString();
         GetImage((int)Images.FoodImage).sprite = spr;
         GetText((int)Texts.FoodPriceText).text = _food.FoodData.Price.ToString();
+       
     }
 
 
 
     void OnClickFoodItemButton()
     {
+        Debug.Log(name);
         //¥©∏£∏È GameManager¿« µ∑¿∏∑Œ πŸ≤ﬁ.
         Managers.Game.Gold += _food.FoodData.Price;
-        gameObject.SetActive(false);
+        Managers.Food.Cancel(_food);
+       // gameObject.SetActive(false);
+
+        transform.root.GetComponent<UI_GameScene>().RemoveSlotAnimated(this);
     }
 }

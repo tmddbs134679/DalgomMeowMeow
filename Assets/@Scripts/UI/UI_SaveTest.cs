@@ -25,14 +25,16 @@ public class UI_SaveTest : MonoBehaviour
 
     public Button CookButton;
 
+    int testcount = 0;
     public void Cook()
     {
+        testcount++;
         Debug.Log("Cook");
         Food food = new Food("F0001");
         Managers.Food.Enqueue(food);
 
         UI_FoodItem item = Managers.UI.MakeSubItem<UI_FoodItem>(storageobj.transform);
-        item.SetInfo(food);
+        item.SetInfo(food,testcount);
 
     }
 

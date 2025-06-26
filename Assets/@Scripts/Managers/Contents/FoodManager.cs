@@ -7,8 +7,9 @@ public class FoodManager
     
     //public GameObject[] ServeSlot;
     //private Image[] _serveSlotImages;
-    private Queue<Food> _foodQueue = new Queue<Food>();
-
+   // private Queue<Food> _foodQueue = new Queue<Food>();
+    private LinkedList<Food> _foodList = new LinkedList<Food>();
+    private Dictionary<Food, LinkedListNode<Food>> _nodeMap = new Dictionary<Food, LinkedListNode<Food>>();
     //private void Awake()
     //{
     //    SetComponent();
@@ -25,24 +26,29 @@ public class FoodManager
 
     public void Enqueue(Food food)
     {
-        _foodQueue.Enqueue(food);
-
-
-
-       // SetSprite();
+        var node = _foodList.AddLast(food);
+        _nodeMap[food] = node;
     }
 
-    public Food Dequeue()
+    public void Cancel(Food food)
     {
-        if (_foodQueue.Count == 0)
+        if (_nodeMap.TryGetValue(food, out var node))
         {
-            Debug.Log("Empty!");
-            return null;
+            _foodList.Remove(node);
+            _nodeMap.Remove(food);
         }
-        var food = _foodQueue.Dequeue();
-       // SetSprite();
-        return food;
     }
+    //public Food Dequeue()
+    //{
+    //    if (_foodQueue.Count == 0)
+    //    {
+    //        Debug.Log("Empty!");
+    //        return null;
+    //    }
+    //    var food = _foodQueue.Dequeue();
+    //   // SetSprite();
+    //    return food;
+    //}
 
     
     //public void SetSprite()
