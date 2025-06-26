@@ -55,6 +55,6 @@ public class UI_FoodItem : UI_Base
     {
         //¥©∏£∏È GameManager¿« µ∑¿∏∑Œ πŸ≤ﬁ.
         Managers.Game.Gold += _food.FoodData.Price;
-
+        gameObject.SetActive(false);
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,14 +16,11 @@ public class UI_SaveTest : MonoBehaviour
     void Start()
     {
         _game = Managers.Game;
-        _textMeshPro.text = _game.Gold.ToString();
+      //  _textMeshPro.text = _game.Gold.ToString();
+        StartCoroutine(StartCookingLoop());
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
     #region Cook
 
     public Button CookButton;
@@ -38,6 +36,14 @@ public class UI_SaveTest : MonoBehaviour
 
     }
 
+    IEnumerator StartCookingLoop()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(5f);
+            Cook();
+        }
+    }
 
     #endregion
     #region SaveTest
