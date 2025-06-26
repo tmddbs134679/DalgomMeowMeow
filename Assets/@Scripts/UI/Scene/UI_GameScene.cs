@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static Define;
+
 
 public class UI_GameScene : UI_Scene
 {
@@ -34,7 +36,7 @@ public class UI_GameScene : UI_Scene
     }
     #endregion
 
-    private const int GROUP_SPACING = 40;
+
 
     public override bool Init()
     {
@@ -45,12 +47,22 @@ public class UI_GameScene : UI_Scene
         BindButton(typeof(Buttons));
         BindText(typeof(Texts));
 
-        GetObject((int)GameObjects.StorageObject).GetComponent<HorizontalLayoutGroup>().spacing = GROUP_SPACING;    
+        GetObject((int)GameObjects.StorageObject).GetComponent<HorizontalLayoutGroup>().spacing = UI_GROUP_SPACING;
+
+        Managers.Game.OnResourcesChagned += Refresh;
+        Refresh();
+
         return true;
     }
     private void Awake()
     {
         Init();
+    }
+
+    public void OnDestroy()
+    {
+        if (Managers.Game != null)
+            Managers.Game.OnResourcesChagned -= Refresh;
     }
 
 
@@ -80,7 +92,7 @@ public class UI_GameScene : UI_Scene
             if (child.localPosition.x > removedPosition.x)
             {
                 Vector3 targetPos = child.localPosition;
-                targetPos.x -= GetSlotWidth() + GROUP_SPACING; // 또는 제거된 슬롯 너비
+                targetPos.x -= GetSlotWidth() + UI_GROUP_SPACING; // 제거된 슬롯 너비 + Spacing 크기
                 child.DOLocalMoveX(targetPos.x, 0.3f).SetEase(Ease.OutQuad);
             }
         }
@@ -102,4 +114,8 @@ public class UI_GameScene : UI_Scene
     }
 
 
+     void Refresh()
+    {
+        GetText((int)Texts.PlayerGoldText).text = Managers.Game.Gold.ToString();
+    }
 }

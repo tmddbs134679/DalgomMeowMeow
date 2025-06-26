@@ -67,4 +67,40 @@ namespace Data
     }
 
     #endregion
+
+
+    #region BuildingData
+
+    [Serializable]
+    public class BuildingData
+    {
+        public string DataId;
+        public string Name;
+        public Define.EBuildingType Type;
+        public string Description;
+        public float BuildTime;
+        public float ProductionTime;
+        public Vector2Int Size;
+        public string DataName;
+        public int UnlockLevel;
+        public int MaxLevel;
+        public int Exp;
+    }
+
+    [Serializable]
+    public class BuildingDataLoader : ILoader<string, BuildingData>
+    {
+        public List<BuildingData> buildings = new List<BuildingData>();
+
+        public Dictionary<string, BuildingData> MakeDict()
+        {
+            Dictionary<string, BuildingData> dict = new Dictionary<string, BuildingData>();
+            foreach (BuildingData build in buildings)
+                dict.Add(build.DataId, build);
+            return dict;
+        }
+    }
+
+
+    #endregion
 }
