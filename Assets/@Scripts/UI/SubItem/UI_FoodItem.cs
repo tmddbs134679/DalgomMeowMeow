@@ -59,8 +59,9 @@ public class UI_FoodItem : UI_Base
         //¥©∏£∏È GameManager¿« µ∑¿∏∑Œ πŸ≤ﬁ.
         Managers.Game.Gold += _food.FoodData.Price;
         Managers.Food.Cancel(_food);
-       // gameObject.SetActive(false);
+        // gameObject.SetActive(false);
 
-        transform.root.GetComponent<UI_GameScene>().RemoveSlotAnimated(this);
+        (Managers.UI.SceneUI as UI_GameScene).RemoveSlotAnimated(this);
+         //transform.root.GetComponent<UI_GameScene>().RemoveSlotAnimated(this);
     }
 }
