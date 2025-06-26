@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &4833702243874293581
+--- !u!1 &32036862332168101
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,48 +8,49 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 945032672255512106}
-  - component: {fileID: 4542134765534988162}
-  - component: {fileID: 7142970438661616468}
-  - component: {fileID: 2851948592429297827}
-  - component: {fileID: -4140315742466721826}
-  m_Layer: 0
-  m_Name: RestBuilding
+  - component: {fileID: 3461391969846226374}
+  - component: {fileID: 5289222086050249264}
+  - component: {fileID: 4860048826991310301}
+  - component: {fileID: -1949684592167558083}
+  - component: {fileID: 867387851631776429}
+  - component: {fileID: -845532431015815093}
+  m_Layer: 7
+  m_Name: FarmBuilding
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &945032672255512106
+--- !u!4 &3461391969846226374
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4833702243874293581}
+  m_GameObject: {fileID: 32036862332168101}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 1, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &4542134765534988162
+--- !u!33 &5289222086050249264
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4833702243874293581}
+  m_GameObject: {fileID: 32036862332168101}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &7142970438661616468
+--- !u!23 &4860048826991310301
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4833702243874293581}
+  m_GameObject: {fileID: 32036862332168101}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -63,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d9637e8ed397d6b4498841099b6a5e71, type: 2}
+  - {fileID: 2100000, guid: 9528c2bada58170409ed46f549aae743, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -85,33 +86,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &2851948592429297827
+--- !u!114 &-1949684592167558083
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4833702243874293581}
+  m_GameObject: {fileID: 32036862332168101}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ac99a8473202cef4eb50b8d59c8062ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   BuildActiontUI: {fileID: 0}
+  buildMap: {fileID: 0}
+  buildingplacer: {fileID: 0}
   gridSize: 1
   heightOffset: 0.5
   isBuild: 0
-  buildSize: {x: 2, y: 1}
+  isDrag: 0
+  isLongPress: 1
+  buildSize: {x: 2, y: 2}
   tileLayer:
     serializedVersion: 2
     m_Bits: 64
---- !u!65 &-4140315742466721826
+--- !u!65 &867387851631776429
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4833702243874293581}
+  m_GameObject: {fileID: 32036862332168101}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -126,3 +131,16 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-845532431015815093
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 32036862332168101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aff49964c7aa92941bbbfbff7923b21e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  testBaseBuilding: {fileID: 11400000, guid: bc9e881d9a1f87e429a7cf564c934ef2, type: 2}

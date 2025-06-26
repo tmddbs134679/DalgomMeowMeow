@@ -37,7 +37,10 @@ public class CookingBuilding : BuildingBase
         StoredCount++; //  생산 누적
         
         Debug.Log($"요리 완성! 누적 수량: {StoredCount}");
+        QuestManager.Instance.OnEvent(QuestConditionType.Collect, TargetType.Soup);
         
+        
+        QuestManager.Instance.GiveReward("Soup_10");
         // collectIcon.SetActive(true);
         
         
