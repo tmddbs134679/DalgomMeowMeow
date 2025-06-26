@@ -1,18 +1,181 @@
 {
   "creatures": [
     {
-      "DataId": 1,
-      "PrefabLabel": null,
-      "MaxHp": 100.0,
-      "Hp": 100.0,
-      "Atk": 10.0,
-      "Stamina": 10.0,
-      "MoveSpeed": 5.0,
+      "DataId": "A10001",
+      "PrefabLabel": "CharacterPrefab",
+      "Name": "얼룰냥",
       "TotalExp": 100.0,
+      "MaxHp": -1.0,
+      "Atk": -1.0,
+      "MaxStamina": -1.0,
+      "MoveSpeed": -1.0,
       "HpRate": 1.0,
       "AtkRate": 1.0,
       "MoveSpeedRate": 1.0,
-      "IconLabel": null
+      "IconLabel": null,
+      "SkillTypeList": [
+        "K1004"
+      ]
+    },
+    {
+      "DataId": "A10002",
+      "PrefabLabel": "CharacterPrefab",
+      "Name": "깜냥",
+      "TotalExp": 100.0,
+      "MaxHp": -1.0,
+      "Atk": -1.0,
+      "MaxStamina": -1.0,
+      "MoveSpeed": -1.0,
+      "HpRate": 1.0,
+      "AtkRate": 1.0,
+      "MoveSpeedRate": 1.0,
+      "IconLabel": null,
+      "SkillTypeList": [
+        "K1002"
+      ]
+    },
+    {
+      "DataId": "A10003",
+      "PrefabLabel": "CharacterPrefab",
+      "Name": "치즈냥",
+      "TotalExp": 100.0,
+      "MaxHp": -1.0,
+      "Atk": -1.0,
+      "MaxStamina": -1.0,
+      "MoveSpeed": -1.0,
+      "HpRate": 1.0,
+      "AtkRate": 1.0,
+      "MoveSpeedRate": 1.0,
+      "IconLabel": null,
+      "SkillTypeList": [
+        "K1003"
+      ]
+    },
+    {
+      "DataId": "A20001",
+      "PrefabLabel": "CharacterPrefab",
+      "Name": "하트곰",
+      "TotalExp": 100.0,
+      "MaxHp": -1.0,
+      "Atk": -1.0,
+      "MaxStamina": -1.0,
+      "MoveSpeed": -1.0,
+      "HpRate": 1.0,
+      "AtkRate": 1.0,
+      "MoveSpeedRate": 1.0,
+      "IconLabel": null,
+      "SkillTypeList": [
+        "K1005"
+      ]
+    },
+    {
+      "DataId": "A20002",
+      "PrefabLabel": "CharacterPrefab",
+      "Name": "판다",
+      "TotalExp": 100.0,
+      "MaxHp": -1.0,
+      "Atk": -1.0,
+      "MaxStamina": -1.0,
+      "MoveSpeed": -1.0,
+      "HpRate": 1.0,
+      "AtkRate": 1.0,
+      "MoveSpeedRate": 1.0,
+      "IconLabel": null,
+      "SkillTypeList": [
+        "K1001"
+      ]
+    },
+    {
+      "DataId": "A20003",
+      "PrefabLabel": "CharacterPrefab",
+      "Name": "투구곰",
+      "TotalExp": 100.0,
+      "MaxHp": -1.0,
+      "Atk": -1.0,
+      "MaxStamina": -1.0,
+      "MoveSpeed": -1.0,
+      "HpRate": 1.0,
+      "AtkRate": 1.0,
+      "MoveSpeedRate": 1.0,
+      "IconLabel": null,
+      "SkillTypeList": [
+        "K1006"
+      ]
+    },
+    {
+      "DataId": "M10001",
+      "PrefabLabel": "MonsterPrefab",
+      "Name": "울보상어",
+      "TotalExp": -1.0,
+      "MaxHp": 100.0,
+      "Atk": 4.0,
+      "MaxStamina": -1.0,
+      "MoveSpeed": 3.0,
+      "HpRate": 1.0,
+      "AtkRate": 1.0,
+      "MoveSpeedRate": 1.0,
+      "IconLabel": null,
+      "SkillTypeList": []
+    },
+    {
+      "DataId": "M10002",
+      "PrefabLabel": "MonsterPrefab",
+      "Name": "백상어",
+      "TotalExp": -1.0,
+      "MaxHp": 100.0,
+      "Atk": 6.0,
+      "MaxStamina": -1.0,
+      "MoveSpeed": 3.0,
+      "HpRate": 1.0,
+      "AtkRate": 1.0,
+      "MoveSpeedRate": 1.0,
+      "IconLabel": null,
+      "SkillTypeList": []
+    },
+    {
+      "DataId": "M10003",
+      "PrefabLabel": "MonsterPrefab",
+      "Name": "별상어",
+      "TotalExp": -1.0,
+      "MaxHp": 100.0,
+      "Atk": 8.0,
+      "MaxStamina": -1.0,
+      "MoveSpeed": 3.0,
+      "HpRate": 1.0,
+      "AtkRate": 1.0,
+      "MoveSpeedRate": 1.0,
+      "IconLabel": null,
+      "SkillTypeList": []
+    },
+    {
+      "DataId": "M10004",
+      "PrefabLabel": "MonsterPrefab",
+      "Name": "청상어",
+      "TotalExp": -1.0,
+      "MaxHp": 100.0,
+      "Atk": 15.0,
+      "MaxStamina": -1.0,
+      "MoveSpeed": 3.0,
+      "HpRate": 1.0,
+      "AtkRate": 1.0,
+      "MoveSpeedRate": 1.0,
+      "IconLabel": null,
+      "SkillTypeList": []
+    },
+    {
+      "DataId": "M10005",
+      "PrefabLabel": "MonsterPrefab",
+      "Name": "방상어",
+      "TotalExp": -1.0,
+      "MaxHp": 100.0,
+      "Atk": 30.0,
+      "MaxStamina": -1.0,
+      "MoveSpeed": 3.0,
+      "HpRate": 1.0,
+      "AtkRate": 1.0,
+      "MoveSpeedRate": 1.0,
+      "IconLabel": null,
+      "SkillTypeList": []
     }
   ]
 }

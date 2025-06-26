@@ -14,6 +14,7 @@ public class GameData
 
     //public List <캐릭터들>
     public List<BuildingBase> Buildings = new List<BuildingBase>();
+    public List<AICharacter> Characters = new List<AICharacter>();  
 }
 
 
@@ -25,7 +26,7 @@ public class GameManager
     #region Action
 
     public event Action OnResourcesChagned;
-
+    public event Action OnCharacterChanged;
     #endregion
 
     #region GameData
@@ -36,6 +37,16 @@ public class GameManager
         set
         {
             _gameData.Buildings = value;
+        }
+    }
+
+    public List<AICharacter> Characters
+    {
+        get { return _gameData.Characters; }
+        set
+        {
+            _gameData.Characters = value;
+            OnCharacterChanged?.Invoke();
         }
     }
 
@@ -51,6 +62,8 @@ public class GameManager
     }
 
     #endregion
+
+
 
 
     #region Save
