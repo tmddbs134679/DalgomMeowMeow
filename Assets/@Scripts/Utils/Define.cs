@@ -20,6 +20,12 @@ using UnityEngine;
 
 public class Define 
 {
+    #region UI 
+    public static readonly int UI_GROUP_SPACING = 40;
+    #endregion
+
+    public static readonly int FOOD_MAX_VALUE = 13;
+
     public enum EUIEvent
     {
         Click,
@@ -80,4 +86,17 @@ public class Define
         GameScene,
         FrameworkTestScene,
     }
+
+    public enum EBuildingType
+    {
+        Cook,
+        PlayGround,
+        Fishing,
+        Rest,
+        Farm,
+        Shop,
+        Road,
+        
+    }
+
 }

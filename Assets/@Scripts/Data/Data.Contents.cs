@@ -10,29 +10,30 @@ namespace Data
     #region CreatureData
     public class CreatureData
     {
-        public int DataId;
+        public string DataId;
         public string PrefabLabel;
-        public float MaxHp;
-        public float Hp;
-        public float Atk;
-        public float Stamina;
-        public float MoveSpeed;
+        public string Name;
         public float TotalExp;
+        public float MaxHp;
+        public float Atk;
+        public float MaxStamina;
+        public float MoveSpeed;
         public float HpRate;
         public float AtkRate;
         public float MoveSpeedRate;
         public string IconLabel;
+        public List<string> SkillTypeList;
     }
 
     [Serializable]
 
-    public class CreatureDataLoader : ILoader<int, CreatureData>
+    public class CreatureDataLoader : ILoader<string, CreatureData>
     {
         public List<CreatureData> creatures = new List<CreatureData>();
 
-        public Dictionary<int, CreatureData> MakeDict()
+        public Dictionary<string, CreatureData> MakeDict()
         {
-            Dictionary<int, CreatureData> dict = new Dictionary<int, CreatureData>();
+            Dictionary<string, CreatureData> dict = new Dictionary<string, CreatureData>();
             foreach(CreatureData creature in creatures)
                 dict.Add(creature.DataId, creature);
             return dict;
@@ -65,6 +66,42 @@ namespace Data
             return dict;
         }
     }
+
+    #endregion
+
+
+    #region BuildingData
+
+    [Serializable]
+    public class BuildingData
+    {
+        public string DataId;
+        public string Name;
+        public Define.EBuildingType Type;
+        public string Description;
+        public float BuildTime;
+        public float ProductionTime;
+        public Vector2Int Size;
+        public string DataName;
+        public int UnlockLevel;
+        public int MaxLevel;
+        public int Exp;
+    }
+
+    [Serializable]
+    public class BuildingDataLoader : ILoader<string, BuildingData>
+    {
+        public List<BuildingData> buildings = new List<BuildingData>();
+
+        public Dictionary<string, BuildingData> MakeDict()
+        {
+            Dictionary<string, BuildingData> dict = new Dictionary<string, BuildingData>();
+            foreach (BuildingData build in buildings)
+                dict.Add(build.DataId, build);
+            return dict;
+        }
+    }
+
 
     #endregion
 }

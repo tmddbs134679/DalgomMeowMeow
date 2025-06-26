@@ -5,11 +5,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using static Define;
-using Data;
 
 public class DataTransformer : EditorWindow
 {
@@ -20,7 +20,9 @@ public class DataTransformer : EditorWindow
     {
         ParseCreatureData("Creature");
         ParseFoodData("Food");
+        ParseBuildingData("Building");
     }
+
 
     static void ParseFoodData(string filename)
     {
@@ -72,18 +74,19 @@ public class DataTransformer : EditorWindow
 
             int i = 0;
             CreatureData cd = new CreatureData();
-            cd.DataId = ConvertValue<int>(row[i++]);
+            cd.DataId = ConvertValue<string>(row[i++]);
             cd.PrefabLabel = ConvertValue<string>(row[i++]);
+            cd.Name = ConvertValue<string>(row[i++]);
+            cd.TotalExp = ConvertValue<int>(row[i++]);
             cd.MaxHp = ConvertValue<float>(row[i++]);
-            cd.Hp = ConvertValue<float>(row[i++]);
             cd.Atk = ConvertValue<float>(row[i++]);
-            cd.Stamina = ConvertValue<float>(row[i++]);
+            cd.MaxStamina = ConvertValue<float>(row[i++]);
             cd.MoveSpeed = ConvertValue<float>(row[i++]);
-            cd.TotalExp = ConvertValue<float>(row[i++]);
             cd.HpRate = ConvertValue<float>(row[i++]);
             cd.AtkRate = ConvertValue<float>(row[i++]);
             cd.MoveSpeedRate = ConvertValue<float>(row[i++]);
             cd.IconLabel = ConvertValue<string>(row[i++]);
+            cd.SkillTypeList = ConvertList<string>(row[i++]);
             loader.creatures.Add(cd);
         }
 
@@ -94,6 +97,48 @@ public class DataTransformer : EditorWindow
         AssetDatabase.Refresh();
     }
 
+
+    private static void ParseBuildingData(string filename)
+    {
+        BuildingDataLoader loader = new BuildingDataLoader();
+
+        #region ExcelData
+        string[] lines = File.ReadAllText($"{Application.dataPath}/@Resources/Data/Excel/{filename}Data.csv").Split("\n");
+
+        for (int y = 1; y < lines.Length; y++)
+        {
+            string[] row = lines[y].Replace("\r", "").Split(',');
+
+            if (row.Length == 0)
+                continue;
+            if (string.IsNullOrEmpty(row[0]))
+                continue;
+
+            int i = 0;
+            BuildingData building = new BuildingData();
+            building.DataId = ConvertValue<string>(row[i++]);
+            building.Name = ConvertValue<string>(row[i++]); 
+            building.Type = ConvertValue<Define.EBuildingType>(row[i++]);
+            building.Description = ConvertValue<string>(row[i++]);
+            building.BuildTime = ConvertValue<float>(row[i++]);
+            building.ProductionTime = ConvertValue<float>(row[i++]);
+            String[] sizeParts = row[i++].Split('&');
+            building.Size = new Vector2Int(int.Parse(sizeParts[0]), int.Parse(sizeParts[1]));
+            building.DataName = ConvertValue<string>(row[i++]);
+            building.UnlockLevel = ConvertValue<int>(row[i++]);
+            building.MaxLevel = ConvertValue<int>(row[i++]);
+            building.Exp = ConvertValue<int>(row[i++]); 
+            loader.buildings.Add(building);
+        }
+
+        #endregion
+
+        string jsonStr = JsonConvert.SerializeObject(loader, Formatting.Indented);
+        File.WriteAllText($"{Application.dataPath}/@Resources/Data/JsonData/{filename}Data.json", jsonStr);
+        AssetDatabase.Refresh();
+    }
+
+
     public static T ConvertValue<T>(string value)
     {
         if (string.IsNullOrEmpty(value))
@@ -102,7 +147,16 @@ public class DataTransformer : EditorWindow
         TypeConverter converter = TypeDescriptor.GetConverter(typeof(T));
         return (T)converter.ConvertFromString(value);
     }
+    public static List<T> ConvertList<T>(string value)
+    {
+        if (string.IsNullOrEmpty(value))
+            return new List<T>();
+
+        return value.Split('&').Select(x => ConvertValue<T>(x)).ToList();
+    }
 
 #endif
+
+
 
 }

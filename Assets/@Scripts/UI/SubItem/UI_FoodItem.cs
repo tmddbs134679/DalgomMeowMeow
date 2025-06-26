@@ -42,19 +42,25 @@ public class UI_FoodItem : UI_Base
 
     public void SetInfo(Food food)
     {
+   
         _food = food;
 
         Sprite spr = Managers.Resource.Load<Sprite>(_food.FoodData.SpriteName);
         GetImage((int)Images.FoodImage).sprite = spr;
         GetText((int)Texts.FoodPriceText).text = _food.FoodData.Price.ToString();
+       
     }
 
 
 
     void OnClickFoodItemButton()
     {
+        Debug.Log(name);
         //¥©∏£∏È GameManager¿« µ∑¿∏∑Œ πŸ≤ﬁ.
         Managers.Game.Gold += _food.FoodData.Price;
+        Managers.Food.Cancel(_food);
+        // gameObject.SetActive(false);
 
+        (Managers.UI.SceneUI as UI_GameScene).RemoveSlotAnimated(this);
     }
 }
