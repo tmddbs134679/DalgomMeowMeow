@@ -2,6 +2,7 @@ using UnityEngine;
 
 public enum QuestType { Main, Side, Daily }
 public enum QuestConditionType { Collect, Kill, Talk, AssignAnimal }
+public enum TargetType { Cat, Slime, Soup }
 
 [CreateAssetMenu(fileName = "Quest", menuName = "Quest/QuestData")]
 public class QuestDataSO : ScriptableObject
@@ -11,7 +12,8 @@ public class QuestDataSO : ScriptableObject
     public string Description;
     public QuestType Type;
     public QuestConditionType Condition;
-    public string TargetId; // 예: "Cat", "Soup"
+    public TargetType TargetType; // 예: "Cat", "Soup"
     public int GoalCount;
-    public int Reward;
+    public RewardData Reward;
+    public string PreviousQuestId;
 }
