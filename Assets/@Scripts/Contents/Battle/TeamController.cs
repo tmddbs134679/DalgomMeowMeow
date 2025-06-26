@@ -7,13 +7,12 @@ public class TeamController : MonoBehaviour
     public enum TeamState { Moving, Fighting, Returning }
 
     [SerializeField] private TeamState _currentState;
-    [SerializeField] private List<BattleCharacter> _members;
     [SerializeField] private float _moveSpeed = 2f;
-
+    private List<PlayerCharacter> _members;
 
     private void Awake()
     {
-        _members = GetComponentsInChildren<BattleCharacter>().ToList();
+        _members = GetComponentsInChildren<PlayerCharacter>().ToList();
     }
 
     private void Update()
@@ -34,11 +33,31 @@ public class TeamController : MonoBehaviour
 
             case TeamState.Returning:
 
+                foreach (var m in _members)
+                {
+                    if (!m.HasLookedForward &&
+                        !m.Agent.pathPending &&
+                        m.Agent.remainingDistance <= m.Agent.stoppingDistance &&
+                        m.Agent.velocity.sqrMagnitude == 0f)
+                    {
+                        Vector3 forward = transform.forward;
+                        forward.y = 0f;
+
+                        if (forward != Vector3.zero)
+                            m.SmoothLookForward(forward);
+
+                        m.HasLookedForward = true;
+                    }
+                }
+
                 if (AllReturned())
                 {
                     _currentState = TeamState.Moving;
-                    _members.ForEach(m => m.Agent.ResetPath());
-                    _members.ForEach(m => m.Agent.speed = m.MoveSpeed);
+                    _members.ForEach(m =>
+                    {
+                        m.Agent.ResetPath();
+                        m.Agent.speed = m.MoveSpeed;
+                    });
                 }
                 break;
         }

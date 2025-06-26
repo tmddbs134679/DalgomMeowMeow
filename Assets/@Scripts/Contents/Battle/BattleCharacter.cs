@@ -19,16 +19,22 @@ public class BattleCharacter : MonoBehaviour
     public float Heatlh = 100f; // 체력
     public float MoveSpeed = 3.5f; // 이동 속도
 
+    public bool HasLookedForward = true; // 전방을 바라봤는지 여부 (아군 전용 로직)
+
 
     public string TargetLayer = "Enemy"; // 타겟 태그
     public bool UsingSkill = false; // 스킬 사용 여부
+    
 
     private float _attacktimer = 0f;
     private Transform _targetLocation;
     private BattleCharacter _targetCharacter; // 현재 타겟 캐릭터
-    private Renderer _characterRenderer; // 캐릭터 렌더러
+    private SkinnedMeshRenderer[] _characterRenderer; // 캐릭터 렌더러
     private Coroutine _damageFlashCoroutine; //피격 효과 코루틴
-    private Vector3 _originalPosition; // 원래 위치 저장
+
+
+    protected Animator _animator; // 애니메이터 컴포넌트
+    protected Vector3 _originalPosition; // 원래 위치 저장
 
 
     public event Action<BattleCharacter> OnCharacterDied;
@@ -53,9 +59,9 @@ public class BattleCharacter : MonoBehaviour
     private void Awake()
     {
         Agent = GetComponent<NavMeshAgent>();
-        _characterRenderer = GetComponentInChildren<Renderer>();
+        _characterRenderer = GetComponentsInChildren<SkinnedMeshRenderer>();
+        _animator = GetComponentInChildren<Animator>();
         _originalPosition = transform.localPosition;
-        _originalColor = _characterRenderer.material.color; // 원래 색상 저장
         Agent.speed = MoveSpeed; // NavMeshAgent의 이동 속도 설정
         Agent.stoppingDistance = _attackRange; // 공격 범위 내에서 멈추도록 설정
     }
@@ -76,6 +82,7 @@ public class BattleCharacter : MonoBehaviour
                 {
                     Agent.SetDestination(_targetLocation.position);
                     IsInBattle = true; // 타겟이 생기면 전투 상태로 변경
+                    _animator.SetInteger("animation", 5); 
                 }
             }
         }
@@ -169,7 +176,7 @@ public class BattleCharacter : MonoBehaviour
         _attacktimer += Time.deltaTime;
         if (_attacktimer >= _attackDelay)
         {
-            //Attack();
+            _animator.SetInteger("animation", UnityEngine.Random.Range(1, 4)); // 공격 애니메이션 출력
             _targetCharacter.TakeDamage(this.AttackDamage); // 타겟의 체력 감소
             _attacktimer = 0f; // 공격 후 타이머 초기화
         }
@@ -182,7 +189,8 @@ public class BattleCharacter : MonoBehaviour
         Heatlh -= Damage; // 공격력만큼 체력 감소
         if (Heatlh <= 0)
         {
-            Die(); // 체력이 0 이하가 되면 죽음 처리
+            Invoke(nameof(Die),1f); // 체력이 0 이하가 되면 죽음 처리
+            _animator.SetInteger("animation", 0); // 죽음 애니메이션 출력
         }
         else
         {
@@ -195,7 +203,7 @@ public class BattleCharacter : MonoBehaviour
 
 
 
-    public void Die()
+    public virtual void Die()
     {
         if (IsDead) return;
         IsDead = true;
@@ -216,32 +224,22 @@ public class BattleCharacter : MonoBehaviour
     }
 
 
-    /////////////////////////////////////////////////////////////  아군 전용 로직
-
-    public void ReturnToStartPosition()
-    {
-        Vector3 worldTarget = transform.parent.TransformPoint(_originalPosition);
-        Agent.isStopped = false; // NavMeshAgent가 이동을 시작할 수 있도록 설정
-        Agent.SetDestination(worldTarget);
-        Agent.speed = MoveSpeed*3; 
-    }
-
-
-    public Vector3 GetOriginalWorldPosition()
-    {
-        return this.transform.position;
-    }
-
-
-
-    ////////////////////////////////////////////////////////////////
-
+   
     private IEnumerator DamageFlash()
     {
-        _characterRenderer.material.color = _originalColor;
-        _characterRenderer.material.color = _damageColor;
+        foreach (var renderer in _characterRenderer)
+        {
+            if (renderer != null && renderer.material.HasProperty("_BaseColor"))
+                renderer.material.SetColor("_BaseColor", _damageColor);
+        }
+
         yield return new WaitForSeconds(_flashDuration);
-        _characterRenderer.material.color = _originalColor;
+
+        foreach (var renderer in _characterRenderer)
+        {
+            if (renderer != null && renderer.material.HasProperty("_BaseColor"))
+                renderer.material.SetColor("_BaseColor", Color.white);
+        }
 
         _damageFlashCoroutine = null;
     }
