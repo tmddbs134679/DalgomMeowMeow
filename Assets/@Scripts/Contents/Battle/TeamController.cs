@@ -38,6 +38,7 @@ public class TeamController : MonoBehaviour
                 {
                     _currentState = TeamState.Moving;
                     _members.ForEach(m => m.Agent.ResetPath());
+                    _members.ForEach(m => m.Agent.speed = m.MoveSpeed);
                 }
                 break;
         }

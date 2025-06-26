@@ -223,6 +223,7 @@ public class BattleCharacter : MonoBehaviour
         Vector3 worldTarget = transform.parent.TransformPoint(_originalPosition);
         Agent.isStopped = false; // NavMeshAgent가 이동을 시작할 수 있도록 설정
         Agent.SetDestination(worldTarget);
+        Agent.speed = MoveSpeed*3; 
     }
 
 
