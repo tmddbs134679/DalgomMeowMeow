@@ -8,6 +8,8 @@ using System.IO;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using static Define;
+using Data;
 
 public class DataTransformer : EditorWindow
 {
@@ -17,6 +19,39 @@ public class DataTransformer : EditorWindow
     public static void ParseExcel()
     {
         ParseCreatureData("Creature");
+        ParseFoodData("Food");
+    }
+
+    static void ParseFoodData(string filename)
+    {
+        FoodDataLoader loader = new FoodDataLoader();
+
+        #region FoodData
+        string[] lines = File.ReadAllText($"{Application.dataPath}/@Resources/Data/Excel/{filename}Data.csv").Split("\n");
+
+        for (int y = 1; y < lines.Length; y++)
+        {
+            string[] row = lines[y].Replace("\r", "").Split(',');
+
+            if (row.Length == 0)
+                continue;
+            if (string.IsNullOrEmpty(row[0]))
+                continue;
+
+            int i = 0;
+            Data.FoodData data = new Data.FoodData();
+            data.DataId = ConvertValue<string>(row[i++]);
+            data.Name = ConvertValue<string>(row[i++]);
+            data.Description = ConvertValue<string>(row[i++]);
+            data.SpriteName = ConvertValue<string>(row[i++]);
+            data.Price = ConvertValue<int>(row[i++]);
+            loader.foods.Add(data);
+        }
+
+        string jsonStr = JsonConvert.SerializeObject(loader, Formatting.Indented);
+        File.WriteAllText($"{Application.dataPath}/@Resources/Data/JsonData/{filename}Data.json", jsonStr);
+        AssetDatabase.Refresh();
+        #endregion
     }
 
     static void ParseCreatureData(string filename)

@@ -12,4 +12,15 @@ public class UIManager
     public UI_Scene SceneUI { get { return _sceneUI; } }
 
     //public event Action<int> OnTimeScaleChanged;
+
+
+    public T MakeSubItem<T>(Transform parent = null, string name = null, bool pooling = true) where T : UI_Base
+    {
+        if (string.IsNullOrEmpty(name))
+            name = typeof(T).Name;
+
+        GameObject go = Managers.Resource.Instantiate($"{name}", parent, pooling);
+        go.transform.SetParent(parent);
+        return Util.GetOrAddComponent<T>(go);
+    }
 }

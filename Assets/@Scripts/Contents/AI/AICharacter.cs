@@ -32,6 +32,10 @@ public class AICharacter : MonoBehaviour
 
     private void Awake()
     {
+    }
+
+    private void Start()
+    {
         Init();
     }
 
