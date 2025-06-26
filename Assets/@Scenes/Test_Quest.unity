@@ -602,8 +602,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originStat: {fileID: 11400000, guid: 7913dda2d8dea144da49d599e23469ac, type: 2}
   nav: {fileID: 0}
-  renderer: {fileID: 0}
   currentBuilding: {fileID: 0}
+  animator: {fileID: 0}
+  skinnedMeshRenderer: {fileID: 0}
+  currentEmo: {fileID: 0}
+  emo: []
   characterAction: {fileID: 0}
 --- !u!136 &187287008
 CapsuleCollider:
@@ -856,8 +859,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originStat: {fileID: 11400000, guid: 7913dda2d8dea144da49d599e23469ac, type: 2}
   nav: {fileID: 0}
-  renderer: {fileID: 0}
   currentBuilding: {fileID: 0}
+  animator: {fileID: 0}
+  skinnedMeshRenderer: {fileID: 0}
+  currentEmo: {fileID: 0}
+  emo: []
   characterAction: {fileID: 0}
 --- !u!136 &210376531
 CapsuleCollider:
@@ -1268,8 +1274,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originStat: {fileID: 11400000, guid: 7913dda2d8dea144da49d599e23469ac, type: 2}
   nav: {fileID: 0}
-  renderer: {fileID: 0}
   currentBuilding: {fileID: 0}
+  animator: {fileID: 0}
+  skinnedMeshRenderer: {fileID: 0}
+  currentEmo: {fileID: 0}
+  emo: []
   characterAction: {fileID: 0}
 --- !u!136 &239498276
 CapsuleCollider:
@@ -1555,8 +1564,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originStat: {fileID: 11400000, guid: 7913dda2d8dea144da49d599e23469ac, type: 2}
   nav: {fileID: 0}
-  renderer: {fileID: 0}
   currentBuilding: {fileID: 0}
+  animator: {fileID: 0}
+  skinnedMeshRenderer: {fileID: 0}
+  currentEmo: {fileID: 0}
+  emo: []
   characterAction: {fileID: 0}
 --- !u!136 &295818474
 CapsuleCollider:
@@ -1658,6 +1670,8 @@ GameObject:
   - component: {fileID: 306850556}
   - component: {fileID: 306850555}
   - component: {fileID: 306850557}
+  - component: {fileID: 306850558}
+  - component: {fileID: 306850559}
   m_Layer: 0
   m_Name: BuildingManager
   m_TagString: Untagged
@@ -1707,6 +1721,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   questDataList:
   - {fileID: 11400000, guid: a4da2529088f84c40b3dde567e99d3f9, type: 2}
+--- !u!114 &306850558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 306850554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 245381ceef9159d41806b3476668f572, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &306850559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 306850554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbd050ded33a28941937cb8f3e385b5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  questDataList: []
 --- !u!1 &332279756
 GameObject:
   m_ObjectHideFlags: 0
@@ -2323,8 +2362,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originStat: {fileID: 11400000, guid: 7913dda2d8dea144da49d599e23469ac, type: 2}
   nav: {fileID: 0}
-  renderer: {fileID: 0}
   currentBuilding: {fileID: 0}
+  animator: {fileID: 0}
+  skinnedMeshRenderer: {fileID: 0}
+  currentEmo: {fileID: 0}
+  emo: []
   characterAction: {fileID: 0}
 --- !u!136 &728727456
 CapsuleCollider:
@@ -2663,8 +2705,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originStat: {fileID: 11400000, guid: 7913dda2d8dea144da49d599e23469ac, type: 2}
   nav: {fileID: 0}
-  renderer: {fileID: 0}
   currentBuilding: {fileID: 0}
+  animator: {fileID: 0}
+  skinnedMeshRenderer: {fileID: 0}
+  currentEmo: {fileID: 0}
+  emo: []
   characterAction: {fileID: 0}
 --- !u!136 &810142205
 CapsuleCollider:
@@ -2825,8 +2870,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originStat: {fileID: 11400000, guid: 7913dda2d8dea144da49d599e23469ac, type: 2}
   nav: {fileID: 0}
-  renderer: {fileID: 0}
   currentBuilding: {fileID: 0}
+  animator: {fileID: 0}
+  skinnedMeshRenderer: {fileID: 0}
+  currentEmo: {fileID: 0}
+  emo: []
   characterAction: {fileID: 0}
 --- !u!136 &941119994
 CapsuleCollider:
@@ -2987,8 +3035,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originStat: {fileID: 11400000, guid: 7913dda2d8dea144da49d599e23469ac, type: 2}
   nav: {fileID: 0}
-  renderer: {fileID: 0}
   currentBuilding: {fileID: 0}
+  animator: {fileID: 0}
+  skinnedMeshRenderer: {fileID: 0}
+  currentEmo: {fileID: 0}
+  emo: []
   characterAction: {fileID: 0}
 --- !u!136 &945272265
 CapsuleCollider:
@@ -3149,8 +3200,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originStat: {fileID: 11400000, guid: 7913dda2d8dea144da49d599e23469ac, type: 2}
   nav: {fileID: 0}
-  renderer: {fileID: 0}
   currentBuilding: {fileID: 0}
+  animator: {fileID: 0}
+  skinnedMeshRenderer: {fileID: 0}
+  currentEmo: {fileID: 0}
+  emo: []
   characterAction: {fileID: 0}
 --- !u!136 &945836726
 CapsuleCollider:
@@ -3470,8 +3524,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originStat: {fileID: 11400000, guid: 7913dda2d8dea144da49d599e23469ac, type: 2}
   nav: {fileID: 0}
-  renderer: {fileID: 0}
   currentBuilding: {fileID: 0}
+  animator: {fileID: 0}
+  skinnedMeshRenderer: {fileID: 0}
+  currentEmo: {fileID: 0}
+  emo: []
   characterAction: {fileID: 0}
 --- !u!136 &1105232500
 CapsuleCollider:
@@ -3632,8 +3689,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originStat: {fileID: 11400000, guid: 7913dda2d8dea144da49d599e23469ac, type: 2}
   nav: {fileID: 0}
-  renderer: {fileID: 0}
   currentBuilding: {fileID: 0}
+  animator: {fileID: 0}
+  skinnedMeshRenderer: {fileID: 0}
+  currentEmo: {fileID: 0}
+  emo: []
   characterAction: {fileID: 0}
 --- !u!136 &1132415838
 CapsuleCollider:
@@ -3965,8 +4025,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originStat: {fileID: 11400000, guid: 7913dda2d8dea144da49d599e23469ac, type: 2}
   nav: {fileID: 0}
-  renderer: {fileID: 0}
   currentBuilding: {fileID: 0}
+  animator: {fileID: 0}
+  skinnedMeshRenderer: {fileID: 0}
+  currentEmo: {fileID: 0}
+  emo: []
   characterAction: {fileID: 0}
 --- !u!136 &1244421773
 CapsuleCollider:
@@ -4358,8 +4421,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originStat: {fileID: 11400000, guid: 7913dda2d8dea144da49d599e23469ac, type: 2}
   nav: {fileID: 0}
-  renderer: {fileID: 0}
   currentBuilding: {fileID: 0}
+  animator: {fileID: 0}
+  skinnedMeshRenderer: {fileID: 0}
+  currentEmo: {fileID: 0}
+  emo: []
   characterAction: {fileID: 0}
 --- !u!136 &1383178122
 CapsuleCollider:
@@ -4520,8 +4586,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originStat: {fileID: 11400000, guid: 7913dda2d8dea144da49d599e23469ac, type: 2}
   nav: {fileID: 0}
-  renderer: {fileID: 0}
   currentBuilding: {fileID: 0}
+  animator: {fileID: 0}
+  skinnedMeshRenderer: {fileID: 0}
+  currentEmo: {fileID: 0}
+  emo: []
   characterAction: {fileID: 0}
 --- !u!136 &1394290783
 CapsuleCollider:
@@ -5038,8 +5107,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originStat: {fileID: 11400000, guid: 7913dda2d8dea144da49d599e23469ac, type: 2}
   nav: {fileID: 0}
-  renderer: {fileID: 0}
   currentBuilding: {fileID: 0}
+  animator: {fileID: 0}
+  skinnedMeshRenderer: {fileID: 0}
+  currentEmo: {fileID: 0}
+  emo: []
   characterAction: {fileID: 0}
 --- !u!136 &1640882832
 CapsuleCollider:
@@ -5200,8 +5272,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originStat: {fileID: 11400000, guid: 7913dda2d8dea144da49d599e23469ac, type: 2}
   nav: {fileID: 0}
-  renderer: {fileID: 0}
   currentBuilding: {fileID: 0}
+  animator: {fileID: 0}
+  skinnedMeshRenderer: {fileID: 0}
+  currentEmo: {fileID: 0}
+  emo: []
   characterAction: {fileID: 0}
 --- !u!136 &1683964538
 CapsuleCollider:
@@ -5500,6 +5575,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AllCharacters: []
+  EmotionMaterials: []
 --- !u!4 &1747933719
 Transform:
   m_ObjectHideFlags: 0
@@ -5585,8 +5661,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originStat: {fileID: 11400000, guid: 7913dda2d8dea144da49d599e23469ac, type: 2}
   nav: {fileID: 0}
-  renderer: {fileID: 0}
   currentBuilding: {fileID: 0}
+  animator: {fileID: 0}
+  skinnedMeshRenderer: {fileID: 0}
+  currentEmo: {fileID: 0}
+  emo: []
   characterAction: {fileID: 0}
 --- !u!136 &1748998369
 CapsuleCollider:
@@ -5747,8 +5826,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originStat: {fileID: 11400000, guid: 7913dda2d8dea144da49d599e23469ac, type: 2}
   nav: {fileID: 0}
-  renderer: {fileID: 0}
   currentBuilding: {fileID: 0}
+  animator: {fileID: 0}
+  skinnedMeshRenderer: {fileID: 0}
+  currentEmo: {fileID: 0}
+  emo: []
   characterAction: {fileID: 0}
 --- !u!136 &1753789335
 CapsuleCollider:
@@ -5972,8 +6054,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originStat: {fileID: 11400000, guid: 7913dda2d8dea144da49d599e23469ac, type: 2}
   nav: {fileID: 0}
-  renderer: {fileID: 0}
   currentBuilding: {fileID: 0}
+  animator: {fileID: 0}
+  skinnedMeshRenderer: {fileID: 0}
+  currentEmo: {fileID: 0}
+  emo: []
   characterAction: {fileID: 0}
 --- !u!136 &1833373341
 CapsuleCollider:
@@ -6471,8 +6556,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originStat: {fileID: 11400000, guid: 7913dda2d8dea144da49d599e23469ac, type: 2}
   nav: {fileID: 0}
-  renderer: {fileID: 0}
   currentBuilding: {fileID: 0}
+  animator: {fileID: 0}
+  skinnedMeshRenderer: {fileID: 0}
+  currentEmo: {fileID: 0}
+  emo: []
   characterAction: {fileID: 0}
 --- !u!136 &2136949910
 CapsuleCollider:

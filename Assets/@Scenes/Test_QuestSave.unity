@@ -4379,8 +4379,6 @@ GameObject:
   m_Component:
   - component: {fileID: 306850556}
   - component: {fileID: 306850555}
-  - component: {fileID: 306850558}
-  - component: {fileID: 306850557}
   m_Layer: 0
   m_Name: BuildingManager
   m_TagString: Untagged
@@ -4416,33 +4414,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &306850557
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 306850554}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 245381ceef9159d41806b3476668f572, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &306850558
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 306850554}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bbd050ded33a28941937cb8f3e385b5a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  questDataList:
-  - {fileID: 11400000, guid: a4da2529088f84c40b3dde567e99d3f9, type: 2}
-  - {fileID: 11400000, guid: 19e17638ccc52b34b8706fcd10b5f750, type: 2}
 --- !u!1 &310061079
 GameObject:
   m_ObjectHideFlags: 0
