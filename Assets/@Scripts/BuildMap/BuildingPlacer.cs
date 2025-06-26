@@ -112,5 +112,12 @@ public class BuildingPlacer : MonoBehaviour
         buildMap.LoadBuild();
     }
 
-
+void Update()
+{
+    if (_tempOBJ != null && BuildActiontUI != null && BuildActiontUI.activeSelf)
+    {
+        Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.main, _tempOBJ.transform.position);
+        BuildActiontUI.transform.position = screenPos;
+    }
+}
 }

@@ -17,6 +17,9 @@ public class DraggableObject : MonoBehaviour, IDraggable
     public bool isLongPress = true;
     float offsetx;
     float offsety;
+
+
+    
     //드래그 스타트
     public void OnDragStart(Vector3 hitPos)
     {
