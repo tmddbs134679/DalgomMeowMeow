@@ -24,13 +24,13 @@ namespace Scripts.Contents.AI.FSM.State
 
             character.Controller.PatrolMove(2f);
 
-            if (character.Stat.Stamina <= 29f && character.Controller.FindAvailableBuilding(BuildingType.Resting) != null)
+            if (character.Stat.Stamina <= 29f && character.Controller.FindAvailableBuilding(Define.BuildingType.Resting) != null)
             {
                 character.characterAction.Rest();
                 return;
             }
 
-            if (character.Stat.Stamina >= 30 && character.Controller.FindAvailableBuilding(BuildingType.Cooking) != null)
+            if (character.Stat.Stamina >= 30 && character.Controller.FindAvailableBuilding(Define.BuildingType.Cooking) != null)
             {
                 character.characterAction.Cook();
                 return;

@@ -100,7 +100,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 40
   m_IsActive: 1
 --- !u!4 &2330815605618767750
 Transform:
@@ -138,6 +138,8 @@ MonoBehaviour:
   isBuild: 0
   isDrag: 0
   isLongPress: 1
+  TempOBJ: {fileID: 0}
+  TempCollider: []
   buildSize: {x: 1, y: 1}
   tileLayer:
     serializedVersion: 2

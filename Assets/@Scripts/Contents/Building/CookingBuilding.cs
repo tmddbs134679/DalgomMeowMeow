@@ -8,7 +8,6 @@ public class CookingBuilding : BuildingBase
     [SerializeField] private Color defaultColor = Color.white;
     [SerializeField] private Color readyColor = Color.green;
     public GameObject collectIcon;
-
     
 
     public override void Init()

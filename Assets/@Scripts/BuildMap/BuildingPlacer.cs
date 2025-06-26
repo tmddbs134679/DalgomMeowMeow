@@ -2,14 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Unity.AI.Navigation;
 /// <summary>
 /// 건물 설치 판별, 취소, 적용 
 /// </summary>
 public class BuildingPlacer : MonoBehaviour
 {
 
-    public TestBaseBuilding[] buildingSO;
+    public BaseBuildingSO[] buildingSO;
     public LayerMask groundLayer;
 
     public GameObject BuildUi;
@@ -20,14 +20,14 @@ public class BuildingPlacer : MonoBehaviour
     public GridMap gridMap;
     public BuildMap buildMap;
     public ArrayBuildPos arrayBuildPos;
+        public NavMeshSurface surface;
     [SerializeField] private float _heightOffset = 0.5f;
     private GameObject _tempOBJ; //프리뷰 오브젝트
-    private TestBaseBuilding _saveBuildingSO;
+    private BaseBuildingSO _saveBuildingSO;
 
     private BuildData _buildData;
     private bool _isGold;
     private bool _isBuild;
-
 
 //버튼 이벤트
     public void OnBuild()
@@ -36,6 +36,7 @@ public class BuildingPlacer : MonoBehaviour
         BuildUi.SetActive(false);
     }
     //건물종류선택
+    //나중에 list같은걸로 바꿔서 탐색 생각해보기
     public void SelectBuildingType(int type)
     {
         buildMap.ColliderAllOff();
@@ -48,7 +49,7 @@ public class BuildingPlacer : MonoBehaviour
             _tempOBJ = Instantiate(buildingSO[type].previewOBJ, new Vector3(groundHit.point.x, groundHit.point.y + _heightOffset, groundHit.point.z), Quaternion.identity);
             _tempOBJ.GetComponent<DraggableObject>().BuildActiontUI = BuildActiontUI;
             _tempOBJ.GetComponent<DraggableObject>().isDrag = true;
-                        _tempOBJ.GetComponent<DraggableObject>().isLongPress= false;
+            _tempOBJ.GetComponent<DraggableObject>().isLongPress = false;
             BuildActiontUI.transform.position = screenCenter;
             BuildActiontUI.SetActive(true);
             BuildTypeUI.SetActive(false);
@@ -58,7 +59,7 @@ public class BuildingPlacer : MonoBehaviour
     //DraggableObject가 보내주는 값 받기
     public void SetTempOBJ(GameObject tempOBJ)
     {
-        _saveBuildingSO = tempOBJ.GetComponent<OwnedBuildSO>().testBaseBuilding;
+        _saveBuildingSO = tempOBJ.GetComponent<BuildingBase>().BuildingData;
         _tempOBJ = tempOBJ;
         _tempOBJ.GetComponent<DraggableObject>().BuildActiontUI = BuildActiontUI;
     }
@@ -93,8 +94,14 @@ public class BuildingPlacer : MonoBehaviour
             arrayBuildPos.GetBuildData(_buildData);
             //배치한 자리에 있는 타일들에 isbuild체크
             _tempOBJ.GetComponent<DraggableObject>().SetTileIsBuild();
+            if (_tempOBJ.GetComponent<DraggableObject>().isLongPress)
+            {
+                // _tempOBJ.GetComponent<DraggableObject>()._tempOBJ
+                //   _tempOBJ.GetComponent<DraggableObject>().ClearTile();
+            }
             gridMap.LoadMap();
             buildMap.LoadBuild();
+             surface.BuildNavMesh();
         }
     }
 
@@ -109,8 +116,8 @@ public class BuildingPlacer : MonoBehaviour
         MoneyUI.SetActive(false);
         BuildUi.SetActive(true);
         buildMap.ColliderAllOn();
-        gridMap.LoadMap();
-        buildMap.LoadBuild();
+     //   gridMap.LoadMap();
+      //  buildMap.LoadBuild();
     }
 
 //타겟 오브젝트 BuildActiontUI가 따라가게 하기

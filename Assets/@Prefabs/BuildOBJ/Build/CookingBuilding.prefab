@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: -2963080551854304020}
   - component: {fileID: 2126580958574472267}
   - component: {fileID: -4384168842452572515}
+  - component: {fileID: -8499625345647531621}
   m_Layer: 7
   m_Name: CookingBuilding
   m_TagString: Untagged
@@ -106,6 +107,8 @@ MonoBehaviour:
   isBuild: 0
   isDrag: 0
   isLongPress: 1
+  TempOBJ: {fileID: 0}
+  TempCollider: []
   buildSize: {x: 4, y: 2}
   tileLayer:
     serializedVersion: 2
@@ -144,3 +147,23 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-8499625345647531621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8605497478126216413}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afdd2e53e85c68545a81dbef8e716bea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BuildingData: {fileID: 11400000, guid: 90dc4d2869e060447b743c61fecefd7f, type: 2}
+  CurrentState: 0
+  assignedAnimal: {fileID: 0}
+  SerialID: 0
+  buildingRenderer: {fileID: 0}
+  defaultColor: {r: 1, g: 1, b: 1, a: 1}
+  readyColor: {r: 0, g: 1, b: 0, a: 1}
+  collectIcon: {fileID: 0}

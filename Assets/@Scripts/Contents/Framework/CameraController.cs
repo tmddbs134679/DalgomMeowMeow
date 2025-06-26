@@ -36,11 +36,11 @@ void Update()
     else if (Input.GetMouseButton(0))
     {
         if (_startedOnUI) return; //  UI 위에서 시작했으면 아예 이동 막기
-
+    if (dragController.isDragging) return;  // 드래그 입력 중이면 카메라 이동 아예 금지
         Vector3 delta = Input.mousePosition - _dragOrigin;
         float dist = Vector2.Distance(Input.mousePosition, _touchStartPos);
 
-        if (dist > _clickThreshold && !dragController.isDragUse)
+        if (dist > _clickThreshold)
         {
             isDragging = true;
             ApplyCameraMove(delta);

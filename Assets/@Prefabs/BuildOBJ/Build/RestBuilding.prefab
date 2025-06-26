@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2851948592429297827}
   - component: {fileID: -4140315742466721826}
   - component: {fileID: 1257781896093366656}
+  - component: {fileID: 6429962510822675972}
   m_Layer: 7
   m_Name: RestBuilding
   m_TagString: Untagged
@@ -106,6 +107,8 @@ MonoBehaviour:
   isBuild: 0
   isDrag: 0
   isLongPress: 1
+  TempOBJ: {fileID: 0}
+  TempCollider: []
   buildSize: {x: 2, y: 1}
   tileLayer:
     serializedVersion: 2
@@ -144,3 +147,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   testBaseBuilding: {fileID: 11400000, guid: 01eba2258983ed548973cbb826fb4d2c, type: 2}
+--- !u!114 &6429962510822675972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4833702243874293581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81202cba88dae1648b2a46f259c62f39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BuildingData: {fileID: 11400000, guid: 01eba2258983ed548973cbb826fb4d2c, type: 2}
+  CurrentState: 0
+  assignedAnimal: {fileID: 0}
+  SerialID: 0
+  buildingRenderer: {fileID: 0}
+  defaultColor: {r: 1, g: 1, b: 1, a: 1}
+  readyColor: {r: 0, g: 1, b: 0, a: 1}
+  collectIcon: {fileID: 0}
