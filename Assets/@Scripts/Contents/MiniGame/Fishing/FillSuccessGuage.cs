@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -34,22 +34,20 @@ public class FillSuccessGuage : MonoBehaviour
 
             if (gauge >= successThreshold)
             {
-                Debug.Log("³¬½Ã ¼º°ø!");
+                Debug.Log("ë‚šì‹œ ì„±ê³µ!");
+                isFishing = false;
                 Success?.Invoke();
 
             }
 
             if (gauge <= 0f)
             {
-                Debug.Log("³¬½Ã ½ÇÆÐ");
+                Fail?.Invoke();
+                isFishing = false;
+                Debug.Log("ë‚šì‹œ ì‹¤íŒ¨");
             }
         }
     }
 
-    public void EndGame()
-    {
-        isFishing = false;
-        Fail?.Invoke();
-
-    }
+    
 }

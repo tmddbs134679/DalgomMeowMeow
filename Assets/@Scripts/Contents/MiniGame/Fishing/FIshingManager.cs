@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 public class FIshingManager : MonoBehaviour
@@ -22,14 +22,19 @@ public class FIshingManager : MonoBehaviour
     }
     void Start()
     {
-        
+        fillGauge.Fail += baitController.StopBait;
+        fillGauge.Fail += fishingRangeController.StopFishing;
         fillGauge.Success += baitController.StopBait;
         fillGauge.Success += fishingRangeController.StopFishing;
 
     }
 
+    
+
     void OnDestroy()
     {
+        fillGauge.Fail -= baitController.StopBait;
+        fillGauge.Fail -= fishingRangeController.StopFishing;
         fillGauge.Success -= baitController.StopBait;
         fillGauge.Success -= fishingRangeController.StopFishing;
     }
