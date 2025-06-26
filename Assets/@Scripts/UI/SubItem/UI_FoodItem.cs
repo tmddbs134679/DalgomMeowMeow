@@ -40,13 +40,12 @@ public class UI_FoodItem : UI_Base
         return true;
     }
 
-    public void SetInfo(Food food, int text)
+    public void SetInfo(Food food)
     {
    
         _food = food;
 
         Sprite spr = Managers.Resource.Load<Sprite>(_food.FoodData.SpriteName);
-        name = text.ToString();
         GetImage((int)Images.FoodImage).sprite = spr;
         GetText((int)Texts.FoodPriceText).text = _food.FoodData.Price.ToString();
        

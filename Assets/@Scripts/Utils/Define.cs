@@ -24,6 +24,8 @@ public class Define
     public static readonly int UI_GROUP_SPACING = 40;
     #endregion
 
+    public static readonly int FOOD_MAX_VALUE = 13;
+
     public enum EUIEvent
     {
         Click,

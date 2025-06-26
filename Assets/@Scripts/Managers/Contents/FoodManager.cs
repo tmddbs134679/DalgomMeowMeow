@@ -5,11 +5,9 @@ using Data;
 public class FoodManager
 {
     
-    //public GameObject[] ServeSlot;
-    //private Image[] _serveSlotImages;
-   // private Queue<Food> _foodQueue = new Queue<Food>();
-    private LinkedList<Food> _foodList = new LinkedList<Food>();
+    public LinkedList<Food> _foodList = new LinkedList<Food>();
     private Dictionary<Food, LinkedListNode<Food>> _nodeMap = new Dictionary<Food, LinkedListNode<Food>>();
+
     //private void Awake()
     //{
     //    SetComponent();

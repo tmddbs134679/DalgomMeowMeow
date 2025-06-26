@@ -59,13 +59,35 @@ public class UI_GameScene : UI_Scene
         Init();
     }
 
+    //음식받는거 Test
+    private void Start()
+    {
+        StartCoroutine(StartCookingLoop());
+    }
+
+    //Test용
+    IEnumerator StartCookingLoop()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(5f);
+            ResetCookItem();
+        }
+    }
     public void OnDestroy()
     {
         if (Managers.Game != null)
             Managers.Game.OnResourcesChagned -= Refresh;
     }
 
+    public void ResetCookItem()
+    {
+        Food food = new Food("F0001");
+        Managers.Food.Enqueue(food);
 
+        UI_FoodItem item = Managers.UI.MakeSubItem<UI_FoodItem>(GetObject((int)GameObjects.StorageObject).transform);
+        item.SetInfo(food);
+    }
 
     public void RemoveSlotAnimated(UI_FoodItem slot)
     {

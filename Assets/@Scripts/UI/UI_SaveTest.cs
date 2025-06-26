@@ -13,39 +13,44 @@ public class UI_SaveTest : MonoBehaviour
     public GameObject storageobj;
 
     // Start is called before the first frame update
-    void Start()
-    {
-        _game = Managers.Game;
-      //  _textMeshPro.text = _game.Gold.ToString();
-        StartCoroutine(StartCookingLoop());
-    }
+    //void Start()
+    //{
+    //    _game = Managers.Game;
+    //  //  _textMeshPro.text = _game.Gold.ToString();
+    //    StartCoroutine(StartCookingLoop());
+    //}
 
 
     #region Cook
 
     public Button CookButton;
 
-    int testcount = 0;
     public void Cook()
     {
-        testcount++;
-        Debug.Log("Cook");
-        Food food = new Food("F0001");
-        Managers.Food.Enqueue(food);
+        //MaxValue값보다 크면 맨앞에 음식 Sale해서 자동판매
+        //if (Managers.Food._foodList.Count > Define.FOOD_MAX_VALUE)
+        //{
+           
+        //}
 
-        UI_FoodItem item = Managers.UI.MakeSubItem<UI_FoodItem>(storageobj.transform);
-        item.SetInfo(food,testcount);
+
+        //Debug.Log("Cook");
+        //Food food = new Food("F0001");
+        //Managers.Food.Enqueue(food);
+
+        //UI_FoodItem item = Managers.UI.MakeSubItem<UI_FoodItem>(storageobj.transform);
+        //item.SetInfo(food);
 
     }
 
-    IEnumerator StartCookingLoop()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(5f);
-            Cook();
-        }
-    }
+    //IEnumerator StartCookingLoop()
+    //{
+    //    while (true)
+    //    {
+    //        yield return new WaitForSeconds(5f);
+    //        Cook();
+    //    }
+    //}
 
     #endregion
     #region SaveTest
