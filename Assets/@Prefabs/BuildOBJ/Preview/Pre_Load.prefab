@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: f26e82ae7b7675942a2a99b8fede81be, type: 2}
+  - {fileID: 2100000, guid: d9637e8ed397d6b4498841099b6a5e71, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -130,9 +130,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BuildActiontUI: {fileID: 0}
+  buildMap: {fileID: 0}
+  buildingplacer: {fileID: 0}
   gridSize: 1
   heightOffset: 0.5
   isBuild: 0
+  isDrag: 0
+  isLongPress: 1
+  TempOBJ: {fileID: 0}
+  TempCollider: []
   buildSize: {x: 1, y: 1}
   tileLayer:
     serializedVersion: 2

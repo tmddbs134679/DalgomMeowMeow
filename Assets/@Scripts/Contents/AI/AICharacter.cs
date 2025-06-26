@@ -38,6 +38,9 @@ public class AICharacter : BaseObject
 
     private bool _isHelloReady = true;
 
+   public Sprite[] sprites;
+    public Sprite sprite;
+
     private void Awake()
     {
         ObjectType = Define.EObjectType.Character;
