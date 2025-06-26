@@ -62,6 +62,5 @@ public class UI_FoodItem : UI_Base
         // gameObject.SetActive(false);
 
         (Managers.UI.SceneUI as UI_GameScene).RemoveSlotAnimated(this);
-         //transform.root.GetComponent<UI_GameScene>().RemoveSlotAnimated(this);
     }
 }
