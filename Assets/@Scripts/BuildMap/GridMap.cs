@@ -22,45 +22,38 @@ public class GridMap : MonoBehaviour
     {
         width = _arrayMapPos.Width;
         height = _arrayMapPos.Height;
-        tile = new GameObject[width, height];
+       tile = new GameObject[width, height];
     }
     void Start()
     {
         GenerateGrid();
     }
 
-    void GenerateGrid()
+  void GenerateGrid()
+{
+    for (int x = 0; x < width; x++)
     {
-        for (int x = 0; x < width; x++)
+        for (int z = 0; z < height; z++)
         {
-            for (int z = 0; z < height; z++)
+            Vector3 pos = new Vector3(x * tileSize, 0f, z * tileSize);
+            GameObject spawnedTile = Instantiate(cube, pos, Quaternion.identity, transform);
+
+            TileObjectData tileData = spawnedTile.GetComponent<TileObjectData>();
+
+            if (_arrayMapPos.GetTile(x, z).isNotBuild || _arrayMapPos.GetTile(x, z).isNotGround)
             {
-                if (_arrayMapPos.GetTile(x, z).isNotBuild || _arrayMapPos.GetTile(x, z).isNotGround)
-                {
-                    tile[x, z] = cube;
-                    tile[x, z].GetComponent<TileObjectData>().color = Color.red;
-                }
-                else
-                {
-                    tile[x, z] = cube;
-                    tile[x, z].GetComponent<TileObjectData>().color = Color.blue;
-                }
-
-                Vector3 pos = new Vector3
-                (
-                    x * tileSize,
-                    0f,
-                    z * tileSize
-                );
-
-                GameObject spawnedTile = Instantiate(tile[x, z], pos, Quaternion.identity, transform);
-                tile[x, z].GetComponent<TileObjectData>().isLoadBuild = !_arrayMapPos.GetTile(x, z).isNotBuild;
-                tile[x, z] = spawnedTile;
+                tileData.color = Color.red;
             }
+            else
+            {
+                tileData.color = Color.blue;
+            }
+
+            tileData.isLoadBuild = !_arrayMapPos.GetTile(x, z).isNotBuild;
+            tile[x, z] = spawnedTile;
         }
-
     }
-
+}
     public void SaveMap()
     {
 

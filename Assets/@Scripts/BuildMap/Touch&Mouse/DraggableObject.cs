@@ -6,10 +6,15 @@ using System;
 public class DraggableObject : MonoBehaviour, IDraggable
 {
     public GameObject BuildActiontUI;
+    public BuildMap buildMap;
+    public BuildingPlacer buildingplacer;
     [SerializeField] private float gridSize = 1f;         // 한 칸 크기
     [SerializeField] private float heightOffset = 0.5f;   // 바닥 위 높이
 
     public bool isBuild;
+    public bool isDrag=false;
+
+    public bool isLongPress = true;
     float offsetx;
     float offsety;
     //드래그 스타트
@@ -25,14 +30,16 @@ public class DraggableObject : MonoBehaviour, IDraggable
     //드래그
     public void OnDrag(Vector3 groundPos)
     {
+        if (isDrag)
+        {
+            Vector3 snappedPos = GetSnappedPosition(groundPos);
+            transform.position = snappedPos;
+            isBuild = CheckTilesUnderBuilding();
 
-        Vector3 snappedPos = GetSnappedPosition(groundPos);
-        transform.position = snappedPos;
-        isBuild = CheckTilesUnderBuilding();
-
-        Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.main, transform.position);
-        if(BuildActiontUI!=null)
-        BuildActiontUI.transform.position = screenPos;
+            Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.main, transform.position);
+            if (BuildActiontUI != null)
+                BuildActiontUI.transform.position = screenPos;
+        }
     }
 
     //드래그 드롭
@@ -40,10 +47,16 @@ public class DraggableObject : MonoBehaviour, IDraggable
 
     public void OnLongPress()
     {
-        Debug.Log("롱프레스 감지!");
-        BuildActiontUI.SetActive(true);
-        Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.main, transform.position);
-        BuildActiontUI.transform.position = screenPos;
+        if (isLongPress)
+        {
+            isDrag = true;
+            Debug.Log("롱프레스 감지!");
+            BuildActiontUI.SetActive(true);
+            Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.main, transform.position);
+            BuildActiontUI.transform.position = screenPos;
+            //건물설치함수 불러오기
+            buildingplacer.SetTempOBJ(gameObject);
+        }
     }
     //그리드 적용 스냅
     private Vector3 GetSnappedPosition(Vector3 targetPos)
