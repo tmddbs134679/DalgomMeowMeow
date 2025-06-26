@@ -24,14 +24,14 @@ namespace Scripts.Contents.AI.FSM.State
 
             character.Controller.PatrolMove(2f);
 
-            if (character.Stat.Stamina <= 29f && character.Controller.FindBuilding(BuildingType.Resting) != null)
+            if (character.Stat.Stamina <= 29f && character.Controller.FindAvailableBuilding(BuildingType.Resting) != null)
             {
                 character.renderer.material.color = Color.red; // 색상 변경
                 character.characterAction.Rest();
                 return;
             }
 
-            if (character.Stat.Stamina >= 30 && character.Controller.FindBuilding(BuildingType.Cooking) != null)
+            if (character.Stat.Stamina >= 30 && character.Controller.FindAvailableBuilding(BuildingType.Cooking) != null)
             {
                 character.characterAction.Cook();
                 character.renderer.material.color = Color.green;
