@@ -35,7 +35,6 @@ namespace Scripts.Contents.AI.FSM.State
             base.OnExit();
             if (character.currentBuilding != null)
             {
-                character.renderer.material.color = Color.white; // 색상 초기화
                 character.OnAnimalLeaved();
                 character.currentBuilding.DisconnectAnimal();
                 character.currentBuilding = null;

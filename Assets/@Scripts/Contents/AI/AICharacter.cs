@@ -17,10 +17,10 @@ public class AICharacter : MonoBehaviour
 
     [HideInInspector]
     public NavMeshAgent nav;
-    [HideInInspector]
-    public Renderer renderer;
+    
     public BuildingBase currentBuilding;
-    private Collider _collider;
+
+    public Animator animator;
 
     [HideInInspector]
     public CharacterAction characterAction;
@@ -47,9 +47,8 @@ public class AICharacter : MonoBehaviour
     private void Init()
     {
         nav = GetComponent<NavMeshAgent>();
-        renderer = GetComponent<Renderer>();
+        animator = GetComponent<Animator>();
         characterAction = GetComponent<CharacterAction>();
-        _collider = GetComponentInChildren<Collider>();
 
         if (runtimeStat != null)
             runtimeStat.OnStatChanged -= ApplyStat;
