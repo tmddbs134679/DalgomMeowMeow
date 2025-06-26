@@ -29,7 +29,7 @@ public class BuildingPlacer : MonoBehaviour
     private bool _isBuild;
 
 
-
+//버튼 이벤트
     public void OnBuild()
     {
         BuildTypeUI.SetActive(true);
@@ -55,11 +55,12 @@ public class BuildingPlacer : MonoBehaviour
             MoneyUI.SetActive(true);
         }
     }
+    //DraggableObject가 보내주는 값 받기
     public void SetTempOBJ(GameObject tempOBJ)
     {
         _saveBuildingSO = tempOBJ.GetComponent<OwnedBuildSO>().testBaseBuilding;
         _tempOBJ = tempOBJ;
-         _tempOBJ.GetComponent<DraggableObject>().BuildActiontUI = BuildActiontUI;
+        _tempOBJ.GetComponent<DraggableObject>().BuildActiontUI = BuildActiontUI;
     }
 
 
@@ -112,7 +113,8 @@ public class BuildingPlacer : MonoBehaviour
         buildMap.LoadBuild();
     }
 
-void Update()
+//타겟 오브젝트 BuildActiontUI가 따라가게 하기
+    void Update()
 {
     if (_tempOBJ != null && BuildActiontUI != null && BuildActiontUI.activeSelf)
     {
