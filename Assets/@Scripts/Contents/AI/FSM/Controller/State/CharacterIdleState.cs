@@ -1,4 +1,4 @@
-using Unity.VisualScripting;
+﻿using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 
@@ -15,6 +15,7 @@ namespace Scripts.Contents.AI.FSM.State
         public override void OnEnter()
         {
             base.OnEnter();
+            character.animator.SetInteger("animation", 21); // Idle 애니메이션 설정
         }
 
         public override void OnUpdate(float deltaTime)
@@ -25,6 +26,7 @@ namespace Scripts.Contents.AI.FSM.State
 
             if (character.Stat.Stamina <= 29f && character.Controller.FindAvailableBuilding(BuildingType.Resting) != null)
             {
+                character.characterAction.Rest();
                 return;
             }
 

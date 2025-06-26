@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,7 +7,7 @@ public class AIManager : MonoBehaviour
     public static AIManager Instance;
 
     public List<AICharacter> AllCharacters  = new List<AICharacter>();
-
+    public Material[] EmotionMaterials;
     public void Awake()
     {
         if (Instance == null)

@@ -1,9 +1,10 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using Scripts.Contents.AI.FSM.State;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.TextCore.Text;
 
 public class AICharacter : MonoBehaviour
 {
@@ -20,7 +21,14 @@ public class AICharacter : MonoBehaviour
     
     public BuildingBase currentBuilding;
 
+    [HideInInspector]
     public Animator animator;
+
+    [HideInInspector]
+    public SkinnedMeshRenderer skinnedMeshRenderer;
+
+    public Material currentEmo;
+    public Material[] emo;
 
     [HideInInspector]
     public CharacterAction characterAction;
@@ -48,7 +56,12 @@ public class AICharacter : MonoBehaviour
     {
         nav = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
+        skinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
         characterAction = GetComponent<CharacterAction>();
+        
+        currentEmo = skinnedMeshRenderer.materials[1];
+        emo = AIManager.Instance.EmotionMaterials;
+
 
         if (runtimeStat != null)
             runtimeStat.OnStatChanged -= ApplyStat;
@@ -149,6 +162,18 @@ public class AICharacter : MonoBehaviour
         AIManager.Instance.Unregister(this);
         Controller?.Dispose();
     }
+
+    public void SetEmotion(int index)
+    {
+        if (emo == null || emo.Length <= index) return;
+
+        currentEmo = emo[index];
+        var mats = skinnedMeshRenderer.materials;
+        mats[1] = emo[index];
+        skinnedMeshRenderer.materials = mats;
+    }
+
+
 
 
 }

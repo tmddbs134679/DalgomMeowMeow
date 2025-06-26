@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
@@ -28,10 +28,16 @@ public class AIController : BaseController<AICharacter>
 
     private void OnActionPerformed(Define.EAIState action)
     {
+        if (action == Define.EAIState.Idle)
+        {
+            ChangeState(nameof(CharacterIdleState));
+            return;
+        }
         var targetPos = FindNearestBuilding(action);
 
         var stateMap = new Dictionary<Define.EAIState, string>
         {
+            { Define.EAIState.MoveTo, nameof(AIMoveToTargetState) },
             { Define.EAIState.Cooking, nameof(CharacterCookState) },
             { Define.EAIState.Playing, nameof(CharacterPlayState) },
             { Define.EAIState.Resting, nameof(CharacterRestState) },
@@ -147,4 +153,5 @@ public class AIController : BaseController<AICharacter>
     }
 
     #endregion
+    
 }
