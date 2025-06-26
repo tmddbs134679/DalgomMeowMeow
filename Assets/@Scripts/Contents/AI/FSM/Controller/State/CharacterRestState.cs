@@ -21,15 +21,17 @@ namespace Scripts.Contents.AI.FSM.State
         public override void OnUpdate(float deltaTime)
         {
             base.OnUpdate(deltaTime);
+            if (character.Stat.Stamina == 100)
+            {
+                character.characterAction.Idle();
+                return;
+            }
+
             if (character.Stat.Stamina <= 100 && elapsedTime > 1)
             {
                 character.UseStamina(-5f);
                 elapsedTime = 0; 
                 return;
-            }
-            if (character.Stat.Stamina == 100)
-            {
-                character.characterAction.Idle(); // Transition to idle state when fully rested
             }
         }
 

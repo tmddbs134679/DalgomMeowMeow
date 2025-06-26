@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.TextCore.Text;
 
-public class AICharacter : MonoBehaviour
+public class AICharacter : BaseObject
 {
     public AIController Controller { get { return _controller; } }
     private AIController _controller;
@@ -40,6 +40,7 @@ public class AICharacter : MonoBehaviour
 
     private void Awake()
     {
+        ObjectType = Define.EObjectType.Character;
     }
 
     private void Start()
@@ -52,7 +53,7 @@ public class AICharacter : MonoBehaviour
         _controller?.OnUpdate(Time.deltaTime);
     }
 
-    private void Init()
+    public override bool Init()
     {
         nav = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
@@ -73,6 +74,8 @@ public class AICharacter : MonoBehaviour
         ApplyStat();
         AIManager.Instance.Register(this);
         ControllerRegister();
+
+        return true;
     }
 
 
@@ -173,6 +176,10 @@ public class AICharacter : MonoBehaviour
         skinnedMeshRenderer.materials = mats;
     }
 
+    public override void OnClick()
+    {
+
+    }
 
 
 

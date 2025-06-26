@@ -676,6 +676,7 @@ MonoBehaviour:
   fillGauge: {fileID: 1404289005}
   baitController: {fileID: 1553145494}
   fishingRangeController: {fileID: 1827321386}
+  isFishing: 0
 --- !u!4 &796779136
 Transform:
   m_ObjectHideFlags: 0
@@ -744,7 +745,7 @@ MonoBehaviour:
   fish: {fileID: 1553145489}
   bar: {fileID: 1827321385}
   guageBar: {fileID: 2022386266}
-  gauge: 0
+  gauge: 30
   successThreshold: 100
   fillSpeed: 10
   decaySpeed: 10

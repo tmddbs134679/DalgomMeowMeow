@@ -1,4 +1,5 @@
 ﻿using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,8 +13,8 @@ public class FillSuccessGuage : MonoBehaviour
     public float decaySpeed = 10f;
     public float SightRange = 10;
     private bool isFishing = true;
-    public event Action Success;
-    public event Action Fail;
+    public event Action Successed;
+    public event Action Failed;
 
     void Update()
     {
@@ -32,20 +33,33 @@ public class FillSuccessGuage : MonoBehaviour
 
             gauge = Mathf.Clamp(gauge, 0f, successThreshold);
 
-            if (gauge >= successThreshold)
-            {
-                Debug.Log("낚시 성공!");
-                isFishing = false;
-                Success?.Invoke();
+            Success();
+            Fail();
 
-            }
 
-            if (gauge <= 0f)
-            {
-                Fail?.Invoke();
-                isFishing = false;
-                Debug.Log("낚시 실패");
-            }
+        }
+    }
+
+    private void Success()
+    {
+        if (gauge >= successThreshold)
+        {
+            Debug.Log("낚시 성공!");
+            isFishing = false;
+            FIshingManager.Instance.isFishing = false;
+            Successed?.Invoke();
+
+        }
+    }
+
+    private void Fail()
+    {
+        if (gauge <= 0f)
+        {
+            isFishing = false;
+            FIshingManager.Instance.isFishing = false;
+            Debug.Log("낚시 실패");
+            Failed?.Invoke();
         }
     }
 
