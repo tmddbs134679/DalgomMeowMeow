@@ -26,7 +26,7 @@ public class QuestManager : MonoBehaviour
         {
             if (quest.State != QuestProgressState.InProgress) continue;
             if (quest.QuestData.Condition.ToString() != conditionType) continue;
-            if (quest.QuestData.TargetId != targetId) continue;
+            if (quest.QuestData.TargetType.ToString() != targetId) continue;
 
             quest.AddProgress();
         }
