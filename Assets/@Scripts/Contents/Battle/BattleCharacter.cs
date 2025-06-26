@@ -186,7 +186,7 @@ public class BattleCharacter : MonoBehaviour
     {
         if (IsDead) return; // 이미 죽은 캐릭터는 데미지를 받지 않음
         Heatlh -= Damage; // 공격력만큼 체력 감소
-        if (Heatlh <= 0)
+        if (Heatlh == 0)
         {
             Invoke(nameof(Die),1f); // 체력이 0 이하가 되면 죽음 처리
             Animator.SetInteger("animation", 0); // 죽음 애니메이션 출력
