@@ -2,6 +2,7 @@ using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using static Define;
@@ -50,7 +51,7 @@ public class UI_GameScene : UI_Scene
 
         GetObject((int)GameObjects.StorageObject).GetComponent<HorizontalLayoutGroup>().spacing = UI_GROUP_SPACING;
         GetButton((int)Buttons.BattleButton).gameObject.BindEvent(OnClickBattleButton);
-
+        GetButton((int)Buttons.BattleButton).GetOrAddComponent<UI_ButtonAnimation>();
 
         Managers.Game.OnResourcesChagned += Refresh;
         Managers.Food.OnFoodAdded += AddFoodSlot;
