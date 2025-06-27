@@ -5,15 +5,13 @@ using UnityEngine;
 public class RestBuilding : BuildingBase
 {
     [SerializeField] private Renderer buildingRenderer;
-    [SerializeField] private Color defaultColor = Color.white;
-    [SerializeField] private Color readyColor = Color.green;
+
     public GameObject collectIcon;
     public override void Init()
     {
         base.Init();
         // collectIcon.SetActive(false);
-        if (buildingRenderer != null)
-            buildingRenderer.material.color = defaultColor;
+
     }
     public override void Produce()
     {
@@ -22,8 +20,7 @@ public class RestBuilding : BuildingBase
 
         // 상태 전이
         CurrentState = BuildingState.ReadyToCollect;
-        // collectIcon.SetActive(true);
-       // buildingRenderer.material.color = readyColor;
+
     }
     public void Collect()
     {
@@ -33,7 +30,7 @@ public class RestBuilding : BuildingBase
         Debug.Log("스테미나 회복");
         CurrentState = BuildingState.Producing;
         // collectIcon.SetActive(false);
-        buildingRenderer.material.color = defaultColor;
+
     }
     public override void OnClick()
     {
