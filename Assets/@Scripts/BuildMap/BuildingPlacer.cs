@@ -20,7 +20,9 @@ public class BuildingPlacer : MonoBehaviour
     public GridMap gridMap;
     public BuildMap buildMap;
     public ArrayBuildPos arrayBuildPos;
-        public NavMeshSurface surface;
+    public NavMeshSurface surface;
+    public bool isSelect = false;
+    public DraggableObject tempDraggleOBJ;
     [SerializeField] private float _heightOffset = 0.5f;
     private GameObject _tempOBJ; //프리뷰 오브젝트
     private BaseBuildingSO _saveBuildingSO;
@@ -29,7 +31,8 @@ public class BuildingPlacer : MonoBehaviour
     private bool _isGold;
     private bool _isBuild;
 
-//버튼 이벤트
+
+    //버튼 이벤트
     public void OnBuild()
     {
         BuildTypeUI.SetActive(true);
@@ -39,6 +42,7 @@ public class BuildingPlacer : MonoBehaviour
     //나중에 list같은걸로 바꿔서 탐색 생각해보기
     public void SelectBuildingType(int type)
     {
+        isSelect = true;
         buildMap.ColliderAllOff();
         Camera cam = Camera.main;
         Vector3 screenCenter = new Vector3(Screen.width / 2f, Screen.height / 2f, cam.nearClipPlane);
@@ -47,6 +51,7 @@ public class BuildingPlacer : MonoBehaviour
         {
             _saveBuildingSO = buildingSO[type];
             _tempOBJ = Instantiate(buildingSO[type].previewOBJ, new Vector3(groundHit.point.x, groundHit.point.y + _heightOffset, groundHit.point.z), Quaternion.identity);
+            tempDraggleOBJ = _tempOBJ.GetComponent<DraggableObject>();
             _tempOBJ.GetComponent<DraggableObject>().BuildActiontUI = BuildActiontUI;
             _tempOBJ.GetComponent<DraggableObject>().isDrag = true;
             _tempOBJ.GetComponent<DraggableObject>().isLongPress = false;
@@ -77,7 +82,7 @@ public class BuildingPlacer : MonoBehaviour
         _isBuild = _tempOBJ.GetComponent<DraggableObject>().isBuild;
     }
 
-    //설치할 장소에 설치
+    //설치할 장소에 설치 ,버튼 이벤트
     public void AcceptBuild()
     {
         CheckBuildMaterials();
@@ -101,32 +106,33 @@ public class BuildingPlacer : MonoBehaviour
             }
             gridMap.LoadMap();
             buildMap.LoadBuild();
-             surface.BuildNavMesh();
+            surface.BuildNavMesh();
         }
     }
 
-    //설치 취소
+    //설치 취소,버튼이벤트
     public void CancelBuild()
     {
+        isSelect = false;
         _tempOBJ.GetComponent<DraggableObject>().isDrag = false;
-                _tempOBJ.GetComponent<DraggableObject>().isDrag =true;
+        _tempOBJ.GetComponent<DraggableObject>().isDrag = true;
         Destroy(_tempOBJ);
         BuildActiontUI.SetActive(false);
         BuildTypeUI.SetActive(false);
         MoneyUI.SetActive(false);
         BuildUi.SetActive(true);
         buildMap.ColliderAllOn();
-     //   gridMap.LoadMap();
-      //  buildMap.LoadBuild();
+        //   gridMap.LoadMap();
+        //  buildMap.LoadBuild();
     }
 
-//타겟 오브젝트 BuildActiontUI가 따라가게 하기
+    //타겟 오브젝트 BuildActiontUI가 따라가게 하기
     void Update()
-{
-    if (_tempOBJ != null && BuildActiontUI != null && BuildActiontUI.activeSelf)
     {
-        Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.main, _tempOBJ.transform.position);
-        BuildActiontUI.transform.position = screenPos;
+        if (_tempOBJ != null && BuildActiontUI != null && BuildActiontUI.activeSelf)
+        {
+            Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.main, _tempOBJ.transform.position);
+            BuildActiontUI.transform.position = screenPos;
+        }
     }
-}
 }
