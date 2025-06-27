@@ -8,7 +8,6 @@ public class CookingBuilding : BuildingBase
     [SerializeField] private Color defaultColor = Color.white;
     [SerializeField] private Color readyColor = Color.green;
     public GameObject collectIcon;
-
     
 
     public override void Init()
@@ -37,7 +36,12 @@ public class CookingBuilding : BuildingBase
         StoredCount++; //  생산 누적
         
         Debug.Log($"요리 완성! 누적 수량: {StoredCount}");
+
+        (Managers.UI.SceneUI as UI_GameScene).ResetCookItem();
+        //QuestManager.Instance.OnEvent(QuestConditionType.Collect, TargetType.Soup);
         
+        
+       // QuestManager.Instance.GiveReward("Soup_10");
         // collectIcon.SetActive(true);
         
         

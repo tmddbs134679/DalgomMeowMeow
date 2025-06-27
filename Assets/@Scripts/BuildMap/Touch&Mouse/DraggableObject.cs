@@ -1,17 +1,29 @@
 using UnityEngine;
 using System;
+using System.Linq;
 /// <summary>
 /// 건물 드래그앤드롭,그리드 스냅,건물 밑 타일 정보 반영
 /// </summary>
 public class DraggableObject : MonoBehaviour, IDraggable
 {
     public GameObject BuildActiontUI;
+    public BuildMap buildMap;
+    public BuildingPlacer buildingplacer;
     [SerializeField] private float gridSize = 1f;         // 한 칸 크기
     [SerializeField] private float heightOffset = 0.5f;   // 바닥 위 높이
 
     public bool isBuild;
+    public bool isDrag=false;
+
+    public bool isLongPress = true;
     float offsetx;
     float offsety;
+private Vector3 _dragOffset;
+
+
+    public GameObject TempOBJ;
+    public Collider[] TempCollider;
+
     //드래그 스타트
     public void OnDragStart(Vector3 hitPos)
     {
@@ -25,13 +37,17 @@ public class DraggableObject : MonoBehaviour, IDraggable
     //드래그
     public void OnDrag(Vector3 groundPos)
     {
+        if (isDrag)
+        {
+Debug.Log("드래그 실행됨 : " + isDrag);
+            Vector3 snappedPos = GetSnappedPosition(groundPos);
+            transform.position = snappedPos;
+            isBuild = CheckTilesUnderBuilding();
 
-        Vector3 snappedPos = GetSnappedPosition(groundPos);
-        transform.position = snappedPos;
-        isBuild = CheckTilesUnderBuilding();
-
-        Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.main, transform.position);
-        BuildActiontUI.transform.position = screenPos;
+            Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.main, transform.position);
+            if (BuildActiontUI != null)
+                BuildActiontUI.transform.position = screenPos;
+        }
     }
 
     //드래그 드롭
@@ -39,10 +55,17 @@ public class DraggableObject : MonoBehaviour, IDraggable
 
     public void OnLongPress()
     {
-        Debug.Log("롱프레스 감지!");
-        BuildActiontUI.SetActive(true);
-        Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.main, transform.position);
-        BuildActiontUI.transform.position = screenPos;
+        if (isLongPress)
+        {
+            isDrag = true;
+            Debug.Log("롱프레스 감지!");
+            BuildActiontUI.SetActive(true);
+            Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.main, transform.position);
+            BuildActiontUI.transform.position = screenPos;
+            //건물설치함수 불러오기
+            buildingplacer.SetTempOBJ(gameObject);
+            CurrentTileAndOBJ();
+        }
     }
     //그리드 적용 스냅
     private Vector3 GetSnappedPosition(Vector3 targetPos)
@@ -77,13 +100,14 @@ public class DraggableObject : MonoBehaviour, IDraggable
         return allcheck == hitColliders.Length;
     }
 
+//타일에 isLoadBuild값 전달후 SetTile()호출해 arrayMapPos맵데이터 갱신
     public void SetTileIsBuild()
     {
         Vector3 center = transform.position + Vector3.down * 0.5f;
         Vector3 halfExtents = new Vector3(buildSize.x / 2.5f, 0.1f, buildSize.y / 2.5f);
 
         Collider[] hitColliders = Physics.OverlapBox(center, halfExtents, Quaternion.identity, tileLayer);
-          foreach (Collider col in hitColliders)
+        foreach (Collider col in hitColliders)
         {
             if (col.CompareTag("Tile"))
             {
@@ -92,6 +116,31 @@ public class DraggableObject : MonoBehaviour, IDraggable
                 tile.SetTile();
             }
         }
+    }
+
+//해당 오브젝트 밑 타일 초기화
+    public void ClearTile()
+    {
+        foreach (Collider col in TempCollider)
+        {
+            if (col.CompareTag("Tile"))
+            {
+                var tile = col.GetComponent<TileObjectData>();
+                tile.isLoadBuild = false;
+                tile.SetTile();
+            }
+        }
+    }
+
+    //현재 오브젝트,그 밑 타일 정보 받기
+    public void CurrentTileAndOBJ()
+    {
+        Vector3 center = transform.position + Vector3.down * 0.5f;
+        Vector3 halfExtents = new Vector3(buildSize.x / 2.5f, 0.1f, buildSize.y / 2.5f);
+
+        Collider[] hitColliders = Physics.OverlapBox(center, halfExtents, Quaternion.identity, tileLayer);
+        TempCollider = hitColliders.ToArray();
+                     TempOBJ = gameObject;
     }
 
     //씬에서 기즈모 보여주기용

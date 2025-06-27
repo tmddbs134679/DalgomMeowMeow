@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
@@ -21,6 +21,7 @@ namespace Scripts.Contents.AI.FSM.State
             base.OnEnter();
             state = Define.EAIState.MoveTo;
             character.Controller.Move(targetPosition);
+            character.animator.SetInteger("animation", 18); // 이동 애니메이션 설정
         }
 
         public override void OnUpdate(float deltaTime)

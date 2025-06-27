@@ -59,21 +59,21 @@ public class UI_GameScene : UI_Scene
         Init();
     }
 
-    //음식받는거 Test
-    private void Start()
-    {
-        StartCoroutine(StartCookingLoop());
-    }
+    ////음식받는거 Test
+    //private void Start()
+    //{
+    //    StartCoroutine(StartCookingLoop());
+    //}
 
-    //Test용
-    IEnumerator StartCookingLoop()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(5f);
-            ResetCookItem();
-        }
-    }
+    ////Test용
+    //IEnumerator StartCookingLoop()
+    //{
+    //    while (true)
+    //    {
+    //        yield return new WaitForSeconds(5f);
+    //        ResetCookItem();
+    //    }
+    //}
     public void OnDestroy()
     {
         if (Managers.Game != null)

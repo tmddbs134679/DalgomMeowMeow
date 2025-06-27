@@ -9,13 +9,18 @@ public class DragController : MonoBehaviour
     private IDraggable currentTarget = null;
     public LayerMask groundLayer;
 
-    public bool isDragUse = false;
 
-    public BuildingPlacer buildingPlacer;
+    public GameObject BuildActiontUI;
+    public GameObject buildMap;
 
     public float longPressThreshold = 1.0f; // 몇 초 이상 눌러야 롱프레스인지
     private bool isPointerDown = false;
     private float pointerDownTimer = 0f;
+
+    private Vector3 dragStartPos;   // 클릭한 화면상의 위치
+public bool isDragging = false;
+    public float dragThreshold = 10f; // 10픽셀 이상 움직이면 드래그로 간주
+
     void Update()
     {
         if (isPointerDown)
@@ -51,50 +56,63 @@ public class DragController : MonoBehaviour
         }
 
         Ray ray = Camera.main.ScreenPointToRay(inputPos);
-        if (began)
+       if (began)
+{
+    isPointerDown = true;
+    pointerDownTimer = 0f;
+
+    if (Physics.Raycast(ray, out var hit))
+    {
+        var draggable = hit.collider.GetComponent<IDraggable>();
+        if (draggable != null)
         {
-            isPointerDown = true;
-            pointerDownTimer = 0f;
-            // 먼저 드래그 대상 체크
-            if (Physics.Raycast(ray, out var hit))
-            {
+            currentTarget = draggable;
+            currentTarget.OnDragStart(hit.point);
 
-                var draggable = hit.collider.GetComponent<IDraggable>();
-                if (draggable != null)
-                {
-                    currentTarget = draggable;
-                    currentTarget.OnDragStart(hit.point);
-                }
-            }
+            // 클릭 위치 저장
+            dragStartPos = inputPos;
+            isDragging = false;
         }
-        else if (moved && currentTarget != null)
+    }
+}
+else if (moved && currentTarget != null)
+{
+    // 아직 드래그 시작 안했으면 거리 체크
+    if (!isDragging)
+    {
+        float dist = Vector2.Distance(inputPos, dragStartPos);
+        if (dist >= dragThreshold)
         {
-            isDragUse = true;
-            // 이번엔 바닥만 체크
-            if (Physics.Raycast(ray, out var groundHit, 1000f, groundLayer))
-            {
-                currentTarget.OnDrag(groundHit.point); // 바닥의 위치 전달
-            }
+            isDragging = true;
         }
-        else if (ended && currentTarget != null)
+    }
+
+    // 드래그 중일 때만 이동
+    if (isDragging)
+    {
+        if (Physics.Raycast(ray, out var groundHit, 1000f, groundLayer))
         {
-            isPointerDown = false;
-            pointerDownTimer = 0f;
-
-            isDragUse = false;
-            currentTarget.OnDragEnd();
-            currentTarget = null;
+            currentTarget.OnDrag(groundHit.point);
         }
+    }
+}
+     else if (ended && currentTarget != null)
+{
+    isPointerDown = false;
+    pointerDownTimer = 0f;
 
+    if (isDragging)
+    {
+        currentTarget.OnDragEnd();
+    }
 
-
-
+    isDragging = false;
+    currentTarget = null;
+}
     }
     private void OnLongPress()
     {
-        // 여기에 열리는 창 코드 넣으면 됨
-        if (currentTarget != null)
-            currentTarget.OnLongPress();
-       // buildingPlacer.GetTempOBJ(currentTarget);
+            if (currentTarget != null)
+                currentTarget.OnLongPress();
     }
 }

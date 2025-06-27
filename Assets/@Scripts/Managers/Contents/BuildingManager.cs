@@ -9,7 +9,7 @@ public class BuildingManager : MonoBehaviour
 
     public List<BuildingBase> _buildings = new();
     
-    public event Action<BuildingType> OnAnimalArrived;
+    public event Action<Define.BuildingType> OnAnimalArrived;
 
     void Awake()
     {

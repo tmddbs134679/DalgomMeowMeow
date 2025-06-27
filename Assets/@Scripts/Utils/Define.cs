@@ -18,7 +18,7 @@ using UnityEngine;
  */
 
 
-public class Define 
+public class Define
 {
     #region UI 
     public static readonly int UI_GROUP_SPACING = 40;
@@ -35,7 +35,7 @@ public class Define
         BeginDrag,
         Drag,
         EndDrag,
-        
+
     }
 
 
@@ -59,7 +59,7 @@ public class Define
         Delivery,
         Collecting,
         Building,
-        
+
     }
 
     public enum EItemType
@@ -89,14 +89,23 @@ public class Define
 
     public enum EBuildingType
     {
-        Cook,
-        PlayGround,
-        Fishing,
-        Rest,
-        Farm,
-        Shop,
-        Road,
-        
+        NONE,
+        COOK,
+        FARM,
+        FISHING,
+        PLAYGROUND,
+        REST,
+        SHOP,
+        STORAGE,
+        LOAD
     }
 
+public enum BuildingType
+{
+    Cooking,
+    Fishing,
+    Resting,
+    Farm,
+    Shop
+}
 }

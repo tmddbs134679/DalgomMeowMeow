@@ -7,7 +7,7 @@ public class BuildingDataSO : ScriptableObject
 {
     public int Id;
     public string BuildingName;
-    public BuildingType BuildingType;
+    public Define.BuildingType BuildingType;
     public float Interval;
     //public ItemSO produceItem;  
     public int UnlockCost;

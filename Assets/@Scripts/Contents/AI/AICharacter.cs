@@ -1,11 +1,12 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using Scripts.Contents.AI.FSM.State;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.TextCore.Text;
 
-public class AICharacter : MonoBehaviour
+public class AICharacter : BaseObject
 {
     public AIController Controller { get { return _controller; } }
     private AIController _controller;
@@ -17,10 +18,17 @@ public class AICharacter : MonoBehaviour
 
     [HideInInspector]
     public NavMeshAgent nav;
-    [HideInInspector]
-    public Renderer renderer;
+    
     public BuildingBase currentBuilding;
-    private Collider _collider;
+
+    [HideInInspector]
+    public Animator animator;
+
+    [HideInInspector]
+    public SkinnedMeshRenderer skinnedMeshRenderer;
+
+    public Material currentEmo;
+    public Material[] emo;
 
     [HideInInspector]
     public CharacterAction characterAction;
@@ -30,8 +38,12 @@ public class AICharacter : MonoBehaviour
 
     private bool _isHelloReady = true;
 
+   public Sprite[] sprites;
+    public Sprite sprite;
+
     private void Awake()
     {
+        ObjectType = Define.EObjectType.Character;
     }
 
     private void Start()
@@ -44,12 +56,16 @@ public class AICharacter : MonoBehaviour
         _controller?.OnUpdate(Time.deltaTime);
     }
 
-    private void Init()
+    public override bool Init()
     {
         nav = GetComponent<NavMeshAgent>();
-        renderer = GetComponent<Renderer>();
+        animator = GetComponent<Animator>();
+        skinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
         characterAction = GetComponent<CharacterAction>();
-        _collider = GetComponentInChildren<Collider>();
+        
+        currentEmo = skinnedMeshRenderer.materials[1];
+        emo = AIManager.Instance.EmotionMaterials;
+
 
         if (runtimeStat != null)
             runtimeStat.OnStatChanged -= ApplyStat;
@@ -61,6 +77,8 @@ public class AICharacter : MonoBehaviour
         ApplyStat();
         AIManager.Instance.Register(this);
         ControllerRegister();
+
+        return true;
     }
 
 
@@ -131,13 +149,13 @@ public class AICharacter : MonoBehaviour
     }
 
 
-    public void GotoRest()
-    {
-        if (runtimeStat.Stamina < 5)
-        {
-            Controller.ChangeState(nameof(CharacterRestState));
-        }
-    }
+    //public void GotoRest()
+    //{
+    //    if (runtimeStat.Stamina < 5)
+    //    {
+    //        Controller.ChangeState(nameof(CharacterRestState));
+    //    }
+    //}
 
     public void OnLevelUp()
     {
@@ -150,6 +168,22 @@ public class AICharacter : MonoBehaviour
         AIManager.Instance.Unregister(this);
         Controller?.Dispose();
     }
+
+    public void SetEmotion(int index)
+    {
+        if (emo == null || emo.Length <= index) return;
+
+        currentEmo = emo[index];
+        var mats = skinnedMeshRenderer.materials;
+        mats[1] = emo[index];
+        skinnedMeshRenderer.materials = mats;
+    }
+
+    public override void OnClick()
+    {
+
+    }
+
 
 
 }
