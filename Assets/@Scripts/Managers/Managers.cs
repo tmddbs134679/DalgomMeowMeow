@@ -11,10 +11,8 @@ public class Managers : MonoBehaviour
     //Contents
     GameManager _game = new GameManager();
     FoodManager _food = new FoodManager();
-    BattleManager _battle = new BattleManager();
     public static GameManager Game { get { return Instance?._game; } }
     public static FoodManager Food { get { return Instance?._food; } }
-    public static BattleManager Battle { get { return Instance?._battle; } }
     //Core
     DataManager _data = new DataManager();
     ResourceManager _resource = new ResourceManager();

@@ -8,11 +8,13 @@ public class TeamController : MonoBehaviour
 
     [SerializeField] private TeamState _currentState;
     [SerializeField] private float _moveSpeed = 2f;
+    private BattleManager _battleManager;
     private List<PlayerCharacter> _members;
 
     private void Awake()
     {
         _members = GetComponentsInChildren<PlayerCharacter>().ToList();
+        _battleManager = GetComponentInParent<BattleManager>();
     }
 
     private void Update()
@@ -24,7 +26,7 @@ public class TeamController : MonoBehaviour
             GameOver();
             return;  // 더 이상 진행하지 않고 함수 종료
         }
-        if(Managers.Battle.Victory)
+        if(_battleManager.Victory)
         {
             _members.ForEach(m => m.Animator.SetInteger("animation", 8));
             return;
