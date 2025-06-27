@@ -156,7 +156,7 @@ public class UI_GameScene : UI_Scene
     #region Battle
     private void OnClickBattleButton()
     {
-        Managers.Scene.LoadScene(EScene.Test_Battle);
+       // Managers.Scene.LoadScene(EScene.Test_Battle);
     }
 
     #endregion
