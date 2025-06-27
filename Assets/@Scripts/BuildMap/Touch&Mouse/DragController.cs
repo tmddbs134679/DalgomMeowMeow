@@ -2,24 +2,21 @@ using UnityEngine;
 
 
 /// <summary>
-/// 드래그 시스템 ,cameracontroller와 상호작용
+/// DraggableObject 관리자 ,cameracontroller와 상호작용
 /// </summary>
 public class DragController : MonoBehaviour
 {
-    private IDraggable currentTarget = null;
     public LayerMask groundLayer;
-
-
     public GameObject BuildActiontUI;
     public GameObject buildMap;
-
     public float longPressThreshold = 1.0f; // 몇 초 이상 눌러야 롱프레스인지
+    public bool isDragging = false;
+    public float dragThreshold = 10f; // 10픽셀 이상 움직이면 드래그로 간주
+
+    private IDraggable currentTarget = null;
     private bool isPointerDown = false;
     private float pointerDownTimer = 0f;
-
     private Vector3 dragStartPos;   // 클릭한 화면상의 위치
-public bool isDragging = false;
-    public float dragThreshold = 10f; // 10픽셀 이상 움직이면 드래그로 간주
 
     void Update()
     {
@@ -56,63 +53,63 @@ public bool isDragging = false;
         }
 
         Ray ray = Camera.main.ScreenPointToRay(inputPos);
-       if (began)
-{
-    isPointerDown = true;
-    pointerDownTimer = 0f;
-
-    if (Physics.Raycast(ray, out var hit))
-    {
-        var draggable = hit.collider.GetComponent<IDraggable>();
-        if (draggable != null)
+        if (began)
         {
-            currentTarget = draggable;
-            currentTarget.OnDragStart(hit.point);
+            isPointerDown = true;
+            pointerDownTimer = 0f;
 
-            // 클릭 위치 저장
-            dragStartPos = inputPos;
+            if (Physics.Raycast(ray, out var hit))
+            {
+                var draggable = hit.collider.GetComponent<IDraggable>();
+                if (draggable != null)
+                {
+                    currentTarget = draggable;
+                    currentTarget.OnDragStart(hit.point);
+
+                    // 클릭 위치 저장
+                    dragStartPos = inputPos;
+                    isDragging = false;
+                }
+            }
+        }
+        else if (moved && currentTarget != null)
+        {
+            // 아직 드래그 시작 안했으면 거리 체크
+            if (!isDragging)
+            {
+                float dist = Vector2.Distance(inputPos, dragStartPos);
+                if (dist >= dragThreshold)
+                {
+                    isDragging = true;
+                }
+            }
+
+            // 드래그 중일 때만 이동
+            if (isDragging)
+            {
+                if (Physics.Raycast(ray, out var groundHit, 1000f, groundLayer))
+                {
+                    currentTarget.OnDrag(groundHit.point);
+                }
+            }
+        }
+        else if (ended && currentTarget != null)
+        {
+            isPointerDown = false;
+            pointerDownTimer = 0f;
+
+            if (isDragging)
+            {
+                currentTarget.OnDragEnd();
+            }
+
             isDragging = false;
+            currentTarget = null;
         }
-    }
-}
-else if (moved && currentTarget != null)
-{
-    // 아직 드래그 시작 안했으면 거리 체크
-    if (!isDragging)
-    {
-        float dist = Vector2.Distance(inputPos, dragStartPos);
-        if (dist >= dragThreshold)
-        {
-            isDragging = true;
-        }
-    }
-
-    // 드래그 중일 때만 이동
-    if (isDragging)
-    {
-        if (Physics.Raycast(ray, out var groundHit, 1000f, groundLayer))
-        {
-            currentTarget.OnDrag(groundHit.point);
-        }
-    }
-}
-     else if (ended && currentTarget != null)
-{
-    isPointerDown = false;
-    pointerDownTimer = 0f;
-
-    if (isDragging)
-    {
-        currentTarget.OnDragEnd();
-    }
-
-    isDragging = false;
-    currentTarget = null;
-}
     }
     private void OnLongPress()
     {
-            if (currentTarget != null)
-                currentTarget.OnLongPress();
+        if (currentTarget != null)
+            currentTarget.OnLongPress();
     }
 }

@@ -8,12 +8,13 @@ public class CameraController : MonoBehaviour
     public Vector2 maxLimit = new Vector2(10, 10);
     public float _clickThreshold = 10f; // Ŭ�� ���� �Ÿ�
 
+    [SerializeField] private DragController dragController;
+     [SerializeField] private BuildingPlacer buildingplacer;
     private Camera _cam;
     private Vector3 _dragOrigin;
     private bool isDragging = false;
     private Vector2 _touchStartPos;
 
-    [SerializeField] private DragController dragController;
     void Start()
     {
         _cam = Camera.main;
@@ -36,7 +37,8 @@ void Update()
     else if (Input.GetMouseButton(0))
     {
         if (_startedOnUI) return; //  UI 위에서 시작했으면 아예 이동 막기
-    if (dragController.isDragging) return;  // 드래그 입력 중이면 카메라 이동 아예 금지
+   // if (buildingplacer.tempDraggleOBJ.isLongPress) return;  // 드래그 입력 중이면 카메라 이동 아예 금지
+    if (buildingplacer.isSelect) return;
         Vector3 delta = Input.mousePosition - _dragOrigin;
         float dist = Vector2.Distance(Input.mousePosition, _touchStartPos);
 

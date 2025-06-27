@@ -11,7 +11,7 @@ public class BuildMap : MonoBehaviour
     public ArrayBuildPos arrayBuildPos;
     public GameObject BuildActiontUI;
 
-        public NavMeshSurface surface;
+    public NavMeshSurface surface;
     public BuildingPlacer buildingplacer;
     private Dictionary<Vector2, GameObject> _spawnedBuilds = new Dictionary<Vector2, GameObject>();
     void Start()
@@ -24,7 +24,7 @@ public class BuildMap : MonoBehaviour
             go.GetComponent<DraggableObject>().buildingplacer = buildingplacer;
             _spawnedBuilds.Add(new Vector2(data.posX, data.posZ), go);
         }
-                             surface.BuildNavMesh();
+        surface.BuildNavMesh();
     }
 
     public void LoadBuild()
@@ -73,5 +73,5 @@ public class BuildMap : MonoBehaviour
             }
         }
     }
-    
+
 }
