@@ -126,12 +126,13 @@ public class AIController : BaseController<AICharacter>
         }
 
         patrolTimer += Time.deltaTime;
+        
 
         if (patrolTimer >= patrolDelay)
         {
             Patrol();
             character.animator.SetInteger("animation", 21);
-            patrolTimer = 0f;
+            patrolTimer = Random.Range(0f,patrolDelay);
         }
     }
 
@@ -158,8 +159,8 @@ public class AIController : BaseController<AICharacter>
                 Random.Range(-range.z, range.z)
             );
 
-            //if (IsNearWorkBuilding(randomPoint))
-            //    continue;
+            if (IsNearWorkBuilding(randomPoint))
+                continue;
 
             if (NavMesh.SamplePosition(randomPoint, out var hit, 1f, areaMask))
                 return hit.position;
@@ -168,16 +169,16 @@ public class AIController : BaseController<AICharacter>
         return origin;
     }
 
-    //private bool IsNearWorkBuilding(Vector3 point)
-    //{
-    //    foreach (var building in BuildingManager.Instance._buildings)
-    //    {
-    //        float distance = Vector3.Distance(building.transform.position, point);
-    //        if (distance < 3f) 
-    //            return true;
-    //    }
-    //    return false;
-    //}
+    private bool IsNearWorkBuilding(Vector3 point)
+    {
+        foreach (var building in BuildingManager.Instance._buildings)
+        {
+            float distance = Vector3.Distance(building.transform.position, point);
+            if (distance < 3f)
+                return true;
+        }
+        return false;
+    }
 
     #endregion
 
