@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
@@ -7,7 +7,7 @@ using Scripts.Contents.AI.FSM.State;
 public class AIController : BaseController<AICharacter>
 {
     protected AICharacter character;
-    private float patrolTimer = 5f;
+    private float patrolTimer = 0f;
 
     public AIController(BaseState<AICharacter> initState, AICharacter aiCharacter)
         : base(initState, aiCharacter)
@@ -132,14 +132,7 @@ public class AIController : BaseController<AICharacter>
         {
             character.animator.SetInteger("animation", 36);
         }
-
-
-        if (patrolTimer >= patrolDelay)
-        {
-            Patrol();
-            character.animator.SetInteger("animation", 21);
-            patrolTimer = Random.Range(0f,patrolDelay);
-        }
+        
     }
 
     private bool HasArrived()
