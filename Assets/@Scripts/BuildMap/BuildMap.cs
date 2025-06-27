@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Unity.AI.Navigation;
 
 /// <summary>
 /// 저장되어있는 데이터맵 가져와서 그리드맵 생성및 타일에 정보전달
@@ -11,6 +11,7 @@ public class BuildMap : MonoBehaviour
     public ArrayBuildPos arrayBuildPos;
     public GameObject BuildActiontUI;
 
+        public NavMeshSurface surface;
     public BuildingPlacer buildingplacer;
     private Dictionary<Vector2, GameObject> _spawnedBuilds = new Dictionary<Vector2, GameObject>();
     void Start()
@@ -23,6 +24,7 @@ public class BuildMap : MonoBehaviour
             go.GetComponent<DraggableObject>().buildingplacer = buildingplacer;
             _spawnedBuilds.Add(new Vector2(data.posX, data.posZ), go);
         }
+                             surface.BuildNavMesh();
     }
 
     public void LoadBuild()

@@ -12,7 +12,7 @@ public enum BuildingState
 
 public abstract class BuildingBase : BaseObject
 {
-    [Header("기본 정보")] public BuildingDataSO BuildingData;
+    [Header("기본 정보")] public BaseBuildingSO BuildingData;
     public BuildingState CurrentState = BuildingState.Locked;
 
     [Header("생산 타이머")] public BuildingTimer Timer;
@@ -23,6 +23,7 @@ public abstract class BuildingBase : BaseObject
     // [Header("동물 배치")]
     //protected Animal assignedAnimal;
 
+    public int SerialID;
     protected virtual void Start()
     {
         if (Timer == null)

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BattleManager : MonoBehaviour
 {
-    public int _enemyCount;
+    public int EnemyCount;
     public bool Victory = false;
 
     private int enemyLayer;
@@ -17,19 +17,19 @@ public class BattleManager : MonoBehaviour
     {
         BattleCharacter[] allCharacters = GetComponentsInChildren<BattleCharacter>();
 
-        _enemyCount = 0;
+        EnemyCount = 0;
         foreach (var character in allCharacters)
         {
             if (character.gameObject.layer == enemyLayer)
-                _enemyCount++;
+                EnemyCount++;
         }
 
-        Debug.Log($"적 유닛 수: {_enemyCount}");
+        Debug.Log($"적 유닛 수: {EnemyCount}");
     }
 
     private void Update()
     {
-        if (_enemyCount == 0)
+        if (EnemyCount == 0)
         {
             Victory = true;
             Debug.Log("모든 적을 처치했습니다! 승리!");

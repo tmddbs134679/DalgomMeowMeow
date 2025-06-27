@@ -17,14 +17,14 @@ public class BuildingPlacerEditor : Editor
         if (GUILayout.Button(" BuildSO 폴더에서 자동 등록"))
         {
             string folderPath = "Assets/@Scripts/BuildMap/ScriptableOBJ/BuildSO";
-            string[] guids = AssetDatabase.FindAssets("t:TestBaseBuilding", new[] { folderPath });
+            string[] guids = AssetDatabase.FindAssets("t:BaseBuildingSO", new[] { folderPath });
 
-            List<TestBaseBuilding> soList = new List<TestBaseBuilding>();
+            List<BaseBuildingSO> soList = new List<BaseBuildingSO>();
 
             foreach (string guid in guids)
             {
                 string path = AssetDatabase.GUIDToAssetPath(guid);
-                TestBaseBuilding so = AssetDatabase.LoadAssetAtPath<TestBaseBuilding>(path);
+                BaseBuildingSO so = AssetDatabase.LoadAssetAtPath<BaseBuildingSO>(path);
                 if (so != null)
                     soList.Add(so);
             }

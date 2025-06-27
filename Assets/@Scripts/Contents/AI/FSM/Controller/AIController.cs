@@ -77,7 +77,7 @@ public class AIController : BaseController<AICharacter>
         return building.transform.position;
     }
 
-    public BuildingBase FindAvailableBuilding(BuildingType type)
+    public BuildingBase FindAvailableBuilding(Define.BuildingType type)
     {
         var allAssigned = new HashSet<BuildingBase>(
             AIManager.Instance.AllCharacters
@@ -91,13 +91,13 @@ public class AIController : BaseController<AICharacter>
             .FirstOrDefault();
     }
 
-    private BuildingType GetBuildingType(Define.EAIState action)
+    private Define.BuildingType GetBuildingType(Define.EAIState action)
     {
         return action switch
         {
-            Define.EAIState.Cooking => BuildingType.Cooking,
-            Define.EAIState.Farming => BuildingType.Farm,
-            Define.EAIState.Resting => BuildingType.Resting,
+            Define.EAIState.Cooking => Define.BuildingType.Cooking,
+            Define.EAIState.Farming => Define.BuildingType.Farm,
+            Define.EAIState.Resting => Define.BuildingType.Resting,
             
         };
     }

@@ -94,13 +94,13 @@ GameObject:
   - component: {fileID: 2330815605618767750}
   - component: {fileID: -1302948204190783537}
   - component: {fileID: 8118418135074648521}
-  - component: {fileID: -7895987294994533258}
+  - component: {fileID: -4672541500331724918}
   m_Layer: 8
   m_Name: Load
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 40
   m_IsActive: 1
 --- !u!4 &2330815605618767750
 Transform:
@@ -138,6 +138,8 @@ MonoBehaviour:
   isBuild: 0
   isDrag: 0
   isLongPress: 1
+  TempOBJ: {fileID: 0}
+  TempCollider: []
   buildSize: {x: 1, y: 1}
   tileLayer:
     serializedVersion: 2
@@ -163,7 +165,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &-7895987294994533258
+--- !u!114 &-4672541500331724918
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
