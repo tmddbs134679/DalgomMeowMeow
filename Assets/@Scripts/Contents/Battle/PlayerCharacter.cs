@@ -4,14 +4,18 @@ using UnityEngine;
 
 public class PlayerCharacter : BattleCharacter
 {
-
+    private BattleManager _battleManager;
+    private void Start()
+    {
+        _battleManager = GetComponentInParent<BattleManager>();
+    }
 
     public void ReturnToStartPosition()
     {
         Vector3 worldTarget = transform.parent.TransformPoint(_originalPosition);
         Agent.isStopped = false; // NavMeshAgent가 이동을 시작할 수 있도록 설정
         Agent.SetDestination(worldTarget);
-        Animator.SetInteger("animation", 4);
+        Animator.SetInteger(AnimationHash, 4);
         HasLookedForward = false; // 시작 위치로 돌아가면 전방을 바라보지 않음
         Agent.speed = MoveSpeed * 3;
     }
@@ -39,7 +43,12 @@ public class PlayerCharacter : BattleCharacter
             time += Time.deltaTime;
             yield return null;
         }
-
         transform.rotation = targetRot;
+    }
+
+    public override void Die()
+    {
+        _battleManager.PlayerCount--;
+        base.Die();
     }
 }
