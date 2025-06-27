@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
@@ -7,7 +7,7 @@ using Scripts.Contents.AI.FSM.State;
 public class AIController : BaseController<AICharacter>
 {
     protected AICharacter character;
-    private float patrolTimer = 0f;
+    private float patrolTimer = 5f;
 
     public AIController(BaseState<AICharacter> initState, AICharacter aiCharacter)
         : base(initState, aiCharacter)
@@ -128,20 +128,18 @@ public class AIController : BaseController<AICharacter>
             character.animator.SetInteger("animation", 21);
             patrolTimer = Random.Range(0f,patrolDelay);
         }
-        if (character.nav.isPathStale)
-        {
-            character.nav.ResetPath();
-            return;
-        }
-
         if (HasArrived())
         {
             character.animator.SetInteger("animation", 36);
         }
 
 
-        
-
+        if (patrolTimer >= patrolDelay)
+        {
+            Patrol();
+            character.animator.SetInteger("animation", 21);
+            patrolTimer = Random.Range(0f,patrolDelay);
+        }
     }
 
     private bool HasArrived()
@@ -182,7 +180,7 @@ public class AIController : BaseController<AICharacter>
         foreach (var building in BuildingManager.Instance._buildings)
         {
             float distance = Vector3.Distance(building.transform.position, point);
-            if (distance < 6f) 
+            if (distance < 3f)
                 return true;
         }
         return false;
