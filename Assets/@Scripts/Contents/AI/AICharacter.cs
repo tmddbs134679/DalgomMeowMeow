@@ -149,13 +149,13 @@ public class AICharacter : BaseObject
     }
 
 
-    public void GotoRest()
-    {
-        if (runtimeStat.Stamina < 5)
-        {
-            Controller.ChangeState(nameof(CharacterRestState));
-        }
-    }
+    //public void GotoRest()
+    //{
+    //    if (runtimeStat.Stamina < 5)
+    //    {
+    //        Controller.ChangeState(nameof(CharacterRestState));
+    //    }
+    //}
 
     public void OnLevelUp()
     {

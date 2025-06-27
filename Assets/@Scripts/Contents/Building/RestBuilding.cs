@@ -23,7 +23,7 @@ public class RestBuilding : BuildingBase
         // 상태 전이
         CurrentState = BuildingState.ReadyToCollect;
         // collectIcon.SetActive(true);
-        buildingRenderer.material.color = readyColor;
+       // buildingRenderer.material.color = readyColor;
     }
     public void Collect()
     {
