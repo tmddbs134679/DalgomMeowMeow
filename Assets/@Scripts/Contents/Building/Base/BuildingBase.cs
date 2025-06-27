@@ -30,10 +30,11 @@ public abstract class BuildingBase : BaseObject
             Init();
     }
 
-    public virtual void Init()
+    public override bool Init()
     {
         Timer = new BuildingTimer(BuildingData.Interval);
         BuildingManager.Instance.Register(this);
+        return true;
     }
 
     public virtual void ConnectToAnimal(AICharacter animal)
