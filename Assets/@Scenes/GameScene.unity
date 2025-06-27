@@ -988,6 +988,7 @@ MonoBehaviour:
   maxLimit: {x: 100, y: 100}
   _clickThreshold: 10
   dragController: {fileID: 1122269750}
+  buildingplacer: {fileID: 810790081}
 --- !u!1 &341606279
 GameObject:
   m_ObjectHideFlags: 0
@@ -2081,11 +2082,11 @@ MonoBehaviour:
   BuildActiontUI: {fileID: 0}
   buildMap: {fileID: 0}
   buildingplacer: {fileID: 0}
-  gridSize: 1
-  heightOffset: 0.5
   isBuild: 0
   isDrag: 0
   isLongPress: 1
+  gridSize: 1
+  heightOffset: 0.5
   TempOBJ: {fileID: 0}
   TempCollider: []
   buildSize: {x: 1, y: 1}
@@ -2140,6 +2141,8 @@ MonoBehaviour:
   buildMap: {fileID: 705452817}
   arrayBuildPos: {fileID: 11400000, guid: a1d860db70299534ea24a139d37c7f21, type: 2}
   surface: {fileID: 475043213}
+  isSelect: 0
+  tempDraggleOBJ: {fileID: 0}
   _heightOffset: 0.5
 --- !u!4 &810790082
 Transform:
