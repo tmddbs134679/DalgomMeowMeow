@@ -8,7 +8,7 @@ public class Stage : MonoBehaviour
 
     private void Update()
     {
-        if(Managers.Game.CurrentStage >= StageNum && !Cleared)
+        if(Managers.Game.CurrentStage > StageNum && !Cleared)
         {
             Cleared = true;
         }
@@ -16,7 +16,7 @@ public class Stage : MonoBehaviour
 
     public void ShowStageInfo()
     {
-        if (Managers.Game.CurrentStage >= StageNum && !Cleared)
+        if (Managers.Game.CurrentStage == StageNum && !Cleared)
         {
             //ui 켜주기
             Debug.Log("Stage " + StageNum + " is available.");
