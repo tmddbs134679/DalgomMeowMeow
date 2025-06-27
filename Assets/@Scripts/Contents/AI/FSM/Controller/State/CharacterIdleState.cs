@@ -15,6 +15,7 @@ namespace Scripts.Contents.AI.FSM.State
         public override void OnEnter()
         {
             base.OnEnter();
+            character.nav.speed = character.Stat.WalkSpeed;
             character.animator.SetInteger("animation", 21); // Idle 애니메이션 설정
         }
 
@@ -22,7 +23,7 @@ namespace Scripts.Contents.AI.FSM.State
         {
             base.OnUpdate(deltaTime);
 
-            character.Controller.PatrolMove(2f);
+            character.Controller.PatrolMove(5f);
 
             if (character.Stat.Stamina <= 29f && character.Controller.FindAvailableBuilding(Define.BuildingType.Resting) != null)
             {

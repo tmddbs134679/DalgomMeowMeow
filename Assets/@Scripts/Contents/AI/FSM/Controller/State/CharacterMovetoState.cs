@@ -4,13 +4,13 @@ using UnityEngine;
 using UnityEngine.TextCore.Text;
 namespace Scripts.Contents.AI.FSM.State
 {
-    public class AIMoveToTargetState : AIState
+    public class CharacterMoveToState : AIState
     {
         private Vector3 targetPosition;
         private Action onArrived;
         private bool isArrived = false;
 
-        public AIMoveToTargetState(Vector3 target, Action onArrivedCallback)
+        public CharacterMoveToState(Vector3 target, Action onArrivedCallback)
         {
             this.targetPosition = target;
             this.onArrived = onArrivedCallback;
@@ -20,6 +20,7 @@ namespace Scripts.Contents.AI.FSM.State
         {
             base.OnEnter();
             state = Define.EAIState.MoveTo;
+            character.nav.speed = character.Stat.MoveSpeed; // 이동 속도 설정
             character.Controller.Move(targetPosition);
             character.animator.SetInteger("animation", 18); // 이동 애니메이션 설정
         }
@@ -31,7 +32,6 @@ namespace Scripts.Contents.AI.FSM.State
             if (Vector3.Distance(character.transform.position, targetPosition) < 2f)
             {
                 isArrived = true;
-                
                 onArrived?.Invoke(); // 도착 콜백 실행
             }
         }

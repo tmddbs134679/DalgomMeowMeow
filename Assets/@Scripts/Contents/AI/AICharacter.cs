@@ -5,6 +5,7 @@ using Scripts.Contents.AI.FSM.State;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.TextCore.Text;
+using UnityEngine.UIElements;
 
 public class AICharacter : BaseObject
 {
@@ -133,9 +134,10 @@ public class AICharacter : BaseObject
         AnimalLeaved?.Invoke(this);
     }
 
-    private void ApplyStat()
+    public void ApplyStat()
     {
         nav.speed = runtimeStat.MoveSpeed;
+       
     }
 
     public void UseStamina(float amount)
@@ -147,15 +149,6 @@ public class AICharacter : BaseObject
         runtimeStat.Stamina = Mathf.Max(0, runtimeStat.Stamina - amount);
         Debug.Log($"Stamina used: {amount}, Remaining: {runtimeStat.Stamina}");
     }
-
-
-    //public void GotoRest()
-    //{
-    //    if (runtimeStat.Stamina < 5)
-    //    {
-    //        Controller.ChangeState(nameof(CharacterRestState));
-    //    }
-    //}
 
     public void OnLevelUp()
     {
@@ -183,6 +176,8 @@ public class AICharacter : BaseObject
     {
 
     }
+
+    
 
 
 
