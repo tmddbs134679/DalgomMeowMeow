@@ -114,9 +114,9 @@ public class AIController : BaseController<AICharacter>
 
     public void PatrolMove(float patrolDelay)
     {
-        if (aiCharacter.nav.isPathStale)
+        if (character.nav.isPathStale)
         {
-            aiCharacter.nav.ResetPath();
+            character.nav.ResetPath();
             return;
         }
 
@@ -126,7 +126,7 @@ public class AIController : BaseController<AICharacter>
         {
             Patrol();
             character.animator.SetInteger("animation", 21);
-            patrolTimer = 0f;
+            patrolTimer = Random.Range(0f,patrolDelay);
         }
         if (character.nav.isPathStale)
         {
