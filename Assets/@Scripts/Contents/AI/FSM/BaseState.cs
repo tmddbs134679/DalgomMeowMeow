@@ -1,4 +1,4 @@
-
+﻿
 
 using UnityEngine;
 
@@ -10,7 +10,7 @@ public abstract class BaseState<T>
     public virtual void Init(T owner) { }
     public virtual void OnEnter()
     {
-        Debug.Log("Enter : " + this.GetType().Name);
+        //Debug.Log("Enter : " + this.GetType().Name);
         elapsedTime = 0f;
     }
 

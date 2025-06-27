@@ -7,7 +7,7 @@ using Scripts.Contents.AI.FSM.State;
 public class AIController : BaseController<AICharacter>
 {
     protected AICharacter character;
-    private float patrolTimer = 0f;
+    private float patrolTimer = 5f;
 
     public AIController(BaseState<AICharacter> initState, AICharacter aiCharacter)
         : base(initState, aiCharacter)
@@ -114,9 +114,14 @@ public class AIController : BaseController<AICharacter>
 
     public void PatrolMove(float patrolDelay)
     {
-        if (aiCharacter.nav.isPathStale)
+        if (HasArrived())
         {
-            aiCharacter.nav.ResetPath();
+            character.animator.SetInteger("animation", 36);
+        }
+
+        if (character.nav.isPathStale)
+        {
+            character.nav.ResetPath();
             return;
         }
 
@@ -128,20 +133,6 @@ public class AIController : BaseController<AICharacter>
             character.animator.SetInteger("animation", 21);
             patrolTimer = 0f;
         }
-        if (character.nav.isPathStale)
-        {
-            character.nav.ResetPath();
-            return;
-        }
-
-        if (HasArrived())
-        {
-            character.animator.SetInteger("animation", 36);
-        }
-
-
-        
-
     }
 
     private bool HasArrived()
@@ -167,8 +158,8 @@ public class AIController : BaseController<AICharacter>
                 Random.Range(-range.z, range.z)
             );
 
-            if (IsNearWorkBuilding(randomPoint))
-                continue;
+            //if (IsNearWorkBuilding(randomPoint))
+            //    continue;
 
             if (NavMesh.SamplePosition(randomPoint, out var hit, 1f, areaMask))
                 return hit.position;
@@ -177,16 +168,16 @@ public class AIController : BaseController<AICharacter>
         return origin;
     }
 
-    private bool IsNearWorkBuilding(Vector3 point)
-    {
-        foreach (var building in BuildingManager.Instance._buildings)
-        {
-            float distance = Vector3.Distance(building.transform.position, point);
-            if (distance < 6f) 
-                return true;
-        }
-        return false;
-    }
+    //private bool IsNearWorkBuilding(Vector3 point)
+    //{
+    //    foreach (var building in BuildingManager.Instance._buildings)
+    //    {
+    //        float distance = Vector3.Distance(building.transform.position, point);
+    //        if (distance < 3f) 
+    //            return true;
+    //    }
+    //    return false;
+    //}
 
     #endregion
 
