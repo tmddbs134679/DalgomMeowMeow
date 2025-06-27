@@ -5,8 +5,6 @@ using UnityEngine;
 public class CookingBuilding : BuildingBase
 {
     [SerializeField] private Renderer buildingRenderer;
-    [SerializeField] private Color defaultColor = Color.white;
-    [SerializeField] private Color readyColor = Color.green;
     public GameObject collectIcon;
 
     
@@ -15,8 +13,6 @@ public class CookingBuilding : BuildingBase
     {
         base.Init();
         // collectIcon.SetActive(false);
-        if (buildingRenderer != null)
-            buildingRenderer.material.color = defaultColor;
     }
 
 
@@ -39,13 +35,8 @@ public class CookingBuilding : BuildingBase
         Debug.Log($"요리 완성! 누적 수량: {StoredCount}");
         QuestManager.Instance.OnEvent(QuestConditionType.Collect, TargetType.Soup);
         
-        
         QuestManager.Instance.GiveReward("Soup_10");
         // collectIcon.SetActive(true);
-        
-        
-        if (buildingRenderer != null)
-            buildingRenderer.material.color = readyColor;
         
     }
     public override void OnClick()
@@ -65,8 +56,6 @@ public class CookingBuilding : BuildingBase
         StoredCount = 0;
         CurrentState = BuildingState.Producing;
         // collectIcon.SetActive(false);
-        if (buildingRenderer != null)
-            buildingRenderer.material.color = defaultColor;
     }
     
     private bool HasRequiredMaterials()
