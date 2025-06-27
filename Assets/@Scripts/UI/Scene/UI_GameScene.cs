@@ -1,6 +1,8 @@
 using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using static Define;
@@ -25,7 +27,7 @@ public class UI_GameScene : UI_Scene
         ShopButton,
         BuildButton,
         EditPosButton,
-
+        BattleButton
     }
 
     enum Texts
@@ -48,43 +50,31 @@ public class UI_GameScene : UI_Scene
         BindText(typeof(Texts));
 
         GetObject((int)GameObjects.StorageObject).GetComponent<HorizontalLayoutGroup>().spacing = UI_GROUP_SPACING;
+        GetButton((int)Buttons.BattleButton).gameObject.BindEvent(OnClickBattleButton);
+        GetButton((int)Buttons.BattleButton).GetOrAddComponent<UI_ButtonAnimation>();
 
         Managers.Game.OnResourcesChagned += Refresh;
+        Managers.Food.OnFoodAdded += AddFoodSlot;
+        Managers.Food.OnFoodSold += RemoveFoodSlot;
+
         Refresh();
 
         return true;
     }
+
+
     private void Awake()
     {
         Init();
     }
-
-    ////음식받는거 Test
-    //private void Start()
-    //{
-    //    StartCoroutine(StartCookingLoop());
-    //}
-
-    ////Test용
-    //IEnumerator StartCookingLoop()
-    //{
-    //    while (true)
-    //    {
-    //        yield return new WaitForSeconds(5f);
-    //        ResetCookItem();
-    //    }
-    //}
     public void OnDestroy()
     {
         if (Managers.Game != null)
             Managers.Game.OnResourcesChagned -= Refresh;
     }
 
-    public void ResetCookItem()
+    public void ResetCookItem(Food food)
     {
-        Food food = new Food("F0001");
-        Managers.Food.Enqueue(food);
-
         UI_FoodItem item = Managers.UI.MakeSubItem<UI_FoodItem>(GetObject((int)GameObjects.StorageObject).transform);
         item.SetInfo(food);
     }
@@ -139,5 +129,35 @@ public class UI_GameScene : UI_Scene
      void Refresh()
     {
         GetText((int)Texts.PlayerGoldText).text = Managers.Game.Gold.ToString();
+
     }
+
+    void AddFoodSlot(Food food)
+    {
+        UI_FoodItem item = Managers.UI.MakeSubItem<UI_FoodItem>(GetObject((int)GameObjects.StorageObject).transform);
+        item.SetInfo(food);
+    }
+
+    void RemoveFoodSlot(Food food)
+    {
+        // 저장소의 자식 중 해당 음식을 가진 슬롯을 찾아서 애니메이션 제거
+        foreach (Transform child in GetObject((int)GameObjects.StorageObject).transform)
+        {
+            var item = child.GetComponent<UI_FoodItem>();
+            if (item != null && item._food == food)
+            {
+                RemoveSlotAnimated(item);
+                break;
+            }
+        }
+    }
+
+
+    #region Battle
+    private void OnClickBattleButton()
+    {
+       Managers.Scene.LoadScene(EScene.Test_Battle);
+    }
+
+    #endregion
 }

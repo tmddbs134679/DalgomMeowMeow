@@ -9,15 +9,14 @@ public class DraggableObject : MonoBehaviour, IDraggable
     public GameObject BuildActiontUI;
     public BuildMap buildMap;
     public BuildingPlacer buildingplacer;
+    public bool isBuild;
+    public bool isDrag=false;
+    public bool isLongPress = true;
     [SerializeField] private float gridSize = 1f;         // 한 칸 크기
     [SerializeField] private float heightOffset = 0.5f;   // 바닥 위 높이
 
-    public bool isBuild;
-    public bool isDrag=false;
-
-    public bool isLongPress = true;
-    float offsetx;
-    float offsety;
+    private float _offsetx;
+    private float _offsety;
 private Vector3 _dragOffset;
 
 
@@ -27,8 +26,8 @@ private Vector3 _dragOffset;
     //드래그 스타트
     public void OnDragStart(Vector3 hitPos)
     {
-        offsetx = (gameObject.transform.localScale.x % 2 == 0) ? (gridSize / 2f) : 0f;
-        offsety = (gameObject.transform.localScale.z % 2 == 0) ? (gridSize / 2f) : 0f;
+        _offsetx = (gameObject.transform.localScale.x % 2 == 0) ? (gridSize / 2f) : 0f;
+        _offsety = (gameObject.transform.localScale.z % 2 == 0) ? (gridSize / 2f) : 0f;
         isBuild = CheckTilesUnderBuilding();
 
 
@@ -70,8 +69,8 @@ Debug.Log("드래그 실행됨 : " + isDrag);
     //그리드 적용 스냅
     private Vector3 GetSnappedPosition(Vector3 targetPos)
     {
-        float x = Mathf.Round(targetPos.x / gridSize) * gridSize + offsetx;
-        float z = Mathf.Round(targetPos.z / gridSize) * gridSize + offsety;
+        float x = Mathf.Round(targetPos.x / gridSize) * gridSize + _offsetx;
+        float z = Mathf.Round(targetPos.z / gridSize) * gridSize + _offsety;
         float y = targetPos.y + heightOffset;
 
         return new Vector3(x, y, z);

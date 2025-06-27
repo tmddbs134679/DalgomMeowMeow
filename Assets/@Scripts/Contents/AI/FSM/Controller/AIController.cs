@@ -6,21 +6,21 @@ using Scripts.Contents.AI.FSM.State;
 
 public class AIController : BaseController<AICharacter>
 {
-    protected AICharacter aiCharacter;
+    protected AICharacter character;
     private float patrolTimer = 0f;
 
     public AIController(BaseState<AICharacter> initState, AICharacter aiCharacter)
         : base(initState, aiCharacter)
     {
-        this.aiCharacter = aiCharacter;
+        this.character = aiCharacter;
         aiCharacter.characterAction.OnAction += OnActionPerformed;
     }
 
     public void Dispose()
     {
-        if (aiCharacter?.characterAction != null)
+        if (character?.characterAction != null)
         {
-            aiCharacter.characterAction.OnAction -= OnActionPerformed;
+            character.characterAction.OnAction -= OnActionPerformed;
         }
     }
 
@@ -37,7 +37,7 @@ public class AIController : BaseController<AICharacter>
 
         var stateMap = new Dictionary<Define.EAIState, string>
         {
-            { Define.EAIState.MoveTo, nameof(AIMoveToTargetState) },
+            { Define.EAIState.MoveTo, nameof(CharacterMoveToState) },
             { Define.EAIState.Cooking, nameof(CharacterCookState) },
             { Define.EAIState.Playing, nameof(CharacterPlayState) },
             { Define.EAIState.Resting, nameof(CharacterRestState) },
@@ -45,7 +45,7 @@ public class AIController : BaseController<AICharacter>
             { Define.EAIState.Building, nameof(CharacterBuildingState) }
         };
 
-        var moveState = new AIMoveToTargetState(targetPos, () =>
+        var moveState = new CharacterMoveToState(targetPos, () =>
         {
             if (stateMap.TryGetValue(action, out var nextState))
             {
@@ -53,7 +53,7 @@ public class AIController : BaseController<AICharacter>
             }
         });
 
-        RegisterState(moveState, aiCharacter);
+        RegisterState(moveState, character);
         ChangeState(moveState.GetType().Name);
     }
 
@@ -66,12 +66,12 @@ public class AIController : BaseController<AICharacter>
         var type = GetBuildingType(action);
         var building = FindAvailableBuilding(type);
 
-        aiCharacter.currentBuilding = building;
+        character.currentBuilding = building;
 
         if (building == null)
         {
             Debug.LogWarning($"[{type}] 타입 건물을 찾을 수 없습니다.");
-            return aiCharacter.transform.position;
+            return character.transform.position;
         }
 
         return building.transform.position;
@@ -87,7 +87,7 @@ public class AIController : BaseController<AICharacter>
 
         return BuildingManager.Instance._buildings
             .Where(b => b.BuildingData.BuildingType == type && !allAssigned.Contains(b))
-            .OrderBy(b => Vector3.Distance(b.transform.position, aiCharacter.transform.position))
+            .OrderBy(b => Vector3.Distance(b.transform.position, character.transform.position))
             .FirstOrDefault();
     }
 
@@ -108,15 +108,15 @@ public class AIController : BaseController<AICharacter>
 
     public void Move(Vector3 destination)
     {
-        aiCharacter.nav.ResetPath();
-        aiCharacter.nav.SetDestination(destination);
+        character.nav.ResetPath();
+        character.nav.SetDestination(destination);
     }
 
     public void PatrolMove(float patrolDelay)
     {
-        if (aiCharacter.nav.isPathStale)
+        if (character.nav.isPathStale)
         {
-            aiCharacter.nav.ResetPath();
+            character.nav.ResetPath();
             return;
         }
 
@@ -125,14 +125,27 @@ public class AIController : BaseController<AICharacter>
         if (patrolTimer >= patrolDelay)
         {
             Patrol();
-            patrolTimer = 0f;
+            character.animator.SetInteger("animation", 21);
+            patrolTimer = Random.Range(0f,patrolDelay);
         }
+        if (HasArrived())
+        {
+            character.animator.SetInteger("animation", 36);
+        }
+        
+    }
+
+    private bool HasArrived()
+    {
+        return !character.nav.pathPending &&
+               character.nav.remainingDistance <= character.nav.stoppingDistance &&
+               (!character.nav.hasPath || character.nav.velocity.sqrMagnitude == 0f);
     }
 
     private void Patrol()
     {
-        var destination = GetRandomNavPosition(aiCharacter.transform.position, new Vector3(10f, 0f, 10f));
-        aiCharacter.nav.SetDestination(destination);
+        var destination = GetRandomNavPosition(character.transform.position, new Vector3(10f, 0f, 10f));
+        character.nav.SetDestination(destination);
     }
 
     private Vector3 GetRandomNavPosition(Vector3 origin, Vector3 range, int areaMask = NavMesh.AllAreas)
@@ -145,6 +158,9 @@ public class AIController : BaseController<AICharacter>
                 Random.Range(-range.z, range.z)
             );
 
+            if (IsNearWorkBuilding(randomPoint))
+                continue;
+
             if (NavMesh.SamplePosition(randomPoint, out var hit, 1f, areaMask))
                 return hit.position;
         }
@@ -152,6 +168,17 @@ public class AIController : BaseController<AICharacter>
         return origin;
     }
 
+    private bool IsNearWorkBuilding(Vector3 point)
+    {
+        foreach (var building in BuildingManager.Instance._buildings)
+        {
+            float distance = Vector3.Distance(building.transform.position, point);
+            if (distance < 3f)
+                return true;
+        }
+        return false;
+    }
+
     #endregion
-    
+
 }

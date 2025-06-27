@@ -75,6 +75,18 @@ public class CharacterStatSo : ScriptableObject
             OnStatChanged?.Invoke();
         }
     }
+    [SerializeField]
+    private float walkSpeed;
+    public float WalkSpeed
+    {
+        get => walkSpeed;
+        set
+        {
+            if (Mathf.Approximately(walkSpeed, value)) return;
+            walkSpeed = value;
+            OnStatChanged?.Invoke();
+        }
+    }
 
     public float HpRate;
     public float AtkRate;

@@ -5,7 +5,7 @@ using UnityEngine;
 
 //SO를 일단은TestBaseBuilding로 다 해뒀지만 나중에 다 분류 시켜야함 상속받아서
     /// <summary>
-    /// building쪽과 합쳐야함
+    /// 
     /// </summary>
 [CreateAssetMenu(menuName = "Map/BuildOBJ")]
 public class BaseBuildingSO : ScriptableObject

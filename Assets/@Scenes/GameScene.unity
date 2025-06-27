@@ -190,7 +190,7 @@ Transform:
   m_GameObject: {fileID: 88425324}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -7.03}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -988,6 +988,7 @@ MonoBehaviour:
   maxLimit: {x: 100, y: 100}
   _clickThreshold: 10
   dragController: {fileID: 1122269750}
+  buildingplacer: {fileID: 810790081}
 --- !u!1 &341606279
 GameObject:
   m_ObjectHideFlags: 0
@@ -2081,11 +2082,11 @@ MonoBehaviour:
   BuildActiontUI: {fileID: 0}
   buildMap: {fileID: 0}
   buildingplacer: {fileID: 0}
-  gridSize: 1
-  heightOffset: 0.5
   isBuild: 0
   isDrag: 0
   isLongPress: 1
+  gridSize: 1
+  heightOffset: 0.5
   TempOBJ: {fileID: 0}
   TempCollider: []
   buildSize: {x: 1, y: 1}
@@ -2140,6 +2141,8 @@ MonoBehaviour:
   buildMap: {fileID: 705452817}
   arrayBuildPos: {fileID: 11400000, guid: a1d860db70299534ea24a139d37c7f21, type: 2}
   surface: {fileID: 475043213}
+  isSelect: 0
+  tempDraggleOBJ: {fileID: 0}
   _heightOffset: 0.5
 --- !u!4 &810790082
 Transform:
@@ -3966,10 +3969,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 88425325}
     m_Modifications:
-    - target: {fileID: 1511850246826520989, guid: b956d6403e05acb459718ab6e5bfa0ca, type: 3}
-      propertyPath: m_Radius
-      value: 0.2
-      objectReference: {fileID: 0}
     - target: {fileID: 1621506531977595474, guid: b956d6403e05acb459718ab6e5bfa0ca, type: 3}
       propertyPath: m_LocalPosition.x
       value: 33.57
@@ -3980,7 +3979,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1621506531977595474, guid: b956d6403e05acb459718ab6e5bfa0ca, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 23.46945
+      value: 27.37
       objectReference: {fileID: 0}
     - target: {fileID: 1621506531977595474, guid: b956d6403e05acb459718ab6e5bfa0ca, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4014,10 +4013,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Chibi_Cat_04
       objectReference: {fileID: 0}
-    - target: {fileID: 2238306026886400575, guid: b956d6403e05acb459718ab6e5bfa0ca, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4031,17 +4026,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 88425325}
     m_Modifications:
-    - target: {fileID: 2273055449766673766, guid: 276cf8fdcf689264e9477007bf2860d4, type: 3}
-      propertyPath: m_Radius
-      value: 0.2
-      objectReference: {fileID: 0}
     - target: {fileID: 2316861884929766533, guid: 276cf8fdcf689264e9477007bf2860d4, type: 3}
       propertyPath: m_Name
       value: Chibi_Cat_09
-      objectReference: {fileID: 0}
-    - target: {fileID: 2316861884929766533, guid: 276cf8fdcf689264e9477007bf2860d4, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3568158765184224312, guid: 276cf8fdcf689264e9477007bf2860d4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4053,7 +4040,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3568158765184224312, guid: 276cf8fdcf689264e9477007bf2860d4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 23.46945
+      value: 27.37
       objectReference: {fileID: 0}
     - target: {fileID: 3568158765184224312, guid: 276cf8fdcf689264e9477007bf2860d4, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4096,13 +4083,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 88425325}
     m_Modifications:
-    - target: {fileID: 2935177143162475713, guid: 5e13e3fe948c9cd4d85ffcd5edde8eab, type: 3}
-      propertyPath: m_Radius
-      value: 0.2
-      objectReference: {fileID: 0}
     - target: {fileID: 5193158137807385203, guid: 5e13e3fe948c9cd4d85ffcd5edde8eab, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 31.91
+      value: 22.43
       objectReference: {fileID: 0}
     - target: {fileID: 5193158137807385203, guid: 5e13e3fe948c9cd4d85ffcd5edde8eab, type: 3}
       propertyPath: m_LocalPosition.y
@@ -4110,7 +4093,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5193158137807385203, guid: 5e13e3fe948c9cd4d85ffcd5edde8eab, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 23.46945
+      value: 27.37
       objectReference: {fileID: 0}
     - target: {fileID: 5193158137807385203, guid: 5e13e3fe948c9cd4d85ffcd5edde8eab, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4144,10 +4127,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Chibi_Cat_03
       objectReference: {fileID: 0}
-    - target: {fileID: 6811736022444166547, guid: 5e13e3fe948c9cd4d85ffcd5edde8eab, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4171,7 +4150,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2613739434252123587, guid: 48cf40e75c1148c4fa7a3620bf658120, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 23.46945
+      value: 27.37
       objectReference: {fileID: 0}
     - target: {fileID: 2613739434252123587, guid: 48cf40e75c1148c4fa7a3620bf658120, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4201,17 +4180,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3303572879007444826, guid: 48cf40e75c1148c4fa7a3620bf658120, type: 3}
-      propertyPath: m_Radius
-      value: 0.2
-      objectReference: {fileID: 0}
     - target: {fileID: 8641021785801605083, guid: 48cf40e75c1148c4fa7a3620bf658120, type: 3}
       propertyPath: m_Name
       value: Chibi_Cat_08
-      objectReference: {fileID: 0}
-    - target: {fileID: 8641021785801605083, guid: 48cf40e75c1148c4fa7a3620bf658120, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4383,13 +4354,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 88425325}
     m_Modifications:
-    - target: {fileID: 297758912077806780, guid: ae6bef5ef14a4be47ada373a0e5263ff, type: 3}
-      propertyPath: m_Radius
-      value: 0.2
-      objectReference: {fileID: 0}
     - target: {fileID: 1277690978205918961, guid: ae6bef5ef14a4be47ada373a0e5263ff, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 30.66
+      value: 21.18
       objectReference: {fileID: 0}
     - target: {fileID: 1277690978205918961, guid: ae6bef5ef14a4be47ada373a0e5263ff, type: 3}
       propertyPath: m_LocalPosition.y
@@ -4397,7 +4364,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1277690978205918961, guid: ae6bef5ef14a4be47ada373a0e5263ff, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 23.46945
+      value: 27.37
       objectReference: {fileID: 0}
     - target: {fileID: 1277690978205918961, guid: ae6bef5ef14a4be47ada373a0e5263ff, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4431,10 +4398,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Chibi_Cat_02
       objectReference: {fileID: 0}
-    - target: {fileID: 5341990386987376205, guid: ae6bef5ef14a4be47ada373a0e5263ff, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4458,7 +4421,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 428371881098122189, guid: 3cb09d6169e2429468cbd493d1f71932, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 23.46945
+      value: 27.37
       objectReference: {fileID: 0}
     - target: {fileID: 428371881098122189, guid: 3cb09d6169e2429468cbd493d1f71932, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4488,10 +4451,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 728401021593921195, guid: 3cb09d6169e2429468cbd493d1f71932, type: 3}
-      propertyPath: m_Radius
-      value: 0.2
-      objectReference: {fileID: 0}
     - target: {fileID: 6537046835808608022, guid: 3cb09d6169e2429468cbd493d1f71932, type: 3}
       propertyPath: m_Name
       value: Chibi_Cat_01
@@ -4513,14 +4472,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Chibi_Cat_05
       objectReference: {fileID: 0}
-    - target: {fileID: 4363187539873512940, guid: c73671a8f542c3844bee96710db6232e, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5441928859284059349, guid: c73671a8f542c3844bee96710db6232e, type: 3}
-      propertyPath: m_Radius
-      value: 0.2
-      objectReference: {fileID: 0}
     - target: {fileID: 8607748168920803896, guid: c73671a8f542c3844bee96710db6232e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 35.19
@@ -4531,7 +4482,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8607748168920803896, guid: c73671a8f542c3844bee96710db6232e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 23.46945
+      value: 27.37
       objectReference: {fileID: 0}
     - target: {fileID: 8607748168920803896, guid: c73671a8f542c3844bee96710db6232e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4574,17 +4525,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 88425325}
     m_Modifications:
-    - target: {fileID: 5530647651613571468, guid: 49c4edf50b386d948a61cc5991ca5b3a, type: 3}
-      propertyPath: m_Radius
-      value: 0.2
-      objectReference: {fileID: 0}
     - target: {fileID: 6817297719752182167, guid: 49c4edf50b386d948a61cc5991ca5b3a, type: 3}
       propertyPath: m_Name
       value: Chibi_Cat_06
-      objectReference: {fileID: 0}
-    - target: {fileID: 6817297719752182167, guid: 49c4edf50b386d948a61cc5991ca5b3a, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8106798835701151824, guid: 49c4edf50b386d948a61cc5991ca5b3a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4596,7 +4539,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8106798835701151824, guid: 49c4edf50b386d948a61cc5991ca5b3a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 23.46945
+      value: 27.37
       objectReference: {fileID: 0}
     - target: {fileID: 8106798835701151824, guid: 49c4edf50b386d948a61cc5991ca5b3a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4643,14 +4586,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Chibi_Cat_07
       objectReference: {fileID: 0}
-    - target: {fileID: 3978044340140946891, guid: 94516366fabbc6b4492a99a9c7f3d98c, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8019775489991451879, guid: 94516366fabbc6b4492a99a9c7f3d98c, type: 3}
-      propertyPath: m_Radius
-      value: 0.2
-      objectReference: {fileID: 0}
     - target: {fileID: 8215958139265948205, guid: 94516366fabbc6b4492a99a9c7f3d98c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 38.53
@@ -4661,7 +4596,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8215958139265948205, guid: 94516366fabbc6b4492a99a9c7f3d98c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 23.46945
+      value: 27.37
       objectReference: {fileID: 0}
     - target: {fileID: 8215958139265948205, guid: 94516366fabbc6b4492a99a9c7f3d98c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4714,7 +4649,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2277435487338858169, guid: b70687a5d94874148b7971e4ea0cd318, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 23.46945
+      value: 27.37
       objectReference: {fileID: 0}
     - target: {fileID: 2277435487338858169, guid: b70687a5d94874148b7971e4ea0cd318, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4744,17 +4679,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5444490966934316598, guid: b70687a5d94874148b7971e4ea0cd318, type: 3}
-      propertyPath: m_Radius
-      value: 0.2
-      objectReference: {fileID: 0}
     - target: {fileID: 8175700719731105567, guid: b70687a5d94874148b7971e4ea0cd318, type: 3}
       propertyPath: m_Name
       value: Chibi_Cat_10
-      objectReference: {fileID: 0}
-    - target: {fileID: 8175700719731105567, guid: b70687a5d94874148b7971e4ea0cd318, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

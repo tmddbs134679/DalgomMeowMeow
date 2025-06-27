@@ -188,8 +188,9 @@ public class BattleCharacter : MonoBehaviour
         Heatlh -= Damage; // 공격력만큼 체력 감소
         if (Heatlh == 0)
         {
-            Invoke(nameof(Die),1f); // 체력이 0 이하가 되면 죽음 처리
-            Animator.SetInteger("animation", 0); // 죽음 애니메이션 출력
+            Die();
+            foreach (var col in GetComponentsInChildren<Collider>())
+                col.enabled = false; // ← 탐지 방지
         }
         else
         {
@@ -210,6 +211,11 @@ public class BattleCharacter : MonoBehaviour
         OnCharacterDied?.Invoke(this);
         Agent.isStopped = true;
 
+        Animator.SetInteger("animation", 0); // 죽음 애니메이션 출력
+    }
+
+    public void SetOff()
+    {
         gameObject.SetActive(false); // 또는 Destroy(gameObject);
     }
 

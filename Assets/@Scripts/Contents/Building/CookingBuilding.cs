@@ -35,7 +35,8 @@ public class CookingBuilding : BuildingBase
         
         Debug.Log($"요리 완성! 누적 수량: {StoredCount}");
 
-        (Managers.UI.SceneUI as UI_GameScene).ResetCookItem();
+        Managers.Food.MakeFood();
+        //(Managers.UI.SceneUI as UI_GameScene).ResetCookItem();
         //QuestManager.Instance.OnEvent(QuestConditionType.Collect, TargetType.Soup);
         
         

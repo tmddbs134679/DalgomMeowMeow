@@ -22,38 +22,38 @@ public class GridMap : MonoBehaviour
     {
         width = _arrayMapPos.Width;
         height = _arrayMapPos.Height;
-       tile = new GameObject[width, height];
+        tile = new GameObject[width, height];
     }
     void Start()
     {
         GenerateGrid();
     }
 
-  void GenerateGrid()
-{
-    for (int x = 0; x < width; x++)
+    void GenerateGrid()
     {
-        for (int z = 0; z < height; z++)
+        for (int x = 0; x < width; x++)
         {
-            Vector3 pos = new Vector3(x * tileSize, 0f, z * tileSize);
-            GameObject spawnedTile = Instantiate(cube, pos, Quaternion.identity, transform);
-
-            TileObjectData tileData = spawnedTile.GetComponent<TileObjectData>();
-
-            if (_arrayMapPos.GetTile(x, z).isNotBuild || _arrayMapPos.GetTile(x, z).isNotGround)
+            for (int z = 0; z < height; z++)
             {
-                tileData.color = Color.red;
-            }
-            else
-            {
-                tileData.color = Color.blue;
-            }
+                Vector3 pos = new Vector3(x * tileSize, 0f, z * tileSize);
+                GameObject spawnedTile = Instantiate(cube, pos, Quaternion.identity, transform);
 
-            tileData.isLoadBuild = !_arrayMapPos.GetTile(x, z).isNotBuild;
-            tile[x, z] = spawnedTile;
+                TileObjectData tileData = spawnedTile.GetComponent<TileObjectData>();
+
+                if (_arrayMapPos.GetTile(x, z).isNotBuild || _arrayMapPos.GetTile(x, z).isNotGround)
+                {
+                    tileData.color = Color.red;
+                }
+                else
+                {
+                    tileData.color = Color.blue;
+                }
+
+                tileData.isLoadBuild = !_arrayMapPos.GetTile(x, z).isNotBuild;
+                tile[x, z] = spawnedTile;
+            }
         }
     }
-}
     public void SaveMap()
     {
 
