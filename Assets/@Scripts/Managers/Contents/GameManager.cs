@@ -10,7 +10,7 @@ using UnityEngine.Experimental.Rendering;
 [Serializable]
 public class GameData
 {
-    public int Gold = 0;
+    public float Gold = 0;
 
     //public List <캐릭터들>
     public List<BuildingBase> Buildings = new List<BuildingBase>();
@@ -53,7 +53,7 @@ public class GameManager
         }
     }
 
-    public int Gold
+    public float Gold
     {
         get { return _gameData.Gold; }
         set

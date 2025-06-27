@@ -2,30 +2,42 @@
 using UnityEngine;
 using UnityEngine.UI;
 using Data;
+using System;
+
 public class FoodManager
 {
     
     public LinkedList<Food> _foodList = new LinkedList<Food>();
     private Dictionary<Food, LinkedListNode<Food>> _nodeMap = new Dictionary<Food, LinkedListNode<Food>>();
 
-    //private void Awake()
-    //{
-    //    SetComponent();
-    //}
+    #region Action
 
-    //private void SetComponent()
-    //{
-    //    _serveSlotImages = new Image[ServeSlot.Length];
-    //    for (int i = 0; i < ServeSlot.Length; i++)
-    //    {
-    //        _serveSlotImages[i] = ServeSlot[i].GetComponent<Image>();
-    //    }
-    //}
+    public event Action<Food> OnFoodAdded;
+    public event Action<Food> OnFoodSold;
+
+    #endregion
 
     public void Enqueue(Food food)
     {
         var node = _foodList.AddLast(food);
         _nodeMap[food] = node;
+
+        OnFoodAdded?.Invoke(food);
+
+
+        if (_foodList.Count > Define.FOOD_MAX_VALUE)
+        {
+            var first = _foodList.First;
+            if (first != null)
+            {
+                Food soldFood = first.Value;
+                soldFood.FoodData.Price = Mathf.FloorToInt(soldFood.FoodData.Price * 0.5f);
+                Cancel(soldFood);
+
+                Managers.Game.Gold += soldFood.FoodData.Price;
+                OnFoodSold?.Invoke(soldFood); 
+            }
+        }
     }
 
     public void Cancel(Food food)
@@ -34,56 +46,17 @@ public class FoodManager
         {
             _foodList.Remove(node);
             _nodeMap.Remove(food);
+
+            OnFoodSold?.Invoke(food);
         }
     }
-    //public Food Dequeue()
-    //{
-    //    if (_foodQueue.Count == 0)
-    //    {
-    //        Debug.Log("Empty!");
-    //        return null;
-    //    }
-    //    var food = _foodQueue.Dequeue();
-    //   // SetSprite();
-    //    return food;
-    //}
 
-    
-    //public void SetSprite()
-    //{
-    //    int index = 0;
-    //    foreach(var food in _foodQueue)
-    //    {
-    //        if(index >= ServeSlot.Length)
-    //            break;
 
-    //        _serveSlotImages[index].sprite = food.Icon;
-    //        ServeSlot[index].SetActive(true);
-    //        index++;
-    //    }
+    public void MakeFood()
+    {
+        Food food = new Food("F0001");
+        Enqueue(food);
+    }
 
-    //    for (; index < ServeSlot.Length; index++)
-    //    {
-    //        ServeSlot[index].SetActive(false);
-    //    }
-    //}
-
-    //[ContextMenu("큐 확인")]
-    //public void QueueCheck()
-    //{
-        
-    //}
-    //public void SlotOff()
-    //{
-    //    foreach (var slot in ServeSlot)
-    //    {
-    //        slot.SetActive(false);
-    //    }
-    //}
-
-    //public void Clear()
-    //{
-    //    _foodQueue.Clear();
-    //    SlotOff();
-    //}
+    // TODO : cook된거 데이터를 받아오던 랜덤을 받아오던 여기서 처리 
 }
