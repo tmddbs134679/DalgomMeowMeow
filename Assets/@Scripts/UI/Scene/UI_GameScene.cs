@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,7 +26,7 @@ public class UI_GameScene : UI_Scene
         ShopButton,
         BuildButton,
         EditPosButton,
-
+        BattleButton
     }
 
     enum Texts
@@ -48,12 +49,20 @@ public class UI_GameScene : UI_Scene
         BindText(typeof(Texts));
 
         GetObject((int)GameObjects.StorageObject).GetComponent<HorizontalLayoutGroup>().spacing = UI_GROUP_SPACING;
+        GetButton((int)Buttons.BattleButton).gameObject.BindEvent(OnClickBattleButton);
+
 
         Managers.Game.OnResourcesChagned += Refresh;
         Refresh();
 
         return true;
     }
+
+    private void OnClickBattleButton()
+    {
+        Managers.Scene.LoadScene(EScene.Test_Battle);
+    }
+
     private void Awake()
     {
         Init();
