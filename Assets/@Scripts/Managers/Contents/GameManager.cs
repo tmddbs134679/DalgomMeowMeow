@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+ï»¿using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,7 +12,7 @@ public class GameData
 {
     public int Gold = 0;
 
-    //public List <Ä³¸¯ÅÍµé>
+    //public List <ìºë¦­í„°ë“¤>
     public List<BuildingBase> Buildings = new List<BuildingBase>();
     public List<AICharacter> Characters = new List<AICharacter>();  
 }
@@ -23,6 +23,9 @@ public class GameManager
     public GameData _gameData = new GameData();
 
     public bool IsLoaded = false;
+
+    public int CurrentStage;
+    public bool CurrentStageCleared;
     #region Action
 
     public event Action OnResourcesChagned;

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BattleManager : MonoBehaviour
 {
+    [SerializeField] private TeamCameraController _teamCameraController;
+    [SerializeField] private GameObject _titleBtn;
     public int EnemyCount;
     public bool Victory = false;
 
@@ -12,6 +14,7 @@ public class BattleManager : MonoBehaviour
     private void Awake()
     {
          enemyLayer = LayerMask.NameToLayer("Enemy");
+        _teamCameraController = GetComponentInChildren<TeamCameraController>();
     }
     private void Start()
     {
@@ -29,10 +32,13 @@ public class BattleManager : MonoBehaviour
 
     private void Update()
     {
-        if (EnemyCount == 0)
+        if (EnemyCount == 0 && !Victory)
         {
             Victory = true;
-            Debug.Log("모든 적을 처치했습니다! 승리!");
+            _teamCameraController.Victory();
+            _titleBtn.SetActive(true);
+            if (!Managers.Game.CurrentStageCleared)
+                Managers.Game.CurrentStage++;
         }
     }
 }
