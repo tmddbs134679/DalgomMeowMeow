@@ -71,4 +71,25 @@ public class QuestManager : MonoBehaviour
             }
         }
     }
+    
+    public List<QuestSaveData> GetAllQuestSaveData()
+    {
+        List<QuestSaveData> saveList = new();
+        foreach (var quest in _quests.Values)
+        {
+            saveList.Add(quest.ToSaveData());
+        }
+        return saveList;
+    }
+    
+    public void LoadFromSaveData(List<QuestSaveData> saveDataList)
+    {
+        foreach (var saveData in saveDataList)
+        {
+            if (_quests.TryGetValue(saveData.QuestId, out var quest))
+            {
+                quest.LoadProgress(saveData);
+            }
+        }
+    }
 }

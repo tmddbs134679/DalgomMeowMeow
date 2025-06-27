@@ -10,6 +10,25 @@ public class Quest
     public int Progress;
     public QuestProgressState State;
 
+    
+    // 저장용
+    public QuestSaveData ToSaveData()
+    {
+        return new QuestSaveData
+        {
+            QuestId = QuestData.QuestId,
+            Progress = this.Progress,
+            State = this.State
+        };
+    }
+
+    // 불러오기용
+    public void LoadProgress(QuestSaveData data)
+    {
+        this.Progress = data.Progress;
+        this.State = data.State;
+    }
+    
     public Quest(QuestDataSO data)
     {
         QuestData = data;
