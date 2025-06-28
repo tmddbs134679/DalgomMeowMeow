@@ -7,7 +7,7 @@ using Scripts.Contents.AI.FSM.State;
 public class AIController : BaseController<AICharacter>
 {
     protected AICharacter character;
-    private float patrolTimer = 0f;
+    private float patrolTimer = 4f;
 
     public AIController(AIState initState, AICharacter owner, Define.EAIState idle) : base(initState, owner, idle)
     {
@@ -35,14 +35,14 @@ public class AIController : BaseController<AICharacter>
 
         var targetPos = FindNearestBuilding(action);
 
-        CharacterMoveToState moveToState = new CharacterMoveToState(targetPos, () =>
+        if (registedState.TryGetValue(Define.EAIState.MoveTo, out BaseState<AICharacter> moveBaseState) &&
+            moveBaseState is CharacterMoveToState moveToState)
         {
-            ChangeState(action);
-        });
-        RegisterState(moveToState, character, Define.EAIState.MoveTo);
-        ChangeState(moveToState);
-        registedState.Remove(Define.EAIState.MoveTo);
+            moveToState.SetDestination(targetPos, () =>
+                 ChangeState(action));
+        }
 
+        ChangeState(Define.EAIState.MoveTo);
     }
 
     #endregion
@@ -114,7 +114,7 @@ public class AIController : BaseController<AICharacter>
         {
             Patrol();
             character.animator.SetInteger("animation", 21);
-            patrolTimer = Random.Range(0f, patrolDelay);
+            patrolTimer = Random.Range(0f, 10f);
         }
         if (HasArrived())
         {
@@ -161,7 +161,7 @@ public class AIController : BaseController<AICharacter>
         foreach (var building in BuildingManager.Instance._buildings)
         {
             float distance = Vector3.Distance(building.transform.position, point);
-            if (distance < 3f)
+            if (distance < 5f)
                 return true;
         }
         return false;

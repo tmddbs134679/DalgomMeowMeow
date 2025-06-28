@@ -10,10 +10,11 @@ namespace Scripts.Contents.AI.FSM.State
         private Action onArrived;
         private bool isArrived = false;
 
-        public CharacterMoveToState(Vector3 target, Action onArrivedCallback)
+        public void SetDestination(Vector3 target, Action onArrivedCallback)
         {
             this.targetPosition = target;
             this.onArrived = onArrivedCallback;
+            this.isArrived = false;
         }
 
         public override void OnEnter()

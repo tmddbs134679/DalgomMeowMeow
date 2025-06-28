@@ -91,6 +91,7 @@ public class AICharacter : BaseObject
         _controller.RegisterState(new CharacterFarmingState(), this, Define.EAIState.Farming);
         _controller.RegisterState(new CharacterPlayState(), this, Define.EAIState.Playing);
         _controller.RegisterState(new CharacterRestState(), this, Define.EAIState.Resting);
+        _controller.RegisterState(new CharacterMoveToState(), this, Define.EAIState.MoveTo);
     }
 
     private void OnTriggerEnter(Collider other)

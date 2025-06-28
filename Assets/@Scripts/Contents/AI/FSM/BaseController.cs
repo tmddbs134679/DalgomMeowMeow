@@ -42,13 +42,7 @@ public abstract class BaseController<T> where T : MonoBehaviour
         currentState.OnEnter(); 
     }
 
-    public virtual void ChangeState(BaseState<T> dynamicState)
-    {
-        currentState?.OnExit();
-        previousState = currentState;
-        currentState = dynamicState;
-        currentState.OnEnter();
-    }
+    
 
 
     public BaseState<T> PreviousState()
