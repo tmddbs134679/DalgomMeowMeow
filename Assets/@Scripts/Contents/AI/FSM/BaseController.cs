@@ -3,7 +3,7 @@ using UnityEngine;
 
 public abstract class BaseController<T> where T : MonoBehaviour
 {
-    public Dictionary<Define.EAIState, BaseState<T>> registedState = new Dictionary<Define.EAIState, BaseState<T>>();
+    public Dictionary<Define.EAIState, BaseState<T>> registedState = new();
 
     protected BaseState<T> currentState;
 
