@@ -9,11 +9,10 @@ public class AIController : BaseController<AICharacter>
     protected AICharacter character;
     private float patrolTimer = 0f;
 
-    public AIController(BaseState<AICharacter> initState, AICharacter aiCharacter)
-        : base(initState, aiCharacter)
+    public AIController(AIState initState, AICharacter owner, Define.EAIState idle) : base(initState, owner, idle)
     {
-        this.character = aiCharacter;
-        aiCharacter.characterAction.OnAction += OnActionPerformed;
+        character = owner;
+        character.characterAction.OnAction += OnActionPerformed;
     }
 
     public void Dispose()
@@ -30,31 +29,20 @@ public class AIController : BaseController<AICharacter>
     {
         if (action == Define.EAIState.Idle)
         {
-            ChangeState(nameof(CharacterIdleState));
+            ChangeState(Define.EAIState.Idle);
             return;
         }
+
         var targetPos = FindNearestBuilding(action);
 
-        var stateMap = new Dictionary<Define.EAIState, string>
+        CharacterMoveToState moveToState = new CharacterMoveToState(targetPos, () =>
         {
-            { Define.EAIState.MoveTo, nameof(CharacterMoveToState) },
-            { Define.EAIState.Cooking, nameof(CharacterCookState) },
-            { Define.EAIState.Playing, nameof(CharacterPlayState) },
-            { Define.EAIState.Resting, nameof(CharacterRestState) },
-            { Define.EAIState.Farming, nameof(CharacterFarmingState) },
-            { Define.EAIState.Building, nameof(CharacterBuildingState) }
-        };
-
-        var moveState = new CharacterMoveToState(targetPos, () =>
-        {
-            if (stateMap.TryGetValue(action, out var nextState))
-            {
-                ChangeState(nextState);
-            }
+            ChangeState(action);
         });
+        RegisterState(moveToState, character, Define.EAIState.MoveTo);
+        ChangeState(moveToState);
+        registedState.Remove(Define.EAIState.MoveTo);
 
-        RegisterState(moveState, character);
-        ChangeState(moveState.GetType().Name);
     }
 
     #endregion
@@ -98,7 +86,7 @@ public class AIController : BaseController<AICharacter>
             Define.EAIState.Cooking => Define.BuildingType.Cooking,
             Define.EAIState.Farming => Define.BuildingType.Farm,
             Define.EAIState.Resting => Define.BuildingType.Resting,
-            
+
         };
     }
 
@@ -126,13 +114,13 @@ public class AIController : BaseController<AICharacter>
         {
             Patrol();
             character.animator.SetInteger("animation", 21);
-            patrolTimer = Random.Range(0f,patrolDelay);
+            patrolTimer = Random.Range(0f, patrolDelay);
         }
         if (HasArrived())
         {
             character.animator.SetInteger("animation", 36);
         }
-        
+
     }
 
     private bool HasArrived()
