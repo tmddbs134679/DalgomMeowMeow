@@ -85,12 +85,13 @@ public class AICharacter : BaseObject
 
     public void ControllerRegister()
     {
-        _controller = new AIController(new CharacterIdleState(), this);
-        _controller.RegisterState(new CharacterBuildingState(), this);
-        _controller.RegisterState(new CharacterCookState(), this); ;
-        _controller.RegisterState(new CharacterFarmingState(), this);
-        _controller.RegisterState(new CharacterPlayState(), this);
-        _controller.RegisterState(new CharacterRestState(), this);
+        _controller = new AIController(new CharacterIdleState(), this, Define.EAIState.Idle);
+        _controller.RegisterState(new CharacterBuildingState(), this,Define.EAIState.Building);
+        _controller.RegisterState(new CharacterCookState(), this, Define.EAIState.Cooking); ;
+        _controller.RegisterState(new CharacterFarmingState(), this, Define.EAIState.Farming);
+        _controller.RegisterState(new CharacterPlayState(), this, Define.EAIState.Playing);
+        _controller.RegisterState(new CharacterRestState(), this, Define.EAIState.Resting);
+        _controller.RegisterState(new CharacterMoveToState(), this, Define.EAIState.MoveTo);
     }
 
     private void OnTriggerEnter(Collider other)
