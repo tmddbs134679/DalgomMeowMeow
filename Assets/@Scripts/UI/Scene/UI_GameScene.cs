@@ -178,7 +178,7 @@ public class UI_GameScene : UI_Scene
     #region Quest
     private void OnClickQuestButton()
     {
-        //Managers.UI.ShowUI<UI_QuestPopup>();
+        Managers.UI.ShowPopupUI<UI_QuestPopup>();
     }
     #endregion
 }
