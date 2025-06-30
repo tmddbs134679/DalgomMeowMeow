@@ -28,6 +28,9 @@ public class ForestRegion : BaseObject
     private void UpdateVisual()
     {
         lockOverlay.SetActive(!IsUnlocked);
+        gameObject.SetActive(!IsUnlocked);
+        gameObject.SetActive(IsUnlocked);
+        
         // 애니메이션 or 이펙트 재생도 여기에
     }
 
@@ -50,10 +53,16 @@ public class ForestRegion : BaseObject
 
     public override void OnClick()
     {
+        if (IsUnlocked)
+        {
+            Debug.Log($"{Id}해제된 지역");
+            return;
+        }
         if (!IsUnlocked)
         {
             ForestBattleContext.PendingUnlockForestId = Id;
             Debug.Log($"[TEST] Forest {Id} 클릭됨 → BattleScene 이동");
+            Unlock();
             //전투 씬 이동
         }
     }
