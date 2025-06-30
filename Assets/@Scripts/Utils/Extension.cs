@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using static Util;
 
 /*
  *  기존 엔진 함수들을 확장해서 기능을 추가 하고 싶을 때 사용
@@ -15,4 +16,8 @@ public static class Extension
     {
         UI_Base.BindEvent(go, action, dragAction, type);
     }
+
+
+    public static Vector3Data ToData(this Vector3 v) => new Vector3Data(v);
+    public static Vector3 ToVector3(this Vector3Data v) => new Vector3(v.x, v.y, v.z);
 }

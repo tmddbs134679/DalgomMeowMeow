@@ -13,8 +13,8 @@ public class GameData
     public float Gold = 0;
 
     //public List <캐릭터들>
-    public List<BuildingBase> Buildings = new List<BuildingBase>();
-    public List<AICharacter> Characters = new List<AICharacter>();  
+    public List<Character> Characters = new List<Character>();
+
 }
 
 
@@ -34,25 +34,15 @@ public class GameManager
 
     #region GameData
 
-    public List<BuildingBase> Buildings
-    {
-        get { return _gameData.Buildings;}
-        set
-        {
-            _gameData.Buildings = value;
-        }
-    }
-
-    public List<AICharacter> Characters
+    public List<Character> Characters
     {
         get { return _gameData.Characters; }
         set
         {
             _gameData.Characters = value;
-            OnCharacterChanged?.Invoke();
+
         }
     }
-
     public float Gold
     {
         get { return _gameData.Gold; }
@@ -77,12 +67,24 @@ public class GameManager
     #endregion
 
     public void Init()
-    {
+    {        
         _path = Application.persistentDataPath + "/SaveData.json";
 
         if (LoadGame())
+        {
+            foreach (Character ch in _gameData.Characters)
+            {
+                if (Managers.Data.CreatureDic.TryGetValue(ch.DataId, out var creatureData))
+                    ch.SetInfo(creatureData);
+            }
             return;
+        }
 
+        var newChar = new Character();
+        newChar.Init("C0001", new Vector3(0, 0, 0)); // 위치 000, IDLE 상태
+        newChar.SetInfo(Managers.Data.CreatureDic["A10001"]); // CreatureData 연결
+
+        _gameData.Characters.Add(newChar);
         IsLoaded = true;
 
         SaveGame();
