@@ -53,6 +53,7 @@ public class ForestRegion : BaseObject
         if (!IsUnlocked)
         {
             ForestBattleContext.PendingUnlockForestId = Id;
+            Debug.Log($"[TEST] Forest {Id} 클릭됨 → BattleScene 이동");
             //전투 씬 이동
         }
     }
