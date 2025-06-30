@@ -22,48 +22,81 @@ public class CameraController : MonoBehaviour
 
    private bool _startedOnUI = false;
 
-void Update()
-{
+    void Update()
+    {
+
 #if UNITY_EDITOR
-    if (Input.GetMouseButtonDown(0))
-    {
-        _startedOnUI = IsPointerOverUI(); //  UI 위에서 눌렀는지 기록
-        if (_startedOnUI) return;
-
-        _dragOrigin = Input.mousePosition;
-        _touchStartPos = _dragOrigin;
-        isDragging = false;
-    }
-    else if (Input.GetMouseButton(0))
-    {
-        if (_startedOnUI) return; //  UI 위에서 시작했으면 아예 이동 막기
-   // if (buildingplacer.tempDraggleOBJ.isLongPress) return;  // 드래그 입력 중이면 카메라 이동 아예 금지
-    if (buildingplacer.isSelect) return;
-        Vector3 delta = Input.mousePosition - _dragOrigin;
-        float dist = Vector2.Distance(Input.mousePosition, _touchStartPos);
-
-        if (dist > _clickThreshold)
+        if (Input.GetMouseButtonDown(0))
         {
-            isDragging = true;
-            ApplyCameraMove(delta);
+            _startedOnUI = IsPointerOverUI(); //  UI 위에서 눌렀는지 기록
+            if (_startedOnUI) return;
+
             _dragOrigin = Input.mousePosition;
+            _touchStartPos = _dragOrigin;
+            isDragging = false;
         }
-    }
-    else if (Input.GetMouseButtonUp(0))
-    {
-        if (_startedOnUI) {
-            _startedOnUI = false; // 다시 초기화
-            return;
-        }
-
-        if (!isDragging)
+        else if (Input.GetMouseButton(0))
         {
-            ClickObject(Input.mousePosition);
+            if (_startedOnUI) return; //  UI 위에서 시작했으면 아예 이동 막기
+                                      // if (buildingplacer.tempDraggleOBJ.isLongPress) return;  // 드래그 입력 중이면 카메라 이동 아예 금지
+            if (buildingplacer.isSelect) return;
+            Vector3 delta = Input.mousePosition - _dragOrigin;
+            float dist = Vector2.Distance(Input.mousePosition, _touchStartPos);
+
+            if (dist > _clickThreshold)
+            {
+                isDragging = true;
+                ApplyCameraMove(delta);
+                _dragOrigin = Input.mousePosition;
+            }
         }
-        isDragging = false;
-    }
+        else if (Input.GetMouseButtonUp(0))
+        {
+            if (_startedOnUI)
+            {
+                _startedOnUI = false; // 다시 초기화
+                return;
+            }
+
+            if (!isDragging)
+            {
+                ClickObject(Input.mousePosition);
+            }
+            isDragging = false;
+        }
 #endif
+
+float zoomAmount = 0;
+
+#if UNITY_EDITOR || UNITY_STANDALONE
+zoomAmount = Input.GetAxis("Mouse ScrollWheel") * 10f;
+#endif
+
+if (Input.touchCount == 2)
+{
+    Touch touchZero = Input.GetTouch(0);
+    Touch touchOne = Input.GetTouch(1);
+
+    Vector2 touchZeroPrevPos = touchZero.position - touchZero.deltaPosition;
+    Vector2 touchOnePrevPos = touchOne.position - touchOne.deltaPosition;
+
+    float prevTouchDeltaMag = (touchZeroPrevPos - touchOnePrevPos).magnitude;
+    float touchDeltaMag = (touchZero.position - touchOne.position).magnitude;
+
+    float deltaMagnitudeDiff = prevTouchDeltaMag - touchDeltaMag;
+
+    zoomAmount = deltaMagnitudeDiff * 0.1f;
+}
+
+if (zoomAmount != 0)
+{
+    // 카메라 이동이나 오브젝트 스케일 조절
+    Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize + zoomAmount, 2f, 10f);
+}
+
     }
+
+    
 
     void ApplyCameraMove(Vector2 delta)
     {
