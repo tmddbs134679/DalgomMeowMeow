@@ -18,7 +18,7 @@ namespace Scripts.Contents.AI.FSM.State
         {
             base.OnEnter();
             randomPlayTime = Random.Range(10f, 20f); // 랜덤한 플레이 시간 설정
-            character.nav.speed = character.Stat.WalkSpeed;
+            character.nav.speed = character.CharacterData.WalkSpeed;
             character.animator.SetInteger("animation", 21); // Idle 애니메이션 설정
 
             character.Controller.PatrolMove(0f); // 초기 순찰 이동 설정
@@ -38,14 +38,14 @@ namespace Scripts.Contents.AI.FSM.State
             }
 
 
-            if (character.Stat.Stamina <= 19f && 
+            if (character.CharacterData.CurrentStamina <= 19f && 
                 character.Controller.FindAvailableBuilding(Define.BuildingType.Resting) != null)
             {
                 character.characterAction.Rest();
                 return;
             }
 
-            if (character.Stat.Stamina >= 25f && 
+            if (character.CharacterData.CurrentStamina >= 25f && 
                 character.Controller.FindAvailableBuilding(Define.BuildingType.Farm))
             {
                 character.characterAction.Farm(); 
@@ -53,7 +53,7 @@ namespace Scripts.Contents.AI.FSM.State
             }
 
 
-            if (character.Stat.Stamina >= 20 && 
+            if (character.CharacterData.CurrentStamina >= 20 && 
                 character.Controller.FindAvailableBuilding(Define.BuildingType.Cooking) != null)
             {
                 character.characterAction.Cook();
