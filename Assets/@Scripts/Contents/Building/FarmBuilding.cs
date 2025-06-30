@@ -35,6 +35,7 @@ public class FarmBuilding : BuildingBase
         
         Debug.Log($"농사 완성! 누적 수량: {StoredCount}");
 
+        CurrentState = BuildingState.ReadyToCollect;
         // collectIcon.SetActive(true);
 
     }
@@ -45,7 +46,7 @@ public class FarmBuilding : BuildingBase
         Debug.Log($" {StoredCount}개 야채를 수확했습니다!");
 
         StoredCount = 0;
-        CurrentState = BuildingState.Producing;
+        CurrentState = BuildingState.Idle;
         // collectIcon.SetActive(false);
 
     }
