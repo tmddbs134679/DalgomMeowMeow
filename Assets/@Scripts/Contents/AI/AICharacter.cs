@@ -97,7 +97,8 @@ public class AICharacter : BaseObject
 
     public void ControllerRegister()
     {
-        _controller = new AIController(new CharacterIdleState(), this, Define.EAIState.Idle);
+        _controller = new AIController(new CharacterResetState(), this, Define.EAIState.None);
+        _controller.RegisterState(new CharacterIdleState(), this, Define.EAIState.Idle);
         _controller.RegisterState(new CharacterBuildingState(), this, Define.EAIState.Building);
         _controller.RegisterState(new CharacterCookState(), this, Define.EAIState.Cooking); ;
         _controller.RegisterState(new CharacterFarmingState(), this, Define.EAIState.Farming);
@@ -107,23 +108,6 @@ public class AICharacter : BaseObject
         _controller.RegisterState(new CharacterDeliverState(), this, Define.EAIState.Delivery);
         _controller.RegisterState(new CharacterHelloState(), this, Define.EAIState.Hello);
     }
-
-
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.TryGetComponent<AICharacter>(out var otherCharacter))
-    //    {
-    //        if (this._isHelloReady && otherCharacter._isHelloReady &&
-    //            this.Controller.CurrentState() is CharacterIdleState
-    //            && otherCharacter.Controller.CurrentState() is CharacterIdleState)
-    //        {
-    //            characterAction.Hello();
-    //            otherCharacter.characterAction.Hello();
-    //            this._isHelloReady = false;
-    //            otherCharacter._isHelloReady = false;
-    //        }
-    //    }
-    //}
 
     public void OnAnimalArrived()
     {

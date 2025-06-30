@@ -8,7 +8,7 @@ using System.Collections;
 public class AIController : BaseController<AICharacter>
 {
     protected AICharacter character;
-    private float patrolTimer = 9f;
+    private float patrolTimer = 0f;
     private float helloTimer = 0f;
 
     public AIController(AIState initState, AICharacter owner, Define.EAIState idle) : base(initState, owner, idle)
@@ -116,12 +116,6 @@ public class AIController : BaseController<AICharacter>
 
     public void PatrolMove(float patrolDelay)
     {
-        if (character.nav.isPathStale)
-        {
-            character.nav.ResetPath();
-            return;
-        }
-
         patrolTimer += Time.deltaTime;
 
         if (patrolTimer >= patrolDelay)
@@ -129,10 +123,19 @@ public class AIController : BaseController<AICharacter>
             Patrol();
             character.animator.SetInteger("animation", 21);
             patrolTimer = Random.Range(0f, 10f);
+            return;
         }
+
+        if (character.nav.isPathStale)
+        {
+            character.nav.ResetPath();
+            return;
+        }
+
         if (HasArrived())
         {
             character.animator.SetInteger("animation", 36);
+            return;
         }
 
     }
@@ -152,7 +155,7 @@ public class AIController : BaseController<AICharacter>
 
     private Vector3 GetRandomNavPosition(Vector3 origin, Vector3 range, int areaMask = NavMesh.AllAreas)
     {
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 66; i++)
         {
             var randomPoint = origin + new Vector3(
                 Random.Range(-range.x, range.x),
@@ -175,7 +178,7 @@ public class AIController : BaseController<AICharacter>
         foreach (var building in BuildingManager.Instance._buildings)
         {
             float distance = Vector3.Distance(building.transform.position, point);
-            if (distance < 5f)
+            if (distance < 3.5f)
                 return true;
         }
         return false;
