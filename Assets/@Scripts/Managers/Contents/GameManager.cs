@@ -13,14 +13,21 @@ public class GameData
     public float Gold = 0;
 
     //public List <캐릭터들>
-    public List<Character> Characters = new List<Character>();
-
+   
+    // 저장 전용
+    public List<Character> CharacterList = new List<Character>();
 }
 
 
 public class GameManager 
 {
+
+
     public GameData _gameData = new GameData();
+
+
+    private Dictionary<string, Character> _characters = new Dictionary<string, Character>();
+    public IReadOnlyDictionary<string, Character> Characters => _characters;
 
     public bool IsLoaded = false;
 
@@ -34,15 +41,25 @@ public class GameManager
 
     #region GameData
 
-    public List<Character> Characters
-    {
-        get { return _gameData.Characters; }
-        set
-        {
-            _gameData.Characters = value;
+    //public List<Character> Characters
+    //{
+    //    get { return _gameData.Characters; }
+    //    set
+    //    {
+    //        _gameData.Characters = value;
 
-        }
-    }
+    //    }
+    //}
+
+    //public Dictionary<string, Character> Characters
+    //{
+    //    get { return _gameData.Characters; }
+    //    set
+    //    {
+    //        _gameData.Characters = value;
+    //    }
+    //}
+
     public float Gold
     {
         get { return _gameData.Gold; }
@@ -66,35 +83,45 @@ public class GameManager
 
     #endregion
 
+
     public void Init()
-    {        
+    {
         _path = Application.persistentDataPath + "/SaveData.json";
 
         if (LoadGame())
         {
-            foreach (Character ch in _gameData.Characters)
+            // List → Dictionary 변환
+            _characters.Clear();
+            foreach (Character character in _gameData.CharacterList)
             {
-                if (Managers.Data.CreatureDic.TryGetValue(ch.DataId, out var creatureData))
-                    ch.SetInfo(creatureData);
+                if (Managers.Data.CreatureDic.TryGetValue(character.DataId, out var creatureData))
+                    character.SetInfo(creatureData);
+
+                _characters[character.DataId] = character;
             }
+
             return;
         }
 
+        // 최초 생성
         var newChar = new Character();
-        newChar.Init("C0001", new Vector3(0, 0, 0)); // 위치 000, IDLE 상태
-        newChar.SetInfo(Managers.Data.CreatureDic["A10001"]); // CreatureData 연결
-
-        _gameData.Characters.Add(newChar);
-        IsLoaded = true;
+        newChar.Init("A10001", new Vector3(27f, 0, 25f)); // 위치 초기값
+        newChar.SetInfo(Managers.Data.CreatureDic["A10001"]);
+        _characters[newChar.Id] = newChar;
 
         SaveGame();
-
+        IsLoaded = true;
     }
 
 
 
     public void SaveGame()
     {
+
+        UpdateCharactersFromWorld();
+
+        _gameData.CharacterList = new List<Character>(_characters.Values);
+
         string jsonStr = JsonConvert.SerializeObject(_gameData);
         File.WriteAllText(_path, jsonStr);
     }
@@ -114,5 +141,18 @@ public class GameManager
         return true;
     }
 
+    public void UpdateCharactersFromWorld()
+    {
+        foreach (var pair in _characters)
+        {
+            Character character = pair.Value;
 
+            AICharacter ai = Util.FindAIById(character.DataId);
+            if (ai == null) continue;
+
+            character.Pos = new Vector3Data(ai.transform.position);
+            character.CurrentState = ai.CharacterData.CurrentState;
+            character.CurrentStamina = ai.CharacterData.CurrentStamina;
+        }
+    }
 }
