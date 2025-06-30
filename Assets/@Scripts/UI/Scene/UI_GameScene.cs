@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 using static Define;
 
 
@@ -23,7 +24,7 @@ public class UI_GameScene : UI_Scene
         SettingButton,
         QuestButton,
         ArchivementButton,
-        DailyButton,
+        QuickButton,
         ShopButton,
         BuildButton,
         EditPosButton,
@@ -52,6 +53,9 @@ public class UI_GameScene : UI_Scene
         GetObject((int)GameObjects.StorageObject).GetComponent<HorizontalLayoutGroup>().spacing = UI_GROUP_SPACING;
         GetButton((int)Buttons.BattleButton).gameObject.BindEvent(OnClickBattleButton);
         GetButton((int)Buttons.BattleButton).GetOrAddComponent<UI_ButtonAnimation>();
+        GetButton((int)Buttons.QuickButton).gameObject.BindEvent(OnClickQuickButton);
+        GetButton((int)Buttons.BuildButton).gameObject.BindEvent(OnClickBuildButton);
+
 
         Managers.Game.OnResourcesChagned += Refresh;
         Managers.Food.OnFoodAdded += AddFoodSlot;
@@ -62,6 +66,15 @@ public class UI_GameScene : UI_Scene
         return true;
     }
 
+    private void OnClickBuildButton()
+    {
+ 
+    }
+
+    private void OnClickQuickButton()
+    {
+        Managers.UI.ShowPopupUI<UI_QuickMenu>();
+    }
 
     private void Awake()
     {
