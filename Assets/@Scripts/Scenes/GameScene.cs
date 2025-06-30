@@ -13,12 +13,17 @@ public class GameScene : BaseScene
 
         Managers.UI.ShowSceneUI<UI_GameScene>();
 
+        foreach (var ch in Managers.Game.Characters.Values)
+        {
+            AICharacter ai = Managers.Object.Spawn<AICharacter>(ch.Pos.ToVector3(), ch.DataId);
+            ai.SetInfo(ch);
+        }
     }
 
 
     public override void Clear()
     {
-
+       Managers.Game.SaveGame();
     }
 
 }

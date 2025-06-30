@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Resources;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -18,10 +19,13 @@ public class Managers : MonoBehaviour
     ResourceManager _resource = new ResourceManager();
     MySceneManager _scene = new MySceneManager();
     UIManager _ui = new UIManager();
+    ObjectManager _object = new ObjectManager();
     public static DataManager Data { get { return Instance?._data; } }
     public static ResourceManager Resource { get { return Instance?._resource; } }
     public static MySceneManager Scene { get { return Instance?._scene; } }
     public static UIManager UI { get { return Instance?._ui; } }
+
+    public static ObjectManager Object { get { return Instance?._object; } }
     public static void Init()
     {
         if (s_instance == null)
@@ -35,5 +39,12 @@ public class Managers : MonoBehaviour
             DontDestroyOnLoad(go);
             s_instance = go.GetComponent<Managers>();
         }
+    }
+
+    public static void Clear()
+    {
+        Scene.Clear();
+        UI.Clear();
+        Object.Clear();
     }
 }

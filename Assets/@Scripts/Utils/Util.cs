@@ -72,5 +72,13 @@ public static class Util
 
     #endregion
 
-
+    public static AICharacter FindAIById(string dataId)
+    {
+        foreach (var ai in GameObject.FindObjectsOfType<AICharacter>())
+        {
+            if (ai.CharacterData?.DataId == dataId)
+                return ai;
+        }
+        return null;
+    }
 }

@@ -12,7 +12,6 @@ public class EnemyCharacter : BattleCharacter
     public override void Die()
     {
         _battleManager.EnemyCount--;
-        Debug.Log("적 캐릭터 사망: " + name);
         base.Die();
     }
 }

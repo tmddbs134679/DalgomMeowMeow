@@ -7,13 +7,16 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private TeamCameraController _teamCameraController;
     [SerializeField] private GameObject _titleBtn;
     public int EnemyCount;
+    public int PlayerCount;
     public bool Victory = false;
 
-    private int enemyLayer;
+    private int _enemyLayer;
+    private int _playerLayer;
 
     private void Awake()
     {
-         enemyLayer = LayerMask.NameToLayer("Enemy");
+        _enemyLayer = LayerMask.NameToLayer("Enemy");
+        _playerLayer = LayerMask.NameToLayer("Player");
         _teamCameraController = GetComponentInChildren<TeamCameraController>();
     }
     private void Start()
@@ -21,13 +24,20 @@ public class BattleManager : MonoBehaviour
         BattleCharacter[] allCharacters = GetComponentsInChildren<BattleCharacter>();
 
         EnemyCount = 0;
+
         foreach (var character in allCharacters)
         {
-            if (character.gameObject.layer == enemyLayer)
+            if (character.gameObject.layer == _enemyLayer)
                 EnemyCount++;
         }
 
-        Debug.Log($"적 유닛 수: {EnemyCount}");
+        PlayerCount = 0;
+
+        foreach (var character in allCharacters)
+        {
+            if (character.gameObject.layer == _playerLayer)
+                PlayerCount++;
+        }
     }
 
     private void Update()
@@ -36,9 +46,23 @@ public class BattleManager : MonoBehaviour
         {
             Victory = true;
             _teamCameraController.Victory();
-            _titleBtn.SetActive(true);
+            Invoke(nameof(CallBtn), 2f);
             if (!Managers.Game.CurrentStageCleared)
                 Managers.Game.CurrentStage++;
         }
+
+        if(PlayerCount == 0)
+        {
+            //게임오버 로직
+        }
+    }
+    public void CallBtn()
+    {
+        _titleBtn.SetActive(true);
+    }
+
+    public void BackToGame()
+    {
+        Managers.Scene.LoadScene(Define.EScene.GameScene);
     }
 }
