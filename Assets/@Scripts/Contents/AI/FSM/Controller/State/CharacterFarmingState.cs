@@ -14,7 +14,7 @@ namespace Scripts.Contents.AI.FSM.State
         public override void OnEnter()
         {
             base.OnEnter();
-            character.UseStamina(10);
+            character.UseStamina(25);
             character.currentBuilding.ConnectToAnimal(character);
             character.OnAnimalArrived(); // 도착 처리 메소드 호출
             character.animator.SetInteger("animation", 29); // Farming 애니메이션 설정
@@ -23,7 +23,7 @@ namespace Scripts.Contents.AI.FSM.State
         public override void OnUpdate(float deltaTime)
         {
             base.OnUpdate(deltaTime);
-            if (elapsedTime > character.currentBuilding.BuildingData.Interval)
+            if (elapsedTime > 10f)
             {
                 character.characterAction.Idle();
                 return;
@@ -36,6 +36,8 @@ namespace Scripts.Contents.AI.FSM.State
             base.OnExit();
             if (character.currentBuilding != null)
             {
+                character.currentBuilding.DisconnectAnimal();
+                character.OnAnimalLeaved();
                 character.currentBuilding = null;
             }
 

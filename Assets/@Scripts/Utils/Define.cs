@@ -59,6 +59,7 @@ public class Define
         Delivery,
         Collecting,
         Building,
+        Hello,
 
     }
 
@@ -107,6 +108,7 @@ public enum BuildingType
     Fishing,
     Resting,
     Farm,
-    Shop
+    Shop,
+    Playing
 }
 }
