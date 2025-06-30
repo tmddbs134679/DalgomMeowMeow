@@ -4,7 +4,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class BattleCharacter : MonoBehaviour
+public class BattleCharacter : BaseObject
 {
     [SerializeField] private float _detectRange = 10f;  
     [SerializeField] private float _attackRange = 1.5f;
@@ -66,6 +66,7 @@ public class BattleCharacter : MonoBehaviour
 
     private void Awake()
     {
+        ObjectType = Define.EObjectType.Enemy; // 객체 타입 설정
         Agent = GetComponent<NavMeshAgent>();
         _characterRenderer = GetComponentsInChildren<SkinnedMeshRenderer>();
         Animator = GetComponentInChildren<Animator>();
@@ -279,5 +280,10 @@ public class BattleCharacter : MonoBehaviour
         UsingSkill = true;
         yield return new WaitForSeconds(1f); // 스킬 지속 시간 (예: 1초)
         UsingSkill = false; // 스킬 사용 종료
+    }
+
+    public override void OnClick()
+    {
+        throw new NotImplementedException();
     }
 }

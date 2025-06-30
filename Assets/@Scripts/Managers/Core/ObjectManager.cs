@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -60,9 +60,16 @@ public class ObjectManager
             AICharacter pc = go.GetOrAddComponent<AICharacter>();
             return pc as T;
         }
-    
+        else if(type == typeof(BattleCharacter))
+        {
+            GameObject go = Managers.Resource.Instantiate(Managers.Data.CreatureDic[templateID].PrefabLabel);
+            go.transform.position = position;
+            AnimationEvent pc = go.GetOrAddComponent<AnimationEvent>();
+            return pc as T;
+        }
 
-        return null;
+
+            return null;
     }
 
 }
