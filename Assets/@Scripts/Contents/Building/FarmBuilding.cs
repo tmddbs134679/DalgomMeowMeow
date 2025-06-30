@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +7,8 @@ public class FarmBuilding : BuildingBase
 { 
     [SerializeField] private Renderer buildingRenderer;
     public GameObject collectIcon;
-    
+    public event Action IsHarvest;
+
     public override bool Init()
     {
         base.Init();
@@ -28,6 +30,8 @@ public class FarmBuilding : BuildingBase
         Debug.Log("농사 완성");
         
         StoredCount++; //  생산 누적
+        
+        IsHarvest?.Invoke();//수확 가능
         
         Debug.Log($"농사 완성! 누적 수량: {StoredCount}");
 
