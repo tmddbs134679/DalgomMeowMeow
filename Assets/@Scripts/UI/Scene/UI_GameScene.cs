@@ -52,6 +52,7 @@ public class UI_GameScene : UI_Scene
         GetObject((int)GameObjects.StorageObject).GetComponent<HorizontalLayoutGroup>().spacing = UI_GROUP_SPACING;
         GetButton((int)Buttons.BattleButton).gameObject.BindEvent(OnClickBattleButton);
         GetButton((int)Buttons.BattleButton).GetOrAddComponent<UI_ButtonAnimation>();
+        GetButton((int)Buttons.QuestButton).gameObject.BindEvent(OnClickQuestButton);
 
         Managers.Game.OnResourcesChagned += Refresh;
         Managers.Food.OnFoodAdded += AddFoodSlot;
@@ -159,5 +160,12 @@ public class UI_GameScene : UI_Scene
        Managers.Scene.LoadScene(EScene.Test_Battle);
     }
 
+    #endregion
+    
+    #region Quest
+    private void OnClickQuestButton()
+    {
+        //Managers.UI.ShowUI<UI_QuestPopup>();
+    }
     #endregion
 }
