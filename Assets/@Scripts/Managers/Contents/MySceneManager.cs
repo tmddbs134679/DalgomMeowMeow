@@ -14,12 +14,15 @@ public class MySceneManager
         {
             case EScene.TitleScene:
                 SceneManager.LoadScene(GetSceneName(type));
+                Managers.Clear();
                 break;
             case EScene.GameScene:
                 SceneManager.LoadScene(GetSceneName(type));
+                Managers.Clear();
                 break;
             case EScene.Test_Battle:
                 SceneManager.LoadScene(GetSceneName(type));
+                Managers.Clear();
                 break;
         }
 

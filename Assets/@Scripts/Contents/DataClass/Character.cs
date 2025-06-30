@@ -22,28 +22,35 @@ public struct Vector3Data
 
 public class Character
 {
-    public Data.CreatureData CreatureData;
+    public Data.CreatureData Data;
 
     public string Id { get; set; }              //고유 식별
-    public string DataId { get; set; } = "";    //정적 데이터 키
+    public string DataId { get; set; }  //정적 데이터 키
     public EAIState CurrentState { get; set; } = EAIState.Idle;
     public Vector3Data Pos { get; set; } = new Vector3Data();
     public float CurrentStamina { get; set; } = 1;
 
     public List<string> EquippedItemIds { get; set; } = new();
-    public void Init(string dataId, Vector3 position)
+    public void Init(string id, Vector3 position)
     {
-        Id = Guid.NewGuid().ToString();
-        DataId = dataId;
+        Id = id;
         Pos = new Vector3Data(position);
         CurrentState = EAIState.Idle;
         CurrentStamina = 1f;
         EquippedItemIds = new();
     }
 
-    public void SetInfo(CreatureData creatureData)
+    public void SetInfo(CreatureData data)
     {
-        CreatureData = creatureData;
+        if(data == null)
+        {
+            Debug.LogError("Character data 없음");
+            return;
+        }
+
+
+        Data = data;
+        DataId = data.DataId;
     }
 
 

@@ -47,4 +47,9 @@ public class UIManager
         go.transform.SetParent(parent);
         return Util.GetOrAddComponent<T>(go);
     }
+
+    public void Clear()
+    {
+
+    }
 }
