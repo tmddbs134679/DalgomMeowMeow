@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Data;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
@@ -16,7 +17,7 @@ public class BattleCharacter : MonoBehaviour
     public NavMeshAgent Agent { get; private set; } // NavMeshAgent 컴포넌트
 
     public float AttackDamage = 10f; // 공격력
-    public float Heatlh = 100f; // 체력
+    public float Health = 100f; // 체력
     public float MoveSpeed = 3.5f; // 이동 속도
 
     public bool HasLookedForward = true; // 전방을 바라봤는지 여부 (아군 전용 로직)
@@ -127,6 +128,14 @@ public class BattleCharacter : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, _detectRange);
     }
 
+    public void Init(CreatureData data)
+    {
+        AttackDamage = data.Atk;
+        Health = data.MaxHp;
+        MoveSpeed = data.MoveSpeed;
+    }
+
+
     #region FindTarget
     private Transform FindClosestEnemyInRange(float range)      //오버랩 스피어를 통해 적 탐지
     {
@@ -200,8 +209,8 @@ public class BattleCharacter : MonoBehaviour
     public void TakeDamage(float Damage)
     {
         if (IsDead) return; // 이미 죽은 캐릭터는 데미지를 받지 않음
-        Heatlh -= Damage; // 공격력만큼 체력 감소
-        if (Heatlh == 0)
+        Health -= Damage; // 공격력만큼 체력 감소
+        if (Health == 0)
         {
             Die();
             foreach (var col in GetComponentsInChildren<Collider>())

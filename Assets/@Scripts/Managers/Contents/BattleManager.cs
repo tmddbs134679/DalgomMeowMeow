@@ -46,7 +46,7 @@ public class BattleManager : MonoBehaviour
         {
             Victory = true;
             _teamCameraController.Victory();
-            _titleBtn.SetActive(true);
+            Invoke(nameof(CallBtn), 2f);
             if (!Managers.Game.CurrentStageCleared)
                 Managers.Game.CurrentStage++;
         }
@@ -55,5 +55,14 @@ public class BattleManager : MonoBehaviour
         {
             //게임오버 로직
         }
+    }
+    public void CallBtn()
+    {
+        _titleBtn.SetActive(true);
+    }
+
+    public void BackToGame()
+    {
+        Managers.Scene.LoadScene(Define.EScene.GameScene);
     }
 }
