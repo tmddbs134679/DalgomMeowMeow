@@ -1,22 +1,23 @@
-﻿using System;
+﻿using Data;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class BattleCharacter : MonoBehaviour
 {
-    [SerializeField] private float _detectRange = 10f;
+    [SerializeField] private float _detectRange = 10f;  
     [SerializeField] private float _attackRange = 1.5f;
     [SerializeField] private float _attackDelay = 1f; // 공격 딜레이 (초 단위)
     [SerializeField] private CharacterStatSo _data; // 캐릭터 스탯 데이터
     [SerializeField] private Color _damageColor = Color.red;
     [SerializeField] private float _flashDuration = 0.05f;
-    [SerializeField] private Color _originalColor;
+    [SerializeField] private Color _originalColor;  // 원래 색상 (피격 효과를 위해 사용됨)
 
     public NavMeshAgent Agent { get; private set; } // NavMeshAgent 컴포넌트
 
     public float AttackDamage = 10f; // 공격력
-    public float Heatlh = 100f; // 체력
+    public float Health = 100f; // 체력
     public float MoveSpeed = 3.5f; // 이동 속도
 
     public bool HasLookedForward = true; // 전방을 바라봤는지 여부 (아군 전용 로직)
@@ -29,20 +30,27 @@ public class BattleCharacter : MonoBehaviour
     private float _attacktimer = 0f;
     private Transform _targetLocation;
     private BattleCharacter _targetCharacter; // 현재 타겟 캐릭터
+
     private SkinnedMeshRenderer[] _characterRenderer; // 캐릭터 렌더러
     private Coroutine _damageFlashCoroutine; //피격 효과 코루틴
 
+    private bool _isInBattle = false;
 
     public Animator Animator; // 애니메이터 컴포넌트
     protected Vector3 _originalPosition; // 원래 위치 저장
+    
+    
 
 
     public event Action<BattleCharacter> OnCharacterDied;
-    public event Action<BattleCharacter, bool> OnBattleStateChanged; 
+    public event Action<BattleCharacter, bool> OnBattleStateChanged;
+
+
+
+    public int AnimationHash;
+    
     public bool IsDead { get; private set; } = false;
-
-
-    private bool _isInBattle = false;
+   
     public bool IsInBattle { get => _isInBattle;
         set
         {
@@ -64,6 +72,7 @@ public class BattleCharacter : MonoBehaviour
         _originalPosition = transform.localPosition;
         Agent.speed = MoveSpeed; // NavMeshAgent의 이동 속도 설정
         Agent.stoppingDistance = _attackRange; // 공격 범위 내에서 멈추도록 설정
+        AnimationHash = Animator.StringToHash("animation"); // 애니메이션 해시 초기화
     }
 
 
@@ -82,7 +91,7 @@ public class BattleCharacter : MonoBehaviour
                 {
                     Agent.SetDestination(_targetLocation.position);
                     IsInBattle = true; // 타겟이 생기면 전투 상태로 변경
-                    Animator.SetInteger("animation", 5); 
+                    Animator.SetInteger(AnimationHash, 5); 
                 }
             }
         }
@@ -109,6 +118,8 @@ public class BattleCharacter : MonoBehaviour
             }
         }
     }
+
+    
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
@@ -117,7 +128,15 @@ public class BattleCharacter : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, _detectRange);
     }
 
+    public void Init(CreatureData data)
+    {
+        AttackDamage = data.Atk;
+        Health = data.MaxHp;
+        MoveSpeed = data.MoveSpeed;
+    }
 
+
+    #region FindTarget
     private Transform FindClosestEnemyInRange(float range)      //오버랩 스피어를 통해 적 탐지
     {
         int targetLayerMask = LayerMask.GetMask(TargetLayer);
@@ -153,6 +172,8 @@ public class BattleCharacter : MonoBehaviour
 
         }
     }
+    
+
 
 
     private void HandleTargetDeath(BattleCharacter deadChar)
@@ -164,10 +185,13 @@ public class BattleCharacter : MonoBehaviour
             IsInBattle = false; // 타겟이 사망하면 전투 상태 해제
         }
     }
+    #endregion
 
 
 
 
+
+    #region DealDamage
     public void TryAttack()
     {
         if (IsDead || UsingSkill) return; // 캐릭터가 죽었거나 스킬 사용 중이면 공격하지 않음
@@ -175,7 +199,7 @@ public class BattleCharacter : MonoBehaviour
         _attacktimer += Time.deltaTime;
         if (_attacktimer >= _attackDelay)
         {
-            Animator.SetInteger("animation", UnityEngine.Random.Range(1, 4)); // 공격 애니메이션 출력
+            Animator.SetInteger(AnimationHash, UnityEngine.Random.Range(1, 4)); // 공격 애니메이션 출력
             _targetCharacter.TakeDamage(this.AttackDamage); // 타겟의 체력 감소
             _attacktimer = 0f; // 공격 후 타이머 초기화
         }
@@ -185,8 +209,8 @@ public class BattleCharacter : MonoBehaviour
     public void TakeDamage(float Damage)
     {
         if (IsDead) return; // 이미 죽은 캐릭터는 데미지를 받지 않음
-        Heatlh -= Damage; // 공격력만큼 체력 감소
-        if (Heatlh == 0)
+        Health -= Damage; // 공격력만큼 체력 감소
+        if (Health == 0)
         {
             Die();
             foreach (var col in GetComponentsInChildren<Collider>())
@@ -211,7 +235,7 @@ public class BattleCharacter : MonoBehaviour
         OnCharacterDied?.Invoke(this);
         Agent.isStopped = true;
 
-        Animator.SetInteger("animation", 0); // 죽음 애니메이션 출력
+        Animator.SetInteger(AnimationHash, 0); // 죽음 애니메이션 출력
     }
 
     public void SetOff()
@@ -248,7 +272,7 @@ public class BattleCharacter : MonoBehaviour
         _damageFlashCoroutine = null;
     }
 
-
+    #endregion
 
     private IEnumerator SkillActive()
     {
