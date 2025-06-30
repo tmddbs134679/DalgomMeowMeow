@@ -4,7 +4,6 @@ using UnityEngine;
 
 /// <summary>
 /// isLoadBuild->gridmapSO에서 가져온 실질 데이터
-/// isCurrentbuild->실시간으로 적용되는 데이터
 /// </summary>
 public class TileObjectData : MonoBehaviour
 {

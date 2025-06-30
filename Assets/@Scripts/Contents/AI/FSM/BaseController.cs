@@ -1,27 +1,27 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class BaseController<T> where T : MonoBehaviour
 {
-    public Dictionary<string, BaseState<T>> registedState = new Dictionary<string, BaseState<T>>();
+    public Dictionary<Define.EAIState, BaseState<T>> registedState = new();
 
     protected BaseState<T> currentState;
 
     protected BaseState<T> previousState;
 
-    public BaseController(BaseState<T> initState, T owner)
+    public BaseController(BaseState<T> initState, T owner, Define.EAIState StatdID)
     {
-       RegisterState(initState, owner);
+       RegisterState(initState, owner, StatdID);
 
         currentState = initState;
         currentState.OnEnter();
 
     }
 
-    public virtual void RegisterState(BaseState<T> state, T owner)
+    public virtual void RegisterState(BaseState<T> state, T owner, Define.EAIState StateID)
     {
         state.Init(owner);
-        registedState[state.GetType().Name] = state;
+        registedState[StateID] = state;
     }
 
     public virtual void OnUpdate(float deltaTime)
@@ -30,16 +30,20 @@ public abstract class BaseController<T> where T : MonoBehaviour
     }
     
 
-    public virtual void ChangeState(string newState)
+    public virtual void ChangeState(Define.EAIState newState)
     {
-        if (currentState.ToString() == newState) return;
+        if (currentState == registedState[newState]) return;
 
         currentState?.OnExit();
 
         previousState = currentState;
 
         currentState = registedState[newState];
-        currentState.OnEnter(); }
+        currentState.OnEnter(); 
+    }
+
+    
+
 
     public BaseState<T> PreviousState()
     {

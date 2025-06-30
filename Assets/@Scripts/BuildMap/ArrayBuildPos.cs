@@ -24,14 +24,23 @@ public class ArrayBuildPos : ScriptableObject
     {
         baseBuilding.Add(buildData);
     }
-    
-        public void RemoveBuildData(BuildData buildData)
+
+    public void RemoveBuildData(BuildData buildData)
     {
         baseBuilding.Remove(buildData);
     }
 
 #if UNITY_EDITOR
     public void InitializeBuild()
+    {
+        baseBuilding.Clear();
+        EditorUtility.SetDirty(this);
+    }
+#endif
+
+#if UNITY_EDITOR
+//파일에서 건물데이터 불러오기
+    public void BuildDataToFile()
     {
         baseBuilding.Clear();
         EditorUtility.SetDirty(this);
