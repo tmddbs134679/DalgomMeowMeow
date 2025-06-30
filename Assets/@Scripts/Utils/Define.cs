@@ -60,6 +60,7 @@ public class Define
         Collecting,
         Building,
         Hello,
+        None,
 
     }
 

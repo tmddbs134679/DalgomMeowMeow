@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using Scripts.Contents.AI.FSM.State;
 using UnityEngine;
 using UnityEngine.AI;
@@ -11,11 +12,6 @@ public class AICharacter : BaseObject
 {
     public AIController Controller { get { return _controller; } }
     private AIController _controller;
-
-    public CharacterStatSo Stat { get { return runtimeStat; } }
-    private CharacterStatSo runtimeStat;
-
-    [SerializeField] private CharacterStatSo originStat;
 
     [HideInInspector]
     public NavMeshAgent nav;
@@ -34,8 +30,6 @@ public class AICharacter : BaseObject
     [HideInInspector]
     public CharacterAction characterAction;
 
-    public float Stamina;
-
     public event Action<AICharacter> AnimalLeaved;
     public event Action<AICharacter> AnimalArrived;
 
@@ -43,7 +37,7 @@ public class AICharacter : BaseObject
 
     public Sprite[] sprites;
     public Sprite sprite;
-    public Character CharacterData { get; private set; }
+    public Character CharacterData { get;  set; }
 
     private void Awake()
     {
@@ -58,7 +52,6 @@ public class AICharacter : BaseObject
     private void Update()
     {
         _controller?.OnUpdate(Time.deltaTime);
-        Stamina = runtimeStat.Stamina;
     }
 
     public override bool Init()
@@ -71,15 +64,6 @@ public class AICharacter : BaseObject
         currentEmo = skinnedMeshRenderer.materials[1];
         emo = AIManager.Instance.EmotionMaterials;
 
-
-        if (runtimeStat != null)
-            runtimeStat.OnStatChanged -= ApplyStat;
-        else
-            runtimeStat = originStat.Clone();
-
-        runtimeStat.OnStatChanged += ApplyStat;
-
-        ApplyStat();
         AIManager.Instance.Register(this);
         ControllerRegister();
 
@@ -97,7 +81,8 @@ public class AICharacter : BaseObject
 
     public void ControllerRegister()
     {
-        _controller = new AIController(new CharacterIdleState(), this, Define.EAIState.Idle);
+        _controller = new AIController(new CharacterResetState(), this, Define.EAIState.None);
+        _controller.RegisterState(new CharacterIdleState(), this, Define.EAIState.Idle);
         _controller.RegisterState(new CharacterBuildingState(), this, Define.EAIState.Building);
         _controller.RegisterState(new CharacterCookState(), this, Define.EAIState.Cooking); ;
         _controller.RegisterState(new CharacterFarmingState(), this, Define.EAIState.Farming);
@@ -107,23 +92,6 @@ public class AICharacter : BaseObject
         _controller.RegisterState(new CharacterDeliverState(), this, Define.EAIState.Delivery);
         _controller.RegisterState(new CharacterHelloState(), this, Define.EAIState.Hello);
     }
-
-
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.TryGetComponent<AICharacter>(out var otherCharacter))
-    //    {
-    //        if (this._isHelloReady && otherCharacter._isHelloReady &&
-    //            this.Controller.CurrentState() is CharacterIdleState
-    //            && otherCharacter.Controller.CurrentState() is CharacterIdleState)
-    //        {
-    //            characterAction.Hello();
-    //            otherCharacter.characterAction.Hello();
-    //            this._isHelloReady = false;
-    //            otherCharacter._isHelloReady = false;
-    //        }
-    //    }
-    //}
 
     public void OnAnimalArrived()
     {
@@ -135,32 +103,26 @@ public class AICharacter : BaseObject
         AnimalLeaved?.Invoke(this);
     }
 
-    public void ApplyStat()
-    {
-        nav.speed = runtimeStat.MoveSpeed;
-
-    }
-
     public void UseStamina(float amount)
     {
-        if (runtimeStat.Stamina - amount < 0)
+        if (CharacterData.CurrentStamina - amount < 0)
         {
             return;
         }
-        runtimeStat.Stamina = Mathf.Max(0, runtimeStat.Stamina - amount);
-        Debug.Log($"스태미나 사용 : {amount}, 남은 스태미나: {runtimeStat.Stamina}");
+        CharacterData.CurrentStamina = Mathf.Max(0, CharacterData.CurrentStamina - amount);
+        Debug.Log($"스태미나 사용 : {amount}, 남은 스태미나: {CharacterData.CurrentStamina}");
     }
 
     public void RecoverStamina(float amount)
     {
-        runtimeStat.Stamina = Mathf.Min(100, runtimeStat.Stamina + amount);
-        Debug.Log($"스태미나 회복 : {amount}, 현재: {runtimeStat.Stamina}");
+        CharacterData.CurrentStamina = Mathf.Min(100, CharacterData.CurrentStamina + amount);
+        Debug.Log($"스태미나 회복 : {amount}, 현재: {CharacterData.CurrentStamina}");
     }
 
     public void OnLevelUp()
     {
-        runtimeStat.MoveSpeed += 1;
-        runtimeStat.Hp += 10;
+        CharacterData.MoveSpeed += 1;
+        CharacterData.Hp += 10;
     }
 
     public void OnDisable()

@@ -13,7 +13,7 @@ namespace Scripts.Contents.AI.FSM.State
         public override void OnEnter()
         {
             base.OnEnter();
-            character.nav.speed = character.Stat.MoveSpeed / 2f;
+            character.nav.speed = character.CharacterData.MoveSpeed / 2; 
             character.animator.SetInteger("animation", 18); // Cooking 애니메이션 설정
         }
 
