@@ -148,7 +148,13 @@ public class AICharacter : BaseObject
             return;
         }
         runtimeStat.Stamina = Mathf.Max(0, runtimeStat.Stamina - amount);
-        Debug.Log($"Stamina used: {amount}, Remaining: {runtimeStat.Stamina}");
+        Debug.Log($"S스태미나 사용 : {amount}, 남은 스태미나: {runtimeStat.Stamina}");
+    }
+
+    public void RecoverStamina(float amount)
+    {
+        runtimeStat.Stamina = Mathf.Min(runtimeStat.Stamina, runtimeStat.Stamina + amount);
+        Debug.Log($"스태미나 회복 : {amount}, 현재: {runtimeStat.Stamina}");
     }
 
     public void OnLevelUp()

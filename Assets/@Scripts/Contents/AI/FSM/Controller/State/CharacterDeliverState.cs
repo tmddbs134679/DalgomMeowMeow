@@ -2,7 +2,7 @@
 
 namespace Scripts.Contents.AI.FSM.State
 {
-    public class CharacterRestState : AIState
+    public class CharacterDeliverState : AIState
     {
         public override void Init(AICharacter owner)
         {
@@ -14,7 +14,7 @@ namespace Scripts.Contents.AI.FSM.State
         {
             base.OnEnter();
             character.SetEmotion(4);
-            character.animator.SetInteger("animation", 25); // Cooking 애니메이션 설정
+            character.animator.SetInteger("animation", 18); // Cooking 애니메이션 설정
         }
 
 
@@ -30,7 +30,7 @@ namespace Scripts.Contents.AI.FSM.State
             if (character.Stat.Stamina <= 100 && elapsedTime > 1)
             {
                 character.RecoverStamina(5f);
-                elapsedTime = 0; 
+                elapsedTime = 0;
                 return;
             }
         }

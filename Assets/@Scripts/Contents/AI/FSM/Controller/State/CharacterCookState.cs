@@ -25,7 +25,7 @@ namespace Scripts.Contents.AI.FSM.State
             base.OnUpdate(deltaTime);
             if (elapsedTime > character.currentBuilding.BuildingData.Interval)
             {
-                character.Controller.ChangeState(Define.EAIState.Idle);
+                character.characterAction.Idle();
                 return;
             }
           

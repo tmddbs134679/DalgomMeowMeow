@@ -6,6 +6,7 @@ namespace Scripts.Contents.AI.FSM.State
 {
     public class CharacterIdleState : AIState
     {
+        private bool isReady = false;
         public override void Init(AICharacter owner)
         {
             base.Init(owner);
@@ -25,13 +26,23 @@ namespace Scripts.Contents.AI.FSM.State
 
             character.Controller.PatrolMove(5f);
 
-            if (character.Stat.Stamina <= 29f && character.Controller.FindAvailableBuilding(Define.BuildingType.Resting) != null)
+            if (character.Stat.Stamina <= 29f && 
+                character.Controller.FindAvailableBuilding(Define.BuildingType.Resting) != null)
             {
                 character.characterAction.Rest();
                 return;
             }
 
-            if (character.Stat.Stamina >= 30 && character.Controller.FindAvailableBuilding(Define.BuildingType.Cooking) != null)
+            if (character.Stat.Stamina >= 5f && 
+                character.Controller.FindAvailableBuilding(Define.BuildingType.Farm))
+            {
+                character.characterAction.Farm(); 
+                return;
+            }
+
+
+            if (character.Stat.Stamina >= 30 && 
+                character.Controller.FindAvailableBuilding(Define.BuildingType.Cooking) != null)
             {
                 character.characterAction.Cook();
                 return;
