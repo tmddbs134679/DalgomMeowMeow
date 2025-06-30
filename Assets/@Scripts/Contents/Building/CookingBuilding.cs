@@ -9,11 +9,11 @@ public class CookingBuilding : BuildingBase
     public GameObject collectIcon;
     
 
-    public override void Init()
+    public override bool Init()
     {
         base.Init();
         // collectIcon.SetActive(false);
-
+        return true;
     }
 
 
