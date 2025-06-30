@@ -105,7 +105,7 @@ public class GameManager
 
         // 최초 생성
         var newChar = new Character();
-        newChar.Init("A10001", new Vector3(27f, 0, 25f)); // 위치 초기값
+        newChar.Init("A10001", new Vector3(10f, 0, 8f)); // 위치 초기값
         newChar.SetInfo(Managers.Data.CreatureDic["A10001"]);
         _characters[newChar.Id] = newChar;
 

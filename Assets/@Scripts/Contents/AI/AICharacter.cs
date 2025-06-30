@@ -43,6 +43,7 @@ public class AICharacter : BaseObject
 
     public Sprite[] sprites;
     public Sprite sprite;
+    public Character CharacterData { get; private set; }
 
     private void Awake()
     {
@@ -85,6 +86,14 @@ public class AICharacter : BaseObject
         return true;
     }
 
+    public void SetInfo(Character ch)
+    {
+        CharacterData = ch;
+        // 위치값
+        transform.position = ch.Pos.ToVector3();
+
+        // TODO : FSM 등 상태 적용
+    }
 
     public void ControllerRegister()
     {
