@@ -6,6 +6,9 @@ namespace Scripts.Contents.AI.FSM.State
 {
     public class CharacterIdleState : AIState
     {
+        private bool isReady = false;
+        private float randomPlayTime = 0f;
+
         public override void Init(AICharacter owner)
         {
             base.Init(owner);
@@ -15,6 +18,7 @@ namespace Scripts.Contents.AI.FSM.State
         public override void OnEnter()
         {
             base.OnEnter();
+            randomPlayTime = Random.Range(10f, 20f); // 랜덤한 플레이 시간 설정
             character.nav.speed = character.Stat.WalkSpeed;
             character.animator.SetInteger("animation", 21); // Idle 애니메이션 설정
         }
@@ -23,20 +27,38 @@ namespace Scripts.Contents.AI.FSM.State
         {
             base.OnUpdate(deltaTime);
 
-            character.Controller.PatrolMove(5f);
+            if (elapsedTime > randomPlayTime &&
+                character.Controller.FindAvailableBuilding(Define.BuildingType.Playing))
+            {
+                character.characterAction.Play();
+                return;
+            }
 
-            if (character.Stat.Stamina <= 29f && character.Controller.FindAvailableBuilding(Define.BuildingType.Resting) != null)
+
+            if (character.Stat.Stamina <= 19f && 
+                character.Controller.FindAvailableBuilding(Define.BuildingType.Resting) != null)
             {
                 character.characterAction.Rest();
                 return;
             }
 
-            if (character.Stat.Stamina >= 30 && character.Controller.FindAvailableBuilding(Define.BuildingType.Cooking) != null)
+            if (character.Stat.Stamina >= 25f && 
+                character.Controller.FindAvailableBuilding(Define.BuildingType.Farm))
+            {
+                character.characterAction.Farm(); 
+                return;
+            }
+
+
+            if (character.Stat.Stamina >= 20 && 
+                character.Controller.FindAvailableBuilding(Define.BuildingType.Cooking) != null)
             {
                 character.characterAction.Cook();
                 return;
             }
 
+            character.Controller.PatrolMove(10f);
+            character.Controller.TryHelloNearbyCharacter();
         }
 
         public override void OnExit()

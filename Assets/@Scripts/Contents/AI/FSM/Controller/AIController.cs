@@ -3,16 +3,24 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 using Scripts.Contents.AI.FSM.State;
+using System.Collections;
 
 public class AIController : BaseController<AICharacter>
 {
     protected AICharacter character;
-    private float patrolTimer = 4f;
+    private float patrolTimer = 9f;
+    private float helloTimer = 0f;
 
     public AIController(AIState initState, AICharacter owner, Define.EAIState idle) : base(initState, owner, idle)
     {
         character = owner;
         character.characterAction.OnAction += OnActionPerformed;
+    }
+
+    public override void OnUpdate(float deltaTime)
+    {
+        base.OnUpdate(deltaTime);
+        HelloTimerReset(deltaTime);
     }
 
     public void Dispose()
@@ -30,6 +38,11 @@ public class AIController : BaseController<AICharacter>
         if (action == Define.EAIState.Idle)
         {
             ChangeState(Define.EAIState.Idle);
+            return;
+        }
+        if (action == Define.EAIState.Hello)
+        {
+            ChangeState(Define.EAIState.Hello);
             return;
         }
 
@@ -86,6 +99,7 @@ public class AIController : BaseController<AICharacter>
             Define.EAIState.Cooking => Define.BuildingType.Cooking,
             Define.EAIState.Farming => Define.BuildingType.Farm,
             Define.EAIState.Resting => Define.BuildingType.Resting,
+            Define.EAIState.Playing => Define.BuildingType.Playing,
 
         };
     }
@@ -169,4 +183,58 @@ public class AIController : BaseController<AICharacter>
 
     #endregion
 
+    #region 서로 인사하기
+    public void TryHelloNearbyCharacter()
+    {
+        if (!character._isHelloReady)
+            return;
+
+        // 주변 모든 캐릭터 탐색
+        foreach (var other in AIManager.Instance.AllCharacters)
+        {
+            if (other == character) continue; // 자기 자신 제외
+            if (!other._isHelloReady) continue;
+
+
+            float distance = Vector3.Distance(character.transform.position, other.transform.position);
+            if (distance > 2.5f) continue; // 인사 거리 제한
+
+            Vector3 dirToOther = (other.transform.position - character.transform.position).normalized;
+            Vector3 dirToSelf = (character.transform.position - other.transform.position).normalized;
+
+            // 나 → 상대방 : 내가 상대방을 향하고 있는지
+            float dotToOther = Vector3.Dot(character.transform.forward, dirToOther);
+            // 상대방 → 나 : 상대방이 나를 향하고 있는지
+            float dotToSelf = Vector3.Dot(other.transform.forward, dirToSelf);
+
+            float angleToOther = Mathf.Acos(dotToOther) * Mathf.Rad2Deg;
+            float angleToSelf = Mathf.Acos(dotToSelf) * Mathf.Rad2Deg;
+            if (other.Controller.currentState is CharacterIdleState)
+            {
+                if (angleToOther < 45f && angleToSelf < 45f) // 마주보는 각도 제한 (45도)
+                {
+                    // 인사 상태로 변경
+                    character.characterAction.Hello();
+                    other.characterAction.Hello(); // 상대방도 인사
+                    break; // 한 번만 실행
+                }
+            }
+        }
+    }
+
+    private void HelloTimerReset(float deltaTime)
+    {
+        if (!character._isHelloReady)
+        {
+            if (helloTimer > 30f)
+            {
+                character._isHelloReady = true;
+                return;
+            }
+            helloTimer += deltaTime;
+        }
+    }
+
+
+    #endregion
 }

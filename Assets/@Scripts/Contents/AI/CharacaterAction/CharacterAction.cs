@@ -26,4 +26,6 @@ public class CharacterAction : MonoBehaviour
     public void Farm()    => OnAction?.Invoke(Define.EAIState.Farming);
     [ContextMenu("Building")]
     public void Build()   => OnAction?.Invoke(Define.EAIState.Building);
+    [ContextMenu("Hello")]
+    public void Hello() => OnAction?.Invoke(Define.EAIState.Hello);
 }

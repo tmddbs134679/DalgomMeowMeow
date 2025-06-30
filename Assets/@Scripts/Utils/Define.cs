@@ -59,6 +59,7 @@ public class Define
         Delivery,
         Collecting,
         Building,
+        Hello,
 
     }
 
@@ -108,7 +109,8 @@ public class Define
         Resting,
         Farm,
         Shop,
-        STORAGE
+        STORAGE,
+        Playing
     
-}
+    }
 }

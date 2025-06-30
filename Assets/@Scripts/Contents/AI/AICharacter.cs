@@ -19,7 +19,7 @@ public class AICharacter : BaseObject
 
     [HideInInspector]
     public NavMeshAgent nav;
-    
+
     public BuildingBase currentBuilding;
 
     [HideInInspector]
@@ -34,12 +34,14 @@ public class AICharacter : BaseObject
     [HideInInspector]
     public CharacterAction characterAction;
 
+    public float Stamina;
+
     public event Action<AICharacter> AnimalLeaved;
     public event Action<AICharacter> AnimalArrived;
 
-    private bool _isHelloReady = true;
+    public bool _isHelloReady = true;
 
-   public Sprite[] sprites;
+    public Sprite[] sprites;
     public Sprite sprite;
 
     private void Awake()
@@ -55,6 +57,7 @@ public class AICharacter : BaseObject
     private void Update()
     {
         _controller?.OnUpdate(Time.deltaTime);
+        Stamina = runtimeStat.Stamina;
     }
 
     public override bool Init()
@@ -63,7 +66,7 @@ public class AICharacter : BaseObject
         animator = GetComponent<Animator>();
         skinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
         characterAction = GetComponent<CharacterAction>();
-        
+
         currentEmo = skinnedMeshRenderer.materials[1];
         emo = AIManager.Instance.EmotionMaterials;
 
@@ -86,44 +89,32 @@ public class AICharacter : BaseObject
     public void ControllerRegister()
     {
         _controller = new AIController(new CharacterIdleState(), this, Define.EAIState.Idle);
-        _controller.RegisterState(new CharacterBuildingState(), this,Define.EAIState.Building);
+        _controller.RegisterState(new CharacterBuildingState(), this, Define.EAIState.Building);
         _controller.RegisterState(new CharacterCookState(), this, Define.EAIState.Cooking); ;
         _controller.RegisterState(new CharacterFarmingState(), this, Define.EAIState.Farming);
         _controller.RegisterState(new CharacterPlayState(), this, Define.EAIState.Playing);
         _controller.RegisterState(new CharacterRestState(), this, Define.EAIState.Resting);
         _controller.RegisterState(new CharacterMoveToState(), this, Define.EAIState.MoveTo);
+        _controller.RegisterState(new CharacterDeliverState(), this, Define.EAIState.Delivery);
+        _controller.RegisterState(new CharacterHelloState(), this, Define.EAIState.Hello);
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.TryGetComponent<AICharacter>(out var others))
-        {
-            if (this._isHelloReady && others._isHelloReady && other.GetInstanceID() > this.GetInstanceID())
-            {
-                //애니메이션 적용
-                Debug.Log("Hello Motion Triggered with " + others.name);
-                StartCoroutine(HelloMotion());
-                _isHelloReady = false;
-                others._isHelloReady = false;
-                StartCoroutine(HelloMotionReset(others));
-            }
-        }
-    }
 
-    private IEnumerator HelloMotionReset(AICharacter other)
-    {
-        yield return new WaitForSeconds(10f);
-        _isHelloReady = true;
-        other._isHelloReady = true;
-    }
-
-    private IEnumerator HelloMotion()
-    {
-        float temp = runtimeStat.MoveSpeed;
-        runtimeStat.MoveSpeed = 0f;
-        yield return new WaitForSeconds(3f);
-        runtimeStat.MoveSpeed = temp;
-    }
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (other.TryGetComponent<AICharacter>(out var otherCharacter))
+    //    {
+    //        if (this._isHelloReady && otherCharacter._isHelloReady &&
+    //            this.Controller.CurrentState() is CharacterIdleState
+    //            && otherCharacter.Controller.CurrentState() is CharacterIdleState)
+    //        {
+    //            characterAction.Hello();
+    //            otherCharacter.characterAction.Hello();
+    //            this._isHelloReady = false;
+    //            otherCharacter._isHelloReady = false;
+    //        }
+    //    }
+    //}
 
     public void OnAnimalArrived()
     {
@@ -138,7 +129,7 @@ public class AICharacter : BaseObject
     public void ApplyStat()
     {
         nav.speed = runtimeStat.MoveSpeed;
-       
+
     }
 
     public void UseStamina(float amount)
@@ -148,7 +139,13 @@ public class AICharacter : BaseObject
             return;
         }
         runtimeStat.Stamina = Mathf.Max(0, runtimeStat.Stamina - amount);
-        Debug.Log($"Stamina used: {amount}, Remaining: {runtimeStat.Stamina}");
+        Debug.Log($"스태미나 사용 : {amount}, 남은 스태미나: {runtimeStat.Stamina}");
+    }
+
+    public void RecoverStamina(float amount)
+    {
+        runtimeStat.Stamina = Mathf.Min(100, runtimeStat.Stamina + amount);
+        Debug.Log($"스태미나 회복 : {amount}, 현재: {runtimeStat.Stamina}");
     }
 
     public void OnLevelUp()
@@ -178,8 +175,7 @@ public class AICharacter : BaseObject
 
     }
 
-    
-
-
-
 }
+
+
+

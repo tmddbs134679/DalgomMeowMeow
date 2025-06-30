@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,12 +9,6 @@ public class AIState : BaseState<AICharacter>
     public override void Init(AICharacter owner)
     {
         this.character = owner;
-    }
-
-    public override void OnExit()
-    {
-        
-
     }
 
     public Define.EAIState GetState() { return state; }
