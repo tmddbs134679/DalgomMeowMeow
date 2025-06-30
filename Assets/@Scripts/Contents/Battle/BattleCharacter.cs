@@ -31,7 +31,7 @@ public class BattleCharacter : BaseObject
     private Transform _targetLocation;
     private BattleCharacter _targetCharacter; // 현재 타겟 캐릭터
 
-    private SkinnedMeshRenderer[] _characterRenderer; // 캐릭터 렌더러
+    [SerializeField]protected SkinnedMeshRenderer[] _characterRenderer; // 캐릭터 렌더러
     private Coroutine _damageFlashCoroutine; //피격 효과 코루틴
 
     private bool _isInBattle = false;
@@ -64,18 +64,20 @@ public class BattleCharacter : BaseObject
 
 
 
-    private void Awake()
+    protected virtual void Awake()
     {
         ObjectType = Define.EObjectType.Enemy; // 객체 타입 설정
         Agent = GetComponent<NavMeshAgent>();
-        _characterRenderer = GetComponentsInChildren<SkinnedMeshRenderer>();
-        Animator = GetComponentInChildren<Animator>();
+
+    }
+
+    protected virtual void Start()
+    {
         _originalPosition = transform.localPosition;
         Agent.speed = MoveSpeed; // NavMeshAgent의 이동 속도 설정
         Agent.stoppingDistance = _attackRange; // 공격 범위 내에서 멈추도록 설정
-        AnimationHash = Animator.StringToHash("animation"); // 애니메이션 해시 초기화
-    }
 
+    }
 
     void Update()
     {

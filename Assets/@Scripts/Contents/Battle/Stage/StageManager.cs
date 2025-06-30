@@ -34,11 +34,14 @@ public class StageManager : BaseObject
         _playerStageProceed = Managers.Game.CurrentStage;    //플레이어의 진행 중인 스테이지(저장 가능한 정보)
         StageNumber = stages[currentStageIndex].StageNumber;    //스테이지 넘버 비교용(클리어 여부)
         EnemySpawnRate = stages[currentStageIndex].EnemySpawnRate;    //적들 확률
+
+
+        RandomSet(); //적들 랜덤 생성
     }
 
     private void Start()
     {
-        RandomSet();    //적들 랜덤 생성용 초기화
+        
     }
 
     public void RandomSet() 
@@ -60,12 +63,15 @@ public class StageManager : BaseObject
                 currentDum += EnemySpawnRate[i];
                 if (randomValue <= currentDum)
                 {
-                    var enemy = Managers.Object.Spawn<BattleCharacter>(Vector3.zero, stages[currentStageIndex].EnemyID[i]);
+                    /*
+                     * var enemy = Managers.Object.Spawn<BattleCharacter>(Vector3.zero, stages[currentStageIndex].EnemyID[i]);
+                     */
+                    GameObject enemy = Managers.Resource.Instantiate(Managers.Data.CreatureDic[stages[currentStageIndex].EnemyID[i]].PrefabLabel, _parent[k].transform , false); //적 생성
                     enemy.transform.SetParent(_parent[k].transform, false); //부모 오브젝트 설정
                     SetData(Managers.Data.CreatureDic[stages[currentStageIndex].EnemyID[i]], k); //적 데이터 설정
+                    break;
                 }
             }
-            k++; //다음 부모 오브젝트로 이동
         }
     }
 

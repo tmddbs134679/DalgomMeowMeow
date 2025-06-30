@@ -99,7 +99,7 @@ public class Define
         REST,
         SHOP,
         STORAGE,
-        LOAD
+        ROAD
     }
 
     public enum BuildingType

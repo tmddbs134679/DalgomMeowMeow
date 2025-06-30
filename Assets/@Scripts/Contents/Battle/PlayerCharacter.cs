@@ -5,9 +5,21 @@ using UnityEngine;
 public class PlayerCharacter : BattleCharacter
 {
     private BattleManager _battleManager;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        Animator = GetComponentInChildren<Animator>();
+        AnimationHash = Animator.StringToHash("animation"); // 애니메이션 해시 초기화
+        _characterRenderer = GetComponentsInChildren<SkinnedMeshRenderer>();
+
+
+    }
     private void Start()
     {
         _battleManager = GetComponentInParent<BattleManager>();
+        _originalPosition = transform.localPosition;
+
     }
 
     public void ReturnToStartPosition()
