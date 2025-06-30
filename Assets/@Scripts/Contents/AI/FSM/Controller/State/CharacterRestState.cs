@@ -29,7 +29,7 @@ namespace Scripts.Contents.AI.FSM.State
 
             if (character.Stat.Stamina <= 100 && elapsedTime > 1)
             {
-                character.UseStamina(-5f);
+                character.RecoverStamina(10f);
                 elapsedTime = 0; 
                 return;
             }

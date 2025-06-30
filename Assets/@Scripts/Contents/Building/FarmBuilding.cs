@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,12 +7,13 @@ public class FarmBuilding : BuildingBase
 { 
     [SerializeField] private Renderer buildingRenderer;
     public GameObject collectIcon;
-    
-    public override void Init()
+    public event Action IsHarvest;
+
+    public override bool Init()
     {
         base.Init();
         //collectIcon.SetActive(false);
-
+        return true;
     }
     public override void Produce()
     {
@@ -29,8 +31,11 @@ public class FarmBuilding : BuildingBase
         
         StoredCount++; //  생산 누적
         
+        IsHarvest?.Invoke();//수확 가능
+        
         Debug.Log($"농사 완성! 누적 수량: {StoredCount}");
 
+        CurrentState = BuildingState.ReadyToCollect;
         // collectIcon.SetActive(true);
 
     }
@@ -41,7 +46,7 @@ public class FarmBuilding : BuildingBase
         Debug.Log($" {StoredCount}개 야채를 수확했습니다!");
 
         StoredCount = 0;
-        CurrentState = BuildingState.Producing;
+        CurrentState = BuildingState.Idle;
         // collectIcon.SetActive(false);
 
     }

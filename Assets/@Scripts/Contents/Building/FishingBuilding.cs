@@ -8,11 +8,11 @@ public class FishingBuilding : BuildingBase
 
     public GameObject collectIcon;
     
-    public override void Init()
+    public override bool Init()
     {
         base.Init();
         //collectIcon.SetActive(false);
-
+        return true;
     }
     public override void Produce()
     {
