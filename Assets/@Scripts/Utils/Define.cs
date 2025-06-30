@@ -101,12 +101,14 @@ public class Define
         LOAD
     }
 
-public enum BuildingType
-{
-    Cooking,
-    Fishing,
-    Resting,
-    Farm,
-    Shop
+    public enum BuildingType
+    {
+        Cooking,
+        Fishing,
+        Resting,
+        Farm,
+        Shop,
+        STORAGE
+    
 }
 }
