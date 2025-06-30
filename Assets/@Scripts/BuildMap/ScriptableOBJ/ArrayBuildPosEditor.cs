@@ -2,7 +2,7 @@ using UnityEditor;
 using UnityEngine;
 
 /// <summary>
-/// ArrayMapPos 에디터
+/// ArrayBuildPos 에디터
 /// </summary>
 [CustomEditor(typeof(ArrayBuildPos))]
 public class ArrayBuildPosEditor : Editor
