@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ForestRegion : MonoBehaviour
+public class ForestRegion : BaseObject
 {
     public int Id;
     public bool IsUnlocked { get; private set; }
@@ -33,12 +33,23 @@ public class ForestRegion : MonoBehaviour
 
     private void SaveUnlockState()
     {
-        PlayerPrefs.SetInt($"ForestRegion_{Id}", 1);
+        // ForestSaveData data = 
+        // if (!data.unlockedRegionIds.Contains(Id))
+        // {
+        //     data.unlockedRegionIds.Add(Id);
+        //     SaveManager.Save(data);
+        // }
     }
 
     private void LoadUnlockState()
     {
-        IsUnlocked = PlayerPrefs.GetInt($"ForestRegion_{Id}", 0) == 1;
+        // ForestSaveData data = GameManager
+        // IsUnlocked = data.unlockedRegionIds.Contains(Id);
+    }
+
+    public override void OnClick()
+    {
+        
     }
 }
 
