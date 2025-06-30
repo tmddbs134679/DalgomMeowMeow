@@ -33,23 +33,28 @@ public class ForestRegion : BaseObject
 
     private void SaveUnlockState()
     {
-        // ForestSaveData data = 
-        // if (!data.unlockedRegionIds.Contains(Id))
-        // {
-        //     data.unlockedRegionIds.Add(Id);
-        //     SaveManager.Save(data);
-        // }
+        ForestSaveData data = SaveForestTest.Load();
+        if (!data.unlockedRegionIds.Contains(Id))
+        {
+            data.unlockedRegionIds.Add(Id);
+            SaveForestTest.Save(data);
+        }
     }
 
     private void LoadUnlockState()
     {
-        // ForestSaveData data = GameManager
-        // IsUnlocked = data.unlockedRegionIds.Contains(Id);
+        ForestSaveData data = SaveForestTest.Load();
+        IsUnlocked = data.unlockedRegionIds.Contains(Id);
     }
+
 
     public override void OnClick()
     {
-        
+        if (!IsUnlocked)
+        {
+            ForestBattleContext.PendingUnlockForestId = Id;
+            //전투 씬 이동
+        }
     }
 }
 
