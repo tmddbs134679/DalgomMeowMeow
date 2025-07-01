@@ -30,6 +30,8 @@ public class AICharacter : BaseObject
     [HideInInspector]
     public CharacterAction characterAction;
 
+    public List<string> EquippedItemIds { get; set; } = new();
+
     public event Action<AICharacter> AnimalLeaved;
     public event Action<AICharacter> AnimalArrived;
 
@@ -38,7 +40,7 @@ public class AICharacter : BaseObject
     public Sprite[] sprites;
     public Sprite sprite;
     public Character CharacterData { get;  set; }
-
+    
     private void Awake()
     {
         ObjectType = Define.EObjectType.Character;

@@ -45,6 +45,13 @@ namespace Scripts.Contents.AI.FSM.State
                 return;
             }
 
+            if (character.CharacterData.CurrentStamina >= 20 && 
+                character.Controller.FindAvailableBuilding(Define.BuildingType.Cooking) != null)
+            {
+                character.characterAction.Cook();
+                return;
+            }
+
             if (character.CharacterData.CurrentStamina >= 25f && 
                 character.Controller.FindAvailableBuilding(Define.BuildingType.Farm))
             {
@@ -53,12 +60,6 @@ namespace Scripts.Contents.AI.FSM.State
             }
 
 
-            if (character.CharacterData.CurrentStamina >= 20 && 
-                character.Controller.FindAvailableBuilding(Define.BuildingType.Cooking) != null)
-            {
-                character.characterAction.Cook();
-                return;
-            }
 
             character.Controller.PatrolMove(10f);
             character.Controller.TryHelloNearbyCharacter();

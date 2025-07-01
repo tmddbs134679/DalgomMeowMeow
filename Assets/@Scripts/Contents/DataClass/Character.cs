@@ -30,10 +30,12 @@ public class Character
     public Vector3Data Pos { get; set; } = new Vector3Data();
     public float CurrentStamina { get; set; } 
     public float Hp { get; set; }
-    public float MoveSpeed { get; set; } 
+    public float MoveSpeed { get; set; } = 3f; // 이동 속도
     public float WalkSpeed { get; set; }
 
     public List<string> EquippedItemIds { get; set; } = new();
+
+    public Dictionary<EEquipmentType, Equipment> EquippedItems = new();
     public void Init(string id, Vector3 position)
     {
         Id = id;
@@ -41,7 +43,7 @@ public class Character
         CurrentState = EAIState.Idle;
         CurrentStamina = Data?.MaxStamina ?? 100f;
         MoveSpeed =  Data?.MoveSpeed ?? 1f;
-        WalkSpeed = Data?.WalkSpeed ?? 1f;
+        WalkSpeed = Data?.WalkSpeed ?? 1.5f;
         EquippedItemIds = new();
     }
 
