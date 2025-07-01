@@ -39,7 +39,12 @@ public class UI_QuestSlot : UI_Base
         {
             QuestManager.Instance.GiveReward(_quest.QuestData.QuestId);
             
-            
+            if (_quest.QuestData.Type == QuestType.Daily)
+            {
+                // Daily 퀘스트는 클릭 시 맨 아래로 이동
+                transform.SetAsLastSibling();
+            }
+
             SetQuest(_quest); // UI 갱신
         }
     }

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class UI_QuestPopup : UI_Popup
 {
+    QuestType _currentTab = QuestType.Daily;
     enum GameObjects
     {
         Content
@@ -26,18 +27,31 @@ public class UI_QuestPopup : UI_Popup
         GetButton((int)Buttons.BackgroundButton).gameObject.BindEvent(OnClickBackgroundButton);
         GetButton((int)Buttons.DailyButton).gameObject.BindEvent(DailyButton);
         GetButton((int)Buttons.AchievementButton).gameObject.BindEvent(AchievementButton);
+        
+        QuestManager.Instance.OnQuestUpdated += RefreshUI;
+        
         CreateQuestSlots();
 
         return true;
     }
 
+    private void RefreshUI()
+    {
+        if (_currentTab == QuestType.Daily)
+            CreateQuestSlots();
+        else if (_currentTab == QuestType.Achievement)
+            CreateAchievementSlots();
+    }
+
     private void DailyButton()
     {
+        _currentTab = QuestType.Daily;
         CreateQuestSlots();
     }
 
     private void AchievementButton()
     {
+        _currentTab = QuestType.Achievement;
         CreateAchievementSlots();
     }
 
