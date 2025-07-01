@@ -114,4 +114,12 @@ public class Define
         Playing
     
     }
+
+    public enum EEquipmentType
+    {
+        None,
+        Hat,
+        Accessory,
+        Bag,
+    }
 }
