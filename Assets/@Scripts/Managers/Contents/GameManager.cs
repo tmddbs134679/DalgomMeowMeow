@@ -27,7 +27,6 @@ public class GameManager
 
 
     private Dictionary<string, Character> _characters = new Dictionary<string, Character>();
-   // public IReadOnlyDictionary<string, Character> Characters => _characters;
 
     public bool IsLoaded = false;
 
@@ -104,6 +103,9 @@ public class GameManager
             return;
         }
 
+
+
+
         // 최초 생성
         var newChar = new Character();
         newChar.Init("A2002", new Vector3(10f, 0, 8f)); // 위치 초기값
@@ -126,6 +128,15 @@ public class GameManager
         _characters[newChar3.Id] = newChar3;
 
 
+
+        // 초기 장비 생성
+        Equipment hat = new Equipment("E0001");
+        Equipment accessory = new Equipment("E0002");
+        Equipment bag = new Equipment("E0003");
+
+        OwnedEquipments.Add(hat);
+        OwnedEquipments.Add(accessory);
+        OwnedEquipments.Add(bag);
 
         SaveGame();
         IsLoaded = true;
