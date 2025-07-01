@@ -13,6 +13,16 @@ public class ResourceManager
         {
             return resource as T;
         }
+
+        if (typeof(T) == typeof(Sprite))
+        {
+            key = key + ".sprite";
+            if (_resources.TryGetValue(key, out Object temp))
+            {
+                return temp as T;
+            }
+        }
+
         return null;
     }
     public GameObject Instantiate(string key, Transform parent = null, bool pooling = false)

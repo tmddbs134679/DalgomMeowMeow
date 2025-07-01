@@ -13,7 +13,7 @@ public class GameScene : BaseScene
 
         Managers.UI.ShowSceneUI<UI_GameScene>();
 
-        foreach (var ch in Managers.Game.Characters.Values)
+        foreach (var ch in Managers.Game.Characters)
         {
             AICharacter ai = Managers.Object.Spawn<AICharacter>(ch.Pos.ToVector3(), ch.DataId);
             ai.SetInfo(ch);

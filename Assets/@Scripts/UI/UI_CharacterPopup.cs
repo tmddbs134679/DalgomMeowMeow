@@ -8,7 +8,7 @@ public class UI_CharacterPopup : UI_Popup
     #region Enum
     enum GameObjects
     {
-
+        CharacterInfoScrollContentObject,
     }
 
     enum Buttons
@@ -37,6 +37,7 @@ public class UI_CharacterPopup : UI_Popup
 
         GetButton((int)Buttons.ExitButton).gameObject.BindEvent(OnClickExitButton);
 
+        Refresh();
         return true;
     }
 
@@ -44,4 +45,15 @@ public class UI_CharacterPopup : UI_Popup
     {
         Managers.UI.CloseAllPopupUI();
     }
+
+    private void Refresh()
+    {
+        List<Character> characters = Managers.Game.Characters;
+        foreach (Character ch in characters)
+        {
+            UI_CharacterInfo slot = Managers.UI.MakeSubItem<UI_CharacterInfo>(GetObject((int)GameObjects.CharacterInfoScrollContentObject).transform);
+            slot.SetInfo(ch);
+        }
+    }
+    
 }

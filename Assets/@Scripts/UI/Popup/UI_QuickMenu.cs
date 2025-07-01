@@ -9,7 +9,7 @@ public class UI_QuickMenu : UI_Popup
     #region Enum
     enum GameObjects
     {
-        StorageObject
+   
     }
 
     enum Buttons
