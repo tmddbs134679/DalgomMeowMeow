@@ -32,12 +32,6 @@ public class PlayerCharacter : BattleCharacter
         Agent.speed = MoveSpeed * 3;
     }
 
-
-    public Vector3 GetOriginalWorldPosition()
-    {
-        return this.transform.position;
-    }
-
     public void SmoothLookForward(Vector3 direction, float duration = 0.3f)
     {
         StartCoroutine(RotateSmoothly(direction, duration));
