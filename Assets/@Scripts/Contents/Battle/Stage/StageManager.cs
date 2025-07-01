@@ -36,10 +36,6 @@ public class StageManager : BaseObject
         RandomSet(); //적들 랜덤 생성
     }
 
-    private void Start()
-    {
-        
-    }
 
     public void RandomSet() 
     {
@@ -87,10 +83,7 @@ public class StageManager : BaseObject
             //첫 클리어 보상
         }
     }
-
-    public void SetData(CreatureData data , int k)
-    {
-    }
+    
 
     public override void OnClick()
     {

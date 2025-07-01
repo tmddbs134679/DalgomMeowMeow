@@ -121,15 +121,7 @@ public class BattleCharacter : BaseObject
             }
         }
     }
-
     
-    void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, _attackRange);
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, _detectRange);
-    }
 
     public void Init(CreatureData data)
     {
