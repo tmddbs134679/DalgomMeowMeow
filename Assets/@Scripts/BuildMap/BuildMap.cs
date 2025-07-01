@@ -21,7 +21,7 @@ public class BuildMap : MonoBehaviour
             GameObject go = Instantiate(data.testBaseBuilding.buildOBJ, new Vector3(data.posX, 1f, data.posZ), Quaternion.identity, transform);
             go.GetComponent<DraggableObject>().BuildActiontUI = BuildActiontUI;
             go.GetComponent<DraggableObject>().buildMap = gameObject.GetComponent<BuildMap>();
-            go.GetComponent<DraggableObject>().buildingplacer = buildingplacer;
+            
             _spawnedBuilds.Add(new Vector2(data.posX, data.posZ), go);
         }
         surface.BuildNavMesh();

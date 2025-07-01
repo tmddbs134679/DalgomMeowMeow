@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.AI.Navigation;
-
+using TMPro;
 /// <summary>
 /// 건물 설치 기능 전용 매니저 (UI 관리 분리)
 /// </summary>
@@ -25,10 +25,12 @@ public class BuildingPlacer : MonoBehaviour
     public DraggableObject tempDraggleOBJ;
 
     [SerializeField] private float _heightOffset = 0.5f;
+    public Collider[] TempCollider;
 
     private GameObject _tempOBJ;
     private BaseBuildingSO _saveBuildingSO;
     private BuildData _buildData;
+    private int buyMoney;
 
     private bool _isGold;
     private bool _isBuild;
@@ -57,8 +59,9 @@ public class BuildingPlacer : MonoBehaviour
         if (Physics.Raycast(ray, out var groundHit, 1000f, groundLayer))
         {
             _saveBuildingSO = buildingSO[type];
-            _tempOBJ = Instantiate(buildingSO[type].previewOBJ, 
-                new Vector3(groundHit.point.x, groundHit.point.y + _heightOffset, groundHit.point.z), 
+            buyMoney = buildingSO[type].BuyMoney;
+            _tempOBJ = Instantiate(buildingSO[type].previewOBJ,
+                new Vector3(groundHit.point.x, groundHit.point.y + _heightOffset, groundHit.point.z),
                 Quaternion.identity);
 
             tempDraggleOBJ = _tempOBJ.GetComponent<DraggableObject>();
@@ -80,10 +83,10 @@ public class BuildingPlacer : MonoBehaviour
     /// <summary>
     /// 설치 재료(돈) 판별
     /// </summary>
-bool CheckBuildGold()
-{
-    return buildUI.CheckMoneyEnough();
-}
+    bool CheckBuildGold()
+    {
+        return Managers.Game.Gold > 0;
+    }
 
     /// <summary>
     /// 설치 가능 여부 판별
@@ -99,12 +102,12 @@ bool CheckBuildGold()
     /// </summary>
     public void AcceptBuild()
     {
-       _isGold= CheckBuildGold();
+        _isGold = CheckBuildGold();
         CanPlaceBuilding();
 
         if (_isGold && _isBuild)
         {
-        buildUI.SpendMoney(500);
+            Managers.Game.Gold -= buyMoney;
 
             _buildData = new BuildData
             {
@@ -117,6 +120,7 @@ bool CheckBuildGold()
 
             _tempOBJ.GetComponent<DraggableObject>().SetTileIsBuild();
 
+           if(tempDraggleOBJ.isLongPress)ClearTile();
             gridMap.LoadMap();
             buildMap.LoadBuild();
             surface.BuildNavMesh();
@@ -136,5 +140,20 @@ bool CheckBuildGold()
             Destroy(_tempOBJ);
         }
         buildMap.ColliderAllOn();
+    }
+    
+
+    //해당 오브젝트 밑 타일 초기화
+    public void ClearTile()
+    {
+        foreach (Collider col in TempCollider)
+        {
+            if (col.CompareTag("Tile"))
+            {
+                var tile = col.GetComponent<TileObjectData>();
+                tile.isLoadBuild = false;
+                tile.SetTile();
+            }
+        }
     }
 }

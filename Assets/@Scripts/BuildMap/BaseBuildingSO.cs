@@ -4,9 +4,9 @@ using UnityEngine;
 
 
 //SO를 일단은TestBaseBuilding로 다 해뒀지만 나중에 다 분류 시켜야함 상속받아서
-    /// <summary>
-    /// 
-    /// </summary>
+/// <summary>
+/// 
+/// </summary>
 [CreateAssetMenu(menuName = "Map/BuildOBJ")]
 public class BaseBuildingSO : ScriptableObject
 {
@@ -21,6 +21,7 @@ public class BaseBuildingSO : ScriptableObject
     [SerializeField] private Define.BuildingType _buildingType;
     [SerializeField] private float _interval;
     [SerializeField] private int _unlockCost;
+    [SerializeField] private int _buyMoney;
 
     public GameObject buildOBJ { get => _buildOBJ; set => _buildOBJ = value; }
     public GameObject previewOBJ { get => _previweOBJ; set => _previweOBJ = value; }
@@ -33,4 +34,5 @@ public class BaseBuildingSO : ScriptableObject
     public Define.BuildingType BuildingType { get => _buildingType; set => _buildingType = value; }
     public float Interval { get => _interval; set => _interval = value; }
     public int UnlockCost { get => _unlockCost; set => _unlockCost = value; }
+    public int BuyMoney{get => _buyMoney; set => _buyMoney = value; }
 }
