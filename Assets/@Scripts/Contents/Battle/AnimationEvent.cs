@@ -14,4 +14,8 @@ public class AnimationEvent : MonoBehaviour
     {
         _battleCharacter.SetOff();
     }
+    public void Attack()
+    {
+        _battleCharacter.Attack();
+    }
 }

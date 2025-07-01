@@ -11,6 +11,8 @@ public class PlayerCharacter : BattleCharacter
         base.Awake();
         Animator = GetComponentInChildren<Animator>();
         AnimationHash = Animator.StringToHash("animation"); // 애니메이션 해시 초기화
+        SkillHash = Animator.StringToHash("skills"); // 스킬 애니메이션 해시 초기화
+        Skill = Animator.StringToHash("Skill"); // 스킬 애니메이션 이름 해시 초기화
         _characterRenderer = GetComponentsInChildren<SkinnedMeshRenderer>();
 
 
