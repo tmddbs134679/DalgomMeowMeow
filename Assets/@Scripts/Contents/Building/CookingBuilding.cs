@@ -42,7 +42,7 @@ public class CookingBuilding : BuildingBase
 
         Managers.Food.MakeFood();
         //(Managers.UI.SceneUI as UI_GameScene).ResetCookItem();
-        //QuestManager.Instance.OnEvent(QuestConditionType.Collect, TargetType.Soup);
+        QuestManager.Instance.OnEvent(QuestConditionType.Collect, TargetType.Soup);
         
         
        // QuestManager.Instance.GiveReward("Soup_10");
