@@ -14,10 +14,7 @@ public class StageManager : BaseObject
     private int _playerSelectedStage;
 
     public int StageNumber;
-    public string[] EnemyID;
-    public float[] EnemySpawnRate;
-
-
+    public float[] EnemySpawnRate { get; private set; }
 
     private void Awake() 
     {
@@ -63,19 +60,20 @@ public class StageManager : BaseObject
                 currentDum += EnemySpawnRate[i];
                 if (randomValue <= currentDum)
                 {
+                    
+                    Managers.Object.Spawn<BattleCharacter>(Vector3.zero, stages[currentStageIndex].EnemyID[i], _parent[k].transform);
+                     
                     /*
-                     * var enemy = Managers.Object.Spawn<BattleCharacter>(Vector3.zero, stages[currentStageIndex].EnemyID[i]);
-                     */
                     GameObject enemy = Managers.Resource.Instantiate(Managers.Data.CreatureDic[stages[currentStageIndex].EnemyID[i]].PrefabLabel, _parent[k].transform , false); //적 생성
                     enemy.transform.SetParent(_parent[k].transform, false); //부모 오브젝트 설정
-                    SetData(Managers.Data.CreatureDic[stages[currentStageIndex].EnemyID[i]], k); //적 데이터 설정
+                    */
+                    _parent[k].GetComponent<BattleCharacter>().Init(Managers.Data.CreatureDic[stages[currentStageIndex].EnemyID[i]]); //적 캐릭터 초기화
+
                     break;
                 }
             }
         }
     }
-
-    
 
 
     public void Reward()    //배틀매니저에서 호출
@@ -92,7 +90,6 @@ public class StageManager : BaseObject
 
     public void SetData(CreatureData data , int k)
     {
-        _parent[k].GetComponent<BattleCharacter>().Init(data); //적 캐릭터 초기화
     }
 
     public override void OnClick()
