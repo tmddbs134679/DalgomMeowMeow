@@ -6,13 +6,12 @@ using UnityEngine.AI;
 
 public class BattleCharacter : BaseObject
 {
-    [SerializeField] private float _detectRange = 10f;  
+    [SerializeField] private float _detectRange = 10f;
     [SerializeField] private float _attackRange = 1.5f;
     [SerializeField] private float _attackDelay = 1f; // 공격 딜레이 (초 단위)
     [SerializeField] private CharacterStatSo _data; // 캐릭터 스탯 데이터
     [SerializeField] private Color _damageColor = Color.red;
     [SerializeField] private float _flashDuration = 0.05f;
-    [SerializeField] private Color _originalColor;  // 원래 색상 (피격 효과를 위해 사용됨)
 
     public NavMeshAgent Agent { get; private set; } // NavMeshAgent 컴포넌트
 
@@ -25,21 +24,21 @@ public class BattleCharacter : BaseObject
 
     public string TargetLayer = "Enemy"; // 타겟 태그
     public bool UsingSkill = false; // 스킬 사용 여부
-    
+
 
     private float _attacktimer = 0f;
     private Transform _targetLocation;
     private BattleCharacter _targetCharacter; // 현재 타겟 캐릭터
 
-    [SerializeField]protected SkinnedMeshRenderer[] _characterRenderer; // 캐릭터 렌더러
+    [SerializeField] protected SkinnedMeshRenderer[] _characterRenderer; // 캐릭터 렌더러
     private Coroutine _damageFlashCoroutine; //피격 효과 코루틴
 
     private bool _isInBattle = false;
 
     public Animator Animator; // 애니메이터 컴포넌트
-    [SerializeField]protected Vector3 _originalPosition; // 원래 위치 저장
-    
-    
+    [SerializeField] protected Vector3 _originalPosition; // 원래 위치 저장
+
+
 
 
     public event Action<BattleCharacter> OnCharacterDied;
@@ -48,9 +47,11 @@ public class BattleCharacter : BaseObject
 
 
     public int AnimationHash;
-    
+    public int SkillHash;
+    public int Skill;
+
     public bool IsDead { get; private set; } = false;
-   
+
     public bool IsInBattle { get => _isInBattle;
         set
         {
@@ -83,7 +84,6 @@ public class BattleCharacter : BaseObject
     {
         if (IsDead) return; // 캐릭터가 죽었으면 업데이트 중지
 
-
         if (_targetLocation == null)
         {
             var newTarget = FindClosestEnemyInRange(_detectRange);
@@ -94,7 +94,7 @@ public class BattleCharacter : BaseObject
                 {
                     Agent.SetDestination(_targetLocation.position);
                     IsInBattle = true; // 타겟이 생기면 전투 상태로 변경
-                    Animator.SetInteger(AnimationHash, 5); 
+                    Animator.SetInteger(AnimationHash, 5);
                 }
             }
         }
@@ -121,7 +121,7 @@ public class BattleCharacter : BaseObject
             }
         }
     }
-    
+
 
     public void Init(CreatureData data)
     {
@@ -167,7 +167,7 @@ public class BattleCharacter : BaseObject
 
         }
     }
-    
+
 
 
 
@@ -195,9 +195,13 @@ public class BattleCharacter : BaseObject
         if (_attacktimer >= _attackDelay)
         {
             Animator.SetInteger(AnimationHash, UnityEngine.Random.Range(1, 4)); // 공격 애니메이션 출력
-            _targetCharacter.TakeDamage(this.AttackDamage); // 타겟의 체력 감소
             _attacktimer = 0f; // 공격 후 타이머 초기화
         }
+    }
+
+    public void Attack()
+    {
+        _targetCharacter.TakeDamage(this.AttackDamage); // 타겟의 체력 감소
     }
 
 
@@ -246,7 +250,7 @@ public class BattleCharacter : BaseObject
             targetChar.OnCharacterDied -= HandleTargetDeath;
     }
 
-
+    
    
     private IEnumerator DamageFlash()
     {
@@ -269,10 +273,21 @@ public class BattleCharacter : BaseObject
 
     #endregion
 
-    private IEnumerator SkillActive()
+
+    public void ActiveSkill(int _skillNum)
+    {
+        StartCoroutine(SkillActive(_skillNum));
+    }
+
+    private IEnumerator SkillActive(int _skillNum)
     {
         UsingSkill = true;
-        yield return new WaitForSeconds(1f); // 스킬 지속 시간 (예: 1초)
+        Animator.SetInteger(SkillHash, _skillNum); // 스킬 애니메이션 출력
+        Animator.SetTrigger(Skill); // 스킬 애니메이션 트리거 활성화
+
+        //스킬 실행시 효과 적용 로직 _skillNum
+
+        yield return new WaitForSeconds(2f); // 스킬 지속 시간 (예: 1초)
         UsingSkill = false; // 스킬 사용 종료
     }
 
