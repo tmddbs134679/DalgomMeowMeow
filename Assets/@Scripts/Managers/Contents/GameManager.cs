@@ -4,8 +4,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Experimental.Rendering;
-
+using static Define;
 
 [Serializable]
 public class GameData
@@ -16,13 +17,12 @@ public class GameData
    
     // 저장 전용
     public List<Character> CharacterList = new List<Character>();
+    public List<Equipment> OwnedEquipments = new List<Equipment>();
 }
 
 
 public class GameManager 
 {
-
-
     public GameData _gameData = new GameData();
 
 
@@ -37,6 +37,7 @@ public class GameManager
 
     public event Action OnResourcesChagned;
     public event Action OnCharacterChanged;
+    public event Action EquipInfoChanged;
     #endregion
 
     #region GameData
@@ -60,6 +61,17 @@ public class GameManager
             OnCharacterChanged?.Invoke();
         }
     }
+
+    public List<Equipment> OwnedEquipments
+    {
+        get { return _gameData.OwnedEquipments; }
+        set
+        {
+            _gameData.OwnedEquipments = value;
+
+            EquipInfoChanged?.Invoke();
+        }
+    }
     #endregion
 
 
@@ -70,7 +82,7 @@ public class GameManager
     string _path;
 
 
-    #endregion
+
 
 
     public void Init()
@@ -148,4 +160,36 @@ public class GameManager
             character.CurrentStamina = ai.CharacterData.CurrentStamina;
         }
     }
+
+    #endregion
+
+    #region Equipment
+
+    public void EquipItem(string characterId, EEquipmentType type, Equipment equipment)
+    {
+        if(_characters.TryGetValue(characterId, out var character) == false)
+        {
+            Debug.LogError("못찾음");
+            return;
+        }
+
+        if(character.EquippedItems.TryGetValue(type, out Equipment prevEquip))
+        {
+            prevEquip.IsEquipped = false;
+        }
+
+        character.EquippedItems[type] = equipment;
+        equipment.IsEquipped = true;
+
+        SaveGame();
+        OnCharacterChanged?.Invoke();
+    }
+
+    
+
+
+    #endregion
+
+
+
 }

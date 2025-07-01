@@ -21,8 +21,10 @@ public class DataTransformer : EditorWindow
         ParseCreatureData("Creature");
         ParseFoodData("Food");
         ParseBuildingData("Building");
+        ParseEquipmentData("Equipment");
     }
 
+ 
 
     static void ParseFoodData(string filename)
     {
@@ -137,6 +139,37 @@ public class DataTransformer : EditorWindow
         File.WriteAllText($"{Application.dataPath}/@Resources/Data/JsonData/{filename}Data.json", jsonStr);
         AssetDatabase.Refresh();
     }
+    static void ParseEquipmentData(string filename)
+    {
+        EquipmentDataLoader loader = new EquipmentDataLoader();
+
+        #region ExcelData
+        string[] lines = File.ReadAllText($"{Application.dataPath}/@Resources/Data/Excel/{filename}Data.csv").Split("\n");
+
+        for (int y = 1; y < lines.Length; y++)
+        {
+            string[] row = lines[y].Replace("\r", "").Split(',');
+
+            if (row.Length == 0)
+                continue;
+            if (string.IsNullOrEmpty(row[0]))
+                continue;
+
+            int i = 0;
+            EquipmentData eq = new EquipmentData();
+            eq.DataId = ConvertValue<string>(row[i++]);
+            eq.EquipmentType = ConvertValue<Define.EEquipmentType>(row[i++]);
+            eq.Name = ConvertValue<string>(row[i++]);
+            eq.SpriteName = ConvertValue<string>(row[i++]);
+            loader.Equipments.Add(eq);
+        }
+
+        #endregion
+
+        string jsonStr = JsonConvert.SerializeObject(loader, Formatting.Indented);
+        File.WriteAllText($"{Application.dataPath}/@Resources/Data/JsonData/{filename}Data.json", jsonStr);
+        AssetDatabase.Refresh();
+    }
 
 
     public static T ConvertValue<T>(string value)
@@ -155,7 +188,11 @@ public class DataTransformer : EditorWindow
         return value.Split('&').Select(x => ConvertValue<T>(x)).ToList();
     }
 
+
+
 #endif
+
+
 
 
 

@@ -105,4 +105,30 @@ namespace Data
 
 
     #endregion
+
+    #region Equipment
+
+    public class EquipmentData
+    {
+        public string DataId;
+        public EEquipmentType EquipmentType;
+        public string Name;
+        public string Description;
+        public string SpriteName;
+    }
+
+    [Serializable]
+    public class EquipmentDataLoader : ILoader<string, EquipmentData>
+    {
+        public List<EquipmentData> Equipments = new List<EquipmentData>();
+
+        public Dictionary<string, EquipmentData> MakeDict()
+        {
+            Dictionary<string, EquipmentData> dict = new Dictionary<string, EquipmentData>();
+            foreach (EquipmentData equipment in Equipments)
+                dict.Add(equipment.DataId, equipment);
+            return dict;
+        }
+    }
+    #endregion
 }
