@@ -70,7 +70,7 @@ public class UI_GameScene : UI_Scene
 
     private void OnClickBuildButton()
     {
-
+        Managers.UI.ShowPopupUI<UI_BuildPopup>();
     }
 
     private void OnClickQuickButton()

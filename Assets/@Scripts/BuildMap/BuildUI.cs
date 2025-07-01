@@ -56,12 +56,4 @@ public bool CheckMoneyEnough()
         moneyPreview.UpdateMoneyText();
     }
 
-    private void Update()
-    {
-        if (BuildingPlacer.Instance.tempDraggleOBJ != null && BuildActiontUI.activeSelf)
-        {
-            Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.main, BuildingPlacer.Instance.tempDraggleOBJ.transform.position);
-            BuildActiontUI.transform.position = screenPos;
-        }
-    }
 }

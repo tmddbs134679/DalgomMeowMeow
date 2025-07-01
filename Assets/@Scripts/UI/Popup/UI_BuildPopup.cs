@@ -73,9 +73,10 @@ public class UI_BuildPopup : UI_Popup
     {
         Debug.Log(type);
 
-        UI_BuildAction builder =  Managers.UI.ShowPopupUI<UI_BuildAction>();
-       // builder
+        UI_BuildAction builder = Managers.UI.ShowPopupUI<UI_BuildAction>();
+        // builder
         BuildingPlacer.Instance.SelectBuildingType(type);
+        Managers.UI.MakeSubItem<UI_BuildAction>(this.transform);
     }
     #endregion
 
