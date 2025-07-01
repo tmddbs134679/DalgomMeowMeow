@@ -55,10 +55,12 @@ public class UI_GameScene : UI_Scene
         GetButton((int)Buttons.BattleButton).GetOrAddComponent<UI_ButtonAnimation>();
         GetButton((int)Buttons.QuickButton).gameObject.BindEvent(OnClickQuickButton);
         GetButton((int)Buttons.BuildButton).gameObject.BindEvent(OnClickBuildButton);
+        GetButton((int)Buttons.BuildButton).GetOrAddComponent<UI_ButtonAnimation>();
 
         GetButton((int)Buttons.QuestButton).gameObject.BindEvent(OnClickQuestButton);
 
         Managers.Game.OnResourcesChagned += Refresh;
+        Managers.Game.OnCharacterChanged += Refresh;
         Managers.Food.OnFoodAdded += AddFoodSlot;
         Managers.Food.OnFoodSold += RemoveFoodSlot;
 
@@ -139,11 +141,10 @@ public class UI_GameScene : UI_Scene
         return (obj.transform.GetChild(0) as RectTransform).rect.width;
     }
 
-
-     void Refresh()
+    void Refresh()
     {
         GetText((int)Texts.PlayerGoldText).text = Managers.Game.Gold.ToString();
-
+        GetText((int)Texts.CreatureCountText).text = Managers.Game.Characters.Count.ToString();
     }
 
     void AddFoodSlot(Food food)

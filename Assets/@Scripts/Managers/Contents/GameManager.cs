@@ -27,7 +27,7 @@ public class GameManager
 
 
     private Dictionary<string, Character> _characters = new Dictionary<string, Character>();
-    public IReadOnlyDictionary<string, Character> Characters => _characters;
+   // public IReadOnlyDictionary<string, Character> Characters => _characters;
 
     public bool IsLoaded = false;
 
@@ -41,25 +41,6 @@ public class GameManager
 
     #region GameData
 
-    //public List<Character> Characters
-    //{
-    //    get { return _gameData.Characters; }
-    //    set
-    //    {
-    //        _gameData.Characters = value;
-
-    //    }
-    //}
-
-    //public Dictionary<string, Character> Characters
-    //{
-    //    get { return _gameData.Characters; }
-    //    set
-    //    {
-    //        _gameData.Characters = value;
-    //    }
-    //}
-
     public float Gold
     {
         get { return _gameData.Gold; }
@@ -70,7 +51,15 @@ public class GameManager
             OnResourcesChagned?.Invoke();
         }
     }
-
+    public List<Character> Characters
+    {
+        get { return _gameData.CharacterList; }
+        set
+        {
+            _gameData.CharacterList = value;
+            OnCharacterChanged?.Invoke();
+        }
+    }
     #endregion
 
 
