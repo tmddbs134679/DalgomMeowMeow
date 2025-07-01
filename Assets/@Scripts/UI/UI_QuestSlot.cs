@@ -5,6 +5,7 @@ using UnityEngine;
 public class UI_QuestSlot : UI_Base
 {
     enum Texts { QuestTitleText, ProgressText }
+    // enum Images { ProgressBarFill }
     enum Buttons { RewardButton }
 
     Quest _quest;
@@ -15,6 +16,7 @@ public class UI_QuestSlot : UI_Base
 
         BindText(typeof(Texts));
         BindButton(typeof(Buttons));
+        // BindImage(typeof(Images));
 
         GetButton((int)Buttons.RewardButton).gameObject.BindEvent(OnClickRewardButton);
         return true;
@@ -25,8 +27,14 @@ public class UI_QuestSlot : UI_Base
         Init();
 
         _quest = quest;
+        
+        int current = quest.Progress;
+        int goal = quest.QuestData.GoalCount;
+        float percent = (float)current / goal;
+        
         GetText((int)Texts.QuestTitleText).text = quest.QuestData.Title;
         GetText((int)Texts.ProgressText).text = $"{quest.Progress}/{quest.QuestData.GoalCount}";
+        // GetImage((int)Images.ProgressBarFill).fillAmount = percent;
         
 
         bool canClaim = quest.State == QuestProgressState.Completed;
