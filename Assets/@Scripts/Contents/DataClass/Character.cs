@@ -1,4 +1,4 @@
-using Data;
+﻿using Data;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -30,8 +30,10 @@ public class Character
     public Vector3Data Pos { get; set; } = new Vector3Data();
     public float CurrentStamina { get; set; } 
     public float Hp { get; set; }
-    public float MoveSpeed { get; set; } 
+    public float MoveSpeed { get; set; } = 3f; // 이동 속도
     public float WalkSpeed { get; set; }
+
+    public List<string> EquippedItemIds { get; set; } = new();
 
     public Dictionary<EEquipmentType, Equipment> EquippedItems = new();
     public void Init(string id, Vector3 position)
