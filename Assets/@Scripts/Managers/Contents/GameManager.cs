@@ -106,13 +106,26 @@ public class GameManager
 
         // 최초 생성
         var newChar = new Character();
-        newChar.Init("A10001", new Vector3(10f, 0, 8f)); // 위치 초기값
-        newChar.SetInfo(Managers.Data.CreatureDic["A10001"]);
+        newChar.Init("A2002", new Vector3(10f, 0, 8f)); // 위치 초기값
+        newChar.SetInfo(Managers.Data.CreatureDic["A20002"]);
         _characters[newChar.Id] = newChar;
 
-        newChar.Init("A10002", new Vector3(10f, 0, 8f)); // 위치 초기값
-        newChar.SetInfo(Managers.Data.CreatureDic["A10002"]);
-        _characters[newChar.Id] = newChar;
+        var newChar1 = new Character();
+        newChar1.Init("A20006", new Vector3(10f, 0, 8f)); // 위치 초기값
+        newChar1.SetInfo(Managers.Data.CreatureDic["A20006"]);
+        _characters[newChar1.Id] = newChar1;
+
+        var newChar2 = new Character();
+        newChar2.Init("A10003", new Vector3(10f, 0, 8f)); // 위치 초기값
+        newChar2.SetInfo(Managers.Data.CreatureDic["A10003"]);
+        _characters[newChar2.Id] = newChar2;
+
+        var newChar3 = new Character();
+        newChar3.Init("A20001", new Vector3(10f, 0, 8f)); // 위치 초기값
+        newChar3.SetInfo(Managers.Data.CreatureDic["A20001"]);
+        _characters[newChar3.Id] = newChar3;
+
+
 
         SaveGame();
         IsLoaded = true;
