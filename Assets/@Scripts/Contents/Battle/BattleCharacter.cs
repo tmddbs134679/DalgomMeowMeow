@@ -37,7 +37,7 @@ public class BattleCharacter : BaseObject
     private bool _isInBattle = false;
 
     public Animator Animator; // 애니메이터 컴포넌트
-    protected Vector3 _originalPosition; // 원래 위치 저장
+    [SerializeField]protected Vector3 _originalPosition; // 원래 위치 저장
     
     
 
