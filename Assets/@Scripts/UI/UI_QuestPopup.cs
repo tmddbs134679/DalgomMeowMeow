@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class UI_QuestPopup : UI_Popup
 {
-    enum GameObjects { QuestListRoot }
+    enum GameObjects { Content }
     enum Buttons { BackgroundButton }
 
     public override bool Init()
@@ -27,7 +27,7 @@ public class UI_QuestPopup : UI_Popup
 
     void CreateQuestSlots()
     {
-        Transform parent = GetObject((int)GameObjects.QuestListRoot).transform;
+        Transform parent = GetObject((int)GameObjects.Content).transform;
         foreach (Transform child in parent)
             Destroy(child.gameObject);
 
