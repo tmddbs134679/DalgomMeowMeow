@@ -6,7 +6,7 @@ using UnityEngine;
 public class StageSO : ScriptableObject
 {
     public int StageNumber;
-    [SerializeField]public CreatureData[] enemydata; //적 데이터들
+    public string[] EnemyID;
     public float[] EnemySpawnRate;
     public StageType StageType;
 

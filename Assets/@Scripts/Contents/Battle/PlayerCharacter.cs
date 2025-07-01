@@ -5,9 +5,21 @@ using UnityEngine;
 public class PlayerCharacter : BattleCharacter
 {
     private BattleManager _battleManager;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        Animator = GetComponentInChildren<Animator>();
+        AnimationHash = Animator.StringToHash("animation"); // 애니메이션 해시 초기화
+        _characterRenderer = GetComponentsInChildren<SkinnedMeshRenderer>();
+
+
+    }
     private void Start()
     {
         _battleManager = GetComponentInParent<BattleManager>();
+        _originalPosition = transform.localPosition;
+
     }
 
     public void ReturnToStartPosition()
@@ -18,12 +30,6 @@ public class PlayerCharacter : BattleCharacter
         Animator.SetInteger(AnimationHash, 4);
         HasLookedForward = false; // 시작 위치로 돌아가면 전방을 바라보지 않음
         Agent.speed = MoveSpeed * 3;
-    }
-
-
-    public Vector3 GetOriginalWorldPosition()
-    {
-        return this.transform.position;
     }
 
     public void SmoothLookForward(Vector3 direction, float duration = 0.3f)

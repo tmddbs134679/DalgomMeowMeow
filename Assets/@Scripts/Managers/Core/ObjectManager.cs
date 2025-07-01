@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -60,7 +60,32 @@ public class ObjectManager
             AICharacter pc = go.GetOrAddComponent<AICharacter>();
             return pc as T;
         }
-    
+        
+
+
+            return null;
+    }
+
+    public T Spawn<T>(Vector3 position, string templateID, Transform parent) where T : BaseObject
+    {
+        System.Type type = typeof(T);
+        GameObject go;
+
+        // 부모가 있으면 parent 기준으로 생성
+        if (parent != null)
+        {
+            go = Managers.Resource.Instantiate(Managers.Data.CreatureDic[templateID].PrefabLabel, parent, false);
+            go.transform.localPosition = Vector3.zero;
+        }
+        else
+        {
+            go = Managers.Resource.Instantiate(Managers.Data.CreatureDic[templateID].PrefabLabel);
+            go.transform.position = position;
+        }
+
+        if (type == typeof(AICharacter))
+            return go.GetOrAddComponent<AICharacter>() as T;
+        
 
         return null;
     }

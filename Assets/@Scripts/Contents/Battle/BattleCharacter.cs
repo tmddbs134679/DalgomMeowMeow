@@ -4,7 +4,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class BattleCharacter : MonoBehaviour
+public class BattleCharacter : BaseObject
 {
     [SerializeField] private float _detectRange = 10f;  
     [SerializeField] private float _attackRange = 1.5f;
@@ -31,13 +31,13 @@ public class BattleCharacter : MonoBehaviour
     private Transform _targetLocation;
     private BattleCharacter _targetCharacter; // 현재 타겟 캐릭터
 
-    private SkinnedMeshRenderer[] _characterRenderer; // 캐릭터 렌더러
+    [SerializeField]protected SkinnedMeshRenderer[] _characterRenderer; // 캐릭터 렌더러
     private Coroutine _damageFlashCoroutine; //피격 효과 코루틴
 
     private bool _isInBattle = false;
 
     public Animator Animator; // 애니메이터 컴포넌트
-    protected Vector3 _originalPosition; // 원래 위치 저장
+    [SerializeField]protected Vector3 _originalPosition; // 원래 위치 저장
     
     
 
@@ -64,17 +64,20 @@ public class BattleCharacter : MonoBehaviour
 
 
 
-    private void Awake()
+    protected virtual void Awake()
     {
+        ObjectType = Define.EObjectType.Enemy; // 객체 타입 설정
         Agent = GetComponent<NavMeshAgent>();
-        _characterRenderer = GetComponentsInChildren<SkinnedMeshRenderer>();
-        Animator = GetComponentInChildren<Animator>();
+
+    }
+
+    protected virtual void Start()
+    {
         _originalPosition = transform.localPosition;
         Agent.speed = MoveSpeed; // NavMeshAgent의 이동 속도 설정
         Agent.stoppingDistance = _attackRange; // 공격 범위 내에서 멈추도록 설정
-        AnimationHash = Animator.StringToHash("animation"); // 애니메이션 해시 초기화
-    }
 
+    }
 
     void Update()
     {
@@ -118,15 +121,7 @@ public class BattleCharacter : MonoBehaviour
             }
         }
     }
-
     
-    void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, _attackRange);
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, _detectRange);
-    }
 
     public void Init(CreatureData data)
     {
@@ -279,5 +274,10 @@ public class BattleCharacter : MonoBehaviour
         UsingSkill = true;
         yield return new WaitForSeconds(1f); // 스킬 지속 시간 (예: 1초)
         UsingSkill = false; // 스킬 사용 종료
+    }
+
+    public override void OnClick()
+    {
+        throw new NotImplementedException();
     }
 }
