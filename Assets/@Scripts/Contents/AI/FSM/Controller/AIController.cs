@@ -107,6 +107,16 @@ public class AIController : BaseController<AICharacter>
     #endregion
 
     #region 이동 / 순찰
+    public void NavRotateFalse()
+    {
+        character.nav.updateRotation = false;
+        character.transform.eulerAngles = new Vector3(0f, 180f, 0f); // 기본 회전값 설정
+    }
+
+    public void NavRotateTrue()
+    {
+        character.nav.updateRotation = true;
+    }
 
     public void Move(Vector3 destination)
     {
