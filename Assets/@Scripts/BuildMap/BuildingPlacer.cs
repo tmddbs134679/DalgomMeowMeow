@@ -3,136 +3,138 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.AI.Navigation;
+
 /// <summary>
-/// 건물 설치 판별, 취소, 적용 
+/// 건물 설치 기능 전용 매니저 (UI 관리 분리)
 /// </summary>
 public class BuildingPlacer : MonoBehaviour
 {
+    public static BuildingPlacer Instance;
 
+    [Header("설치 관련 설정")]
     public BaseBuildingSO[] buildingSO;
     public LayerMask groundLayer;
-
-    public GameObject BuildUi;
-    public GameObject BuildTypeUI;
-    public GameObject MoneyUI;
-    public GameObject BuildActiontUI;
-    public MoneyPreview moneyPreview;
     public GridMap gridMap;
     public BuildMap buildMap;
     public ArrayBuildPos arrayBuildPos;
     public NavMeshSurface surface;
-    public bool isSelect = false;
-    public DraggableObject tempDraggleOBJ;
-    [SerializeField] private float _heightOffset = 0.5f;
-    private GameObject _tempOBJ; //프리뷰 오브젝트
-    private BaseBuildingSO _saveBuildingSO;
 
+    public BuildUI buildUI;
+
+    [Header("임시 드래그 오브젝트")]
+    public DraggableObject tempDraggleOBJ;
+
+    [SerializeField] private float _heightOffset = 0.5f;
+
+    private GameObject _tempOBJ;
+    private BaseBuildingSO _saveBuildingSO;
     private BuildData _buildData;
+
     private bool _isGold;
     private bool _isBuild;
+    public bool isSelect = false;
 
-
-    //버튼 이벤트
-    public void OnBuild()
+    private void Awake()
     {
-        BuildTypeUI.SetActive(true);
-        BuildUi.SetActive(false);
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
     }
-    //건물종류선택
-    //나중에 list같은걸로 바꿔서 탐색 생각해보기
+
+    /// <summary>
+    /// 건물 종류 선택 시 호출
+    /// </summary>
     public void SelectBuildingType(int type)
     {
         isSelect = true;
         buildMap.ColliderAllOff();
+
         Camera cam = Camera.main;
         Vector3 screenCenter = new Vector3(Screen.width / 2f, Screen.height / 2f, cam.nearClipPlane);
         Ray ray = Camera.main.ScreenPointToRay(screenCenter);
+
         if (Physics.Raycast(ray, out var groundHit, 1000f, groundLayer))
         {
             _saveBuildingSO = buildingSO[type];
-            _tempOBJ = Instantiate(buildingSO[type].previewOBJ, new Vector3(groundHit.point.x, groundHit.point.y + _heightOffset, groundHit.point.z), Quaternion.identity);
+            _tempOBJ = Instantiate(buildingSO[type].previewOBJ, 
+                new Vector3(groundHit.point.x, groundHit.point.y + _heightOffset, groundHit.point.z), 
+                Quaternion.identity);
+
             tempDraggleOBJ = _tempOBJ.GetComponent<DraggableObject>();
-            _tempOBJ.GetComponent<DraggableObject>().BuildActiontUI = BuildActiontUI;
-            _tempOBJ.GetComponent<DraggableObject>().isDrag = true;
-            _tempOBJ.GetComponent<DraggableObject>().isLongPress = false;
-            BuildActiontUI.transform.position = screenCenter;
-            BuildActiontUI.SetActive(true);
-            BuildTypeUI.SetActive(false);
-            MoneyUI.SetActive(true);
+            tempDraggleOBJ.isDrag = true;
+            tempDraggleOBJ.isLongPress = false;
         }
+
     }
-    //DraggableObject가 보내주는 값 받기
+
+    /// <summary>
+    /// DraggableObject에서 설치할 오브젝트 설정 시 호출
+    /// </summary>
     public void SetTempOBJ(GameObject tempOBJ)
     {
         _saveBuildingSO = tempOBJ.GetComponent<BuildingBase>().BuildingData;
         _tempOBJ = tempOBJ;
-        _tempOBJ.GetComponent<DraggableObject>().BuildActiontUI = BuildActiontUI;
     }
 
+    /// <summary>
+    /// 설치 재료(돈) 판별
+    /// </summary>
+bool CheckBuildGold()
+{
+    return buildUI.CheckMoneyEnough();
+}
 
-    //건물설치재료판별
-    public void CheckBuildMaterials()
-    {
-        if (moneyPreview.money > 0) _isGold = true;
-    }
-
-    //설치 가능한지 판별
+    /// <summary>
+    /// 설치 가능 여부 판별
+    /// </summary>
     public void CanPlaceBuilding()
     {
-        _isBuild = _tempOBJ.GetComponent<DraggableObject>().isBuild;
+        if (_tempOBJ != null)
+            _isBuild = _tempOBJ.GetComponent<DraggableObject>().isBuild;
     }
 
-    //설치할 장소에 설치 ,버튼 이벤트
+    /// <summary>
+    /// 건물 설치 확정
+    /// </summary>
     public void AcceptBuild()
     {
-        CheckBuildMaterials();
+       _isGold= CheckBuildGold();
         CanPlaceBuilding();
+
         if (_isGold && _isBuild)
         {
-            // -=buildingSO[type].BuildOBJ.gold;
-            moneyPreview.money -= 500;
-            //건물 배치후 저장
-            _buildData = new BuildData();
-            _buildData.posX = _tempOBJ.transform.position.x;
-            _buildData.posZ = _tempOBJ.transform.position.z;
-            _buildData.testBaseBuilding = _saveBuildingSO;
-            arrayBuildPos.GetBuildData(_buildData);
-            //배치한 자리에 있는 타일들에 isbuild체크
-            _tempOBJ.GetComponent<DraggableObject>().SetTileIsBuild();
-            if (_tempOBJ.GetComponent<DraggableObject>().isLongPress)
+        buildUI.SpendMoney(500);
+
+            _buildData = new BuildData
             {
-                // _tempOBJ.GetComponent<DraggableObject>()._tempOBJ
-                //   _tempOBJ.GetComponent<DraggableObject>().ClearTile();
-            }
+                posX = _tempOBJ.transform.position.x,
+                posZ = _tempOBJ.transform.position.z,
+                testBaseBuilding = _saveBuildingSO
+            };
+
+            arrayBuildPos.GetBuildData(_buildData);
+
+            _tempOBJ.GetComponent<DraggableObject>().SetTileIsBuild();
+
             gridMap.LoadMap();
             buildMap.LoadBuild();
             surface.BuildNavMesh();
         }
     }
 
-    //설치 취소,버튼이벤트
+    /// <summary>
+    /// 건물 설치 취소
+    /// </summary>
     public void CancelBuild()
     {
         isSelect = false;
-        _tempOBJ.GetComponent<DraggableObject>().isDrag = false;
-        _tempOBJ.GetComponent<DraggableObject>().isDrag = true;
-        Destroy(_tempOBJ);
-        BuildActiontUI.SetActive(false);
-        BuildTypeUI.SetActive(false);
-        MoneyUI.SetActive(false);
-        BuildUi.SetActive(true);
-        buildMap.ColliderAllOn();
-        //   gridMap.LoadMap();
-        //  buildMap.LoadBuild();
-    }
 
-    //타겟 오브젝트 BuildActiontUI가 따라가게 하기
-    void Update()
-    {
-        if (_tempOBJ != null && BuildActiontUI != null && BuildActiontUI.activeSelf)
+        if (_tempOBJ != null)
         {
-            Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.main, _tempOBJ.transform.position);
-            BuildActiontUI.transform.position = screenPos;
+            _tempOBJ.GetComponent<DraggableObject>().isDrag = false;
+            Destroy(_tempOBJ);
         }
+        buildMap.ColliderAllOn();
     }
 }

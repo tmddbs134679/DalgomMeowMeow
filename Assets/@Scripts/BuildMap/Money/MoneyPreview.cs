@@ -11,7 +11,11 @@ public class MoneyPreview : MonoBehaviour
     public int money;
 
     public TextMeshProUGUI uGUI;
-    void Update()
+    void Start()
+    {
+                        uGUI.text = money.ToString();
+    }
+    public void UpdateMoneyText()
     {
         uGUI.text = money.ToString();
     }

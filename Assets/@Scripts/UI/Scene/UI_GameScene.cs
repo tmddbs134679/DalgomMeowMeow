@@ -28,14 +28,13 @@ public class UI_GameScene : UI_Scene
         ShopButton,
         BuildButton,
         EditPosButton,
-        BattleButton
+        BattleButton,
     }
 
     enum Texts
     {
         PlayerGoldText,
         CreatureCountText,
-
     }
     #endregion
 
@@ -69,7 +68,7 @@ public class UI_GameScene : UI_Scene
 
     private void OnClickBuildButton()
     {
- 
+
     }
 
     private void OnClickQuickButton()
@@ -125,7 +124,7 @@ public class UI_GameScene : UI_Scene
 
         yield return new WaitForSeconds(0.3f);
 
-   
+
         GetObject((int)GameObjects.StorageObject).GetComponent<HorizontalLayoutGroup>().enabled = true;
         LayoutRebuilder.ForceRebuildLayoutImmediate(transform as RectTransform);
     }
@@ -140,7 +139,7 @@ public class UI_GameScene : UI_Scene
     }
 
 
-     void Refresh()
+    void Refresh()
     {
         GetText((int)Texts.PlayerGoldText).text = Managers.Game.Gold.ToString();
 
@@ -170,15 +169,16 @@ public class UI_GameScene : UI_Scene
     #region Battle
     private void OnClickBattleButton()
     {
-       Managers.Scene.LoadScene(EScene.Test_Battle);
+        Managers.Scene.LoadScene(EScene.Test_Battle);
     }
 
     #endregion
-    
+
     #region Quest
     private void OnClickQuestButton()
     {
         //Managers.UI.ShowUI<UI_QuestPopup>();
     }
     #endregion
+
 }
