@@ -92,4 +92,32 @@ public class QuestManager : MonoBehaviour
             }
         }
     }
+    
+    public List<Quest> DailyQuests
+    {
+        get
+        {
+            List<Quest> list = new();
+            foreach (var quest in _quests.Values)
+            {
+                if (quest.QuestData.Type == QuestType.Daily)
+                    list.Add(quest);
+            }
+            return list;
+        }
+    }
+    
+    public List<Quest> AchievementQuests
+    {
+        get
+        {
+            List<Quest> list = new();
+            foreach (var quest in _quests.Values)
+            {
+                if (quest.QuestData.Type == QuestType.Achievement)
+                    list.Add(quest);
+            }
+            return list;
+        }
+    }
 }
