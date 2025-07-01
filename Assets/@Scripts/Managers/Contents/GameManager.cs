@@ -109,14 +109,6 @@ public class GameManager
         newChar.SetInfo(Managers.Data.CreatureDic["A10001"]);
         _characters[newChar.Id] = newChar;
 
-        newChar.Init("A10001", new Vector3(10f, 0, 8f)); // 위치 초기값
-        newChar.SetInfo(Managers.Data.CreatureDic["A10001"]);
-        _characters[newChar.Id] = newChar;
-
-        newChar.Init("A10001", new Vector3(10f, 0, 8f)); // 위치 초기값
-        newChar.SetInfo(Managers.Data.CreatureDic["A10001"]);
-        _characters[newChar.Id] = newChar;
-
         newChar.Init("A10002", new Vector3(10f, 0, 8f)); // 위치 초기값
         newChar.SetInfo(Managers.Data.CreatureDic["A10002"]);
         _characters[newChar.Id] = newChar;
