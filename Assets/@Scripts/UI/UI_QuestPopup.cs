@@ -5,7 +5,7 @@ using UnityEngine;
 public class UI_QuestPopup : UI_Popup
 {
     enum GameObjects { Content }
-    enum Buttons { BackgroundButton }
+    enum Buttons { BackgroundButton , DailyButton, AchievementButton }
 
     public override bool Init()
     {
@@ -15,9 +15,21 @@ public class UI_QuestPopup : UI_Popup
         BindButton(typeof(Buttons));
 
         GetButton((int)Buttons.BackgroundButton).gameObject.BindEvent(OnClickBackgroundButton);
+        GetButton((int)Buttons.DailyButton).gameObject.BindEvent(DailyButton);
+        GetButton((int)Buttons.AchievementButton).gameObject.BindEvent(AchievementButton);
         CreateQuestSlots();
 
         return true;
+    }
+
+    private void DailyButton()
+    {
+        CreateQuestSlots();
+    }
+
+    private void AchievementButton()
+    {
+        CreateAchievementSlots();
     }
 
     private void OnClickBackgroundButton()
@@ -32,6 +44,19 @@ public class UI_QuestPopup : UI_Popup
             Destroy(child.gameObject);
 
         foreach (var quest in QuestManager.Instance.DailyQuests)
+        {
+            UI_QuestSlot slot = Managers.UI.MakeSubItem<UI_QuestSlot>(parent);
+            slot.SetQuest(quest);
+        }
+    }
+    
+    void CreateAchievementSlots()
+    {
+        Transform parent = GetObject((int)GameObjects.Content).transform;
+        foreach (Transform child in parent)
+            Destroy(child.gameObject);
+
+        foreach (var quest in QuestManager.Instance.AchievementQuests)
         {
             UI_QuestSlot slot = Managers.UI.MakeSubItem<UI_QuestSlot>(parent);
             slot.SetQuest(quest);

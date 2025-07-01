@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public enum QuestType { Main, Side, Daily }
+public enum QuestType { Achievement, Daily }
 public enum QuestConditionType { Collect, Kill, Talk, AssignAnimal }
 public enum TargetType { Cat, Slime, Soup }
 

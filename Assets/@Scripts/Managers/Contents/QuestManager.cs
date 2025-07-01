@@ -106,4 +106,18 @@ public class QuestManager : MonoBehaviour
             return list;
         }
     }
+    
+    public List<Quest> AchievementQuests
+    {
+        get
+        {
+            List<Quest> list = new();
+            foreach (var quest in _quests.Values)
+            {
+                if (quest.QuestData.Type == QuestType.Achievement)
+                    list.Add(quest);
+            }
+            return list;
+        }
+    }
 }
