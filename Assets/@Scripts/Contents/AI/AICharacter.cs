@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml;
 using JetBrains.Annotations;
 using Scripts.Contents.AI.FSM.State;
 using UnityEngine;
@@ -34,7 +35,7 @@ public class AICharacter : BaseObject
 
     public event Action<AICharacter> AnimalLeaved;
     public event Action<AICharacter> AnimalArrived;
-
+    public Define.EAIState CurrentState;
     public bool _isHelloReady = true;
 
     public Sprite[] sprites;

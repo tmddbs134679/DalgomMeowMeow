@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ public class QuestManager : MonoBehaviour
     private Dictionary<(QuestConditionType, TargetType), List<Quest>> _questIndex = new();
 
     public List<QuestDataSO> questDataList;
+    public event Action OnQuestUpdated;
 
     void Awake()
     {
@@ -44,6 +46,7 @@ public class QuestManager : MonoBehaviour
                 quest.AddProgress();
             }
         }
+        OnQuestUpdated?.Invoke(); // 이벤트 호출
     }
 
     public void GiveReward(string questId)

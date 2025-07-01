@@ -9,7 +9,6 @@ using Unity.AI.Navigation;
 public class BuildMap : MonoBehaviour
 {
     public ArrayBuildPos arrayBuildPos;
-    public GameObject BuildActiontUI;
 
     public NavMeshSurface surface;
     public BuildingPlacer buildingplacer;
@@ -19,9 +18,8 @@ public class BuildMap : MonoBehaviour
         foreach (BuildData data in arrayBuildPos.baseBuilding)
         {
             GameObject go = Instantiate(data.testBaseBuilding.buildOBJ, new Vector3(data.posX, 1f, data.posZ), Quaternion.identity, transform);
-            go.GetComponent<DraggableObject>().BuildActiontUI = BuildActiontUI;
             go.GetComponent<DraggableObject>().buildMap = gameObject.GetComponent<BuildMap>();
-            go.GetComponent<DraggableObject>().buildingplacer = buildingplacer;
+
             _spawnedBuilds.Add(new Vector2(data.posX, data.posZ), go);
         }
         surface.BuildNavMesh();
@@ -42,7 +40,6 @@ public class BuildMap : MonoBehaviour
             {
                 // 건설 후 추가 생성
                 GameObject go = Instantiate(data.testBaseBuilding.buildOBJ, new Vector3(data.posX, 1f, data.posZ), Quaternion.identity, transform);
-                go.GetComponent<DraggableObject>().BuildActiontUI = BuildActiontUI;
                 go.GetComponent<Collider>().enabled = false;
                 _spawnedBuilds.Add(key, go);
             }

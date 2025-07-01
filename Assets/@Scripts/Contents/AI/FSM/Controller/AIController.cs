@@ -110,7 +110,7 @@ public class AIController : BaseController<AICharacter>
     public void NavRotateFalse()
     {
         character.nav.updateRotation = false;
-        character.transform.eulerAngles = new Vector3(0f, 127f, 0f); // 기본 회전값 설정
+        character.transform.eulerAngles = new Vector3(0f, -146f, 0f); // 기본 회전값 설정
     }
 
     public void NavRotateTrue()

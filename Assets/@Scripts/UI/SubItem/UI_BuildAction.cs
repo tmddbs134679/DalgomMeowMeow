@@ -11,7 +11,7 @@ public class UI_BuildAction : UI_Popup
 
     enum Buttons
     {
-        AceeptButton,
+        AcceptButton,
         CancelButton
     }
 
@@ -40,9 +40,20 @@ public class UI_BuildAction : UI_Popup
         BindButton(typeof(Buttons));
         BindText(typeof(Texts));
 
+        GetButton((int)Buttons.AcceptButton).gameObject.BindEvent(AcceptBuild);
+        GetButton((int)Buttons.CancelButton).gameObject.BindEvent(CancelBuild);
+
         return true;
     }
-
+    private void AcceptBuild()
+    {
+        BuildingPlacer.Instance.AcceptBuild();
+    }
+    private void CancelBuild()
+    {
+        Managers.Resource.Destroy(gameObject);
+        BuildingPlacer.Instance.CancelBuild();
+    }
     private void Update()
     {
         if (BuildingPlacer.Instance.tempDraggleOBJ != null && this.gameObject.activeSelf)
