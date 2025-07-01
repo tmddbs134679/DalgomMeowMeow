@@ -21,13 +21,13 @@ namespace Scripts.Contents.AI.FSM.State
         public override void OnUpdate(float deltaTime)
         {
             base.OnUpdate(deltaTime);
-            if (character.Stat.Stamina == 100)
+            if (character.CharacterData.CurrentStamina == 100)
             {
                 character.characterAction.Idle();
                 return;
             }
 
-            if (character.Stat.Stamina <= 100 && elapsedTime > 1)
+            if (character.CharacterData.CurrentStamina <= 100 && elapsedTime > 1)
             {
                 character.RecoverStamina(10f);
                 elapsedTime = 0; 

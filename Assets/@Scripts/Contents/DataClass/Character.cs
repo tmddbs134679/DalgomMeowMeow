@@ -1,4 +1,4 @@
-using Data;
+ï»¿using Data;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -24,11 +24,14 @@ public class Character
 {
     public Data.CreatureData Data;
 
-    public string Id { get; set; }              //°íÀ¯ ½Äº°
-    public string DataId { get; set; }  //Á¤Àû µ¥ÀÌÅÍ Å°
+    public string Id { get; set; }              //ê³ ìœ  ì‹ë³„
+    public string DataId { get; set; }  //ì •ì  ë°ì´í„° í‚¤
     public EAIState CurrentState { get; set; } = EAIState.Idle;
     public Vector3Data Pos { get; set; } = new Vector3Data();
-    public float CurrentStamina { get; set; } = 1;
+    public float CurrentStamina { get; set; } = 100;
+    public float Hp { get; set; }
+    public float MoveSpeed { get; set; } = 4f;
+    public float WalkSpeed { get; set; } = 1.5f;
 
     public List<string> EquippedItemIds { get; set; } = new();
     public void Init(string id, Vector3 position)
@@ -44,7 +47,7 @@ public class Character
     {
         if(data == null)
         {
-            Debug.LogError("Character data ¾øÀ½");
+            Debug.LogError("Character data ì—†ìŒ");
             return;
         }
 

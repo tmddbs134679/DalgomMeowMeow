@@ -12,7 +12,7 @@ public class TitleScene : BaseScene
         SceneType = Define.EScene.TitleScene;
     }
 
-    public override void Clear()
+    public override void Clear()//aeoifjhveoiw
     {
 
     }

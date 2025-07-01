@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 using static Define;
 
 
@@ -23,7 +24,7 @@ public class UI_GameScene : UI_Scene
         SettingButton,
         QuestButton,
         ArchivementButton,
-        DailyButton,
+        QuickButton,
         ShopButton,
         BuildButton,
         EditPosButton,
@@ -52,6 +53,10 @@ public class UI_GameScene : UI_Scene
         GetObject((int)GameObjects.StorageObject).GetComponent<HorizontalLayoutGroup>().spacing = UI_GROUP_SPACING;
         GetButton((int)Buttons.BattleButton).gameObject.BindEvent(OnClickBattleButton);
         GetButton((int)Buttons.BattleButton).GetOrAddComponent<UI_ButtonAnimation>();
+        GetButton((int)Buttons.QuickButton).gameObject.BindEvent(OnClickQuickButton);
+        GetButton((int)Buttons.BuildButton).gameObject.BindEvent(OnClickBuildButton);
+
+        GetButton((int)Buttons.QuestButton).gameObject.BindEvent(OnClickQuestButton);
 
         Managers.Game.OnResourcesChagned += Refresh;
         Managers.Food.OnFoodAdded += AddFoodSlot;
@@ -62,6 +67,15 @@ public class UI_GameScene : UI_Scene
         return true;
     }
 
+    private void OnClickBuildButton()
+    {
+ 
+    }
+
+    private void OnClickQuickButton()
+    {
+        Managers.UI.ShowPopupUI<UI_QuickMenu>();
+    }
 
     private void Awake()
     {
@@ -92,7 +106,7 @@ public class UI_GameScene : UI_Scene
     }
 
 
-    //Slot ¹Ð¸®´Â ¾Ö´Ï¸ÞÀÌ¼Ç
+    //Slot ï¿½Ð¸ï¿½ï¿½ï¿½ ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½
     IEnumerator AnimateForwardShift(Vector3 removedPosition)
     {
         List<Transform> children = new List<Transform>();
@@ -104,7 +118,7 @@ public class UI_GameScene : UI_Scene
             if (child.localPosition.x > removedPosition.x)
             {
                 Vector3 targetPos = child.localPosition;
-                targetPos.x -= GetSlotWidth() + UI_GROUP_SPACING; // Á¦°ÅµÈ ½½·Ô ³Êºñ + Spacing Å©±â
+                targetPos.x -= GetSlotWidth() + UI_GROUP_SPACING; // ï¿½ï¿½ï¿½Åµï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Êºï¿½ + Spacing Å©ï¿½ï¿½
                 child.DOLocalMoveX(targetPos.x, 0.3f).SetEase(Ease.OutQuad);
             }
         }
@@ -116,7 +130,7 @@ public class UI_GameScene : UI_Scene
         LayoutRebuilder.ForceRebuildLayoutImmediate(transform as RectTransform);
     }
 
-    //Slot ³Êºñ ±¸ÇÏ´Â ÇÔ¼ö 
+    //Slot ï¿½Êºï¿½ ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½Ô¼ï¿½ 
     float GetSlotWidth()
     {
         GameObject obj = GetObject((int)GameObjects.StorageObject);
@@ -140,7 +154,7 @@ public class UI_GameScene : UI_Scene
 
     void RemoveFoodSlot(Food food)
     {
-        // ÀúÀå¼ÒÀÇ ÀÚ½Ä Áß ÇØ´ç À½½ÄÀ» °¡Áø ½½·ÔÀ» Ã£¾Æ¼­ ¾Ö´Ï¸ÞÀÌ¼Ç Á¦°Å
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ú½ï¿½ ï¿½ï¿½ ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã£ï¿½Æ¼ï¿½ ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ ï¿½ï¿½ï¿½ï¿½
         foreach (Transform child in GetObject((int)GameObjects.StorageObject).transform)
         {
             var item = child.GetComponent<UI_FoodItem>();
@@ -159,5 +173,12 @@ public class UI_GameScene : UI_Scene
        Managers.Scene.LoadScene(EScene.Test_Battle);
     }
 
+    #endregion
+    
+    #region Quest
+    private void OnClickQuestButton()
+    {
+        Managers.UI.ShowPopupUI<UI_QuestPopup>();
+    }
     #endregion
 }

@@ -1,27 +1,33 @@
-﻿namespace Scripts.Contents.AI.FSM.State
+﻿using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.TextCore.Text;
+
+namespace Scripts.Contents.AI.FSM.State
 {
-    public class CharacterPlayState : AIState
+    public class CharacterResetState : AIState
     {
+       
         public override void Init(AICharacter owner)
         {
             base.Init(owner);
-            state = Define.EAIState.Playing;
+            state = Define.EAIState.None;
         }
-        
+
         public override void OnEnter()
         {
             base.OnEnter();
-            character.animator.SetInteger("animation", 50); // Play 애니메이션 설정
         }
-        
+
         public override void OnUpdate(float deltaTime)
         {
             base.OnUpdate(deltaTime);
-            if (elapsedTime > 7f)
+            if (elapsedTime > 0.1f)
             {
-                character.characterAction.Idle();
+            character.characterAction.Idle();
                 return;
+
             }
+            
         }
 
         public override void OnExit()
