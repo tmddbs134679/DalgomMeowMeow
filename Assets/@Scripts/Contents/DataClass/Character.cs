@@ -33,7 +33,7 @@ public class Character
     public float MoveSpeed { get; set; } 
     public float WalkSpeed { get; set; }
 
-    public List<string> EquippedItemIds { get; set; } = new();
+    public Dictionary<EEquipmentType, Equipment> EquippedItems = new();
     public void Init(string id, Vector3 position)
     {
         Id = id;
@@ -42,7 +42,7 @@ public class Character
         CurrentStamina = Data?.MaxStamina ?? 100f;
         MoveSpeed =  Data?.MoveSpeed ?? 1f;
         WalkSpeed = Data?.WalkSpeed ?? 1f;
-        EquippedItemIds = new();
+        EquippedItems = new();
     }
 
     public void SetInfo(CreatureData data)
