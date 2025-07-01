@@ -45,7 +45,7 @@ public class UI_QuickMenu : UI_Popup
 
     private void OnClickBackgroundButton()
     {
-        Managers.UI.ClosePopupUI(this);
+            Managers.UI.ClosePopupUI(this);
     }
 
     private void OnClickCharacterInfoButton()
