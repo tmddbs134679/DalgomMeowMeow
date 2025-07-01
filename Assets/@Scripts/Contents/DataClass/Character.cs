@@ -41,7 +41,7 @@ public class Character
         CurrentState = EAIState.Idle;
         CurrentStamina = Data?.MaxStamina ?? 100f;
         MoveSpeed =  Data?.MoveSpeed ?? 1f;
-        WalkSpeed = Data?.WalkSpeed ?? 1f;
+        WalkSpeed = Data?.WalkSpeed ?? 1.5f;
         EquippedItemIds = new();
     }
 
