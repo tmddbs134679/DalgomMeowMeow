@@ -28,10 +28,10 @@ public class Character
     public string DataId { get; set; }  //정적 데이터 키
     public EAIState CurrentState { get; set; } = EAIState.Idle;
     public Vector3Data Pos { get; set; } = new Vector3Data();
-    public float CurrentStamina { get; set; } = 100;
+    public float CurrentStamina { get; set; } 
     public float Hp { get; set; }
-    public float MoveSpeed { get; set; } = 4f;
-    public float WalkSpeed { get; set; } = 1.5f;
+    public float MoveSpeed { get; set; } 
+    public float WalkSpeed { get; set; }
 
     public List<string> EquippedItemIds { get; set; } = new();
     public void Init(string id, Vector3 position)
@@ -39,7 +39,9 @@ public class Character
         Id = id;
         Pos = new Vector3Data(position);
         CurrentState = EAIState.Idle;
-        CurrentStamina = 1f;
+        CurrentStamina = Data?.MaxStamina ?? 100f;
+        MoveSpeed =  Data?.MoveSpeed ?? 1f;
+        WalkSpeed = Data?.WalkSpeed ?? 1f;
         EquippedItemIds = new();
     }
 

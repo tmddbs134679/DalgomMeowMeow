@@ -20,8 +20,8 @@ namespace Scripts.Contents.AI.FSM.State
             randomPlayTime = Random.Range(10f, 20f); // 랜덤한 플레이 시간 설정
             character.nav.speed = character.CharacterData.WalkSpeed;
             character.animator.SetInteger("animation", 21); // Idle 애니메이션 설정
-
             character.Controller.PatrolMove(0f); // 초기 순찰 이동 설정
+            character.Controller.NavRotateTrue(); // 회전 활성화
 
         }
 

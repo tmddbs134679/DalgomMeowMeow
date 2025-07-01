@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.TextCore.Text;
 
 namespace Scripts.Contents.AI.FSM.State
@@ -18,6 +19,7 @@ namespace Scripts.Contents.AI.FSM.State
             character.currentBuilding.ConnectToAnimal(character);
             character.OnAnimalArrived(); // 도착 처리 메소드 호출
             character.animator.SetInteger("animation", 29); // Farming 애니메이션 설정
+            character.Controller.NavRotateFalse();
         }
 
         public override void OnUpdate(float deltaTime)

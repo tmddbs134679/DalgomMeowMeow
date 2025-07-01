@@ -18,6 +18,7 @@ namespace Scripts.Contents.AI.FSM.State
             character.currentBuilding.ConnectToAnimal(character);
             character.OnAnimalArrived(); // 도착 처리 메소드 호출
             character.animator.SetInteger("animation", 42); // Cooking 애니메이션 설정
+            character.Controller.NavRotateFalse(); // 회전 비활성화
         }
 
         public override void OnUpdate(float deltaTime)

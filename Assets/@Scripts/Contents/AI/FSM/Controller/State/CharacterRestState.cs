@@ -15,6 +15,7 @@ namespace Scripts.Contents.AI.FSM.State
             base.OnEnter();
             character.SetEmotion(4);
             character.animator.SetInteger("animation", 25); // Cooking 애니메이션 설정
+            character.Controller.NavRotateFalse(); // 회전 비활성화
         }
 
 

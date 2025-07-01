@@ -12,6 +12,7 @@
         {
             base.OnEnter();
             character.animator.SetInteger("animation", 50); // Play 애니메이션 설정
+            character.Controller.NavRotateFalse(); // 회전 비활성화
         }
         
         public override void OnUpdate(float deltaTime)
