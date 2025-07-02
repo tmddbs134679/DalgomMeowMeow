@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using Scripts.Contents.AI.FSM.State;
 using System.Collections;
+using Unity.VisualScripting;
 
 public class AIController : BaseController<AICharacter>
 {
@@ -46,16 +47,25 @@ public class AIController : BaseController<AICharacter>
             return;
         }
 
-        var targetPos = FindNearestBuilding(action);
+        Vector3 targetPos = FindNearestBuilding(action);
+
+        if (action == Define.EAIState.Delivery &&
+          registedState.TryGetValue(Define.EAIState.Delivery, out BaseState<AICharacter> deliverBase) &&
+            deliverBase is CharacterDeliverState deliveryTo)
+        {
+            deliveryTo.SetDestination(targetPos);
+            ChangeState(Define.EAIState.Delivery);
+            return;
+        }
 
         if (registedState.TryGetValue(Define.EAIState.MoveTo, out BaseState<AICharacter> moveBaseState) &&
             moveBaseState is CharacterMoveToState moveToState)
         {
-            moveToState.SetDestination(targetPos, () =>
-                 ChangeState(action));
+            moveToState.SetDestination(targetPos, () => ChangeState(action));
+            ChangeState(Define.EAIState.MoveTo);
+            return;
         }
 
-        ChangeState(Define.EAIState.MoveTo);
     }
 
     #endregion
@@ -65,7 +75,15 @@ public class AIController : BaseController<AICharacter>
     private Vector3 FindNearestBuilding(Define.EAIState action)
     {
         var type = GetBuildingType(action);
+
+        if (action == Define.EAIState.Delivery)
+        {
+            var nearbuilding = FineOnlyBuilding(type);
+            return nearbuilding.transform.position;
+        }
+
         var building = FindAvailableBuilding(type);
+        
 
         character.currentBuilding = building;
 
@@ -76,6 +94,12 @@ public class AIController : BaseController<AICharacter>
         }
 
         return building.transform.position;
+    }
+
+    public BuildingBase FineOnlyBuilding(Define.BuildingType type)
+    {
+        return BuildingManager.Instance._buildings
+            .FirstOrDefault(b => b.BuildingData.BuildingType == type);
     }
 
     public BuildingBase FindAvailableBuilding(Define.BuildingType type)
@@ -100,6 +124,7 @@ public class AIController : BaseController<AICharacter>
             Define.EAIState.Farming => Define.BuildingType.Farm,
             Define.EAIState.Resting => Define.BuildingType.Resting,
             Define.EAIState.Playing => Define.BuildingType.Playing,
+            Define.EAIState.Delivery => Define.BuildingType.Cooking,
 
         };
     }
