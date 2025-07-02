@@ -205,8 +205,8 @@ public class AIController : BaseController<AICharacter>
                 Random.Range(-range.z, range.z)
             );
 
-            if (IsNearWorkBuilding(randomPoint))
-                continue;
+            //if (IsNearWorkBuilding(randomPoint))
+            //    continue;
 
             if (NavMesh.SamplePosition(randomPoint, out var hit, 1f, NavMesh.AllAreas))
                 return hit.position;
