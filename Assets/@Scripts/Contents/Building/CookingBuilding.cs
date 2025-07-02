@@ -49,7 +49,7 @@ public class CookingBuilding : BuildingBase
 
         //Debug.Log($"{finalDish.Name} 요리 완성!");
 
-        deliveredVegetableCount = 0; // 생산 후 초기화
+        
         
         StoredCount++; //  생산 누적
         
@@ -61,18 +61,18 @@ public class CookingBuilding : BuildingBase
         }
         else if(deliveredVegetableCount == 1)
         {
-            
+            Managers.Food.MakeFood();
         }
         else if (deliveredVegetableCount == 2)
         {
-            
+            Managers.Food.MakeFood();
         }
         else if (deliveredVegetableCount >= 3)
         {
-            
+            Managers.Food.MakeFood();
         }
         
-   
+        deliveredVegetableCount = 0; // 생산 후 초기화
         //(Managers.UI.SceneUI as UI_GameScene).ResetCookItem();
         QuestManager.Instance.OnEvent(QuestConditionType.Collect, TargetType.Soup);
         
@@ -111,7 +111,6 @@ public class CookingBuilding : BuildingBase
     
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log($"[야채 도착] 누적 채소 수: {deliveredVegetableCount}");
         AICharacter animal = other.GetComponent<AICharacter>();
         if (animal == null) return;
 
