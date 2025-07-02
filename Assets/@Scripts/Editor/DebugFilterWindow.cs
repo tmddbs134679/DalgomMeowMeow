@@ -20,7 +20,7 @@ public class DebugFilterWindow : EditorWindow
         debugSettings = Resources.Load<DebugSettings>("DebugSettings");
         if (debugSettings == null)
         {
-            Debug.LogError("DebugSettings.asset not found in Resources folder");
+            Debug.LogError("DebugSettings.asset ¾øÀ½");
             return;
         }
 
