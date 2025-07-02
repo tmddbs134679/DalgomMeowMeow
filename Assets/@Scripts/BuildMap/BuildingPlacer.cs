@@ -105,9 +105,10 @@ public class BuildingPlacer : MonoBehaviour
     {
         _isGold = CheckBuildGold();
         CanPlaceBuilding();
-
+        if (tempDraggleOBJ.isLongPress) _isGold = true;
         if (_isGold && _isBuild)
         {
+                    if (!tempDraggleOBJ.isLongPress)
             Managers.Game.Gold -= buyMoney;
 
             _buildData = new BuildData
