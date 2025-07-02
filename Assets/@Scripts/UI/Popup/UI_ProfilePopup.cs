@@ -35,6 +35,7 @@ public class UI_ProfilePopup : UI_Popup
     #endregion
 
     Character _character;
+    AICharacter _characterAI;
     UI_EquipItem _equipHatItem;
     UI_EquipItem _equipAccessoryItem;
     UI_EquipItem _equipBagItem;
@@ -120,10 +121,16 @@ public class UI_ProfilePopup : UI_Popup
         if (_character == null)
             return;
 
+        if(_characterAI != null)
+        {
+            Managers.Resource.Destroy(_characterAI.gameObject);
+            _characterAI = null;
+        }
+
         _equipHatItem.SetInfo(_character); 
         _equipAccessoryItem.SetInfo(_character);
         _equipBagItem.SetInfo(_character);
 
-        Managers.Object.Spawn<AICharacter>(new Vector3(500, 500, 500), _character.DataId);
+        _characterAI = Managers.Object.Spawn<AICharacter>(new Vector3(500, 500, 500), _character.DataId);
     }
 }

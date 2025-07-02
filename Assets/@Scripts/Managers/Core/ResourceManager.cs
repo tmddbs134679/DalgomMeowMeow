@@ -33,6 +33,10 @@ public class ResourceManager
             Debug.LogError($"Failed to load prefab : {key}");
             return null;
         }
+
+        if (pooling)
+            return Managers.Pool.Pop(prefab);
+
         GameObject go = Object.Instantiate(prefab, parent);
         go.name = prefab.name;
         return go;
@@ -43,13 +47,13 @@ public class ResourceManager
             return;
         Object.Destroy(go);
     }
-    #region ¾îµå·¹¼­ºí
+    #region ì–´ë“œë ˆì„œë¸”
     public void LoadAsync<T>(string key, Action<T> callback = null) where T : UnityEngine.Object
     {
         var asyncOperation = Addressables.LoadAssetAsync<T>(key);
         asyncOperation.Completed += (op) =>
         {
-            // Ä³½Ã È®ÀÎ.
+            // ìºì‹œ í™•ì¸.
             if (_resources.TryGetValue(key, out Object resource))
             {
                 callback?.Invoke(op.Result);
