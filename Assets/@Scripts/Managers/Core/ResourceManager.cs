@@ -45,6 +45,10 @@ public class ResourceManager
     {
         if (go == null)
             return;
+
+        if (Managers.Pool.Push(go))
+            return;
+
         Object.Destroy(go);
     }
     #region 어드레서블
