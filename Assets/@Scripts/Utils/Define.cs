@@ -123,4 +123,12 @@ public class Define
         Accessory,
         Bag,
     }
+
+    public enum EDebugType
+    {
+        None,
+        Building,
+        AI,
+        UI,
+    }
 }

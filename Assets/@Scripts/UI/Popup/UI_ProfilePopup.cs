@@ -11,6 +11,9 @@ public class UI_ProfilePopup : UI_Popup
     enum GameObjects
     {
         EquippedGroupObject,
+        EquippedIHattem,
+        EquippedAccessoryItem,
+        EquippedBagItem
     }
 
     enum Buttons
@@ -32,6 +35,9 @@ public class UI_ProfilePopup : UI_Popup
     #endregion
 
     Character _character;
+    UI_EquipItem _equipHatItem;
+    UI_EquipItem _equipAccessoryItem;
+    UI_EquipItem _equipBagItem;
     private void Awake()
     {
         Init();
@@ -49,13 +55,20 @@ public class UI_ProfilePopup : UI_Popup
         GetButton((int)Buttons.PrevCharacterButton).gameObject.BindEvent(() => OnClickChangeButton(-1));
         GetButton((int)Buttons.NextCharacterButton).gameObject.BindEvent(() => OnClickChangeButton(1));
 
-        Refresh();
+        _equipHatItem = GetObject((int)GameObjects.EquippedIHattem).GetComponent<UI_EquipItem>();
+        _equipAccessoryItem = GetObject((int)GameObjects.EquippedAccessoryItem).GetComponent<UI_EquipItem>();
+        _equipBagItem = GetObject((int)GameObjects.EquippedBagItem).GetComponent<UI_EquipItem>();
+
+        _character = Managers.Game.Characters[0];
+
+        //Refresh();
 
         return true;
     }
 
     private void OnClickChangeButton(int dir)
     {
+
         // Todo : 다음 캐릭터, 이전 캐릭터
         List<Character> characterList = Managers.Game.Characters;
 
@@ -94,16 +107,18 @@ public class UI_ProfilePopup : UI_Popup
         //    UI_EquipItem item = Managers.UI.MakeSubItem<UI_EquipItem>(GetObject((int)GameObjects.EquippedGroupObject).transform);
         //    item.SetInfo(quip);
         //}
-        
+
         //Todo : 모자, 가방, 악세서리 아이템 나오면 연결 MakeSubItem말고 고정값들
+
+        Refresh();
     }
     private void Refresh()
     {
-        if(_character != null)
-             _character = null;
+        if (_character == null)
+            return;
 
-        _character =  Managers.Game.Characters[0];
-
-        SetInfo(_character);
+        _equipHatItem.SetInfo(_character); 
+        _equipAccessoryItem.SetInfo(_character);
+        _equipBagItem.SetInfo(_character);
     }
 }
