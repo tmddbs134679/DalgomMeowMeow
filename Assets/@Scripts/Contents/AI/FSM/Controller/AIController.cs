@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
@@ -49,14 +49,21 @@ public class AIController : BaseController<AICharacter>
 
         Vector3 targetPos = FindNearestBuilding(action);
 
+
         if (action == Define.EAIState.Delivery &&
           registedState.TryGetValue(Define.EAIState.Delivery, out BaseState<AICharacter> deliverBase) &&
             deliverBase is CharacterDeliverState deliveryTo)
         {
-            deliveryTo.SetDestination(targetPos);
+            deliveryTo.SetDestination(targetPos - new Vector3(0,0,1.2f));
             ChangeState(Define.EAIState.Delivery);
             return;
         }
+
+        if (action == Define.EAIState.Playing)
+        {
+            targetPos -= new Vector3(0.9f, 0, 0); // 플레이 위치 조정
+        }
+
 
         if (registedState.TryGetValue(Define.EAIState.MoveTo, out BaseState<AICharacter> moveBaseState) &&
             moveBaseState is CharacterMoveToState moveToState)
@@ -184,13 +191,13 @@ public class AIController : BaseController<AICharacter>
 
     private void Patrol()
     {
-        var destination = GetRandomNavPosition(character.transform.position, new Vector3(10f, 0f, 10f));
+        var destination = GetRandomNavPosition(character.transform.position, new Vector3(5f, 0f, 5f));
         character.nav.SetDestination(destination);
     }
 
-    private Vector3 GetRandomNavPosition(Vector3 origin, Vector3 range, int areaMask = NavMesh.AllAreas)
+    private Vector3 GetRandomNavPosition(Vector3 origin, Vector3 range )
     {
-        for (int i = 0; i < 66; i++)
+        for(int i = 0; i < 100; i++) // 최대 30번 시도
         {
             var randomPoint = origin + new Vector3(
                 Random.Range(-range.x, range.x),
@@ -201,7 +208,7 @@ public class AIController : BaseController<AICharacter>
             if (IsNearWorkBuilding(randomPoint))
                 continue;
 
-            if (NavMesh.SamplePosition(randomPoint, out var hit, 1f, areaMask))
+            if (NavMesh.SamplePosition(randomPoint, out var hit, 1f, NavMesh.AllAreas))
                 return hit.position;
         }
 
@@ -213,7 +220,7 @@ public class AIController : BaseController<AICharacter>
         foreach (var building in BuildingManager.Instance._buildings)
         {
             float distance = Vector3.Distance(building.transform.position, point);
-            if (distance < 3.5f)
+            if (distance < 2f)
                 return true;
         }
         return false;
