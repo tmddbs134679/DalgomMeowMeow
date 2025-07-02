@@ -37,6 +37,7 @@ public class UI_QuestPopup : UI_Popup
 
         return true;
     }
+
     private void OnEnable()
     {
         QuestManager.Instance.OnQuestUpdated += RefreshProgressOnly;
@@ -46,6 +47,7 @@ public class UI_QuestPopup : UI_Popup
     {
         QuestManager.Instance.OnQuestUpdated -= RefreshProgressOnly;
     }
+
     private void RefreshUI()
     {
         if (_currentTab == QuestType.Daily)
@@ -82,6 +84,7 @@ public class UI_QuestPopup : UI_Popup
             if (slot != null)
                 Destroy(slot.gameObject);
         }
+
         _questSlots.Clear(); // 기존 슬롯 목록 초기화
 
         var allDaily = QuestManager.Instance.DailyQuests;
@@ -107,6 +110,7 @@ public class UI_QuestPopup : UI_Popup
                 _questSlots.Add(slot);
             }
         }
+
         // 3. 보상 받은 퀘스트
         foreach (var quest in allDaily)
         {
@@ -127,14 +131,14 @@ public class UI_QuestPopup : UI_Popup
 
         foreach (var quest in QuestManager.Instance.AchievementQuests)
         {
-            if (quest.State == QuestProgressState.InProgress)
+            if (quest.State == QuestProgressState.InProgress || quest.State == QuestProgressState.Completed)
             {
                 UI_QuestSlot slot = Managers.UI.MakeSubItem<UI_QuestSlot>(parent);
                 slot.SetQuest(quest);
             }
         }
     }
-    
+
     private void RefreshProgressOnly()
     {
         foreach (var slot in _questSlots)
