@@ -18,6 +18,7 @@ public abstract class BuildingBase : BaseObject
     [Header("생산 타이머")] public BuildingTimer Timer;
     public int StoredCount { get; protected set; } = 0; // 누적된 생산 수랴앙
                                                         // 범인찾기 혹시 난가?
+                                                        // 당신은 마피아가 아닙니다
     
     public AICharacter assignedAnimal;
 
