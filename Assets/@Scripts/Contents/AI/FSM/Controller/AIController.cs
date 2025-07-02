@@ -191,14 +191,13 @@ public class AIController : BaseController<AICharacter>
 
     private void Patrol()
     {
-        var destination = GetRandomNavPosition(character.transform.position, new Vector3(10f, 0f, 10f));
+        var destination = GetRandomNavPosition(character.transform.position, new Vector3(5f, 0f, 5f));
         character.nav.SetDestination(destination);
     }
 
-    private Vector3 GetRandomNavPosition(Vector3 origin, Vector3 range)
+    private Vector3 GetRandomNavPosition(Vector3 origin, Vector3 range )
     {
-        int areaMask = NavMesh.GetAreaFromName("DontIdle");
-        for (int i = 0; i < 100; i++)
+        for(int i = 0; i < 100; i++) // 최대 30번 시도
         {
             var randomPoint = origin + new Vector3(
                 Random.Range(-range.x, range.x),
@@ -209,7 +208,7 @@ public class AIController : BaseController<AICharacter>
             if (IsNearWorkBuilding(randomPoint))
                 continue;
 
-            if (NavMesh.SamplePosition(randomPoint, out var hit, 1f, areaMask))
+            if (NavMesh.SamplePosition(randomPoint, out var hit, 1f, NavMesh.AllAreas))
                 return hit.position;
         }
 
