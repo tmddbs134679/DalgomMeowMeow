@@ -11,7 +11,6 @@ public class BuildMap : MonoBehaviour
     public ArrayBuildPos arrayBuildPos;
 
     public NavMeshSurface surface;
-    public BuildingPlacer buildingplacer;
     private Dictionary<Vector2, GameObject> _spawnedBuilds = new Dictionary<Vector2, GameObject>();
     void Start()
     {

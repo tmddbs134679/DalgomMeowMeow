@@ -21,14 +21,15 @@ private Vector3 _dragOffset;
 
     public GameObject TempOBJ;
 
+    private IsBuildColor _isBuildColor;
+
     //드래그 스타트
     public void OnDragStart(Vector3 hitPos)
     {
         _offsetx = (gameObject.transform.localScale.x % 2 == 0) ? (gridSize / 2f) : 0f;
         _offsety = (gameObject.transform.localScale.z % 2 == 0) ? (gridSize / 2f) : 0f;
         isBuild = CheckTilesUnderBuilding();
-
-
+        _isBuildColor = GetComponent<IsBuildColor>();
     }
 
     //드래그
@@ -36,7 +37,7 @@ private Vector3 _dragOffset;
     {
         if (isDrag)
         {
-Debug.Log("드래그 실행됨 : " + isDrag);
+           if(_isBuildColor!=null)_isBuildColor.SetIsBUildColor(isBuild);
             Vector3 snappedPos = GetSnappedPosition(groundPos);
             transform.position = snappedPos;
             isBuild = CheckTilesUnderBuilding();

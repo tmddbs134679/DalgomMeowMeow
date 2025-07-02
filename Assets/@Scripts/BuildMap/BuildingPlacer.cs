@@ -143,7 +143,9 @@ public class BuildingPlacer : MonoBehaviour
     }
     
 
-    //해당 오브젝트 밑 타일 초기화
+    /// <summary>
+    /// 해당 오브젝트 밑 타일 초기화
+    /// </summary>
     public void ClearTile()
     {
         foreach (Collider col in TempCollider)
