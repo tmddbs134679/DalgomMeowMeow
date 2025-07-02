@@ -37,10 +37,10 @@ private Vector3 _dragOffset;
     {
         if (isDrag)
         {
-           if(_isBuildColor!=null)_isBuildColor.SetIsBUildColor(isBuild);
             Vector3 snappedPos = GetSnappedPosition(groundPos);
             transform.position = snappedPos;
             isBuild = CheckTilesUnderBuilding();
+                       if (_isBuildColor != null) _isBuildColor.SetIsBUildColor(isBuild);
 
             Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.main, transform.position);
             if (BuildActiontUI != null)

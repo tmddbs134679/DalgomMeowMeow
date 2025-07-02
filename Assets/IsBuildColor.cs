@@ -10,13 +10,16 @@ public class IsBuildColor : MonoBehaviour
     public void SetIsBUildColor(bool istrue)
     {
         Renderer renderer = isbuild.GetComponent<Renderer>();
-        if (istrue = true && renderer != null && green != null)
+        if (renderer != null && green != null)
         {
-            renderer.material = green;
-        }
-        else if (istrue = false && renderer != null && green != null)
-        {
-            renderer.material = red;
+            if (istrue == true)
+            {
+                renderer.material = green;
+            }
+            else
+            {
+                renderer.material = red;
+            }
         }
     }
 }
