@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -21,7 +21,7 @@ using UnityEngine;
 public class Define
 {
     #region UI 
-    public static readonly int UI_GROUP_SPACING = 40;
+    public static readonly int UI_GROUP_SPACING = 100;
     #endregion
 
     public static readonly int FOOD_MAX_VALUE = 12;
