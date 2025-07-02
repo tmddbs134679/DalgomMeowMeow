@@ -82,7 +82,7 @@ public class UI_BuildPopup : UI_Popup
 
     private void CancelBuildUI()
     {
-        Managers.UI.ClosePopupUI(this);
+        Managers.UI.CloseAllPopupUI();
         (Managers.UI.SceneUI as UI_GameScene).gameObject.SetActive(true);
     }
 

@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 2330815605618767750}
   - component: {fileID: -1302948204190783537}
   - component: {fileID: 8118418135074648521}
-  - component: {fileID: -4672541500331724918}
+  - component: {fileID: 2498388814344829266}
   m_Layer: 8
   m_Name: Load
   m_TagString: Untagged
@@ -132,14 +132,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BuildActiontUI: {fileID: 0}
   buildMap: {fileID: 0}
-  buildingplacer: {fileID: 0}
-  gridSize: 1
-  heightOffset: 0.5
   isBuild: 0
   isDrag: 0
   isLongPress: 1
+  gridSize: 1
+  heightOffset: 0.5
   TempOBJ: {fileID: 0}
-  TempCollider: []
   buildSize: {x: 1, y: 1}
   tileLayer:
     serializedVersion: 2
@@ -165,7 +163,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &-4672541500331724918
+--- !u!114 &2498388814344829266
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -174,7 +172,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2151607497520685126}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aff49964c7aa92941bbbfbff7923b21e, type: 3}
+  m_Script: {fileID: 11500000, guid: fb7a6f4c5678f164aae364e4d8a040fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  testBaseBuilding: {fileID: 11400000, guid: 1f84e6073cc017448b50d4d5ef3210a4, type: 2}
+  BuildingData: {fileID: 11400000, guid: 1f84e6073cc017448b50d4d5ef3210a4, type: 2}
+  CurrentState: 0
+  assignedAnimal: {fileID: 0}
+  SerialID: 0
