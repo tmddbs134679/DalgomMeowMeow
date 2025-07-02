@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.Resources;
 using Unity.VisualScripting;
@@ -20,7 +20,7 @@ public class Managers : MonoBehaviour
     MySceneManager _scene = new MySceneManager();
     UIManager _ui = new UIManager();
     ObjectManager _object = new ObjectManager();
-
+    PoolManager _pool = new PoolManager();
     //Edit
     DebugManager _debug = new DebugManager();
 
@@ -31,6 +31,8 @@ public class Managers : MonoBehaviour
 
     public static DebugManager Debug { get { return Instance?._debug; } }
     public static ObjectManager Object { get { return Instance?._object; } }
+
+    public static PoolManager Pool { get { return Instance?._pool; } }
 
     [SerializeField] private DebugSettings debugSettingsSO;
 
@@ -59,5 +61,6 @@ public class Managers : MonoBehaviour
         Scene.Clear();
         UI.Clear();
         Object.Clear();
+        Pool.Clear();
     }
 }
