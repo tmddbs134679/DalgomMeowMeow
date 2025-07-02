@@ -128,6 +128,14 @@ public class UI_QuestPopup : UI_Popup
         Transform parent = GetObject((int)GameObjects.Content).transform;
         foreach (Transform child in parent)
             Destroy(child.gameObject);
+        // 1. 기존 슬롯 제거
+        foreach (var slot in _questSlots)
+        {
+            if (slot != null)
+                Destroy(slot.gameObject);
+        }
+
+        _questSlots.Clear(); // 기존 슬롯 목록 초기화
 
         foreach (var quest in QuestManager.Instance.AchievementQuests)
         {
@@ -135,15 +143,19 @@ public class UI_QuestPopup : UI_Popup
             {
                 UI_QuestSlot slot = Managers.UI.MakeSubItem<UI_QuestSlot>(parent);
                 slot.SetQuest(quest);
+                _questSlots.Add(slot);
             }
         }
     }
 
     private void RefreshProgressOnly()
     {
+        _questSlots.RemoveAll(slot => slot == null || slot.gameObject == null);
+
         foreach (var slot in _questSlots)
         {
-            slot.UpdateProgressUI();
+            if (slot != null && slot.gameObject != null)
+                slot.UpdateProgressUI();
         }
     }
 }
