@@ -31,14 +31,12 @@ public class CookingBuilding : BuildingBase
         DisconnectDelevery();
         assignedAnimal = animal;
         assignedAnimal.AnimalDelivered += DeliverIngredient;
-        assignedAnimal.AnimalDelivered += UnassignAnimal;
     }
     public void DisconnectDelevery()
     {
         if (assignedAnimal == null) return;
 
-        assignedAnimal.AnimalDelivered -= AssignAnimal;
-        assignedAnimal.AnimalDelivered -= UnassignAnimal;
+        assignedAnimal.AnimalDelivered -= DeliverIngredient;
 
         assignedAnimal = null;
     }
@@ -109,5 +107,19 @@ public class CookingBuilding : BuildingBase
             deliveredVegetableCount++;
             Debug.Log($"[야채 도착] 누적 채소 수: {deliveredVegetableCount}");
 
+    }
+    
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log($"[야채 도착] 누적 채소 수: {deliveredVegetableCount}");
+        AICharacter animal = other.GetComponent<AICharacter>();
+        if (animal == null) return;
+
+        if (animal.CurrentState == Define.EAIState.Delivery)
+        {
+            deliveredVegetableCount++;
+            Debug.Log($"[야채 도착] 누적 채소 수: {deliveredVegetableCount}");
+
+        }
     }
 }
