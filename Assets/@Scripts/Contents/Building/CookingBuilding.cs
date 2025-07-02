@@ -61,15 +61,15 @@ public class CookingBuilding : BuildingBase
         }
         else if(deliveredVegetableCount == 1)
         {
-            
+            Managers.Food.MakeFood();
         }
         else if (deliveredVegetableCount == 2)
         {
-            
+            Managers.Food.MakeFood();
         }
         else if (deliveredVegetableCount >= 3)
         {
-            
+            Managers.Food.MakeFood();
         }
         
    
@@ -111,7 +111,6 @@ public class CookingBuilding : BuildingBase
     
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log($"[야채 도착] 누적 채소 수: {deliveredVegetableCount}");
         AICharacter animal = other.GetComponent<AICharacter>();
         if (animal == null) return;
 
