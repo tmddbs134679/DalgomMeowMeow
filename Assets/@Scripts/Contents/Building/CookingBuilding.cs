@@ -14,7 +14,7 @@ public class CookingBuilding : BuildingBase
 
      // 단계별 요리 이름들
     [SerializeField]
-    private List<FoodData> upgradeDishes; // [ "수프", "야채수프", "특제 야채수프", "궁극 야채수프" ]
+    private List<FoodData> upgradeDishes; 
 
 
     public override bool Init()
