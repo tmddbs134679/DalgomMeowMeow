@@ -20,6 +20,7 @@ public abstract class BuildingBase : BaseObject
                                                         // 범인찾기 혹시 난가?
                                                         // 당신은 마피아가 아닙니다
                                                         // 화타 의사가 살렸습니다.
+                                                        // 진주호는 아닐 거다
     public AICharacter assignedAnimal;
 
     // [Header("동물 배치")]
