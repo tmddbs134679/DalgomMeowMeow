@@ -75,7 +75,15 @@ public class AIController : BaseController<AICharacter>
     private Vector3 FindNearestBuilding(Define.EAIState action)
     {
         var type = GetBuildingType(action);
+
+        if (action == Define.EAIState.Delivery)
+        {
+            var nearbuilding = FineOnlyBuilding(type);
+            return nearbuilding.transform.position;
+        }
+
         var building = FindAvailableBuilding(type);
+        
 
         character.currentBuilding = building;
 
@@ -86,6 +94,12 @@ public class AIController : BaseController<AICharacter>
         }
 
         return building.transform.position;
+    }
+
+    public BuildingBase FineOnlyBuilding(Define.BuildingType type)
+    {
+        return BuildingManager.Instance._buildings
+            .FirstOrDefault(b => b.BuildingData.BuildingType == type);
     }
 
     public BuildingBase FindAvailableBuilding(Define.BuildingType type)
