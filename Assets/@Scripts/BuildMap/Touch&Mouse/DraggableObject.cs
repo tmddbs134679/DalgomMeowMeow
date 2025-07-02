@@ -8,7 +8,6 @@ public class DraggableObject : MonoBehaviour, IDraggable
 {
     public GameObject BuildActiontUI;
     public BuildMap buildMap;
-    public BuildingPlacer buildingplacer;
     public bool isBuild;
     public bool isDrag=false;
     public bool isLongPress = true;
@@ -21,7 +20,6 @@ private Vector3 _dragOffset;
 
 
     public GameObject TempOBJ;
-    public Collider[] TempCollider;
 
     //드래그 스타트
     public void OnDragStart(Vector3 hitPos)
@@ -62,7 +60,7 @@ Debug.Log("드래그 실행됨 : " + isDrag);
             Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.main, transform.position);
             BuildActiontUI.transform.position = screenPos;
             //건물설치함수 불러오기
-            buildingplacer.SetTempOBJ(gameObject);
+            BuildingPlacer.Instance.SetTempOBJ(gameObject);
             CurrentTileAndOBJ();
         }
     }
@@ -117,19 +115,6 @@ Debug.Log("드래그 실행됨 : " + isDrag);
         }
     }
 
-//해당 오브젝트 밑 타일 초기화
-    public void ClearTile()
-    {
-        foreach (Collider col in TempCollider)
-        {
-            if (col.CompareTag("Tile"))
-            {
-                var tile = col.GetComponent<TileObjectData>();
-                tile.isLoadBuild = false;
-                tile.SetTile();
-            }
-        }
-    }
 
     //현재 오브젝트,그 밑 타일 정보 받기
     public void CurrentTileAndOBJ()
@@ -138,7 +123,7 @@ Debug.Log("드래그 실행됨 : " + isDrag);
         Vector3 halfExtents = new Vector3(buildSize.x / 2.5f, 0.1f, buildSize.y / 2.5f);
 
         Collider[] hitColliders = Physics.OverlapBox(center, halfExtents, Quaternion.identity, tileLayer);
-        TempCollider = hitColliders.ToArray();
+       BuildingPlacer.Instance.TempCollider = hitColliders.ToArray();
                      TempOBJ = gameObject;
     }
 

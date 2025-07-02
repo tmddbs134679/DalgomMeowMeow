@@ -7,6 +7,8 @@ public class UI_BuildPopup : UI_Popup
     #region Enum
     enum GameObjects
     {
+        BuildScrollObject,
+        ResourceInfo
     }
 
     enum Buttons
@@ -18,13 +20,13 @@ public class UI_BuildPopup : UI_Popup
         FishingButton,
         StorageButton,
         LoadButton,
-        AceeptButton,
         CancelButton,
+
     }
 
     enum Texts
     {
-
+        PlayerGoldText,
     }
 
     enum Images
@@ -54,29 +56,40 @@ public class UI_BuildPopup : UI_Popup
         GetButton((int)Buttons.FishingButton).gameObject.BindEvent(() => SelectBuildingType(4));
         GetButton((int)Buttons.StorageButton).gameObject.BindEvent(() => SelectBuildingType(5));
         GetButton((int)Buttons.LoadButton).gameObject.BindEvent(() => SelectBuildingType(6));
-        GetButton((int)Buttons.AceeptButton).gameObject.BindEvent(AcceptBuild);
-        GetButton((int)Buttons.CancelButton).gameObject.BindEvent(CancelBuild);
+        GetButton((int)Buttons.CancelButton).gameObject.BindEvent(CancelBuildUI);
+
+        Managers.Game.OnResourcesChagned += Refresh;
+
+        Refresh();
 
         return true;
     }
 
+    public void OnDestroy()
+    {
+        if (Managers.Game != null)
+            Managers.Game.OnResourcesChagned -= Refresh;
+    }
+
     #region Build
-    private void AcceptBuild()
-    {
-        BuildingPlacer.Instance.AcceptBuild();
-    }
-    private void CancelBuild()
-    {
-        BuildingPlacer.Instance.CancelBuild();
-    }
+
     private void SelectBuildingType(int type)
     {
-        Debug.Log(type);
-
-        UI_BuildAction builder = Managers.UI.ShowPopupUI<UI_BuildAction>();
-        // builder
+        GetObject(((int)GameObjects.BuildScrollObject)).SetActive(false);
         BuildingPlacer.Instance.SelectBuildingType(type);
         Managers.UI.MakeSubItem<UI_BuildAction>(this.transform);
+    }
+
+    private void CancelBuildUI()
+    {
+        Managers.UI.ClosePopupUI(this);
+        (Managers.UI.SceneUI as UI_GameScene).gameObject.SetActive(true);
+    }
+
+
+    private void Refresh()
+    {
+        GetText((int)Texts.PlayerGoldText).text = Managers.Game.Gold.ToString();
     }
     #endregion
 

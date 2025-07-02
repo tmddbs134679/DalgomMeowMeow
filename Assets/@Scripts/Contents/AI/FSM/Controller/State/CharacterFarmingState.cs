@@ -25,9 +25,9 @@ namespace Scripts.Contents.AI.FSM.State
         public override void OnUpdate(float deltaTime)
         {
             base.OnUpdate(deltaTime);
-            if (elapsedTime > 10f)
+            if (elapsedTime >= character.currentBuilding.BuildingData.Interval)
             {
-                character.characterAction.Idle();
+                character.characterAction.Deliver();
                 return;
             }
 
