@@ -54,13 +54,14 @@ private Vector3 _dragOffset;
 
     public void OnLongPress()
     {
-        if (isLongPress)
+        //버그수정중
+        if (false)
         {
             isLongPress = false;
-         _uI_BuildAction=Managers.UI.MakeSubItem<UI_BuildAction>();
+            _uI_BuildAction = Managers.UI.MakeSubItem<UI_BuildAction>();
             BuildingPlacer.Instance.isSelect = true;
             isDrag = true;
-            Debug.Log(this+"롱프레스 감지!");
+            Debug.Log(this + "롱프레스 감지!");
             if (_uI_BuildAction != null)
             {
                 _uI_BuildAction.SetActive(true);
@@ -68,7 +69,7 @@ private Vector3 _dragOffset;
                 _uI_BuildAction.transform.position = screenPos;
             }
             //건물설치함수 불러오기
-                BuildingPlacer.Instance.SetTempOBJ(gameObject);
+            BuildingPlacer.Instance.SetTempOBJ(gameObject);
             CurrentTileAndOBJ();
         }
     }

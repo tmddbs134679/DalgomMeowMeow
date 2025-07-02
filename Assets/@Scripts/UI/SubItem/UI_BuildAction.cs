@@ -51,7 +51,8 @@ public class UI_BuildAction : UI_Popup
     }
     private void CancelBuild()
     {
-        Managers.Resource.Destroy(gameObject);
+        Managers.UI.CloseAllPopupUI();
+      //  Managers.Resource.Destroy(gameObject);
         BuildingPlacer.Instance.CancelBuild();
         (Managers.UI.SceneUI as UI_GameScene).gameObject.SetActive(true);
     }
