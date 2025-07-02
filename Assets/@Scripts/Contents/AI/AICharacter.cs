@@ -35,6 +35,7 @@ public class AICharacter : BaseObject
 
     public event Action<AICharacter> AnimalLeaved;
     public event Action<AICharacter> AnimalArrived;
+    public event Action<AICharacter> AnimalDelivered;
     public Define.EAIState CurrentState;
     public bool _isHelloReady = true;
 
@@ -104,6 +105,11 @@ public class AICharacter : BaseObject
     public void OnAnimalLeaved()
     {
         AnimalLeaved?.Invoke(this);
+    }
+
+    public void OnAnimalDelivered()
+    {
+        AnimalDelivered?.Invoke(this);
     }
 
     public void UseStamina(float amount)

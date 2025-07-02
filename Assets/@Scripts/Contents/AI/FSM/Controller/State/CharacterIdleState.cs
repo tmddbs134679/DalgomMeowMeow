@@ -37,7 +37,6 @@ namespace Scripts.Contents.AI.FSM.State
                 return;
             }
 
-
             if (character.CharacterData.CurrentStamina <= 19f && 
                 character.Controller.FindAvailableBuilding(Define.BuildingType.Resting) != null)
             {
