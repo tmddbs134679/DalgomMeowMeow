@@ -36,7 +36,7 @@ public class SkillLibrary : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning($"Skill {skillNum} not found in skill map.");
+            Managers.Debug.LogError($"Skill number {skillNum} not found in skill map.", Define.EDebugType.AI);
         }
     }
 
@@ -60,10 +60,11 @@ public class SkillLibrary : MonoBehaviour
                 if (hit.TryGetComponent<BattleCharacter>(out var character))
                 {
                     character.HpControl((character.MaxHP/5)*-1);
+                    Managers.Debug.Log($"회복되었습니다.", Define.EDebugType.AI);
                 }
             }
 
-            yield return new WaitForSeconds(0.5f); // 힐 딜레이
+            yield return new WaitForSeconds(0.75f); // 힐 딜레이
         }
     }
 
