@@ -49,7 +49,7 @@ public class CookingBuilding : BuildingBase
 
         //Debug.Log($"{finalDish.Name} 요리 완성!");
 
-        deliveredVegetableCount = 0; // 생산 후 초기화
+        
         
         StoredCount++; //  생산 누적
         
@@ -72,7 +72,7 @@ public class CookingBuilding : BuildingBase
             Managers.Food.MakeFood();
         }
         
-   
+        deliveredVegetableCount = 0; // 생산 후 초기화
         //(Managers.UI.SceneUI as UI_GameScene).ResetCookItem();
         QuestManager.Instance.OnEvent(QuestConditionType.Collect, TargetType.Soup);
         
