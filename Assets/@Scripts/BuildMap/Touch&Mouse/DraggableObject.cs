@@ -6,7 +6,8 @@ using System.Linq;
 /// </summary>
 public class DraggableObject : MonoBehaviour, IDraggable
 {
-    public GameObject BuildActiontUI;
+
+    public UI_BuildAction _uI_BuildAction;
     public BuildMap buildMap;
     public bool isBuild;
     public bool isDrag=false;
@@ -43,8 +44,8 @@ private Vector3 _dragOffset;
                        if (_isBuildColor != null) _isBuildColor.SetIsBUildColor(isBuild);
 
             Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.main, transform.position);
-            if (BuildActiontUI != null)
-                BuildActiontUI.transform.position = screenPos;
+            if (_uI_BuildAction != null)
+                _uI_BuildAction.transform.position = screenPos;
         }
     }
 
@@ -55,13 +56,19 @@ private Vector3 _dragOffset;
     {
         if (isLongPress)
         {
+            isLongPress = false;
+         _uI_BuildAction=Managers.UI.MakeSubItem<UI_BuildAction>();
+            BuildingPlacer.Instance.isSelect = true;
             isDrag = true;
-            Debug.Log("롱프레스 감지!");
-            BuildActiontUI.SetActive(true);
-            Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.main, transform.position);
-            BuildActiontUI.transform.position = screenPos;
+            Debug.Log(this+"롱프레스 감지!");
+            if (_uI_BuildAction != null)
+            {
+                _uI_BuildAction.SetActive(true);
+                Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.main, transform.position);
+                _uI_BuildAction.transform.position = screenPos;
+            }
             //건물설치함수 불러오기
-            BuildingPlacer.Instance.SetTempOBJ(gameObject);
+                BuildingPlacer.Instance.SetTempOBJ(gameObject);
             CurrentTileAndOBJ();
         }
     }

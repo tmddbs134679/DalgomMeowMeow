@@ -111,7 +111,8 @@ public class Define
         Farm,
         Shop,
         STORAGE,
-        Playing
+        Playing,
+        Load,
     
     }
 

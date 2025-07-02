@@ -26,7 +26,7 @@ public class UI_BuildAction : UI_Popup
     }
     #endregion
 
- 
+
     private void Awake()
     {
         Init();
@@ -62,5 +62,10 @@ public class UI_BuildAction : UI_Popup
             Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.main, BuildingPlacer.Instance.tempDraggleOBJ.transform.position);
             this.gameObject.GetComponent<RectTransform>().position = screenPos;
         }
+    }
+
+    public void SetActive(bool istrue)
+    {
+        this.gameObject.SetActive(istrue);
     }
 }

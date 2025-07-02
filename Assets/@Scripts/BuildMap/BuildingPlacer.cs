@@ -76,7 +76,7 @@ public class BuildingPlacer : MonoBehaviour
     /// </summary>
     public void SetTempOBJ(GameObject tempOBJ)
     {
-        _saveBuildingSO = tempOBJ.GetComponent<BuildingBase>().BuildingData;
+        _saveBuildingSO = tempOBJ.GetComponent<BuildingBase>()?.BuildingData;
         _tempOBJ = tempOBJ;
     }
 
