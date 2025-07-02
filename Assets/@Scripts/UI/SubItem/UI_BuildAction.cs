@@ -26,7 +26,7 @@ public class UI_BuildAction : UI_Popup
     }
     #endregion
 
- 
+
     private void Awake()
     {
         Init();
@@ -51,8 +51,10 @@ public class UI_BuildAction : UI_Popup
     }
     private void CancelBuild()
     {
-        Managers.Resource.Destroy(gameObject);
+        Managers.UI.CloseAllPopupUI();
+      //  Managers.Resource.Destroy(gameObject);
         BuildingPlacer.Instance.CancelBuild();
+        (Managers.UI.SceneUI as UI_GameScene).gameObject.SetActive(true);
     }
     private void Update()
     {
@@ -61,5 +63,10 @@ public class UI_BuildAction : UI_Popup
             Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.main, BuildingPlacer.Instance.tempDraggleOBJ.transform.position);
             this.gameObject.GetComponent<RectTransform>().position = screenPos;
         }
+    }
+
+    public void SetActive(bool istrue)
+    {
+        this.gameObject.SetActive(istrue);
     }
 }

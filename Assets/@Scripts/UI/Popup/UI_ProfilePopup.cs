@@ -11,6 +11,9 @@ public class UI_ProfilePopup : UI_Popup
     enum GameObjects
     {
         EquippedGroupObject,
+        EquippedIHattem,
+        EquippedAccessoryItem,
+        EquippedBagItem
     }
 
     enum Buttons
@@ -32,6 +35,9 @@ public class UI_ProfilePopup : UI_Popup
     #endregion
 
     Character _character;
+    UI_EquipItem _equipHatItem;
+    UI_EquipItem _equipAccessoryItem;
+    UI_EquipItem _equipBagItem;
     private void Awake()
     {
         Init();
@@ -49,14 +55,37 @@ public class UI_ProfilePopup : UI_Popup
         GetButton((int)Buttons.PrevCharacterButton).gameObject.BindEvent(() => OnClickChangeButton(-1));
         GetButton((int)Buttons.NextCharacterButton).gameObject.BindEvent(() => OnClickChangeButton(1));
 
-        Refresh();
+        _equipHatItem = GetObject((int)GameObjects.EquippedIHattem).GetComponent<UI_EquipItem>();
+        _equipAccessoryItem = GetObject((int)GameObjects.EquippedAccessoryItem).GetComponent<UI_EquipItem>();
+        _equipBagItem = GetObject((int)GameObjects.EquippedBagItem).GetComponent<UI_EquipItem>();
+
+        _character = Managers.Game.Characters[0];
+
+        //Refresh();
 
         return true;
     }
 
     private void OnClickChangeButton(int dir)
     {
-       // Todo : 다음 캐릭터, 이전 캐릭터
+
+        // Todo : 다음 캐릭터, 이전 캐릭터
+        List<Character> characterList = Managers.Game.Characters;
+
+        if (characterList == null || characterList.Count == 0 || _character == null)
+            return;
+
+        // 중복 캐릭터면 고유 id를 사용해야하나? 생각
+        int currentIndex = characterList.FindIndex(c => c.Id == _character.Id);
+        if (currentIndex == -1)
+            return;
+
+        int nextIndex = (currentIndex + dir + characterList.Count) % characterList.Count;
+
+        _character = characterList[nextIndex];
+
+        // 이후 처리 (UI 업데이트 등)
+        SetInfo(_character);
 
     }
 
@@ -67,27 +96,29 @@ public class UI_ProfilePopup : UI_Popup
 
 
 
-    private void SetInfo(Character character)
+    public void SetInfo(Character character)
     {
-        //_character = character;
+        _character = character;
         //GetImage((int)Images.Image).sprite = Managers.Resource.Load<Sprite>(_character.Data.IconLabel);
-        //GetText((int)Texts.CharacterNameText).text = _character.Data.Name;
+        GetText((int)Texts.CharacterNameText).text = _character.Data.Name;
 
         //foreach(string quip in _character.EquippedItemIds)
         //{
         //    UI_EquipItem item = Managers.UI.MakeSubItem<UI_EquipItem>(GetObject((int)GameObjects.EquippedGroupObject).transform);
         //    item.SetInfo(quip);
         //}
-        
+
         //Todo : 모자, 가방, 악세서리 아이템 나오면 연결 MakeSubItem말고 고정값들
+
+        Refresh();
     }
     private void Refresh()
     {
-        if(_character != null)
-             _character = null;
+        if (_character == null)
+            return;
 
-        _character =  Managers.Game.Characters[0];
-
-        SetInfo(_character);
+        _equipHatItem.SetInfo(_character); 
+        _equipAccessoryItem.SetInfo(_character);
+        _equipBagItem.SetInfo(_character);
     }
 }

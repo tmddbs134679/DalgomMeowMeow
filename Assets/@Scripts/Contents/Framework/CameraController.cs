@@ -69,6 +69,20 @@ public class CameraController : MonoBehaviour
 float zoomAmount = 0;
 
 #if UNITY_EDITOR || UNITY_STANDALONE
+// UI 위에 있을 때는 무시
+if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+{
+    return;
+}
+
+// 에디터 게임뷰 포커스 아닐 때도 무시
+#if UNITY_EDITOR
+if (!Application.isFocused)
+{
+    return;
+}
+#endif
+
 zoomAmount = Input.GetAxis("Mouse ScrollWheel") * 10f;
 #endif
 
@@ -90,9 +104,9 @@ if (Input.touchCount == 2)
 
 if (zoomAmount != 0)
 {
-    // 카메라 이동이나 오브젝트 스케일 조절
     Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize + zoomAmount, 2f, 10f);
 }
+
 
     }
 

@@ -7,8 +7,6 @@ using UnityEngine;
 public class DragController : MonoBehaviour
 {
     public LayerMask groundLayer;
-    public GameObject BuildActiontUI;
-    public GameObject buildMap;
     public float longPressThreshold = 1.0f; // 몇 초 이상 눌러야 롱프레스인지
     public bool isDragging = false;
     public float dragThreshold = 10f; // 10픽셀 이상 움직이면 드래그로 간주

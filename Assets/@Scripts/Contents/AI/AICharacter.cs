@@ -35,6 +35,7 @@ public class AICharacter : BaseObject
 
     public event Action<AICharacter> AnimalLeaved;
     public event Action<AICharacter> AnimalArrived;
+    public event Action<AICharacter> AnimalDelivered;
     public Define.EAIState CurrentState;
     public bool _isHelloReady = true;
 
@@ -106,6 +107,11 @@ public class AICharacter : BaseObject
         AnimalLeaved?.Invoke(this);
     }
 
+    public void OnAnimalDelivered()
+    {
+        AnimalDelivered?.Invoke(this);
+    }
+
     public void UseStamina(float amount)
     {
         if (CharacterData.CurrentStamina - amount < 0)
@@ -113,7 +119,8 @@ public class AICharacter : BaseObject
             return;
         }
         CharacterData.CurrentStamina = Mathf.Max(0, CharacterData.CurrentStamina - amount);
-        Debug.Log($"스태미나 사용 : {amount}, 남은 스태미나: {CharacterData.CurrentStamina}");
+       // Debug.Log($"스태미나 사용 : {amount}, 남은 스태미나: {CharacterData.CurrentStamina}");
+        Managers.Debug.Log($"스태미나 사용 : {amount}, 남은 스태미나: {CharacterData.CurrentStamina}",Define.EDebugType.AI);
     }
 
     public void RecoverStamina(float amount)

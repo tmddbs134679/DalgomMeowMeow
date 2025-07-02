@@ -16,6 +16,8 @@ public class UI_QuickMenu : UI_Popup
     {
         BackgroundButton,
         CharacterInfoButton,
+        CharacterEquipmentButton,
+        ExitButton,
     }
 
     enum Texts
@@ -38,14 +40,17 @@ public class UI_QuickMenu : UI_Popup
         BindText(typeof(Texts));
 
         GetButton((int)Buttons.CharacterInfoButton).gameObject.BindEvent(OnClickCharacterInfoButton);
+        GetButton((int)Buttons.CharacterEquipmentButton).gameObject.BindEvent(OnClickCharacterEquipmentButton);
         GetButton((int)Buttons.BackgroundButton).gameObject.BindEvent(OnClickBackgroundButton);
+
 
         return true;
     }
 
-    private void OnClickBackgroundButton()
+
+    private void OnClickCharacterEquipmentButton()
     {
-            Managers.UI.ClosePopupUI(this);
+        Managers.UI.ShowPopupUI<UI_EquipPopup>();
     }
 
     private void OnClickCharacterInfoButton()
@@ -53,6 +58,10 @@ public class UI_QuickMenu : UI_Popup
         Managers.UI.ShowPopupUI<UI_CharacterPopup>();
     }
 
+    private void OnClickBackgroundButton()
+    {
+        Managers.UI.ClosePopupUI(this);
+    }
 
- 
+
 }

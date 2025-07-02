@@ -111,7 +111,8 @@ public class Define
         Farm,
         Shop,
         STORAGE,
-        Playing
+        Playing,
+        Load,
     
     }
 
@@ -121,5 +122,13 @@ public class Define
         Hat,
         Accessory,
         Bag,
+    }
+
+    public enum EDebugType
+    {
+        None,
+        Building,
+        AI,
+        UI,
     }
 }

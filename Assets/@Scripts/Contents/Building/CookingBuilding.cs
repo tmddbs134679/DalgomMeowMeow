@@ -24,7 +24,22 @@ public class CookingBuilding : BuildingBase
         return true;
     }
 
+    public void ConnectToDelevery(AICharacter animal)
+    {
+        if (animal == null) return;
 
+        DisconnectDelevery();
+        assignedAnimal = animal;
+        assignedAnimal.AnimalDelivered += DeliverIngredient;
+    }
+    public void DisconnectDelevery()
+    {
+        if (assignedAnimal == null) return;
+
+        assignedAnimal.AnimalDelivered -= DeliverIngredient;
+
+        assignedAnimal = null;
+    }
 
     public override void Produce()
     {
@@ -34,13 +49,30 @@ public class CookingBuilding : BuildingBase
 
         //Debug.Log($"{finalDish.Name} 요리 완성!");
 
-        deliveredVegetableCount = 0; // 생산 후 초기화
+        
         
         StoredCount++; //  생산 누적
         
         Debug.Log($"요리 완성! 누적 수량: {StoredCount}");
 
-        Managers.Food.MakeFood();
+        if (deliveredVegetableCount == 0)
+        {
+            Managers.Food.MakeFood();
+        }
+        else if(deliveredVegetableCount == 1)
+        {
+            Managers.Food.MakeFood();
+        }
+        else if (deliveredVegetableCount == 2)
+        {
+            Managers.Food.MakeFood();
+        }
+        else if (deliveredVegetableCount >= 3)
+        {
+            Managers.Food.MakeFood();
+        }
+        
+        deliveredVegetableCount = 0; // 생산 후 초기화
         //(Managers.UI.SceneUI as UI_GameScene).ResetCookItem();
         QuestManager.Instance.OnEvent(QuestConditionType.Collect, TargetType.Soup);
         
@@ -68,14 +100,25 @@ public class CookingBuilding : BuildingBase
     
 
     
-    public void DeliverIngredient(string itemName)
+    public void DeliverIngredient(AICharacter animal)
     {
         if (CurrentState != BuildingState.Producing) return;
 
-        if (itemName == "야채")
+            deliveredVegetableCount++;
+            Debug.Log($"[야채 도착] 누적 채소 수: {deliveredVegetableCount}");
+
+    }
+    
+    private void OnTriggerEnter(Collider other)
+    {
+        AICharacter animal = other.GetComponent<AICharacter>();
+        if (animal == null) return;
+
+        if (animal.CurrentState == Define.EAIState.Delivery)
         {
             deliveredVegetableCount++;
             Debug.Log($"[야채 도착] 누적 채소 수: {deliveredVegetableCount}");
+
         }
     }
 }
