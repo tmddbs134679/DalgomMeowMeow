@@ -291,7 +291,7 @@ public class BattleCharacter : BaseObject
 
     public void ActiveSkill(int _skillNum)
     {
-        StartCoroutine(SkillActive(_skillNum));
+       // StartCoroutine(SkillActive(_skillNum));
     }
        
 
