@@ -131,12 +131,12 @@ public class GameManager
 
         // 초기 장비 생성
         Equipment hat = new Equipment("E0001");
-        Equipment accessory = new Equipment("E0002");
-        Equipment bag = new Equipment("E0003");
+        Equipment hat2 = new Equipment("E0002");
+        Equipment hat3 = new Equipment("E0003");
 
         OwnedEquipments.Add(hat);
-        OwnedEquipments.Add(accessory);
-        OwnedEquipments.Add(bag);
+        OwnedEquipments.Add(hat2);
+        OwnedEquipments.Add(hat3);
 
         SaveGame();
         IsLoaded = true;
