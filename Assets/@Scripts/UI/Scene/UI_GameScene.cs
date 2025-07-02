@@ -102,7 +102,8 @@ public class UI_GameScene : UI_Scene
 
         Vector3 removedPos = slot.transform.localPosition;
 
-        Destroy(slot.gameObject);
+        Managers.Resource.Destroy(slot.gameObject); 
+        //Destroy(slot.gameObject);
 
         StartCoroutine(AnimateForwardShift(removedPos));
     }
