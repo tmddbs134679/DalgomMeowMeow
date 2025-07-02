@@ -5,7 +5,7 @@ using UnityEngine;
 public class UI_QuestSlot : UI_Base
 {
     enum Texts { QuestTitleText, ProgressText }
-    // enum Images { ProgressBarFill }
+    enum Images { ProgressBarFill }
     enum Buttons { RewardButton }
 
     Quest _quest;
@@ -16,7 +16,7 @@ public class UI_QuestSlot : UI_Base
 
         BindText(typeof(Texts));
         BindButton(typeof(Buttons));
-        // BindImage(typeof(Images));
+        BindImage(typeof(Images));
 
         GetButton((int)Buttons.RewardButton).gameObject.BindEvent(OnClickRewardButton);
         return true;
@@ -34,7 +34,7 @@ public class UI_QuestSlot : UI_Base
         
         GetText((int)Texts.QuestTitleText).text = quest.QuestData.Title;
         GetText((int)Texts.ProgressText).text = $"{quest.Progress}/{quest.QuestData.GoalCount}";
-        // GetImage((int)Images.ProgressBarFill).fillAmount = percent;
+        GetImage((int)Images.ProgressBarFill).fillAmount = percent;
         
 
         bool canClaim = quest.State == QuestProgressState.Completed;
@@ -55,6 +55,20 @@ public class UI_QuestSlot : UI_Base
 
             SetQuest(_quest); // UI 갱신
         }
+    }
+    
+    public void UpdateProgressUI()
+    {
+        if (_quest == null) return;
+
+        GetText((int)Texts.ProgressText).text = $"{_quest.Progress}/{_quest.QuestData.GoalCount}";
+
+        // 진행도 바 시각화 예시
+        float percent = (float)_quest.Progress / _quest.QuestData.GoalCount;
+        GetImage((int)Images.ProgressBarFill).fillAmount = percent;
+
+        // 완료되었으면 버튼 활성화
+        GetButton((int)Buttons.RewardButton).interactable = _quest.State == QuestProgressState.Completed;
     }
 }
 

@@ -16,7 +16,26 @@ public class BattleCharacter : BaseObject
     public NavMeshAgent Agent { get; private set; } // NavMeshAgent 컴포넌트
 
     public float AttackDamage = 10f; // 공격력
-    public float Health = 100f; // 체력
+    public float MaxHP = 100f;
+    private float _currentHP; // 최대 체력 (초기화용)
+    public float Health { get => _currentHP;
+        set
+        {
+            if (value <= 0)
+            {
+                _currentHP = 0;
+                Die();
+            }
+            else if (value > MaxHP)
+            {
+                _currentHP = MaxHP;
+            }
+            else
+            {
+                _currentHP = value;
+            }
+        }
+    } 
     public float MoveSpeed = 3.5f; // 이동 속도
 
     public bool HasLookedForward = true; // 전방을 바라봤는지 여부 (아군 전용 로직)
@@ -69,7 +88,7 @@ public class BattleCharacter : BaseObject
     {
         ObjectType = Define.EObjectType.Enemy; // 객체 타입 설정
         Agent = GetComponent<NavMeshAgent>();
-
+        Health = MaxHP;
     }
 
     protected virtual void Start()
@@ -201,25 +220,18 @@ public class BattleCharacter : BaseObject
 
     public void Attack()
     {
-        _targetCharacter.TakeDamage(this.AttackDamage); // 타겟의 체력 감소
+        _targetCharacter.HpControl(this.AttackDamage); // 타겟의 체력 감소
     }
 
 
-    public void TakeDamage(float Damage)
+    public void HpControl(float Damage)
     {
         if (IsDead) return; // 이미 죽은 캐릭터는 데미지를 받지 않음
         Health -= Damage; // 공격력만큼 체력 감소
-        if (Health == 0)
-        {
-            Die();
-            foreach (var col in GetComponentsInChildren<Collider>())
-                col.enabled = false; // ← 탐지 방지
-        }
-        else
-        {
+        if (Damage >= 0)
+        { 
             if (_damageFlashCoroutine != null)
                 StopCoroutine(_damageFlashCoroutine);
-
             _damageFlashCoroutine = StartCoroutine(DamageFlash());
         }
     }
@@ -230,6 +242,9 @@ public class BattleCharacter : BaseObject
     {
         if (IsDead) return;
         IsDead = true;
+
+        foreach (var col in GetComponentsInChildren<Collider>())
+            col.enabled = false; // ← 탐지 방지
 
         OnCharacterDied?.Invoke(this);
         Agent.isStopped = true;
@@ -276,20 +291,9 @@ public class BattleCharacter : BaseObject
 
     public void ActiveSkill(int _skillNum)
     {
-        StartCoroutine(SkillActive(_skillNum));
+       // StartCoroutine(SkillActive(_skillNum));
     }
-
-    private IEnumerator SkillActive(int _skillNum)
-    {
-        UsingSkill = true;
-        Animator.SetInteger(SkillHash, _skillNum); // 스킬 애니메이션 출력
-        Animator.SetTrigger(Skill); // 스킬 애니메이션 트리거 활성화
-
-        //스킬 실행시 효과 적용 로직 _skillNum
-
-        yield return new WaitForSeconds(2f); // 스킬 지속 시간 (예: 1초)
-        UsingSkill = false; // 스킬 사용 종료
-    }
+       
 
     public override void OnClick()
     {
