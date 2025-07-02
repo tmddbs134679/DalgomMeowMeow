@@ -50,7 +50,8 @@ public class UI_CharacterInfo : UI_Base
 
     private void OnClickObjectButton()
     {
-        Managers.UI.ShowPopupUI<UI_ProfilePopup>();
+        UI_ProfilePopup profile = Managers.UI.ShowPopupUI<UI_ProfilePopup>();
+        profile.SetInfo(_characterInfo);
     }
 
     public void SetInfo(Character character)

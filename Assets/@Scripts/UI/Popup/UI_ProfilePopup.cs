@@ -56,7 +56,23 @@ public class UI_ProfilePopup : UI_Popup
 
     private void OnClickChangeButton(int dir)
     {
-       // Todo : 다음 캐릭터, 이전 캐릭터
+        // Todo : 다음 캐릭터, 이전 캐릭터
+        List<Character> characterList = Managers.Game.Characters;
+
+        if (characterList == null || characterList.Count == 0 || _character == null)
+            return;
+
+        // 중복 캐릭터면 고유 id를 사용해야하나? 생각
+        int currentIndex = characterList.FindIndex(c => c.Id == _character.Id);
+        if (currentIndex == -1)
+            return;
+
+        int nextIndex = (currentIndex + dir + characterList.Count) % characterList.Count;
+
+        _character = characterList[nextIndex];
+
+        // 이후 처리 (UI 업데이트 등)
+        SetInfo(_character);
 
     }
 
@@ -67,11 +83,11 @@ public class UI_ProfilePopup : UI_Popup
 
 
 
-    private void SetInfo(Character character)
+    public void SetInfo(Character character)
     {
-        //_character = character;
+        _character = character;
         //GetImage((int)Images.Image).sprite = Managers.Resource.Load<Sprite>(_character.Data.IconLabel);
-        //GetText((int)Texts.CharacterNameText).text = _character.Data.Name;
+        GetText((int)Texts.CharacterNameText).text = _character.Data.Name;
 
         //foreach(string quip in _character.EquippedItemIds)
         //{

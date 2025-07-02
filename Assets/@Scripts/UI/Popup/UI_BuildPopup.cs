@@ -7,7 +7,8 @@ public class UI_BuildPopup : UI_Popup
     #region Enum
     enum GameObjects
     {
-        BuildScrollObject
+        BuildScrollObject,
+        ResourceInfo
     }
 
     enum Buttons
@@ -25,7 +26,7 @@ public class UI_BuildPopup : UI_Popup
 
     enum Texts
     {
-
+        PlayerGoldText,
     }
 
     enum Images
@@ -57,7 +58,17 @@ public class UI_BuildPopup : UI_Popup
         GetButton((int)Buttons.LoadButton).gameObject.BindEvent(() => SelectBuildingType(6));
         GetButton((int)Buttons.CancelButton).gameObject.BindEvent(CancelBuildUI);
 
+        Managers.Game.OnResourcesChagned += Refresh;
+
+        Refresh();
+
         return true;
+    }
+
+    public void OnDestroy()
+    {
+        if (Managers.Game != null)
+            Managers.Game.OnResourcesChagned -= Refresh;
     }
 
     #region Build
@@ -72,8 +83,14 @@ public class UI_BuildPopup : UI_Popup
     private void CancelBuildUI()
     {
         Managers.UI.ClosePopupUI(this);
+        (Managers.UI.SceneUI as UI_GameScene).gameObject.SetActive(true);
     }
 
+
+    private void Refresh()
+    {
+        GetText((int)Texts.PlayerGoldText).text = Managers.Game.Gold.ToString();
+    }
     #endregion
 
 }

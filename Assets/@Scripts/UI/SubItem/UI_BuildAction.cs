@@ -53,6 +53,7 @@ public class UI_BuildAction : UI_Popup
     {
         Managers.Resource.Destroy(gameObject);
         BuildingPlacer.Instance.CancelBuild();
+        (Managers.UI.SceneUI as UI_GameScene).gameObject.SetActive(true);
     }
     private void Update()
     {
