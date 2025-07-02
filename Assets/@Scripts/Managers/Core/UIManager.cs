@@ -39,7 +39,7 @@ public class UIManager
         if (cs != null)
         {
             cs.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
-            cs.referenceResolution = new Vector2(1080, 1920);
+            cs.referenceResolution = new Vector2(2400, 1080);
         }
 
         go.GetOrAddComponent<GraphicRaycaster>();
@@ -109,7 +109,7 @@ public class UIManager
 
         if (_popupStack.Peek() != popup)
         {
-            Debug.Log("ÆË¾÷ ¿¡·¯");
+            Debug.Log("íŒì—… ì—ëŸ¬");
             return;
         }
 

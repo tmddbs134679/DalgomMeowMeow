@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -43,9 +44,9 @@ public class UI_EquipSlot : UI_Base
         BindButton(typeof(Buttons));
         BindText(typeof(Texts));
 
+        gameObject.BindEvent(OnClickEquipment);
         return true;
     }
-
 
 
     public void SetInfo(Equipment equipment)
@@ -61,4 +62,13 @@ public class UI_EquipSlot : UI_Base
         //GetImage((int)Images.CharacterOwnerImage).sprite = Managers.Resource.Load<Sprite>(_equipment.EquippedByCharacterId);
 
     }
+
+
+
+    private void OnClickEquipment()
+    {
+        UI_EquipmentInfoPopup popup = Managers.UI.ShowPopupUI<UI_EquipmentInfoPopup>();
+        popup.SetInfo(_equipment);
+    }
+
 }
