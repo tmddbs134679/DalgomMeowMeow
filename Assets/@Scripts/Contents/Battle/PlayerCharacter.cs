@@ -17,8 +17,9 @@ public class PlayerCharacter : BattleCharacter
 
 
     }
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         _battleManager = GetComponentInParent<BattleManager>();
         _originalPosition = transform.localPosition;
 
