@@ -12,6 +12,7 @@ public class GameScene : BaseScene
         SceneType = Define.EScene.GameScene;
 
         Managers.UI.ShowSceneUI<UI_GameScene>();
+      //  Managers.UI.ShowPopupUI<UI_SaveMoveBuild>();
 
         foreach (var ch in Managers.Game.Characters)
         {

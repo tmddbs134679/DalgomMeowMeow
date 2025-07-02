@@ -36,7 +36,7 @@ CancelButton
 
         GetButton((int)Buttons.CancelButton).gameObject.BindEvent(CancelBuildUI);
 
-
+        BuildingPlacer.Instance.uI_BuildAction= Managers.UI.ShowPopupUI<UI_BuildAction>();
         return true;
     }
 
