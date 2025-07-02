@@ -7,7 +7,7 @@ public class UI_EquipPopup : UI_Popup
     #region Enum
     enum GameObjects
     {
-
+        EquipGroupObject
     }
 
     enum Buttons
@@ -35,6 +35,8 @@ public class UI_EquipPopup : UI_Popup
         BindText(typeof(Texts));
         GetButton((int)Buttons.ExitButton).gameObject.BindEvent(OnClickExitButton);
 
+        Refresh();
+
         return true;
     }
 
@@ -44,4 +46,16 @@ public class UI_EquipPopup : UI_Popup
         Managers.UI.CloseAllPopupUI();
     }
 
+
+    private void Refresh()
+    {
+        List<Equipment> equipments = Managers.Game.OwnedEquipments;
+
+        foreach (Equipment equipment in equipments)
+        {
+            UI_EquipSlot slot = Managers.UI.MakeSubItem<UI_EquipSlot>(GetObject((int)GameObjects.EquipGroupObject).transform);
+            slot.SetInfo(equipment);
+        }
+
+    }
 }
