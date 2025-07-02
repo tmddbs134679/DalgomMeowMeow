@@ -126,7 +126,8 @@ public class AICharacter : BaseObject
     public void RecoverStamina(float amount)
     {
         CharacterData.CurrentStamina = Mathf.Min(100, CharacterData.CurrentStamina + amount);
-        Debug.Log($"스태미나 회복 : {amount}, 현재: {CharacterData.CurrentStamina}");
+        //Debug.Log($"스태미나 회복 : {amount}, 현재: {CharacterData.CurrentStamina}");
+        Managers.Debug.Log($"스태미나 회복 : {amount}, 현재: {CharacterData.CurrentStamina}", Define.EDebugType.AI);
     }
 
     public void OnLevelUp()
