@@ -33,16 +33,7 @@ public class CookingBuilding : BuildingBase
             Debug.LogWarning($"[UpgradeTest] 다음 레벨 정보 없음: {key}");
         }
     }
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.U))
-        {
-            if (Upgrade())
-                Debug.Log("업그레이드 성공!");
-            else
-                Debug.Log("업그레이드 실패!");
-        }
-    }
+
     public override bool Init()
     {
         base.Init();
