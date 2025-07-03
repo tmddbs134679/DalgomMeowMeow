@@ -10,6 +10,7 @@ public class UI_ProfilePopup : UI_Popup
     #region Enum
     enum GameObjects
     {
+        ContentObject,
         EquippedGroupObject,
         EquippedIHattem,
         EquippedAccessoryItem,
@@ -35,6 +36,7 @@ public class UI_ProfilePopup : UI_Popup
     #endregion
 
     Character _character;
+    AICharacter _characterAI;
     UI_EquipItem _equipHatItem;
     UI_EquipItem _equipAccessoryItem;
     UI_EquipItem _equipBagItem;
@@ -42,6 +44,12 @@ public class UI_ProfilePopup : UI_Popup
     {
         Init();
     }
+
+    private void OnEnable()
+    {
+        PopupOpenAnimation(GetObject((int)GameObjects.ContentObject));
+    }
+
     public override bool Init()
     {
         if (base.Init() == false)
@@ -54,6 +62,9 @@ public class UI_ProfilePopup : UI_Popup
         GetButton((int)Buttons.ExitButton).gameObject.BindEvent(OnClickExitButton);
         GetButton((int)Buttons.PrevCharacterButton).gameObject.BindEvent(() => OnClickChangeButton(-1));
         GetButton((int)Buttons.NextCharacterButton).gameObject.BindEvent(() => OnClickChangeButton(1));
+
+        //GetRawImage((int)Images.Image).
+
 
         _equipHatItem = GetObject((int)GameObjects.EquippedIHattem).GetComponent<UI_EquipItem>();
         _equipAccessoryItem = GetObject((int)GameObjects.EquippedAccessoryItem).GetComponent<UI_EquipItem>();
@@ -69,13 +80,13 @@ public class UI_ProfilePopup : UI_Popup
     private void OnClickChangeButton(int dir)
     {
 
-        // Todo : ´ÙÀ½ Ä³¸¯ÅÍ, ÀÌÀü Ä³¸¯ÅÍ
+        // Todo : ë‹¤ìŒ ìºë¦­í„°, ì´ì „ ìºë¦­í„°
         List<Character> characterList = Managers.Game.Characters;
 
         if (characterList == null || characterList.Count == 0 || _character == null)
             return;
 
-        // Áßº¹ Ä³¸¯ÅÍ¸é °íÀ¯ id¸¦ »ç¿ëÇØ¾ßÇÏ³ª? »ı°¢
+        // ì¤‘ë³µ ìºë¦­í„°ë©´ ê³ ìœ  idë¥¼ ì‚¬ìš©í•´ì•¼í•˜ë‚˜? ìƒê°
         int currentIndex = characterList.FindIndex(c => c.Id == _character.Id);
         if (currentIndex == -1)
             return;
@@ -84,7 +95,7 @@ public class UI_ProfilePopup : UI_Popup
 
         _character = characterList[nextIndex];
 
-        // ÀÌÈÄ Ã³¸® (UI ¾÷µ¥ÀÌÆ® µî)
+        // ì´í›„ ì²˜ë¦¬ (UI ì—…ë°ì´íŠ¸ ë“±)
         SetInfo(_character);
 
     }
@@ -92,6 +103,7 @@ public class UI_ProfilePopup : UI_Popup
     private void OnClickExitButton()
     {
         Managers.UI.ClosePopupUI(this);
+        Clear();
     }
 
 
@@ -108,7 +120,7 @@ public class UI_ProfilePopup : UI_Popup
         //    item.SetInfo(quip);
         //}
 
-        //Todo : ¸ğÀÚ, °¡¹æ, ¾Ç¼¼¼­¸® ¾ÆÀÌÅÛ ³ª¿À¸é ¿¬°á MakeSubItem¸»°í °íÁ¤°ªµé
+        //Todo : ëª¨ì, ê°€ë°©, ì•…ì„¸ì„œë¦¬ ì•„ì´í…œ ë‚˜ì˜¤ë©´ ì—°ê²° MakeSubItemë§ê³  ê³ ì •ê°’ë“¤
 
         Refresh();
     }
@@ -117,8 +129,22 @@ public class UI_ProfilePopup : UI_Popup
         if (_character == null)
             return;
 
+        if(_characterAI != null)
+        {
+            Clear();
+        }
+
         _equipHatItem.SetInfo(_character); 
         _equipAccessoryItem.SetInfo(_character);
         _equipBagItem.SetInfo(_character);
+
+        _characterAI = Managers.Object.Spawn<AICharacter>(new Vector3(500, 500, 500), _character.DataId);
+    }
+
+
+    private void Clear()
+    {
+        Managers.Resource.Destroy(_characterAI.gameObject);
+        _characterAI = null;
     }
 }

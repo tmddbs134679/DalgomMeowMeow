@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,7 +13,9 @@ namespace Data
         public string DataId;
         public string PrefabLabel;
         public string Name;
-        public float TotalExp;
+        public int Level;
+        public float MaxExp;
+        public float curretExp;
         public float MaxHp;
         public float Atk;
         public float MaxStamina;
@@ -24,6 +26,7 @@ namespace Data
         public float MoveSpeedRate;
         public string IconLabel;
         public List<string> SkillTypeList;
+
     }
 
     [Serializable]
@@ -130,5 +133,39 @@ namespace Data
             return dict;
         }
     }
+    #endregion
+
+    #region BuildingLevelData
+
+    [Serializable]
+    public class BuildingLevelData
+    {
+        public string BuildingId;
+        public int Level;
+        public float ProductionTime;
+        public int Capacity;
+        public int UpgradeCost;
+        public string ProducedFoodId;
+
+        [NonSerialized] public FoodData ProducedFood; // 런타임 연결
+    }
+
+    [Serializable]
+    public class BuildingLevelDataLoader : ILoader<(string, int), BuildingLevelData>
+    {
+        public List<BuildingLevelData> levels = new List<BuildingLevelData>();
+
+        public Dictionary<(string, int), BuildingLevelData> MakeDict()
+        {
+            var dict = new Dictionary<(string, int), BuildingLevelData>();
+            foreach (var data in levels)
+            {
+                dict.Add((data.BuildingId, data.Level), data);
+            }
+            return dict;
+        }
+    }
+
+
     #endregion
 }

@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -62,6 +63,7 @@ public class UI_Base : MonoBehaviour
     protected TMP_Text GetText(int idx) { return Get<TMP_Text>(idx); }
     protected Button GetButton(int idx) { return Get<Button>(idx); }
     protected Image GetImage(int idx) { return Get<Image>(idx); }
+    protected RawImage GetRawImage(int idx) { return Get<RawImage>(idx); }
     protected Toggle GetToggle(int idx) { return Get<Toggle>(idx); }
 
 
@@ -101,5 +103,12 @@ public class UI_Base : MonoBehaviour
                 break;
         }
     }
+
+    public void PopupOpenAnimation(GameObject contentObject) 
+    {
+        contentObject.transform.localScale = new Vector3(0.8f, 0.8f, 1);
+        contentObject.transform.DOScale(1f, 0.1f).SetEase(Ease.InOutBack).SetUpdate(true);
+    }
+
 
 }

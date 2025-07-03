@@ -1,4 +1,4 @@
-﻿using Data;
+using Data;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -26,6 +26,9 @@ public class Character
 
     public string Id { get; set; }              //고유 식별
     public string DataId { get; set; }  //정적 데이터 키
+    public int Level { get; set; } = 1; //레벨
+    public float MaxExp { get; set; }
+    public float CurrentExp { get; set; } 
     public EAIState CurrentState { get; set; } = EAIState.Idle;
     public Vector3Data Pos { get; set; } = new Vector3Data();
     public float CurrentStamina { get; set; } 
@@ -40,6 +43,10 @@ public class Character
     {
         Id = id;
         Pos = new Vector3Data(position);
+        Level = Data?.Level ?? 1;
+        Hp = Data?.MaxHp ?? 100f; // 최대 체력
+        MaxExp = Data?.MaxExp ?? 15f; // 최대 경험치    
+        CurrentExp = Data?.curretExp ?? 0; // 현재 경험치
         CurrentState = EAIState.Idle;
         CurrentStamina = Data?.MaxStamina ?? 100f;
         MoveSpeed =  Data?.MoveSpeed ?? 1f;

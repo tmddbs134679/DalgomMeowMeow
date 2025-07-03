@@ -1,4 +1,4 @@
-﻿using TMPro;
+using TMPro;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 
@@ -18,7 +18,7 @@ namespace Scripts.Contents.AI.FSM.State
             character.UseStamina(25);
             character.currentBuilding.ConnectToAnimal(character);
             character.OnAnimalArrived(); // 도착 처리 메소드 호출
-            character.animator.SetInteger("animation", 29); // Farming 애니메이션 설정
+            character.SetAnimation(29);
             character.Controller.NavRotateFalse();
         }
 

@@ -133,10 +133,17 @@ public class GameManager
         Equipment hat = new Equipment("E0001");
         Equipment hat2 = new Equipment("E0002");
         Equipment hat3 = new Equipment("E0003");
-
+        Equipment ac1 = new Equipment("E0101");
+        Equipment ac2 = new Equipment("E0102");
+        Equipment bag1 = new Equipment("E0201");
+       // Equipment bag2 = new Equipment("E0204");
         OwnedEquipments.Add(hat);
         OwnedEquipments.Add(hat2);
         OwnedEquipments.Add(hat3);
+        OwnedEquipments.Add(ac1);
+        OwnedEquipments.Add(ac2);
+        OwnedEquipments.Add(bag1);
+        //OwnedEquipments.Add(bag2);
 
         SaveGame();
         IsLoaded = true;

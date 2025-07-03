@@ -24,11 +24,19 @@ public class ArrayBuildPos : ScriptableObject
     {
         baseBuilding.Add(buildData);
     }
+public void RemoveBuildData(BuildData buildData)
+{
+        float targetX = buildData.posX;
+        float targetZ = buildData.posZ;
+    BuildData dataToRemove = baseBuilding.Find(data => 
+        math.abs(data.posX - targetX) < 0.01f && 
+        math.abs(data.posZ - targetZ) < 0.01f);
 
-    public void RemoveBuildData(BuildData buildData)
+    if (dataToRemove != null)
     {
-        baseBuilding.Remove(buildData);
+        baseBuilding.Remove(dataToRemove);
     }
+}
 
 #if UNITY_EDITOR
     public void InitializeBuild()

@@ -79,7 +79,9 @@ public class DataTransformer : EditorWindow
             cd.DataId = ConvertValue<string>(row[i++]);
             cd.PrefabLabel = ConvertValue<string>(row[i++]);
             cd.Name = ConvertValue<string>(row[i++]);
-            cd.TotalExp = ConvertValue<int>(row[i++]);
+            cd.Level = ConvertValue<int>(row[i++]);
+            cd.MaxExp = ConvertValue<int>(row[i++]);
+            cd.curretExp = ConvertValue<int>(row[i++]);
             cd.MaxHp = ConvertValue<float>(row[i++]);
             cd.Atk = ConvertValue<float>(row[i++]);
             cd.MaxStamina = ConvertValue<float>(row[i++]);
@@ -160,6 +162,7 @@ public class DataTransformer : EditorWindow
             eq.DataId = ConvertValue<string>(row[i++]);
             eq.EquipmentType = ConvertValue<Define.EEquipmentType>(row[i++]);
             eq.Name = ConvertValue<string>(row[i++]);
+            eq.Description = ConvertValue<string>(row[i++]);
             eq.SpriteName = ConvertValue<string>(row[i++]);
             loader.Equipments.Add(eq);
         }

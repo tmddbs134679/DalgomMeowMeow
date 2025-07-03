@@ -38,8 +38,7 @@ public class UI_GameScene : UI_Scene
     }
     #endregion
 
-
-
+    UI_QuickMenu _quickMenuPopupUI;
     public override bool Init()
     {
         if (base.Init() == false)
@@ -49,19 +48,31 @@ public class UI_GameScene : UI_Scene
         BindButton(typeof(Buttons));
         BindText(typeof(Texts));
 
+        _quickMenuPopupUI =  Managers.UI.ShowPopupUI<UI_QuickMenu>();
+
+        _quickMenuPopupUI.gameObject.SetActive(false);
+
         GetObject((int)GameObjects.StorageObject).GetComponent<HorizontalLayoutGroup>().spacing = UI_GROUP_SPACING;
         GetButton((int)Buttons.BattleButton).gameObject.BindEvent(OnClickBattleButton);
         GetButton((int)Buttons.BattleButton).GetOrAddComponent<UI_ButtonAnimation>();
         GetButton((int)Buttons.QuickButton).gameObject.BindEvent(OnClickQuickButton);
+        GetButton((int)Buttons.QuickButton).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
         GetButton((int)Buttons.BuildButton).gameObject.BindEvent(OnClickBuildButton);
         GetButton((int)Buttons.BuildButton).GetOrAddComponent<UI_ButtonAnimation>();
+        GetButton((int)Buttons.ArchivementButton).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
+        GetButton((int)Buttons.QuestButton).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
 
         GetButton((int)Buttons.QuestButton).gameObject.BindEvent(OnClickQuestButton);
 
+
+
+        #region Action 추가
         Managers.Game.OnResourcesChagned += Refresh;
         Managers.Game.OnCharacterChanged += Refresh;
         Managers.Food.OnFoodAdded += AddFoodSlot;
         Managers.Food.OnFoodSold += RemoveFoodSlot;
+
+        #endregion
 
         Refresh();
 
@@ -76,7 +87,7 @@ public class UI_GameScene : UI_Scene
 
     private void OnClickQuickButton()
     {
-        Managers.UI.ShowPopupUI<UI_QuickMenu>();
+        _quickMenuPopupUI.gameObject.SetActive(true);
     }
 
     private void Awake()
@@ -102,7 +113,8 @@ public class UI_GameScene : UI_Scene
 
         Vector3 removedPos = slot.transform.localPosition;
 
-        Destroy(slot.gameObject);
+        Managers.Resource.Destroy(slot.gameObject); 
+        //Destroy(slot.gameObject);
 
         StartCoroutine(AnimateForwardShift(removedPos));
     }
