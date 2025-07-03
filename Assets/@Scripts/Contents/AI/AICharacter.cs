@@ -58,6 +58,8 @@ public class AICharacter : BaseObject
     public Camera camera;
     [HideInInspector]
     public float tempSpeed;
+    [SerializeField]
+    private GameObject infoButton;
 
     public float Exp;
     public event Action<AICharacter> AnimalLeaved;
@@ -228,6 +230,7 @@ public class AICharacter : BaseObject
                     else
                     {
                         SetAnimation(CurrentAnimation);
+                        infoButton.SetActive(false);
                         nav.speed = tempSpeed;
                     }
                 }
@@ -270,8 +273,7 @@ public class AICharacter : BaseObject
             nav.speed = 0;
             this.gameObject.transform.rotation = Quaternion.Euler(0, camera.transform.eulerAngles.y + 180, 0);
             head.transform.localRotation = quaternion.Euler(0, 0, -12);
-            //head.transform.rotation = quaternion.Euler(0, 0, -12);
-
+            infoButton.SetActive(true);
             animator.SetInteger("animation", 36);
         }
     }
