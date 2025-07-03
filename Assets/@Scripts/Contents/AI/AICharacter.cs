@@ -1,9 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Xml;
 using JetBrains.Annotations;
 using Scripts.Contents.AI.FSM.State;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.TextCore.Text;
@@ -40,13 +42,20 @@ public class AICharacter : BaseObject
     [HideInInspector]
     public bool _isHelloReady = true;
 
+    [HideInInspector]
+    public bool isClicked = false;
     public Material[] emo;
     public Sprite[] sprites;
     [HideInInspector]
     public Sprite sprite;
-    public Character CharacterData { get;  set; }
-    //public Camera camera;
-    
+    public Character CharacterData { get; set; }
+    [HideInInspector]
+    public int CurrentAnimation { get; set; }
+
+    public Transform head;
+    public Camera camera;
+    public float tempSpeed;
+
     private void Awake()
     {
         ObjectType = Define.EObjectType.Character;
@@ -55,7 +64,8 @@ public class AICharacter : BaseObject
     private void Start()
     {
         Init();
-        //camera = Camera.main;
+        camera = Camera.main;
+        head = transform.Find("root/pelvis/spine_01/spine_02/spine_03/neck_01");
     }
 
     private void Update()
@@ -66,6 +76,8 @@ public class AICharacter : BaseObject
     private void LateUpdate()
     {
         _controller?.OnLateUpdate(Time.deltaTime);
+        OnClick();
+        Clicked();
     }
 
     public override bool Init()
@@ -107,6 +119,12 @@ public class AICharacter : BaseObject
         _controller.RegisterState(new CharacterHelloState(), this, Define.EAIState.Hello);
     }
 
+    public void SetAnimation(int animNum)
+    {
+        animator.SetInteger("animation", animNum);
+        CurrentAnimation = animNum;
+    }
+
     public void OnAnimalArrived()
     {
         AnimalArrived?.Invoke(this);
@@ -129,7 +147,7 @@ public class AICharacter : BaseObject
             return;
         }
         CharacterData.CurrentStamina = Mathf.Max(0, CharacterData.CurrentStamina - amount);
-        Managers.Debug.Log($"스태미나 사용 : {amount}, 남은 스태미나: {CharacterData.CurrentStamina}",Define.EDebugType.AI);
+        Managers.Debug.Log($"스태미나 사용 : {amount}, 남은 스태미나: {CharacterData.CurrentStamina}", Define.EDebugType.AI);
     }
 
     public void RecoverStamina(float amount)
@@ -162,25 +180,57 @@ public class AICharacter : BaseObject
 
     public override void OnClick()
     {
-        //head.transform.eulerAngles = new Vector3(0f, -camera.transform.position.y, 0f); // 기본 회전값 설정
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit))
+            {
+                // 내 캐릭터에만 반응하도록
+                if (hit.collider.gameObject == this.gameObject )
+                {
+                    isClicked = !isClicked;
+                    if (isClicked)
+                    {
+                        tempSpeed = nav.speed;
+                    }
+                   else
+                    {
+                        SetAnimation(CurrentAnimation);
+                        nav.speed = tempSpeed;
+                    }
+                }
+            }
+        }
+    }
+    private void Clicked()
+    {
+        if (isClicked)
+        {
+            nav.speed = 0;
+            this.gameObject.transform.rotation = Quaternion.Euler(0, camera.transform.eulerAngles.y + 180, 0);
+            head.transform.localRotation = quaternion.Euler(0, 0, -12);
+            animator.SetInteger("animation", 36);
+        }
     }
 
-    //public void OnDragStart(Vector3 hitPos)
-    //{
 
-    //}
 
-    //public void OnDrag(Vector3 hitPos)
-    //{
-    //}
+        //public void OnDragStart(Vector3 hitPos)
+        //{
 
-    //public void OnDragEnd()
-    //{
-    //}
+        //}
 
-    //public void OnLongPress()
-    //{
-    //}
+        //public void OnDrag(Vector3 hitPos)
+        //{
+        //}
+
+        //public void OnDragEnd()
+        //{
+        //}
+
+        //public void OnLongPress()
+        //{
+        //}
 }
 
 

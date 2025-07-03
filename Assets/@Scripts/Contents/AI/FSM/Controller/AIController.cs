@@ -168,7 +168,7 @@ public class AIController : BaseController<AICharacter>
         if (patrolTimer >= patrolDelay)
         {
             Patrol();
-            character.animator.SetInteger("animation", 21);
+            character.SetAnimation(21);
             patrolTimer = Random.Range(0f, 10f);
             return;
         }
@@ -181,7 +181,7 @@ public class AIController : BaseController<AICharacter>
 
         if (HasArrived())
         {
-            character.animator.SetInteger("animation", 36);
+            character.SetAnimation(36);
             return;
         }
 
@@ -238,12 +238,15 @@ public class AIController : BaseController<AICharacter>
     {
         if (!character._isHelloReady)
             return;
+        if (character.isClicked)
+            return;
 
         // 주변 모든 캐릭터 탐색
         foreach (var other in AIManager.Instance.AllCharacters)
         {
             if (other == character) continue; // 자기 자신 제외
             if (!other._isHelloReady) continue;
+            if(other.isClicked) continue; // 클릭된 캐릭터 제외
 
 
             float distance = Vector3.Distance(character.transform.position, other.transform.position);

@@ -874,7 +874,6 @@ GameObject:
   - component: {fileID: 5029299615678663399}
   - component: {fileID: 7227195154501785062}
   - component: {fileID: -425791890071965524}
-  - component: {fileID: -7627464900002014705}
   m_Layer: 26
   m_Name: Chibi_Cat_04
   m_TagString: Untagged
@@ -971,13 +970,16 @@ MonoBehaviour:
   animator: {fileID: 0}
   skinnedMeshRenderer: {fileID: 0}
   currentEmo: {fileID: 0}
-  emo: []
   characterAction: {fileID: 0}
   CurrentState: 0
   _isHelloReady: 1
+  isClicked: 0
+  emo: []
   sprites: []
   sprite: {fileID: 0}
   head: {fileID: 0}
+  camera: {fileID: 0}
+  tempSpeed: 0
 --- !u!136 &7227195154501785062
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -998,9 +1000,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
-  m_Height: 1
+  m_Height: 2
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!54 &-425791890071965524
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1028,20 +1030,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &-7627464900002014705
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2238306026886400575}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d3c04842d4bff44da206b9f3f0cb0aa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  headBone: {fileID: 0}
-  rotationSpeed: 5
 --- !u!1 &2410050766198201281
 GameObject:
   m_ObjectHideFlags: 0

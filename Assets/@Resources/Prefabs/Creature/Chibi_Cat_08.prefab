@@ -599,8 +599,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2071305541038750871}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.17869695, w: 0.9839042}
-  m_LocalPosition: {x: -0.02629805, y: -1.0658141e-16, z: -2.4885194e-17}
+  m_LocalRotation: {x: 0.000000046687887, y: -0.00000008186586, z: 0.34394848, w: 0.93898857}
+  m_LocalPosition: {x: -0.026298277, y: 0.0000005826405, z: 8.64318e-17}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -615,7 +615,7 @@ Transform:
   - {fileID: 5901244082544006888}
   - {fileID: 2325066108296928456}
   m_Father: {fileID: 4076176540886588948}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 40.235}
 --- !u!1 &2077777526610277155
 GameObject:
   m_ObjectHideFlags: 0
@@ -2910,7 +2910,6 @@ GameObject:
   - component: {fileID: 4048104233132153274}
   - component: {fileID: 87279126941025039}
   - component: {fileID: 6299155529870543650}
-  - component: {fileID: 3054481027425326224}
   m_Layer: 26
   m_Name: Chibi_Cat_08
   m_TagString: Untagged
@@ -3010,9 +3009,13 @@ MonoBehaviour:
   characterAction: {fileID: 0}
   CurrentState: 0
   _isHelloReady: 1
+  isClicked: 0
   emo: []
   sprites: []
   sprite: {fileID: 0}
+  head: {fileID: 0}
+  camera: {fileID: 0}
+  tempSpeed: 0
 --- !u!136 &87279126941025039
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -3033,9 +3036,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
-  m_Height: 2.2206216
+  m_Height: 2
   m_Direction: 1
-  m_Center: {x: 0, y: 0.6103108, z: 0}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!54 &6299155529870543650
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3063,23 +3066,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &3054481027425326224
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8641021785801605083}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d3c04842d4bff44da206b9f3f0cb0aa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  headBone: {fileID: 7001976991683200310}
-  rotationSpeed: 5
-  character:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!1 &8644523271640066364
 GameObject:
   m_ObjectHideFlags: 0
