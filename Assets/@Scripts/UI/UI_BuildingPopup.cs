@@ -55,8 +55,21 @@ public class UI_BuildingPopup : UI_Popup
 
     public void SetInfo()
     {
+        if (_targetBuilding == null) return;
+        
+        int nextLevel = _targetBuilding.CurrentLevel + 1;
+        var key = (_targetBuilding.BuildingData.Id.ToString(), nextLevel);
+        if (Managers.Data.BuildingLevelDic.TryGetValue(key, out var levelData))
+        {
+            GetText((int)Texts.LevelUpCost).text = $"{levelData.UpgradeCost}";
+            GetText((int)Texts.NextLevelText).text = (_targetBuilding.CurrentLevel+1).ToString();
+        }
+        else
+        {
+            GetText((int)Texts.LevelUpCost).text = "Max";
+            GetText((int)Texts.NextLevelText).text = "Max";
+        }
         GetText((int)Texts.CurrentLevelText).text = _targetBuilding.CurrentLevel.ToString();
-        GetText((int)Texts.NextLevelText).text = (_targetBuilding.CurrentLevel+1).ToString();
     }
     
 }
