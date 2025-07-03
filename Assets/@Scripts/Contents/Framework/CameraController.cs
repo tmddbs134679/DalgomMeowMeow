@@ -9,18 +9,21 @@ public class CameraController : MonoBehaviour
     public float _clickThreshold = 10f; // Ŭ�� ���� �Ÿ�
 
     [SerializeField] private DragController dragController;
-     [SerializeField] private BuildingPlacer buildingplacer;
+    [SerializeField] private BuildingPlacer buildingplacer;
     private Camera _cam;
     private Vector3 _dragOrigin;
     private bool isDragging = false;
     private Vector2 _touchStartPos;
+
+    public LayerMask layerMask;
+    private bool isAI;
 
     void Start()
     {
         _cam = Camera.main;
     }
 
-   private bool _startedOnUI = false;
+    private bool _startedOnUI = false;
 
     void Update()
     {
@@ -28,6 +31,7 @@ public class CameraController : MonoBehaviour
 #if UNITY_EDITOR
         if (Input.GetMouseButtonDown(0))
         {
+            ClickObject(Input.mousePosition);
             _startedOnUI = IsPointerOverUI(); //  UI 위에서 눌렀는지 기록
             if (_startedOnUI) return;
 
@@ -40,6 +44,7 @@ public class CameraController : MonoBehaviour
             if (_startedOnUI) return; //  UI 위에서 시작했으면 아예 이동 막기
                                       // if (buildingplacer.tempDraggleOBJ.isLongPress) return;  // 드래그 입력 중이면 카메라 이동 아예 금지
             if (buildingplacer.isSelect) return;
+            if (isAI) return;
             Vector3 delta = Input.mousePosition - _dragOrigin;
             float dist = Vector2.Distance(Input.mousePosition, _touchStartPos);
 
@@ -58,59 +63,56 @@ public class CameraController : MonoBehaviour
                 return;
             }
 
-            if (!isDragging)
-            {
-                ClickObject(Input.mousePosition);
-            }
             isDragging = false;
+            isAI = false;
         }
 #endif
 
-float zoomAmount = 0;
+        float zoomAmount = 0;
 
 #if UNITY_EDITOR || UNITY_STANDALONE
-// UI 위에 있을 때는 무시
-if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
-{
-    return;
-}
+        // UI 위에 있을 때는 무시
+        if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }
 
-// 에디터 게임뷰 포커스 아닐 때도 무시
+        // 에디터 게임뷰 포커스 아닐 때도 무시
 #if UNITY_EDITOR
-if (!Application.isFocused)
-{
-    return;
-}
+        if (!Application.isFocused)
+        {
+            return;
+        }
 #endif
 
-zoomAmount = Input.GetAxis("Mouse ScrollWheel") * 10f;
+        zoomAmount = Input.GetAxis("Mouse ScrollWheel") * 10f;
 #endif
 
-if (Input.touchCount == 2)
-{
-    Touch touchZero = Input.GetTouch(0);
-    Touch touchOne = Input.GetTouch(1);
+        if (Input.touchCount == 2)
+        {
+            Touch touchZero = Input.GetTouch(0);
+            Touch touchOne = Input.GetTouch(1);
 
-    Vector2 touchZeroPrevPos = touchZero.position - touchZero.deltaPosition;
-    Vector2 touchOnePrevPos = touchOne.position - touchOne.deltaPosition;
+            Vector2 touchZeroPrevPos = touchZero.position - touchZero.deltaPosition;
+            Vector2 touchOnePrevPos = touchOne.position - touchOne.deltaPosition;
 
-    float prevTouchDeltaMag = (touchZeroPrevPos - touchOnePrevPos).magnitude;
-    float touchDeltaMag = (touchZero.position - touchOne.position).magnitude;
+            float prevTouchDeltaMag = (touchZeroPrevPos - touchOnePrevPos).magnitude;
+            float touchDeltaMag = (touchZero.position - touchOne.position).magnitude;
 
-    float deltaMagnitudeDiff = prevTouchDeltaMag - touchDeltaMag;
+            float deltaMagnitudeDiff = prevTouchDeltaMag - touchDeltaMag;
 
-    zoomAmount = deltaMagnitudeDiff * 0.1f;
-}
+            zoomAmount = deltaMagnitudeDiff * 0.1f;
+        }
 
-if (zoomAmount != 0)
-{
-    Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize + zoomAmount, 2f, 10f);
-}
+        if (zoomAmount != 0)
+        {
+            Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize + zoomAmount, 2f, 10f);
+        }
 
 
     }
 
-    
+
 
     void ApplyCameraMove(Vector2 delta)
     {
@@ -127,14 +129,21 @@ if (zoomAmount != 0)
     void ClickObject(Vector2 screenPos)
     {
         Ray ray = _cam.ScreenPointToRay(screenPos);
-        if (Physics.Raycast(ray, out RaycastHit hit))
+        if (Physics.Raycast(ray, out RaycastHit hit, 100f, layerMask))
         {
+            // 여기에서 충돌한 오브젝트의 레이어를 확인해야 함
+            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Player"))
+            {
+                isAI = true;
+            }
+
             Debug.Log("Click on: " + hit.collider.name);
-            
+
             var clickable = hit.collider.GetComponent<BaseObject>();
             if (clickable != null)
                 clickable.OnClick();
         }
+
     }
 
     bool IsPointerOverUI(int fingerId = -1)
