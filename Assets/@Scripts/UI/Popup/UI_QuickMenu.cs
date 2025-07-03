@@ -17,7 +17,6 @@ public class UI_QuickMenu : UI_Popup
         BackgroundButton,
         CharacterInfoButton,
         CharacterEquipmentButton,
-        ExitButton,
     }
 
     enum Texts
@@ -26,6 +25,8 @@ public class UI_QuickMenu : UI_Popup
     }
     #endregion
 
+    UI_CharacterPopup _characterPopupUI;
+    UI_EquipPopup _EquipPopupUI;
     private void Awake()
     {
         Init();
@@ -39,6 +40,13 @@ public class UI_QuickMenu : UI_Popup
         BindButton(typeof(Buttons));
         BindText(typeof(Texts));
 
+
+        _characterPopupUI = Managers.UI.ShowPopupUI<UI_CharacterPopup>();
+        _EquipPopupUI = Managers.UI.ShowPopupUI<UI_EquipPopup>();
+
+        _characterPopupUI.gameObject.SetActive(false);
+        _EquipPopupUI.gameObject.SetActive(false);
+
         GetButton((int)Buttons.CharacterInfoButton).gameObject.BindEvent(OnClickCharacterInfoButton);
         GetButton((int)Buttons.CharacterEquipmentButton).gameObject.BindEvent(OnClickCharacterEquipmentButton);
         GetButton((int)Buttons.BackgroundButton).gameObject.BindEvent(OnClickBackgroundButton);
@@ -50,17 +58,22 @@ public class UI_QuickMenu : UI_Popup
 
     private void OnClickCharacterEquipmentButton()
     {
-        Managers.UI.ShowPopupUI<UI_EquipPopup>();
+        //Managers.UI.ShowPopupUI<UI_EquipPopup>();
+        _EquipPopupUI.gameObject.SetActive(true);
+        gameObject.SetActive(false);
     }
 
     private void OnClickCharacterInfoButton()
     {
-        Managers.UI.ShowPopupUI<UI_CharacterPopup>();
+        //Managers.UI.ShowPopupUI<UI_CharacterPopup>();
+        _characterPopupUI.gameObject.SetActive(true);
+        gameObject.SetActive(false);
     }
 
     private void OnClickBackgroundButton()
     {
-        Managers.UI.ClosePopupUI(this);
+        //Managers.UI.ClosePopupUI(this);
+        gameObject.SetActive(false);
     }
 
 

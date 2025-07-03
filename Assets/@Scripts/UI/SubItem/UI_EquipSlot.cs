@@ -13,7 +13,6 @@ public class UI_EquipSlot : UI_Base
 
     enum Buttons
     {
-        ExitButton,
     }
 
     enum Texts

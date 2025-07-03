@@ -38,8 +38,7 @@ public class UI_GameScene : UI_Scene
     }
     #endregion
 
-
-
+    UI_QuickMenu _quickMenuPopupUI;
     public override bool Init()
     {
         if (base.Init() == false)
@@ -48,6 +47,10 @@ public class UI_GameScene : UI_Scene
         BindObject(typeof(GameObjects));
         BindButton(typeof(Buttons));
         BindText(typeof(Texts));
+
+        _quickMenuPopupUI =  Managers.UI.ShowPopupUI<UI_QuickMenu>();
+
+        _quickMenuPopupUI.gameObject.SetActive(false);
 
         GetObject((int)GameObjects.StorageObject).GetComponent<HorizontalLayoutGroup>().spacing = UI_GROUP_SPACING;
         GetButton((int)Buttons.BattleButton).gameObject.BindEvent(OnClickBattleButton);
@@ -58,10 +61,13 @@ public class UI_GameScene : UI_Scene
 
         GetButton((int)Buttons.QuestButton).gameObject.BindEvent(OnClickQuestButton);
 
+        #region Action 추가
         Managers.Game.OnResourcesChagned += Refresh;
         Managers.Game.OnCharacterChanged += Refresh;
         Managers.Food.OnFoodAdded += AddFoodSlot;
         Managers.Food.OnFoodSold += RemoveFoodSlot;
+
+        #endregion
 
         Refresh();
 
@@ -76,7 +82,7 @@ public class UI_GameScene : UI_Scene
 
     private void OnClickQuickButton()
     {
-        Managers.UI.ShowPopupUI<UI_QuickMenu>();
+        _quickMenuPopupUI.gameObject.SetActive(true);
     }
 
     private void Awake()

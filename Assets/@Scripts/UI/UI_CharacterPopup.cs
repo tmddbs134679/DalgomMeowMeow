@@ -26,6 +26,7 @@ public class UI_CharacterPopup : UI_Popup
     {
         Init();
     }
+
     public override bool Init()
     {
         if (base.Init() == false)
@@ -43,7 +44,8 @@ public class UI_CharacterPopup : UI_Popup
 
     private void OnClickExitButton()
     {
-        Managers.UI.CloseAllPopupUI();
+        gameObject.SetActive(false);
+      
     }
 
     private void Refresh()
