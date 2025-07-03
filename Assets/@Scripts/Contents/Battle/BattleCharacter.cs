@@ -16,6 +16,8 @@ public class BattleCharacter : BaseObject
         
 
     public NavMeshAgent Agent { get; private set; } // NavMeshAgent 컴포넌트
+    public Transform leftHandPivot;
+    public Transform rightHandPivot;
 
     public float AttackDamage = 10f; // 공격력
     public float _attackDelay = 1f; // 공격 딜레이 (초 단위)

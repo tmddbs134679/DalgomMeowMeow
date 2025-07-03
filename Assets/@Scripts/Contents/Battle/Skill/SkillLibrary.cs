@@ -108,7 +108,7 @@ public class SkillLibrary : MonoBehaviour
         battleCharacter.UsingSkill = true;
         battleCharacter._attackDelay /= 2f; // 공격 딜레이를 절반으로 줄임
         battleCharacter.Animator.speed = 2f; // 애니메이션 속도를 두 배로 증가시킴
-        yield return new WaitForSeconds(10f);
+        yield return StartCoroutine(EffectManager.Instance.FireHand(battleCharacter.leftHandPivot, battleCharacter.rightHandPivot)); // FireHand 효과 실행
         battleCharacter._attackDelay *= 2f; // 공격 딜레이를 원래대로 되돌림
         battleCharacter.Animator.speed = 1f; // 애니메이션 속도를 원래대로 되돌림
         battleCharacter.UsingSkill = false; // 스킬 사용 종료

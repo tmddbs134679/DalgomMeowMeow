@@ -49,5 +49,29 @@ public class EffectManager : MonoBehaviour
     }
     #endregion
 
+    #region FireHand
+    public IEnumerator FireHand(Transform left, Transform right)
+    {
+        GameObject LfireEffect = Instantiate(BuffEffectPrefab, left);
+        GameObject RfireEffect = Instantiate(BuffEffectPrefab, right);
 
+        LfireEffect.transform.localPosition = Vector3.zero;
+        RfireEffect.transform.localPosition = Vector3.zero;
+
+        LfireEffect.transform.localRotation = Quaternion.identity;
+        RfireEffect.transform.localRotation = Quaternion.identity;
+
+        LfireEffect.SetActive(true);
+        RfireEffect.SetActive(true);
+
+        yield return new WaitForSeconds(10f);
+
+        LfireEffect.SetActive(false);
+        RfireEffect.SetActive(false);
+    }
+
+
+
+
+    #endregion
 }
