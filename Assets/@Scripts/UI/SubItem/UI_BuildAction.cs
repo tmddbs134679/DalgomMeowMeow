@@ -49,12 +49,10 @@ public class UI_BuildAction : UI_Popup
     {
       if (BuildingPlacer.Instance.isLongPressAcceptBuild)Managers.UI.CloseAllPopupUI();
         BuildingPlacer.Instance.AcceptBuild();
-    //            Managers.UI.ClosePopupUI(this);
     }
     private void CancelBuild()
     {
-        Managers.UI.CloseAllPopupUI();
-        //  Managers.Resource.Destroy(gameObject);
+        BuildingPlacer.Instance.OnBuildingCancel?.Invoke();
         BuildingPlacer.Instance.CancelBuild();
         (Managers.UI.SceneUI as UI_GameScene).gameObject.SetActive(true);
     }
