@@ -96,6 +96,7 @@ public class UI_ProfilePopup : UI_Popup
     private void OnClickExitButton()
     {
         Managers.UI.ClosePopupUI(this);
+        Clear();
     }
 
 
@@ -123,8 +124,7 @@ public class UI_ProfilePopup : UI_Popup
 
         if(_characterAI != null)
         {
-            Managers.Resource.Destroy(_characterAI.gameObject);
-            _characterAI = null;
+            Clear();
         }
 
         _equipHatItem.SetInfo(_character); 
@@ -132,5 +132,12 @@ public class UI_ProfilePopup : UI_Popup
         _equipBagItem.SetInfo(_character);
 
         _characterAI = Managers.Object.Spawn<AICharacter>(new Vector3(500, 500, 500), _character.DataId);
+    }
+
+
+    private void Clear()
+    {
+        Managers.Resource.Destroy(_characterAI.gameObject);
+        _characterAI = null;
     }
 }
