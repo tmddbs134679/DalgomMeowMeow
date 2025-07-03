@@ -5,6 +5,7 @@ using UnityEngine.AI;
 using Scripts.Contents.AI.FSM.State;
 using System.Collections;
 using Unity.VisualScripting;
+using System.Threading.Tasks;
 
 public class AIController : BaseController<AICharacter>
 {
@@ -155,8 +156,10 @@ public class AIController : BaseController<AICharacter>
         character.nav.updateRotation = true;
     }
 
-    public void Move(Vector3 destination)
+    public async void Move(Vector3 destination)
     {
+        await Task.Delay(10);
+
         character.nav.ResetPath();
         character.nav.SetDestination(destination);
     }

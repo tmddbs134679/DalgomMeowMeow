@@ -59,7 +59,7 @@ public class UI_BuildPopup : UI_Popup
         GetButton((int)Buttons.CancelButton).gameObject.BindEvent(CancelBuildUI);
 
         Managers.Game.OnResourcesChagned += Refresh;
-
+        BuildingPlacer.Instance.OnBuildingCancel += CancelBuildUI;
         Refresh();
 
         return true;
@@ -68,7 +68,12 @@ public class UI_BuildPopup : UI_Popup
     public void OnDestroy()
     {
         if (Managers.Game != null)
+        {
             Managers.Game.OnResourcesChagned -= Refresh;
+           
+        }
+        BuildingPlacer.Instance.OnBuildingCancel -= CancelBuildUI;
+
     }
 
     #region Build
@@ -82,7 +87,7 @@ public class UI_BuildPopup : UI_Popup
 
     private void CancelBuildUI()
     {
-        Managers.UI.CloseAllPopupUI();
+        Managers.UI.ClosePopupUI(this);
         (Managers.UI.SceneUI as UI_GameScene).gameObject.SetActive(true);
     }
 

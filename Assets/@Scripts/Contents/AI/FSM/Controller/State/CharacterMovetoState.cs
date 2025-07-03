@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
@@ -17,6 +18,8 @@ namespace Scripts.Contents.AI.FSM.State
             this.isArrived = false;
         }
 
+   
+
         public override void OnEnter()
         {
             base.OnEnter();
@@ -25,6 +28,7 @@ namespace Scripts.Contents.AI.FSM.State
             character.Controller.Move(targetPosition);
             character.SetAnimation(18); // 이동 애니메이션 설정
             character.Controller.NavRotateTrue(); // 회전 활성화
+
         }
 
         public override void OnUpdate(float deltaTime)
