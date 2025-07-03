@@ -35,7 +35,7 @@ public class SkillLibrary : MonoBehaviour
         }
         if (_skillMap.TryGetValue(skillNum, out var coroutineFunc))
         {
-            if (_runningCoroutines.TryGetValue(skillNum, out var running))  //실행된게 있으면 멈추기
+            if (_runningCoroutines.TryGetValue(skillNum, out var running) && running != null)  //실행된게 있으면 멈추기
             {
                 StopCoroutine(running);
             }
@@ -84,20 +84,21 @@ public class SkillLibrary : MonoBehaviour
 
     private IEnumerator NyangPunch(BattleCharacter battleCharacter)
     {
-        if (battleCharacter.TargetLocation == null)
-            yield break;
-        battleCharacter.UsingSkill = true;
-        battleCharacter.Animator.SetTrigger(battleCharacter.Skill); // 스킬 애니메이션 트리거 활성화
-        yield return StartCoroutine(EffectManager.Instance.Punch(battleCharacter.TargetLocation.position));
-        Collider[] hits = Physics.OverlapSphere(battleCharacter.transform.position, 3.5f, LayerMask.GetMask("Enemy")); // 적 캐릭터 레이어 마스크 사용
-        foreach (var hit in hits)
+        if (battleCharacter.TargetLocation != null)
         {
-            if (hit.TryGetComponent<BattleCharacter>(out var targetCharacter))
+            battleCharacter.UsingSkill = true;
+            battleCharacter.Animator.SetTrigger(battleCharacter.Skill); // 스킬 애니메이션 트리거 활성화
+            yield return StartCoroutine(EffectManager.Instance.Punch(battleCharacter.TargetLocation.position));
+            Collider[] hits = Physics.OverlapSphere(battleCharacter.TargetLocation.position, 2.5f, LayerMask.GetMask("Enemy")); // 적 캐릭터 레이어 마스크 사용
+            foreach (var hit in hits)
             {
-                targetCharacter.HpControl(battleCharacter.AttackDamage);
+                if (hit.TryGetComponent<BattleCharacter>(out var targetCharacter))
+                {
+                    targetCharacter.HpControl(battleCharacter.AttackDamage);
+                }
             }
+            battleCharacter.UsingSkill = false;
         }
-        battleCharacter.UsingSkill = false;
     }
 
     #endregion
