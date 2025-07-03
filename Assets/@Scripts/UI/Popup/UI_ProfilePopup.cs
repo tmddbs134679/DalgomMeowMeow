@@ -10,6 +10,7 @@ public class UI_ProfilePopup : UI_Popup
     #region Enum
     enum GameObjects
     {
+        ContentObject,
         EquippedGroupObject,
         EquippedIHattem,
         EquippedAccessoryItem,
@@ -43,6 +44,12 @@ public class UI_ProfilePopup : UI_Popup
     {
         Init();
     }
+
+    private void OnEnable()
+    {
+        PopupOpenAnimation(GetObject((int)GameObjects.ContentObject));
+    }
+
     public override bool Init()
     {
         if (base.Init() == false)

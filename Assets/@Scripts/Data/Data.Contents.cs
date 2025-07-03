@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,7 +13,9 @@ namespace Data
         public string DataId;
         public string PrefabLabel;
         public string Name;
-        public float TotalExp;
+        public int Level;
+        public float MaxExp;
+        public float curretExp;
         public float MaxHp;
         public float Atk;
         public float MaxStamina;
@@ -24,6 +26,7 @@ namespace Data
         public float MoveSpeedRate;
         public string IconLabel;
         public List<string> SkillTypeList;
+
     }
 
     [Serializable]

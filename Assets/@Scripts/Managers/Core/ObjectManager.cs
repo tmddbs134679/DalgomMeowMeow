@@ -85,7 +85,6 @@ public class ObjectManager
 
         if (type == typeof(AICharacter))
             return go.GetOrAddComponent<AICharacter>() as T;
-        
 
         return null;
     }

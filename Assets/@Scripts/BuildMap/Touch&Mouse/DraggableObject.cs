@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using System.Linq;
+using System.Collections; 
 /// <summary>
 /// 건물 드래그앤드롭,그리드 스냅,건물 밑 타일 정보 반영
 /// </summary>
@@ -27,6 +28,7 @@ private Vector3 _dragOffset;
     //드래그 스타트
     public void OnDragStart(Vector3 hitPos)
     {
+        BuildingPlacer.Instance.tempDraggleOBJ = this;
         _offsetx = (gameObject.transform.localScale.x % 2 == 0) ? (gridSize / 2f) : 0f;
         _offsety = (gameObject.transform.localScale.z % 2 == 0) ? (gridSize / 2f) : 0f;
         isBuild = CheckTilesUnderBuilding();
@@ -55,24 +57,33 @@ private Vector3 _dragOffset;
     public void OnLongPress()
     {
         //버그수정중
-        if (false)
+        if (isLongPress)
         {
+                    BuildingPlacer.Instance.tempDraggleOBJ = this;
+            BuildingPlacer.Instance.isLongPressAcceptBuild = true;
             isLongPress = false;
             BuildingPlacer.Instance.isSelect = true;
             isDrag = true;
             Debug.Log(this + "롱프레스 감지!");
-            _uI_BuildAction = BuildingPlacer.Instance.uI_BuildAction;
-            if (_uI_BuildAction != null)
-            {
-                _uI_BuildAction.SetActive(true);
-                Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.main, transform.position);
-                _uI_BuildAction.transform.position = screenPos;
-            }
+            Managers.UI.ShowPopupUI<UI_SaveMoveBuild>();
+            StartCoroutine(WaitAndSetup());
             //건물설치함수 불러오기
-            BuildingPlacer.Instance.SetTempOBJ(gameObject);
+            BuildingPlacer.Instance.SetRefOBJ(gameObject);
             CurrentTileAndOBJ();
         }
     }
+
+    IEnumerator WaitAndSetup()
+{
+    yield return null; // 1프레임 대기
+    _uI_BuildAction = BuildingPlacer.Instance.uI_BuildAction;
+    if (_uI_BuildAction != null)
+    {
+        _uI_BuildAction.SetActive(true);
+        Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.main, transform.position);
+        _uI_BuildAction.transform.position = screenPos;
+    }
+}
     //그리드 적용 스냅
     private Vector3 GetSnappedPosition(Vector3 targetPos)
     {

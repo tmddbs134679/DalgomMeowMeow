@@ -35,9 +35,12 @@ CancelButton
         BindText(typeof(Texts));
 
         GetButton((int)Buttons.CancelButton).gameObject.BindEvent(CancelBuildUI);
-
-        BuildingPlacer.Instance.uI_BuildAction= Managers.UI.ShowPopupUI<UI_BuildAction>();
         return true;
+    }
+    void Start()
+    {
+        BuildingPlacer.Instance.uI_BuildAction = Managers.UI.MakeSubItem<UI_BuildAction>(this.transform);
+        Debug.Log(BuildingPlacer.Instance.uI_BuildAction+"세이브무브빌드");
     }
 
     #region Build

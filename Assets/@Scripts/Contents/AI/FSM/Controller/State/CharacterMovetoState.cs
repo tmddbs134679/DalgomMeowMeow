@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
@@ -23,7 +23,7 @@ namespace Scripts.Contents.AI.FSM.State
             state = Define.EAIState.MoveTo;
             character.nav.speed = character.CharacterData.MoveSpeed; // 이동 속도 설정
             character.Controller.Move(targetPosition);
-            character.animator.SetInteger("animation", 18); // 이동 애니메이션 설정
+            character.SetAnimation(18); // 이동 애니메이션 설정
             character.Controller.NavRotateTrue(); // 회전 활성화
         }
 
