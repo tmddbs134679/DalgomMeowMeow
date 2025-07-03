@@ -91,6 +91,7 @@ public class AIController : BaseController<AICharacter>
         if (action == Define.EAIState.Delivery)
         {
             var nearbuilding = FineOnlyBuilding(type);
+
             return nearbuilding.transform.position;
         }
 
@@ -102,9 +103,11 @@ public class AIController : BaseController<AICharacter>
         if (building == null)
         {
             Debug.LogWarning($"[{type}] 타입 건물을 찾을 수 없습니다.");
+            ChangeState(Define.EAIState.Idle);
             return character.transform.position;
         }
 
+        Debug.Log(building.transform.position);
         return building.transform.position;
     }
 
@@ -282,6 +285,7 @@ public class AIController : BaseController<AICharacter>
             if (helloTimer > 30f)
             {
                 character._isHelloReady = true;
+                helloTimer = 0f; // 타이머 초기화
                 return;
             }
             helloTimer += deltaTime;

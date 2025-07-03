@@ -117,7 +117,7 @@ public class AICharacter : BaseObject
         CharacterData = ch;
         // 위치값
         transform.position = ch.Pos.ToVector3();
-
+        CurrentState = ch.CurrentState;
         // TODO : FSM 등 상태 적용
     }
 
@@ -196,8 +196,8 @@ public class AICharacter : BaseObject
 
     public void OnDisable()
     {
-        AIManager.Instance.Unregister(this);
         Controller?.Dispose();
+        AIManager.Instance.Unregister(this);
     }
 
     public void SetEmotion(int index)

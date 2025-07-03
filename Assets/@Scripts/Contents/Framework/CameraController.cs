@@ -137,7 +137,7 @@ public class CameraController : MonoBehaviour
                 isAI = true;
             }
 
-            Debug.Log("Click on: " + hit.collider.name);
+            //Debug.Log("Click on: " + hit.collider.name);
 
             var clickable = hit.collider.GetComponent<BaseObject>();
             if (clickable != null)
