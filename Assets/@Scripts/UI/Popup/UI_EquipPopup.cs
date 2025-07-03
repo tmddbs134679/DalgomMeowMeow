@@ -1,13 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
-
+using static Define;
 public class UI_EquipPopup : UI_Popup
 {
     #region Enum
     enum GameObjects
     {
+        ContentObject,
         EquipGroupObject
     }
 
@@ -34,6 +36,15 @@ public class UI_EquipPopup : UI_Popup
     {
         Init();
     }
+
+    private void OnEnable()
+    {
+        PopupOpenAnimation(GetObject((int)GameObjects.ContentObject));
+
+        ToggleInit();
+       
+        OnClickTypeToggle();
+    }
     public override bool Init()
     {
         if (base.Init() == false)
@@ -45,49 +56,65 @@ public class UI_EquipPopup : UI_Popup
         BindToggle(typeof(Toggles));  
         
         GetButton((int)Buttons.ExitButton).gameObject.BindEvent(OnClickExitButton);
-        GetToggle((int)Toggles.AllToggle).gameObject.BindEvent(OnClickAllToggle);
-        GetToggle((int)Toggles.HatToggle).gameObject.BindEvent(OnClickHatToggle);
-        GetToggle((int)Toggles.AccessoryToggle).gameObject.BindEvent(OnClickAccessoryToggle);
-        GetToggle((int)Toggles.BagToggle).gameObject.BindEvent(OnClickBagToggle);
+        GetToggle((int)Toggles.AllToggle).gameObject.BindEvent(() => OnClickTypeToggle());
+        GetToggle((int)Toggles.HatToggle).gameObject.BindEvent(()=> OnClickTypeToggle(EEquipmentType.Hat));
+        GetToggle((int)Toggles.AccessoryToggle).gameObject.BindEvent(() => OnClickTypeToggle(EEquipmentType.Accessory));
+        GetToggle((int)Toggles.BagToggle).gameObject.BindEvent(() => OnClickTypeToggle(EEquipmentType.Bag));
 
-        OnClickAllToggle();
+        GetButton((int)Buttons.ExitButton).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
+        GetToggle((int)Toggles.AllToggle).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
+        GetToggle((int)Toggles.HatToggle).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
+        GetToggle((int)Toggles.AccessoryToggle).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
+        GetToggle((int)Toggles.BagToggle).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
+
 
         return true;
     }
 
-    private void OnClickAllToggle()
+    void ToggleInit()
+    {
+        GetToggle((int)Toggles.AllToggle).isOn = true;
+        GetToggle((int)Toggles.HatToggle).isOn = false;
+        GetToggle((int)Toggles.AccessoryToggle).isOn = false;
+        GetToggle((int)Toggles.BagToggle).isOn = false;
+    }
+    //private void OnClickAllToggle()
+    //{
+    //    GetObject((int)GameObjects.EquipGroupObject).DestroyChilds();
+
+    //    List<Equipment> equipments = Managers.Game.OwnedEquipments;
+
+    //    foreach (Equipment equipment in equipments)
+    //    {
+    //        UI_EquipSlot slot = Managers.UI.MakeSubItem<UI_EquipSlot>(GetObject((int)GameObjects.EquipGroupObject).transform);
+    //        slot.SetInfo(equipment);
+    //    }
+
+    //}
+
+    //null일떈 전부 보이게 설정함.
+    private void OnClickTypeToggle(EEquipmentType? type = null)
     {
         GetObject((int)GameObjects.EquipGroupObject).DestroyChilds();
 
         List<Equipment> equipments = Managers.Game.OwnedEquipments;
 
+        if (type == null)
+            equipments.Sort((a, b) => string.Compare(a.key, b.key, StringComparison.Ordinal));
+
         foreach (Equipment equipment in equipments)
         {
+            if (type != null && equipment.EquipmentData.EquipmentType != type.Value)
+                continue;
+
             UI_EquipSlot slot = Managers.UI.MakeSubItem<UI_EquipSlot>(GetObject((int)GameObjects.EquipGroupObject).transform);
             slot.SetInfo(equipment);
         }
 
     }
-
-    private void OnClickHatToggle()
-    {
-
-    }
-
-    private void OnClickAccessoryToggle()
-    {
-
-    }
-
-
-    private void OnClickBagToggle()
-    {
-      
-    }
-
     private void OnClickExitButton()
     {
-        Managers.UI.CloseAllPopupUI();
+       gameObject.SetActive(false);
     }
 
 
