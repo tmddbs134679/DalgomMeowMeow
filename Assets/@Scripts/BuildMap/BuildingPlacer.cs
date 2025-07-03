@@ -42,6 +42,8 @@ public class BuildingPlacer : MonoBehaviour
 
     public bool isAI=false;
 
+    public Action OnBuildingCancel;
+
     private void Awake()
     {
         if (Instance == null)
