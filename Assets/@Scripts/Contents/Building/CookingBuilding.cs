@@ -162,6 +162,7 @@ public class CookingBuilding : BuildingBase
         if (Managers.Game.Gold <= next.UpgradeCost)
             return false;
 
+        Managers.Game.Gold -= next.UpgradeCost;
         CurrentLevel++;
         ApplyLevel();
         return true;
