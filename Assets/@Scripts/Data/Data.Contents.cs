@@ -134,4 +134,38 @@ namespace Data
         }
     }
     #endregion
+
+    #region BuildingLevelData
+
+    [Serializable]
+    public class BuildingLevelData
+    {
+        public string BuildingId;
+        public int Level;
+        public float ProductionTime;
+        public int Capacity;
+        public int UpgradeCost;
+        public string ProducedFoodId;
+
+        [NonSerialized] public FoodData ProducedFood; // 런타임 연결
+    }
+
+    [Serializable]
+    public class BuildingLevelDataLoader : ILoader<(string, int), BuildingLevelData>
+    {
+        public List<BuildingLevelData> levels = new List<BuildingLevelData>();
+
+        public Dictionary<(string, int), BuildingLevelData> MakeDict()
+        {
+            var dict = new Dictionary<(string, int), BuildingLevelData>();
+            foreach (var data in levels)
+            {
+                dict.Add((data.BuildingId, data.Level), data);
+            }
+            return dict;
+        }
+    }
+
+
+    #endregion
 }
