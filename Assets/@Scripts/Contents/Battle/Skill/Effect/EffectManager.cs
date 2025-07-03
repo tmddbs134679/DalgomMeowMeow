@@ -11,6 +11,8 @@ public class EffectManager : MonoBehaviour
     public GameObject DebuffEffectPrefab;
 
     
+
+
     private void Awake()
     {
         if (Instance == null)
@@ -52,8 +54,19 @@ public class EffectManager : MonoBehaviour
     #region FireHand
     public IEnumerator FireHand(Transform left, Transform right)
     {
-        GameObject LfireEffect = Instantiate(BuffEffectPrefab, left);
-        GameObject RfireEffect = Instantiate(BuffEffectPrefab, right);
+        GameObject LfireEffect;
+        GameObject RfireEffect;
+
+        if (left.childCount == 0 && right.childCount == 0)
+        {
+            LfireEffect = Instantiate(BuffEffectPrefab, left);
+            RfireEffect = Instantiate(BuffEffectPrefab, right);
+        }
+        else
+        {
+            LfireEffect = left.GetChild(0).gameObject;
+            RfireEffect = right.GetChild(0).gameObject;
+        }
 
         LfireEffect.transform.localPosition = Vector3.zero;
         RfireEffect.transform.localPosition = Vector3.zero;

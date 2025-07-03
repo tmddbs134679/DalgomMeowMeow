@@ -6,24 +6,63 @@ using UnityEngine.AI;
 
 public class BattleCharacter : BaseObject
 {
-    [SerializeField] private float _detectRange = 10f;
-    [SerializeField] private float _attackRange = 1.5f;
+
     [SerializeField] private CharacterStatSo _data; // 캐릭터 스탯 데이터
-    [SerializeField] private Color _damageColor = Color.red;
-    [SerializeField] private float _flashDuration = 0.05f;
     [SerializeField] private SkillLibrary _skillLibrary; // 스킬 라이브러리
     [SerializeField] private ParticleSystem _heal;
-        
+    [SerializeField] private Color _damageColor = Color.red;
+    [SerializeField] private float _detectRange = 10f;
+    [SerializeField] private float _attackRange = 1.5f;
+    [SerializeField] private float _flashDuration = 0.05f;
+
+    [SerializeField] protected SkinnedMeshRenderer[] _characterRenderer; // 캐릭터 렌더러
+    [SerializeField] protected Vector3 _originalPosition; // 원래 위치 저장
+
+    
 
     public NavMeshAgent Agent { get; private set; } // NavMeshAgent 컴포넌트
+    public Animator Animator; // 애니메이터 컴포넌트
+    public Transform TargetLocation;
     public Transform leftHandPivot;
     public Transform rightHandPivot;
+
 
     public float AttackDamage = 10f; // 공격력
     public float _attackDelay = 1f; // 공격 딜레이 (초 단위)
     public float MaxHP = 100f;
+    public float MoveSpeed = 3.5f; // 이동 속도
+
+    public int AnimationHash;
+    public int SkillHash;
+    public int Skill;
+
+    public bool HasLookedForward = true; // 전방을 바라봤는지 여부 (아군 전용 로직)
+    public bool Stunned = false; // 스턴 상태 여부
+    public bool UsingSkill = false; // 스킬 사용 여부
+    public bool IsDead { get; private set; } = false;
+    public bool IsInBattle
+    {
+        get => _isInBattle;
+        set
+        {
+            if (_isInBattle != value)
+            {
+                _isInBattle = value;
+                OnBattleStateChanged?.Invoke(this, _isInBattle);
+            }
+        }
+    }
+
+    public string TargetLayer = "Enemy"; // 타겟 태그
+    
+    private BattleCharacter _targetCharacter; // 현재 타겟 캐릭터
+    private Coroutine _damageFlashCoroutine; //피격 효과 코루틴
+    
+    private float _attacktimer = 0f;
     private float _currentHP; // 최대 체력 (초기화용)
-    public float Health { get => _currentHP;
+    public float Health
+    {
+        get => _currentHP;
         set
         {
             if (value <= 0)
@@ -40,54 +79,14 @@ public class BattleCharacter : BaseObject
                 _currentHP = value;
             }
         }
-    } 
-    public float MoveSpeed = 3.5f; // 이동 속도
-
-    public bool HasLookedForward = true; // 전방을 바라봤는지 여부 (아군 전용 로직)
-
-
-    public string TargetLayer = "Enemy"; // 타겟 태그
-    public bool UsingSkill = false; // 스킬 사용 여부
-    public Transform TargetLocation;
-
-    private float _attacktimer = 0f;
-    private BattleCharacter _targetCharacter; // 현재 타겟 캐릭터
-
-    [SerializeField] protected SkinnedMeshRenderer[] _characterRenderer; // 캐릭터 렌더러
-    private Coroutine _damageFlashCoroutine; //피격 효과 코루틴
+    }
 
     private bool _isInBattle = false;
-
-    public Animator Animator; // 애니메이터 컴포넌트
-    [SerializeField] protected Vector3 _originalPosition; // 원래 위치 저장
-
-
-
 
     public event Action<BattleCharacter> OnCharacterDied;
     public event Action<BattleCharacter, bool> OnBattleStateChanged;
 
-
-
-    public int AnimationHash;
-    public int SkillHash;
-    public int Skill;
-
-    public bool IsDead { get; private set; } = false;
-
-    public bool IsInBattle { get => _isInBattle;
-        set
-        {
-            if (_isInBattle != value)
-            {
-                _isInBattle = value;
-                OnBattleStateChanged?.Invoke(this, _isInBattle);
-            }
-        }
-    }
-
-
-
+    
     protected virtual void Awake()
     {
         _skillLibrary = GetComponentInParent<SkillLibrary>();
@@ -107,7 +106,7 @@ public class BattleCharacter : BaseObject
 
     void Update()
     {
-        if (IsDead) return; // 캐릭터가 죽었으면 업데이트 중지
+        if (IsDead || Stunned) return; // 캐릭터가 죽었으면 업데이트 중지
 
         if (TargetLocation == null)
         {

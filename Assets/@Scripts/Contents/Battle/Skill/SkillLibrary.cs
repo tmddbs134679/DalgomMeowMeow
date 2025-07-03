@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -69,11 +70,10 @@ public class SkillLibrary : MonoBehaviour
                 if (hit.TryGetComponent<BattleCharacter>(out var character))
                 {
                     character.HpControl((character.MaxHP/5)*-1);
-                    Managers.Debug.Log($"회복되었습니다.", Define.EDebugType.AI);
                 }
             }
 
-            yield return new WaitForSeconds(0.75f); // 힐 딜레이
+            yield return new WaitForSeconds(1f); // 힐 딜레이
         }
     }
 
@@ -84,9 +84,10 @@ public class SkillLibrary : MonoBehaviour
 
     private IEnumerator NyangPunch(BattleCharacter battleCharacter)
     {
+        if (battleCharacter.TargetLocation == null)
+            yield break;
         battleCharacter.UsingSkill = true;
         battleCharacter.Animator.SetTrigger(battleCharacter.Skill); // 스킬 애니메이션 트리거 활성화
-
         yield return StartCoroutine(EffectManager.Instance.Punch(battleCharacter.TargetLocation.position));
         Collider[] hits = Physics.OverlapSphere(battleCharacter.transform.position, 3.5f, LayerMask.GetMask("Enemy")); // 적 캐릭터 레이어 마스크 사용
         foreach (var hit in hits)

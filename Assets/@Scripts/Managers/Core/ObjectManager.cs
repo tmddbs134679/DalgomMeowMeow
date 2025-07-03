@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -85,7 +85,6 @@ public class ObjectManager
 
         if (type == typeof(AICharacter))
             return go.GetOrAddComponent<AICharacter>() as T;
-        
 
         return null;
     }
