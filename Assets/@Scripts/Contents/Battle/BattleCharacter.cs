@@ -12,7 +12,6 @@ public class BattleCharacter : BaseObject
     [SerializeField] private ParticleSystem _heal;
     [SerializeField] private Color _damageColor = Color.red;
     [SerializeField] private float _detectRange = 10f;
-    [SerializeField] private float _attackRange = 1.5f;
     [SerializeField] private float _flashDuration = 0.05f;
 
     [SerializeField] protected SkinnedMeshRenderer[] _characterRenderer; // 캐릭터 렌더러
@@ -23,14 +22,18 @@ public class BattleCharacter : BaseObject
     public NavMeshAgent Agent { get; private set; } // NavMeshAgent 컴포넌트
     public Animator Animator; // 애니메이터 컴포넌트
     public Transform TargetLocation;
-    public Transform leftHandPivot;
-    public Transform rightHandPivot;
+    public Transform LeftHandPivot;
+    public Transform RightHandPivot;
+    public Transform HeadPivot;
 
-
+    #region Stats
     public float AttackDamage = 10f; // 공격력
-    public float _attackDelay = 1f; // 공격 딜레이 (초 단위)
+    public float AttackDelay = 1f; // 공격 딜레이 (초 단위)
     public float MaxHP = 100f;
     public float MoveSpeed = 3.5f; // 이동 속도
+    public float AttackRange = 1.5f;
+    public bool Invincible = false; // 무적 상태 여부
+    #endregion
 
     public int AnimationHash;
     public int SkillHash;
@@ -100,7 +103,7 @@ public class BattleCharacter : BaseObject
     {
         _originalPosition = transform.localPosition;
         Agent.speed = MoveSpeed; // NavMeshAgent의 이동 속도 설정
-        Agent.stoppingDistance = _attackRange; // 공격 범위 내에서 멈추도록 설정
+        Agent.stoppingDistance = AttackRange; // 공격 범위 내에서 멈추도록 설정
 
     }
 
@@ -126,7 +129,7 @@ public class BattleCharacter : BaseObject
         {
             float dist = Vector3.Distance(transform.position, TargetLocation.position);
 
-            if (dist <= _attackRange)
+            if (dist <= AttackRange)
             {
                 Agent.isStopped = true; //거리가 가까우면 공격
 
@@ -216,7 +219,7 @@ public class BattleCharacter : BaseObject
         if (IsDead || UsingSkill) return; // 캐릭터가 죽었거나 스킬 사용 중이면 공격하지 않음
 
         _attacktimer += Time.deltaTime;
-        if (_attacktimer >= _attackDelay)
+        if (_attacktimer >= AttackDelay)
         {
             Animator.SetInteger(AnimationHash, UnityEngine.Random.Range(1, 4)); // 공격 애니메이션 출력
             _attacktimer = 0f; // 공격 후 타이머 초기화
@@ -231,7 +234,9 @@ public class BattleCharacter : BaseObject
 
     public void HpControl(float Damage)
     {
-        if (IsDead) return; // 이미 죽은 캐릭터는 데미지를 받지 않음
+        if (IsDead && Invincible) // 이미 죽었거나 무적 상태이면 아무런 행동도 하지 않음
+            return; 
+
         Health -= Damage; // 공격력만큼 체력 감소
         if (Damage >= 0)
         { 

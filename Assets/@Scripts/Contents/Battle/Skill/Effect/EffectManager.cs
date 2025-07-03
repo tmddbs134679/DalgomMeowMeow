@@ -87,4 +87,44 @@ public class EffectManager : MonoBehaviour
 
 
     #endregion
+
+
+
+
+    #region RangedAttack
+    public IEnumerator RangedAttack(Transform left, Transform right)
+    {
+        GameObject LfireEffect;
+        GameObject RfireEffect;
+
+        if (left.childCount == 0 && right.childCount == 0)
+        {
+            LfireEffect = Instantiate(BuffEffectPrefab, left);
+            RfireEffect = Instantiate(BuffEffectPrefab, right);
+        }
+        else
+        {
+            LfireEffect = left.GetChild(0).gameObject;
+            RfireEffect = right.GetChild(0).gameObject;
+        }
+
+        LfireEffect.transform.localPosition = Vector3.zero;
+        RfireEffect.transform.localPosition = Vector3.zero;
+
+        LfireEffect.transform.localRotation = Quaternion.identity;
+        RfireEffect.transform.localRotation = Quaternion.identity;
+
+        LfireEffect.SetActive(true);
+        RfireEffect.SetActive(true);
+
+        yield return new WaitForSeconds(10f);
+
+        LfireEffect.SetActive(false);
+        RfireEffect.SetActive(false);
+    }
+
+
+
+
+    #endregion
 }
