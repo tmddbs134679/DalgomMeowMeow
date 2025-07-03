@@ -30,13 +30,16 @@ public class BuildingPlacer : MonoBehaviour
     private GameObject _tempOBJ;
     private BaseBuildingSO _saveBuildingSO;
     private BuildData _buildData;
+        private BuildData _CurBuildData;
     private int buyMoney;
 
     private bool _isGold;
     private bool _isBuild;
     public bool isSelect = false;
 
+    public bool isLongPressAcceptBuild=false;
     public UI_BuildAction uI_BuildAction;
+
     private void Awake()
     {
         if (Instance == null)
@@ -73,13 +76,22 @@ public class BuildingPlacer : MonoBehaviour
     }
 
     /// <summary>
-    /// DraggableObject에서 설치할 오브젝트 설정 시 호출
+    /// DraggableObject에서 LongPress가 호출 될 시 현상태의 오브젝트 가져오기
     /// </summary>
-    public void SetTempOBJ(GameObject tempOBJ)
+    public void SetRefOBJ(GameObject tempOBJ)
     {
         _saveBuildingSO = tempOBJ.GetComponent<BuildingBase>()?.BuildingData;
         _tempOBJ = tempOBJ;
+
+                    _CurBuildData = new BuildData
+            {
+                posX = _tempOBJ.transform.position.x,
+                posZ = _tempOBJ.transform.position.z,
+                testBaseBuilding = _saveBuildingSO
+            };
     }
+
+
 
     /// <summary>
     /// 설치 재료(돈) 판별
@@ -105,11 +117,11 @@ public class BuildingPlacer : MonoBehaviour
     {
         _isGold = CheckBuildGold();
         CanPlaceBuilding();
-        if (tempDraggleOBJ.isLongPress) _isGold = true;
+        if (isLongPressAcceptBuild) _isGold = true;
         if (_isGold && _isBuild)
         {
-                    if (!tempDraggleOBJ.isLongPress)
-            Managers.Game.Gold -= buyMoney;
+            if (!isLongPressAcceptBuild)
+                Managers.Game.Gold -= buyMoney;
 
             _buildData = new BuildData
             {
@@ -118,14 +130,18 @@ public class BuildingPlacer : MonoBehaviour
                 testBaseBuilding = _saveBuildingSO
             };
 
-            arrayBuildPos.GetBuildData(_buildData);
+            arrayBuildPos.GetBuildData(_buildData);//설치할 오브젝트
+            if (isLongPressAcceptBuild) arrayBuildPos.RemoveBuildData(_CurBuildData);//기존에 있던 오브젝트 제거
 
-            _tempOBJ.GetComponent<DraggableObject>().SetTileIsBuild();
-
-           if(tempDraggleOBJ.isLongPress)ClearTile();
-            gridMap.LoadMap();
-            buildMap.LoadBuild();
-            surface.BuildNavMesh();
+            _tempOBJ.GetComponent<DraggableObject>().SetTileIsBuild();//새롭게 설치할 오브젝트의 타일
+            if (isLongPressAcceptBuild) ClearTile();//기존에 있던 오브젝트의 타일 제거
+            if (isLongPressAcceptBuild)_tempOBJ.GetComponent<DraggableObject>().isLongPress = true;
+            if (isLongPressAcceptBuild) Destroy(_tempOBJ);
+            gridMap.LoadMap(); //맵갱신
+            buildMap.LoadBuild(); //오브젝트 갱신
+            surface.BuildNavMesh(); //네브매쉬 깔기
+            isLongPressAcceptBuild = false;
+            
         }
     }
 
@@ -146,7 +162,7 @@ public class BuildingPlacer : MonoBehaviour
     
 
     /// <summary>
-    /// 해당 오브젝트 밑 타일 초기화
+    /// 해당 오브젝트 아래 타일 초기화
     /// </summary>
     public void ClearTile()
     {

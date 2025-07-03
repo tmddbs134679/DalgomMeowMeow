@@ -60,6 +60,7 @@ private Vector3 _dragOffset;
         if (isLongPress)
         {
                     BuildingPlacer.Instance.tempDraggleOBJ = this;
+            BuildingPlacer.Instance.isLongPressAcceptBuild = true;
             isLongPress = false;
             BuildingPlacer.Instance.isSelect = true;
             isDrag = true;
@@ -67,7 +68,7 @@ private Vector3 _dragOffset;
             Managers.UI.ShowPopupUI<UI_SaveMoveBuild>();
             StartCoroutine(WaitAndSetup());
             //건물설치함수 불러오기
-            BuildingPlacer.Instance.SetTempOBJ(gameObject);
+            BuildingPlacer.Instance.SetRefOBJ(gameObject);
             CurrentTileAndOBJ();
         }
     }
