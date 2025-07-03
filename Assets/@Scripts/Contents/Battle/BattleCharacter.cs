@@ -1,4 +1,4 @@
-﻿using Data;
+using Data;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -8,15 +8,19 @@ public class BattleCharacter : BaseObject
 {
     [SerializeField] private float _detectRange = 10f;
     [SerializeField] private float _attackRange = 1.5f;
-    [SerializeField] private float _attackDelay = 1f; // 공격 딜레이 (초 단위)
     [SerializeField] private CharacterStatSo _data; // 캐릭터 스탯 데이터
     [SerializeField] private Color _damageColor = Color.red;
     [SerializeField] private float _flashDuration = 0.05f;
     [SerializeField] private SkillLibrary _skillLibrary; // 스킬 라이브러리
+    [SerializeField] private ParticleSystem _heal;
+        
 
     public NavMeshAgent Agent { get; private set; } // NavMeshAgent 컴포넌트
+    public Transform leftHandPivot;
+    public Transform rightHandPivot;
 
     public float AttackDamage = 10f; // 공격력
+    public float _attackDelay = 1f; // 공격 딜레이 (초 단위)
     public float MaxHP = 100f;
     private float _currentHP; // 최대 체력 (초기화용)
     public float Health { get => _currentHP;
@@ -44,10 +48,9 @@ public class BattleCharacter : BaseObject
 
     public string TargetLayer = "Enemy"; // 타겟 태그
     public bool UsingSkill = false; // 스킬 사용 여부
-
+    public Transform TargetLocation;
 
     private float _attacktimer = 0f;
-    private Transform _targetLocation;
     private BattleCharacter _targetCharacter; // 현재 타겟 캐릭터
 
     [SerializeField] protected SkinnedMeshRenderer[] _characterRenderer; // 캐릭터 렌더러
@@ -91,6 +94,7 @@ public class BattleCharacter : BaseObject
         ObjectType = Define.EObjectType.Enemy; // 객체 타입 설정
         Agent = GetComponent<NavMeshAgent>();
         Health = MaxHP;
+        _heal = GetComponentInChildren<ParticleSystem>();
     }
 
     protected virtual void Start()
@@ -105,15 +109,15 @@ public class BattleCharacter : BaseObject
     {
         if (IsDead) return; // 캐릭터가 죽었으면 업데이트 중지
 
-        if (_targetLocation == null)
+        if (TargetLocation == null)
         {
             var newTarget = FindClosestEnemyInRange(_detectRange);
             if (newTarget != null)
             {
                 SetTarget(newTarget);
-                if (_targetLocation != null)
+                if (TargetLocation != null)
                 {
-                    Agent.SetDestination(_targetLocation.position);
+                    Agent.SetDestination(TargetLocation.position);
                     IsInBattle = true; // 타겟이 생기면 전투 상태로 변경
                     Animator.SetInteger(AnimationHash, 5);
                 }
@@ -121,13 +125,13 @@ public class BattleCharacter : BaseObject
         }
         else
         {
-            float dist = Vector3.Distance(transform.position, _targetLocation.position);
+            float dist = Vector3.Distance(transform.position, TargetLocation.position);
 
             if (dist <= _attackRange)
             {
                 Agent.isStopped = true; //거리가 가까우면 공격
 
-                Vector3 direction = (_targetLocation.position - transform.position).normalized;
+                Vector3 direction = (TargetLocation.position - transform.position).normalized;
                 direction.y = 0; // y축 회전 배제
 
                 if (direction != Vector3.zero)
@@ -138,7 +142,7 @@ public class BattleCharacter : BaseObject
             else
             {
                 Agent.isStopped = false;
-                Agent.SetDestination(_targetLocation.position); // 계속 추적
+                Agent.SetDestination(TargetLocation.position); // 계속 추적
             }
         }
     }
@@ -177,12 +181,12 @@ public class BattleCharacter : BaseObject
 
     private void SetTarget(Transform newTarget)     //탐지된 적의 죽음이벤트를 구독 or 구독해제
     {
-        if (_targetLocation != null && _targetLocation.TryGetComponent<BattleCharacter>(out var oldChar))
+        if (TargetLocation != null && TargetLocation.TryGetComponent<BattleCharacter>(out var oldChar))
             oldChar.OnCharacterDied -= HandleTargetDeath;
 
-        _targetLocation = newTarget;
+        TargetLocation = newTarget;
 
-        if (_targetLocation != null && _targetLocation.TryGetComponent<BattleCharacter>(out _targetCharacter))
+        if (TargetLocation != null && TargetLocation.TryGetComponent<BattleCharacter>(out _targetCharacter))
         {
             _targetCharacter.OnCharacterDied += HandleTargetDeath;
 
@@ -194,7 +198,7 @@ public class BattleCharacter : BaseObject
 
     private void HandleTargetDeath(BattleCharacter deadChar)
     {
-        if (_targetLocation == deadChar.transform)
+        if (TargetLocation == deadChar.transform)
         {
             SetTarget(null);
             Agent.isStopped = false;
@@ -236,6 +240,17 @@ public class BattleCharacter : BaseObject
                 StopCoroutine(_damageFlashCoroutine);
             _damageFlashCoroutine = StartCoroutine(DamageFlash());
         }
+        else if(Damage < 0)
+        {
+            Effect(new Color(0f, 1f, 105/255f, 200/255f)); // 힐 파티클 효과(연한 초록색)
+        }
+    }
+
+    public void Effect(Color color)
+    {
+        var particle = _heal.main; // 힐 파티클 색상 변경
+        particle.startColor = color;
+        _heal.Play(); // 힐 파티클 재생
     }
 
 
@@ -263,7 +278,7 @@ public class BattleCharacter : BaseObject
 
     private void OnDisable()
     {
-        if (_targetLocation != null && _targetLocation.TryGetComponent<BattleCharacter>(out var targetChar))
+        if (TargetLocation != null && TargetLocation.TryGetComponent<BattleCharacter>(out var targetChar))
             targetChar.OnCharacterDied -= HandleTargetDeath;
     }
 
