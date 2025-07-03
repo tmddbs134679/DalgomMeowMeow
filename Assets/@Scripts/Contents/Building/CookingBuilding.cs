@@ -6,6 +6,10 @@ using UnityEngine;
 public class CookingBuilding : BuildingBase
 {
     [SerializeField] private Renderer buildingRenderer;
+    public int CurrentLevel { get; private set; } = 1; 
+    
+    private BuildingLevelData LevelData => 
+        Managers.Data.BuildingLevelDic[(BuildingData.Id.ToString(), CurrentLevel)];
 
     public GameObject collectIcon;
     
@@ -16,7 +20,29 @@ public class CookingBuilding : BuildingBase
     [SerializeField]
     private List<FoodData> upgradeDishes; 
 
-
+    private void Start()
+    {
+        Debug.Log($"현재 레벨: {CurrentLevel}");
+        var key = (BuildingData.Id.ToString(), CurrentLevel + 1);
+        if (Managers.Data.BuildingLevelDic.TryGetValue(key, out var levelData))
+        {
+            Debug.Log($"[UpgradeTest] 다음 레벨 정보 있음: {levelData.ProducedFoodId}, 비용: {levelData.UpgradeCost}");
+        }
+        else
+        {
+            Debug.LogWarning($"[UpgradeTest] 다음 레벨 정보 없음: {key}");
+        }
+    }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            if (Upgrade())
+                Debug.Log("업그레이드 성공!");
+            else
+                Debug.Log("업그레이드 실패!");
+        }
+    }
     public override bool Init()
     {
         base.Init();
@@ -83,7 +109,8 @@ public class CookingBuilding : BuildingBase
     }
     public override void OnClick()
     {
-
+        UI_BuildingPopup popup = Managers.UI.ShowPopupUI<UI_BuildingPopup>();
+        popup.SetTarget(this); // 클릭한 CookingBuilding 인스턴스
     }
     public void Collect()
     {
@@ -120,5 +147,29 @@ public class CookingBuilding : BuildingBase
             Debug.Log($"[야채 도착] 누적 채소 수: {deliveredVegetableCount}");
 
         }
+    }
+    
+    public bool CanUpgrade()
+    {
+        return Managers.Data.BuildingLevelDic.ContainsKey((BuildingData.Id.ToString(), CurrentLevel + 1));
+    }
+
+    public bool Upgrade()
+    {
+        if (!CanUpgrade()) return false;
+
+        var next = Managers.Data.BuildingLevelDic[(BuildingData.Id.ToString(), CurrentLevel + 1)];
+        if (Managers.Game.Gold <= next.UpgradeCost)
+            return false;
+
+        CurrentLevel++;
+        ApplyLevel();
+        return true;
+    }
+    private void ApplyLevel()
+    {
+        Debug.Log($"[CookingBuilding] 업그레이드 완료 → Lv.{CurrentLevel}");
+        //Debug.Log($"[CookingBuilding] 업그레이드 완료 → Lv.{CurrentLevel}, 생산 요리: {LevelData.ProducedFood.Name}");
+        // 외형 변경, 사운드 등도 여기에
     }
 }
