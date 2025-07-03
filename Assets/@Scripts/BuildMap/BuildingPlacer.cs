@@ -36,6 +36,7 @@ public class BuildingPlacer : MonoBehaviour
     private bool _isBuild;
     public bool isSelect = false;
 
+    public UI_BuildAction uI_BuildAction;
     private void Awake()
     {
         if (Instance == null)

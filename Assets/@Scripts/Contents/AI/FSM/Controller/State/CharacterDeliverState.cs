@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace Scripts.Contents.AI.FSM.State
 {
@@ -32,31 +32,38 @@ namespace Scripts.Contents.AI.FSM.State
         public override void OnUpdate(float deltaTime)
         {
             base.OnUpdate(deltaTime);
-            if (elapsedTime > 2)
+            if (elapsedTime > 2 && !isArrived)
             {
                 character.UseStamina(2f);
                 elapsedTime = 0f; // Reset elapsed time after using stamina
+                return;
+            }
+
+            if (elapsedTime > 1.2f && isArrived)
+            {
+                character.characterAction.Idle();
+                return;
             }
             // 일정 거리 이내면 도착한 것으로 판단
-            if (Vector3.Distance(character.transform.position, targetPosition) < 0.5f)
+            if (Vector3.Distance(character.transform.position, targetPosition) < 0.5f &&
+                !isArrived)
             {
                 isArrived = true;
-                character.animator.SetInteger("animation", 3);
-                if (elapsedTime > 1f)
-                {
-                    character.OnAnimalDelivered(); // Notify that the animal has been delivered
-                    character.characterAction.Idle();
-                }
+                character.animator.SetInteger("animation", 50);
+                character.OnAnimalDelivered();
+                elapsedTime = 0f; // Reset elapsed time after delivery
+                return;
             }
+
 
         }
 
         public override void OnExit()
         {
             base.OnExit();
+            isArrived = false; // Reset arrival status
             if (character.currentBuilding != null)
             {
-                isArrived = false; // Reset arrival status
                 character.currentBuilding = null; // Clear current building reference
             }
         }

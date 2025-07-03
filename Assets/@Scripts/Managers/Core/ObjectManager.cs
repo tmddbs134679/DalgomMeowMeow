@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -55,7 +55,7 @@ public class ObjectManager
 
         if (type == typeof(AICharacter))
         {
-            GameObject go = Managers.Resource.Instantiate(Managers.Data.CreatureDic[templateID].PrefabLabel);
+            GameObject go = Managers.Resource.Instantiate(Managers.Data.CreatureDic[templateID].PrefabLabel, pooling: true);
             go.transform.position = position;
             AICharacter pc = go.GetOrAddComponent<AICharacter>();
             return pc as T;

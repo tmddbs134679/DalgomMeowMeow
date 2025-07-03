@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 using static Util;
 
 /*
- *  ±âÁ¸ ¿£Áø ÇÔ¼öµéÀ» È®ÀåÇØ¼­ ±â´ÉÀ» Ãß°¡ ÇÏ°í ½ÍÀ» ¶§ »ç¿ë
+ *  ê¸°ì¡´ ì—”ì§„ í•¨ìˆ˜ë“¤ì„ í™•ìž¥í•´ì„œ ê¸°ëŠ¥ì„ ì¶”ê°€ í•˜ê³  ì‹¶ì„ ë•Œ ì‚¬ìš©
  */
 
 
@@ -20,4 +20,20 @@ public static class Extension
 
     public static Vector3Data ToData(this Vector3 v) => new Vector3Data(v);
     public static Vector3 ToVector3(this Vector3Data v) => new Vector3(v.x, v.y, v.z);
+
+    public static void DestroyChilds(this GameObject go)
+    {
+        Transform[] children = new Transform[go.transform.childCount];
+        for (int i = 0; i < go.transform.childCount; i++)
+        {
+            children[i] = go.transform.GetChild(i);
+        }
+
+        // ëª¨ë“  ìžì‹ ì˜¤ë¸Œì íŠ¸ ì‚­ì œ
+        foreach (Transform child in children)
+        {
+            Managers.Resource.Destroy(child.gameObject);
+        }
+    }
+
 }

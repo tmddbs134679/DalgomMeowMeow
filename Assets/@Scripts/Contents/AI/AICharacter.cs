@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
@@ -119,14 +119,12 @@ public class AICharacter : BaseObject
             return;
         }
         CharacterData.CurrentStamina = Mathf.Max(0, CharacterData.CurrentStamina - amount);
-       // Debug.Log($"스태미나 사용 : {amount}, 남은 스태미나: {CharacterData.CurrentStamina}");
         Managers.Debug.Log($"스태미나 사용 : {amount}, 남은 스태미나: {CharacterData.CurrentStamina}",Define.EDebugType.AI);
     }
 
     public void RecoverStamina(float amount)
     {
         CharacterData.CurrentStamina = Mathf.Min(100, CharacterData.CurrentStamina + amount);
-        //Debug.Log($"스태미나 회복 : {amount}, 현재: {CharacterData.CurrentStamina}");
         Managers.Debug.Log($"스태미나 회복 : {amount}, 현재: {CharacterData.CurrentStamina}", Define.EDebugType.AI);
     }
 

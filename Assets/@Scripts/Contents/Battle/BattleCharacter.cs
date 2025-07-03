@@ -12,6 +12,7 @@ public class BattleCharacter : BaseObject
     [SerializeField] private CharacterStatSo _data; // 캐릭터 스탯 데이터
     [SerializeField] private Color _damageColor = Color.red;
     [SerializeField] private float _flashDuration = 0.05f;
+    [SerializeField] private SkillLibrary _skillLibrary; // 스킬 라이브러리
 
     public NavMeshAgent Agent { get; private set; } // NavMeshAgent 컴포넌트
 
@@ -86,6 +87,7 @@ public class BattleCharacter : BaseObject
 
     protected virtual void Awake()
     {
+        _skillLibrary = GetComponentInParent<SkillLibrary>();
         ObjectType = Define.EObjectType.Enemy; // 객체 타입 설정
         Agent = GetComponent<NavMeshAgent>();
         Health = MaxHP;
@@ -291,7 +293,7 @@ public class BattleCharacter : BaseObject
 
     public void ActiveSkill(int _skillNum)
     {
-       // StartCoroutine(SkillActive(_skillNum));
+        _skillLibrary.UseSkill(_skillNum, this); // 스킬 라이브러리에서 스킬 사용
     }
        
 

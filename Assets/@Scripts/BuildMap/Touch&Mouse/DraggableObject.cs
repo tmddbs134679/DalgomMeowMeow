@@ -58,10 +58,10 @@ private Vector3 _dragOffset;
         if (false)
         {
             isLongPress = false;
-            _uI_BuildAction = Managers.UI.MakeSubItem<UI_BuildAction>();
             BuildingPlacer.Instance.isSelect = true;
             isDrag = true;
             Debug.Log(this + "롱프레스 감지!");
+            _uI_BuildAction = BuildingPlacer.Instance.uI_BuildAction;
             if (_uI_BuildAction != null)
             {
                 _uI_BuildAction.SetActive(true);
