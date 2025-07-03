@@ -123,7 +123,7 @@ public class UI_QuestPopup : UI_Popup
         }
     }
 
-    void CreateAchievementSlots()
+    public void CreateAchievementSlots()
     {
         Transform parent = GetObject((int)GameObjects.Content).transform;
         foreach (Transform child in parent)
