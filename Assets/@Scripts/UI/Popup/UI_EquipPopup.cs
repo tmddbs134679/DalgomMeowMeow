@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using static Define;
 public class UI_EquipPopup : UI_Popup
@@ -8,6 +9,7 @@ public class UI_EquipPopup : UI_Popup
     #region Enum
     enum GameObjects
     {
+        ContentObject,
         EquipGroupObject
     }
 
@@ -37,6 +39,8 @@ public class UI_EquipPopup : UI_Popup
 
     private void OnEnable()
     {
+        PopupOpenAnimation(GetObject((int)GameObjects.ContentObject));
+
         ToggleInit();
        
         OnClickTypeToggle();
@@ -57,7 +61,12 @@ public class UI_EquipPopup : UI_Popup
         GetToggle((int)Toggles.AccessoryToggle).gameObject.BindEvent(() => OnClickTypeToggle(EEquipmentType.Accessory));
         GetToggle((int)Toggles.BagToggle).gameObject.BindEvent(() => OnClickTypeToggle(EEquipmentType.Bag));
 
-        
+        GetButton((int)Buttons.ExitButton).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
+        GetToggle((int)Toggles.AllToggle).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
+        GetToggle((int)Toggles.HatToggle).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
+        GetToggle((int)Toggles.AccessoryToggle).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
+        GetToggle((int)Toggles.BagToggle).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
+
 
         return true;
     }

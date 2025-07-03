@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using static Define;
@@ -10,6 +11,7 @@ public class UI_EquipmentTypePopup : UI_Popup
     #region Enum
     enum GameObjects
     {
+        ContentObject,
         CharacterScrollObject
     }
 
@@ -40,7 +42,7 @@ public class UI_EquipmentTypePopup : UI_Popup
 
     private void OnEnable()
     {
-      
+        PopupOpenAnimation(GetObject((int)GameObjects.ContentObject));
     }
 
     public override bool Init()
@@ -54,7 +56,7 @@ public class UI_EquipmentTypePopup : UI_Popup
 
         GetButton((int)Buttons.BackgroundButton).gameObject.BindEvent(OnClickBackgroundButton);
         GetButton((int)Buttons.EquipButton).gameObject.BindEvent(OnClickEquipButton);
-
+        GetButton((int)Buttons.EquipButton).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
         return true;
     }
 

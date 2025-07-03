@@ -56,10 +56,15 @@ public class UI_GameScene : UI_Scene
         GetButton((int)Buttons.BattleButton).gameObject.BindEvent(OnClickBattleButton);
         GetButton((int)Buttons.BattleButton).GetOrAddComponent<UI_ButtonAnimation>();
         GetButton((int)Buttons.QuickButton).gameObject.BindEvent(OnClickQuickButton);
+        GetButton((int)Buttons.QuickButton).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
         GetButton((int)Buttons.BuildButton).gameObject.BindEvent(OnClickBuildButton);
         GetButton((int)Buttons.BuildButton).GetOrAddComponent<UI_ButtonAnimation>();
+        GetButton((int)Buttons.ArchivementButton).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
+        GetButton((int)Buttons.QuestButton).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
 
         GetButton((int)Buttons.QuestButton).gameObject.BindEvent(OnClickQuestButton);
+
+
 
         #region Action 추가
         Managers.Game.OnResourcesChagned += Refresh;

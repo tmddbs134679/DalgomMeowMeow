@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class UI_EquipmentInfoPopup : UI_Popup
@@ -9,6 +10,7 @@ public class UI_EquipmentInfoPopup : UI_Popup
     #region Enum
     enum GameObjects
     {
+        ContentObject,
         EquippedObject
     }
 
@@ -51,8 +53,16 @@ public class UI_EquipmentInfoPopup : UI_Popup
         BindText(typeof(Texts));
 
         GetButton((int)Buttons.BackgroundButton).gameObject.BindEvent(OnClickBackgroundButton);
+
         GetButton((int)Buttons.EquipButton).gameObject.BindEvent(() => OnCilckEquipButton());
+        GetButton((int)Buttons.EquipButton).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
         return true;
+    }
+
+
+    private void OnEnable()
+    {
+        PopupOpenAnimation(GetObject((int)GameObjects.ContentObject));
     }
 
     private void OnCilckEquipButton()

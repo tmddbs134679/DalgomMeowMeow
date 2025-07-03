@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class UI_CharacterPopup : UI_Popup
@@ -8,6 +9,7 @@ public class UI_CharacterPopup : UI_Popup
     #region Enum
     enum GameObjects
     {
+        ContentObject,
         CharacterInfoScrollContentObject,
     }
 
@@ -22,9 +24,14 @@ public class UI_CharacterPopup : UI_Popup
     }
     #endregion
 
+
     private void Awake()
     {
         Init();
+    }
+    private void OnEnable()
+    {
+        PopupOpenAnimation(GetObject((int)GameObjects.ContentObject));
     }
 
     public override bool Init()
@@ -37,7 +44,7 @@ public class UI_CharacterPopup : UI_Popup
         BindText(typeof(Texts));
 
         GetButton((int)Buttons.ExitButton).gameObject.BindEvent(OnClickExitButton);
-
+        GetButton((int)Buttons.ExitButton).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
         Refresh();
         return true;
     }

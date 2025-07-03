@@ -9,7 +9,7 @@ public class UI_QuickMenu : UI_Popup
     #region Enum
     enum GameObjects
     {
-   
+        ContentObject
     }
 
     enum Buttons
@@ -31,6 +31,12 @@ public class UI_QuickMenu : UI_Popup
     {
         Init();
     }
+
+    private void OnEnable()
+    {
+        PopupOpenAnimation(GetObject((int)GameObjects.ContentObject));
+    }
+
     public override bool Init()
     {
         if (base.Init() == false)

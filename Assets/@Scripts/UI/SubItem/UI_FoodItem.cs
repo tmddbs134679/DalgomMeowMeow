@@ -36,7 +36,7 @@ public class UI_FoodItem : UI_Base
         BindImage(typeof(Images));
 
         gameObject.BindEvent(OnClickFoodItemButton);
-
+        gameObject.GetOrAddComponent<UI_ButtonAnimation>(); 
         return true;
     }
 
@@ -56,7 +56,7 @@ public class UI_FoodItem : UI_Base
     void OnClickFoodItemButton()
     {
         Debug.Log(name);
-        //´©¸£¸é GameManagerÀÇ µ·À¸·Î ¹Ù²Ş.
+        //ëˆ„ë¥´ë©´ GameManagerì˜ ëˆìœ¼ë¡œ ë°”ê¿ˆ.
         Managers.Game.Gold += _food.FoodData.Price;
         Managers.Food.Cancel(_food);
 
