@@ -8,15 +8,20 @@ public class CharacterEditor : Editor
 {
     public override void OnInspectorGUI()
     {
-        base.OnInspectorGUI(); // ±âº» ÀÎ½ºÆåÅÍ À¯Áö
+        base.OnInspectorGUI(); // ê¸°ë³¸ ì¸ìŠ¤í™í„° ìœ ì§€
 
         AICharacter character = (AICharacter)target;
 
-        if (GUILayout.Button("·¹º§¾÷"))
+        if (GUILayout.Button("ë ˆë²¨ì—…"))
         {
             character.OnLevelUp();
         }
 
-       
+        if (GUILayout.Button("ê²½í—˜ì¹˜ ì¦ê°€"))
+        {
+            character.GainExp(Random.Range(1, 10));
+        }
+
+
     }
 }

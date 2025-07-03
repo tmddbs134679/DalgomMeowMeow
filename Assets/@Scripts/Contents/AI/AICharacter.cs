@@ -6,6 +6,7 @@ using System.Xml;
 using JetBrains.Annotations;
 using Scripts.Contents.AI.FSM.State;
 using Unity.Mathematics;
+using UnityEditor.UI;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.TextCore.Text;
@@ -34,27 +35,39 @@ public class AICharacter : BaseObject
     public CharacterAction characterAction;
 
     public List<string> EquippedItemIds { get; set; } = new();
-
-    public event Action<AICharacter> AnimalLeaved;
-    public event Action<AICharacter> AnimalArrived;
-    public event Action<AICharacter> AnimalDelivered;
-    public Define.EAIState CurrentState;
     [HideInInspector]
     public bool _isHelloReady = true;
 
-    [HideInInspector]
-    public bool isClicked = false;
+    [Header("AI 캐릭터 현재 상태")]
+    public Define.EAIState CurrentState;
+    [Header("캐릭터 이미지들")]
     public Material[] emo;
     public Sprite[] sprites;
     [HideInInspector]
     public Sprite sprite;
+
     public Character CharacterData { get; set; }
+
     [HideInInspector]
     public int CurrentAnimation { get; set; }
 
-    public Transform head;
+    [HideInInspector]
+    public bool isClicked = false;
+    private Transform head;
+    [HideInInspector]
     public Camera camera;
+    [HideInInspector]
     public float tempSpeed;
+
+    public float Exp;
+    public event Action<AICharacter> AnimalLeaved;
+    public event Action<AICharacter> AnimalArrived;
+    public event Action<AICharacter> AnimalDelivered;
+    public  Action<int> CharacterGainExp;
+    public  Action<int> Levelup;
+    //private float clickStartTime = 0f;
+    //private float longPressThreshold = 0.5f;
+    //private bool longPressHandled = false;
 
     private void Awake()
     {
@@ -71,6 +84,7 @@ public class AICharacter : BaseObject
     private void Update()
     {
         _controller?.OnUpdate(Time.deltaTime);
+        Exp = CharacterData.CurrentExp;
     }
 
     private void LateUpdate()
@@ -147,19 +161,35 @@ public class AICharacter : BaseObject
             return;
         }
         CharacterData.CurrentStamina = Mathf.Max(0, CharacterData.CurrentStamina - amount);
-        Managers.Debug.Log($"스태미나 사용 : {amount}, 남은 스태미나: {CharacterData.CurrentStamina}", Define.EDebugType.AI);
+        //Managers.Debug.Log($"스태미나 사용 : {amount}, 남은 스태미나: {CharacterData.CurrentStamina}", Define.EDebugType.AI);
     }
 
     public void RecoverStamina(float amount)
     {
         CharacterData.CurrentStamina = Mathf.Min(100, CharacterData.CurrentStamina + amount);
-        Managers.Debug.Log($"스태미나 회복 : {amount}, 현재: {CharacterData.CurrentStamina}", Define.EDebugType.AI);
+        //Managers.Debug.Log($"스태미나 회복 : {amount}, 현재: {CharacterData.CurrentStamina}", Define.EDebugType.AI);
     }
 
     public void OnLevelUp()
     {
         CharacterData.MoveSpeed += 1;
         CharacterData.Hp += 10;
+        CharacterData.MaxExp += 5; // 레벨업 시 최대 경험치 증가
+        CharacterData.Level++;
+        Managers.Debug.Log($"레벨업! 현재 레벨: {CharacterData.Level}", Define.EDebugType.AI);
+        Levelup?.Invoke(CharacterData.Level);
+    }
+
+    public void GainExp(int value)
+    {
+        CharacterData.CurrentExp += value;
+        while (CharacterData.CurrentExp >= CharacterData.MaxExp)
+        {
+            CharacterData.CurrentExp -= CharacterData.MaxExp;
+            OnLevelUp();
+        }
+        Managers.Debug.Log($"경험치 획득: {value}, 현재 경험치: {CharacterData.CurrentExp}, 최대 경험치: {CharacterData.MaxExp}", Define.EDebugType.AI);
+        CharacterGainExp?.Invoke(value);
     }
 
     public void OnDisable()
@@ -186,14 +216,16 @@ public class AICharacter : BaseObject
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
                 // 내 캐릭터에만 반응하도록
-                if (hit.collider.gameObject == this.gameObject )
+                if (hit.collider.gameObject == this.gameObject &&
+                    Controller.CurrentState() is not CharacterHelloState)
                 {
+                    //clickStartTime = Time.time;
                     isClicked = !isClicked;
                     if (isClicked)
                     {
                         tempSpeed = nav.speed;
                     }
-                   else
+                    else
                     {
                         SetAnimation(CurrentAnimation);
                         nav.speed = tempSpeed;
@@ -201,6 +233,35 @@ public class AICharacter : BaseObject
                 }
             }
         }
+
+        //if (Input.GetMouseButton(0))
+        //{
+        //    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //    if (Physics.Raycast(ray, out RaycastHit hit))
+        //    {
+        //        float heldtime = Time.time - clickStartTime;
+
+        //        if(heldtime >= longPressThreshold && !longPressHandled)
+        //        {
+        //            longPressHandled = true;
+        //            if (hit.collider.gameObject == this.gameObject)
+        //            {
+        //                // 롱프레스 이벤트 처리
+        //                Debug.Log("롱프레스 감지됨");
+        //                isClicked = false; // 롱프레스 시 클릭 상태 유지
+        //                nav.speed = 0; // 이동 중지
+        //            }
+
+        //        }
+
+        //        else if ( heldtime <= longPressThreshold && !longPressHandled)
+        //        {
+        //            SetAnimation(CurrentAnimation);
+        //            nav.speed = tempSpeed;
+        //        }
+
+        //    }
+        //}
     }
     private void Clicked()
     {
@@ -209,28 +270,30 @@ public class AICharacter : BaseObject
             nav.speed = 0;
             this.gameObject.transform.rotation = Quaternion.Euler(0, camera.transform.eulerAngles.y + 180, 0);
             head.transform.localRotation = quaternion.Euler(0, 0, -12);
+            //head.transform.rotation = quaternion.Euler(0, 0, -12);
+
             animator.SetInteger("animation", 36);
         }
     }
 
 
 
-        //public void OnDragStart(Vector3 hitPos)
-        //{
+    //public void OnDragStart(Vector3 hitPos)
+    //{
 
-        //}
+    //}
 
-        //public void OnDrag(Vector3 hitPos)
-        //{
-        //}
+    //public void OnDrag(Vector3 hitPos)
+    //{
+    //}
 
-        //public void OnDragEnd()
-        //{
-        //}
+    //public void OnDragEnd()
+    //{
+    //}
 
-        //public void OnLongPress()
-        //{
-        //}
+    //public void OnLongPress()
+    //{
+    //}
 }
 
 
