@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class BaseController<T> where T : MonoBehaviour
@@ -28,7 +28,12 @@ public abstract class BaseController<T> where T : MonoBehaviour
     {
         currentState?.OnUpdate(deltaTime);  
     }
-    
+
+    public virtual void OnLateUpdate(float deltaTime)
+    {
+        currentState?.OnUpdate(deltaTime);
+    }
+
 
     public virtual void ChangeState(Define.EAIState newState)
     {

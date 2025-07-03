@@ -2300,6 +2300,7 @@ GameObject:
   - component: {fileID: 1139119243623359622}
   - component: {fileID: -6985380599487222747}
   - component: {fileID: 5571545925983829278}
+  - component: {fileID: 2430515507481854055}
   m_Layer: 26
   m_Name: Chibi_Cat_06
   m_TagString: Untagged
@@ -2402,6 +2403,7 @@ MonoBehaviour:
   _isHelloReady: 1
   sprites: []
   sprite: {fileID: 0}
+  head: {fileID: 0}
 --- !u!136 &-6985380599487222747
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2452,6 +2454,23 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &2430515507481854055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6817297719752182167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d3c04842d4bff44da206b9f3f0cb0aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  headBone: {fileID: 0}
+  rotationSpeed: 5
+  character:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &6839619789221907109
 GameObject:
   m_ObjectHideFlags: 0
@@ -3450,6 +3469,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: f2216289b06c85640a519a63c1de0e10, type: 3}
       propertyPath: m_Layer
       value: 26
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f2216289b06c85640a519a63c1de0e10, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -24,6 +24,11 @@ public class AIController : BaseController<AICharacter>
         HelloTimerReset(deltaTime);
     }
 
+    public override void OnLateUpdate(float deltaTime)
+    {
+        base.OnLateUpdate(deltaTime);
+    }
+
     public void Dispose()
     {
         if (character?.characterAction != null)
@@ -282,4 +287,5 @@ public class AIController : BaseController<AICharacter>
 
 
     #endregion
+
 }

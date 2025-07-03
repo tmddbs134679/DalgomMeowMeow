@@ -25,8 +25,8 @@ public class AICharacter : BaseObject
     [HideInInspector]
     public SkinnedMeshRenderer skinnedMeshRenderer;
 
+    [HideInInspector]
     public Material currentEmo;
-    public Material[] emo;
 
     [HideInInspector]
     public CharacterAction characterAction;
@@ -37,11 +37,15 @@ public class AICharacter : BaseObject
     public event Action<AICharacter> AnimalArrived;
     public event Action<AICharacter> AnimalDelivered;
     public Define.EAIState CurrentState;
+    [HideInInspector]
     public bool _isHelloReady = true;
 
+    public Material[] emo;
     public Sprite[] sprites;
+    [HideInInspector]
     public Sprite sprite;
     public Character CharacterData { get;  set; }
+    //public Camera camera;
     
     private void Awake()
     {
@@ -51,11 +55,17 @@ public class AICharacter : BaseObject
     private void Start()
     {
         Init();
+        //camera = Camera.main;
     }
 
     private void Update()
     {
         _controller?.OnUpdate(Time.deltaTime);
+    }
+
+    private void LateUpdate()
+    {
+        _controller?.OnLateUpdate(Time.deltaTime);
     }
 
     public override bool Init()
@@ -152,9 +162,25 @@ public class AICharacter : BaseObject
 
     public override void OnClick()
     {
-
+        //head.transform.eulerAngles = new Vector3(0f, -camera.transform.position.y, 0f); // 기본 회전값 설정
     }
 
+    //public void OnDragStart(Vector3 hitPos)
+    //{
+
+    //}
+
+    //public void OnDrag(Vector3 hitPos)
+    //{
+    //}
+
+    //public void OnDragEnd()
+    //{
+    //}
+
+    //public void OnLongPress()
+    //{
+    //}
 }
 
 
