@@ -92,7 +92,7 @@ public class AICharacter : BaseObject
     private void LateUpdate()
     {
         _controller?.OnLateUpdate(Time.deltaTime);
-        OnClick();
+        if(BuildingPlacer.Instance.isAI)OnClick();
         Clicked();
     }
 
