@@ -160,6 +160,7 @@ public class DataTransformer : EditorWindow
             eq.DataId = ConvertValue<string>(row[i++]);
             eq.EquipmentType = ConvertValue<Define.EEquipmentType>(row[i++]);
             eq.Name = ConvertValue<string>(row[i++]);
+            eq.Description = ConvertValue<string>(row[i++]);
             eq.SpriteName = ConvertValue<string>(row[i++]);
             loader.Equipments.Add(eq);
         }
