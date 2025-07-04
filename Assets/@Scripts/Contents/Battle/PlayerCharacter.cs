@@ -22,6 +22,8 @@ public class PlayerCharacter : BattleCharacter
         base.Start();
         _battleManager = GetComponentInParent<BattleManager>();
         _originalPosition = transform.localPosition;
+        string numberPart = SkillID.Substring(1); // 시작하면 숫자 파싱
+        Skill = int.Parse(numberPart);
 
     }
 

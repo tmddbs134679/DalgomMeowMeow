@@ -16,14 +16,14 @@ public class SkillLibrary : MonoBehaviour
         _playerCharacter = LayerMask.GetMask("Player"); // 플레이어 캐릭터 레이어 마스크 설정
         _skillMap = new Dictionary<int, Func<BattleCharacter, IEnumerator>>
         {
-            { 1, HealDance },
-            { 2, NyangPunch },
-            { 3, AttackSpeedBuff },
-            { 4, Bigger },
-            { 5, RangedAttack },
-            { 6, Invincible },
-            { 7, TeamInvincible },
-            { 8, Rain   }
+            { 1001, HealDance },
+            { 1002, NyangPunch },
+            { 1003, AttackSpeedBuff },
+            { 1004, Bigger },
+            { 1005, RangedAttack },
+            { 1006, Invincible },
+            { 1007, TeamInvincible },
+            { 1008, Rain   }
         };
     }
 
@@ -163,9 +163,9 @@ public class SkillLibrary : MonoBehaviour
     private IEnumerator RangedAttack(BattleCharacter battleCharacter)
     {
         battleCharacter.UsingSkill = true;
-        battleCharacter.AttackRange *= 6f; // 사거리 6배 증가
+        battleCharacter.AttackRange *= 10f; // 사거리 6배 증가
         yield return new WaitForSeconds(5f);
-        battleCharacter.AttackRange /= 6f; // 사거리 원래대로 되돌림
+        battleCharacter.AttackRange /= 10f; // 사거리 원래대로 되돌림
         battleCharacter.UsingSkill = false;
     }
 

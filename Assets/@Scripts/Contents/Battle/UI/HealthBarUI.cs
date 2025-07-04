@@ -21,7 +21,12 @@ public class HealthBarUI : MonoBehaviour
 
     private void Update()
     {
-        if(BattleManager.Victory)
+        if(BattleCharacter.Health <= 0 || BattleCharacter.IsDead)
+        {
+            this.gameObject.SetActive(false);
+        }
+
+        if (BattleManager.Victory)
         {
             this.gameObject.SetActive(false);
         }

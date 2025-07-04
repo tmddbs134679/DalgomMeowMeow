@@ -26,6 +26,8 @@ public class BattleCharacter : BaseObject
     public Transform RightHandPivot;
     public Transform HeadPivot;
 
+    public GameObject damageTextPrefab; // 피격 시 데미지 텍스트 프리팹
+
     #region Stats
     public float AttackDamage = 10f; // 공격력
     public float AttackDelay = 1f; // 공격 딜레이 (초 단위)
@@ -33,11 +35,13 @@ public class BattleCharacter : BaseObject
     public float MoveSpeed = 3.5f; // 이동 속도
     public float AttackRange = 1.5f;
     public bool Invincible = false; // 무적 상태 여부
+    public string SkillID;
+    public int Skill;
     #endregion
 
     public int AnimationHash;
     public int SkillHash;
-    public int Skill;
+    
 
     public bool HasLookedForward = true; // 전방을 바라봤는지 여부 (아군 전용 로직)
     public bool Stunned = false; // 스턴 상태 여부
@@ -104,7 +108,7 @@ public class BattleCharacter : BaseObject
         _originalPosition = transform.localPosition;
         Agent.speed = MoveSpeed; // NavMeshAgent의 이동 속도 설정
         Agent.stoppingDistance = AttackRange; // 공격 범위 내에서 멈추도록 설정
-
+        
     }
 
     void Update()
@@ -250,6 +254,8 @@ public class BattleCharacter : BaseObject
         {
             Effect(new Color(0f, 1f, 105/255f, 200/255f)); // 힐 파티클 효과(연한 초록색)
         }
+        GameObject go = Instantiate(damageTextPrefab);
+        go.GetComponent<DamageUI>().Show(Damage, this.transform.position + Vector3.up * 2 , this.gameObject.layer);
     }
 
     public void Effect(Color color)
@@ -312,9 +318,9 @@ public class BattleCharacter : BaseObject
     #endregion
 
 
-    public void ActiveSkill(int _skillNum)
+    public void ActiveSkill()
     {
-        _skillLibrary.UseSkill(_skillNum, this); // 스킬 라이브러리에서 스킬 사용
+        _skillLibrary.UseSkill(this.Skill, this); // 스킬 라이브러리에서 스킬 사용
     }
        
 
