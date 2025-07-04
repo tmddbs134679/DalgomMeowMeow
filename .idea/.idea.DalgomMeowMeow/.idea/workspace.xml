@@ -5,8 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f48e1cac-c49d-4f22-9686-b0c375630046" name="변경" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.DalgomMeowMeow/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DalgomMeowMeow/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DalgomMeowMeow/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DalgomMeowMeow/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Contents/Quest/Quest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Contents/Quest/Quest.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Arts/Font/Pretendard-Bold SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Arts/Font/Pretendard-Bold SDF.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Prefabs/BuildOBJ/Build/StorageBuilding.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Prefabs/BuildOBJ/Build/StorageBuilding.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Resources/UI/Popup/UI_SlotMachinePopup.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Resources/UI/Popup/UI_SlotMachinePopup.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Contents/Building/SlotMachineBuilding.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Contents/Building/SlotMachineBuilding.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/Popup/UI_SlotMachinePopup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/Popup/UI_SlotMachinePopup.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,8 +32,11 @@
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Data/Quest/RewardData.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Data/Quest/SaveQuestSystem.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Managers/Contents/QuestManager.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/@Scripts/UI/Popup/UI_BuildingPopup.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/@Scripts/UI/Popup/UI_SlotMachinePopup.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.burst@1.8.11/Tests/Runtime/Shared/090-Vectors-Indexers.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.core@14.0.9/Runtime/Debugging/DebugUpdater.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/17d9ce77f27a4bd2afb5ba32c9bea97646ac00/21/5d579ce8/Delegate.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/17d9ce77f27a4bd2afb5ba32c9bea97646ac00/27/780fc6e5/RuntimeType.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/17d9ce77f27a4bd2afb5ba32c9bea97646ac00/33/054dba08/Type.cs" root0="FORCE_HIGHLIGHTING" />
@@ -103,10 +111,10 @@
       <option name="PTY_MODE" value="Auto" />
       <method v="2" />
     </configuration>
-    <configuration name="Unity 에디터에 연결" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="19904">
+    <configuration name="Unity 에디터에 연결" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="12764">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="19904" />
+      <option name="pid" value="12764" />
       <option name="projectPathOnTarget" />
       <option name="runtimes">
         <list>
@@ -153,6 +161,7 @@
       <workItem from="1751326104602" duration="6192000" />
       <workItem from="1751414693620" duration="4272000" />
       <workItem from="1751468977027" duration="3268000" />
+      <workItem from="1751586264061" duration="11642000" />
     </task>
     <servers />
   </component>
@@ -184,6 +193,19 @@
           <properties exception="System.Threading.ThreadAbortException" breakIfHandledByOtherCode="false" displayValue="System.Threading.ThreadAbortException" />
           <option name="timeStamp" value="3" />
         </breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/@Scripts/Contents/Framework/CameraController.cs</url>
+          <line>139</line>
+          <properties documentPath="C:\UnityProjects\git\waefwa\DalgomMeowMeow\Assets\@Scripts\Contents\Framework\CameraController.cs" containingFunctionPresentation="메서드 'ClickObject'">
+            <startOffsets>
+              <option value="4035" />
+            </startOffsets>
+            <endOffsets>
+              <option value="4079" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
