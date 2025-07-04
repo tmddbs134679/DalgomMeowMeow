@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Xml;
 using JetBrains.Annotations;
 using Scripts.Contents.AI.FSM.State;
+using Unity.Burst.CompilerServices;
 using Unity.Mathematics;
 using UnityEditor.UI;
 using UnityEngine;
@@ -65,11 +66,17 @@ public class AICharacter : BaseObject
     public event Action<AICharacter> AnimalLeaved;
     public event Action<AICharacter> AnimalArrived;
     public event Action<AICharacter> AnimalDelivered;
-    public  Action<int> CharacterGainExp;
-    public  Action<int> Levelup;
-    //private float clickStartTime = 0f;
-    //private float longPressThreshold = 0.5f;
-    //private bool longPressHandled = false;
+    public Action<int> CharacterGainExp;
+    public Action<int> Levelup;
+    private float clickStartTime = 0f;
+    private float longPressThreshold = 0.5f;
+    private bool longPressHandled = false;
+    [SerializeField]
+    private LayerMask CharacterLayerMask;
+    private bool isFollowing;
+
+    Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
+
 
     private void Awake()
     {
@@ -87,12 +94,49 @@ public class AICharacter : BaseObject
     {
         _controller?.OnUpdate(Time.deltaTime);
         Exp = CharacterData.CurrentExp;
+        if (BuildingPlacer.Instance.isAI) OnClick();
+
+        if (Input.GetMouseButton(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit))
+            {
+                if (hit.collider.gameObject == this.gameObject &&
+                    Controller.CurrentState() is not CharacterHelloState)
+                {
+                    clickStartTime += Time.deltaTime;
+                    if (clickStartTime > longPressThreshold)
+                    {
+                        isFollowing = true;
+                        animator.SetInteger("animation", 49);
+                        isClicked = false;
+                        nav.speed = 0;
+                        if (isFollowing)
+                        {
+
+                        }
+
+                        Vector3 hitPoint = hit.point;
+                        Vector3 hitpoint = new Vector3(hitPoint.x, 2, hitPoint.z);
+                        this.transform.position = hitpoint;
+                    }
+
+                }
+            }
+        }
+        if (Input.GetMouseButtonUp(0))
+        {
+            SetAnimation(CurrentAnimation);
+            if(tempSpeed > 0)
+                nav.speed = tempSpeed;
+            this.transform.position = new Vector3(transform.position.x, 0.616f, transform.position.z);
+            clickStartTime = 0f;
+        }
     }
 
     private void LateUpdate()
     {
         _controller?.OnLateUpdate(Time.deltaTime);
-        if(BuildingPlacer.Instance.isAI)OnClick();
         Clicked();
     }
 
@@ -217,55 +261,21 @@ public class AICharacter : BaseObject
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
-                // 내 캐릭터에만 반응하도록
                 if (hit.collider.gameObject == this.gameObject &&
                     Controller.CurrentState() is not CharacterHelloState)
                 {
-                    //clickStartTime = Time.time;
                     isClicked = !isClicked;
                     if (isClicked)
                     {
                         tempSpeed = nav.speed;
                     }
-                    else
-                    {
-                        SetAnimation(CurrentAnimation);
-                        infoButton.SetActive(false);
-                        nav.speed = tempSpeed;
-                    }
+                    
                 }
             }
         }
-
-        //if (Input.GetMouseButton(0))
-        //{
-        //    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        //    if (Physics.Raycast(ray, out RaycastHit hit))
-        //    {
-        //        float heldtime = Time.time - clickStartTime;
-
-        //        if(heldtime >= longPressThreshold && !longPressHandled)
-        //        {
-        //            longPressHandled = true;
-        //            if (hit.collider.gameObject == this.gameObject)
-        //            {
-        //                // 롱프레스 이벤트 처리
-        //                Debug.Log("롱프레스 감지됨");
-        //                isClicked = false; // 롱프레스 시 클릭 상태 유지
-        //                nav.speed = 0; // 이동 중지
-        //            }
-
-        //        }
-
-        //        else if ( heldtime <= longPressThreshold && !longPressHandled)
-        //        {
-        //            SetAnimation(CurrentAnimation);
-        //            nav.speed = tempSpeed;
-        //        }
-
-        //    }
-        //}
     }
+
+   
     private void Clicked()
     {
         if (isClicked)
@@ -276,26 +286,15 @@ public class AICharacter : BaseObject
             infoButton.SetActive(true);
             animator.SetInteger("animation", 36);
         }
+        
+        else if (!isClicked && tempSpeed >0)
+        {
+            SetAnimation(CurrentAnimation);
+            infoButton.SetActive(false);
+            nav.speed = tempSpeed;
+        }
     }
 
-
-
-    //public void OnDragStart(Vector3 hitPos)
-    //{
-
-    //}
-
-    //public void OnDrag(Vector3 hitPos)
-    //{
-    //}
-
-    //public void OnDragEnd()
-    //{
-    //}
-
-    //public void OnLongPress()
-    //{
-    //}
 }
 
 
