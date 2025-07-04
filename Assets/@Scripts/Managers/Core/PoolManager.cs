@@ -99,9 +99,4 @@ public class PoolManager
         _pools.Add(original.name, pool);
     }
 
-    public bool IsPooled(GameObject go)
-    {
-        return _pools.ContainsKey(go.name); 
-                                                   
-    }
 }
