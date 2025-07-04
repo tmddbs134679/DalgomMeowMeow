@@ -62,7 +62,7 @@ public class SkillLibrary : MonoBehaviour
     
     private IEnumerator Heal(Vector3 position)
     {
-        for (int i = 0; i < 4; i++) // 총 2초간 (0.5초마다 힐)
+        for (int i = 0; i < 4; i++) // 총 4초간 (0.5초마다 힐)
         {
             Collider[] hits = Physics.OverlapSphere(position, 10, _playerCharacter);
 
@@ -111,7 +111,9 @@ public class SkillLibrary : MonoBehaviour
         battleCharacter.UsingSkill = true;
         battleCharacter.AttackDelay /= 2f; // 공격 딜레이를 절반으로 줄임
         battleCharacter.Animator.speed = 2f; // 애니메이션 속도를 두 배로 증가시킴
+        battleCharacter.UsingSkill = false;
         yield return StartCoroutine(EffectManager.Instance.FireHand(battleCharacter.LeftHandPivot, battleCharacter.RightHandPivot)); // FireHand 효과 실행
+        battleCharacter.UsingSkill = true;
         battleCharacter.AttackDelay *= 2f; // 공격 딜레이를 원래대로 되돌림
         battleCharacter.Animator.speed = 1f; // 애니메이션 속도를 원래대로 되돌림
         battleCharacter.UsingSkill = false; // 스킬 사용 종료
@@ -127,12 +129,16 @@ public class SkillLibrary : MonoBehaviour
         battleCharacter.Animator.SetTrigger(battleCharacter.Skill); // 스킬 애니메이션 트리거 활성화
         yield return StartCoroutine(Grow(battleCharacter)); // 캐릭터 크기 증가 코루틴 실행
         battleCharacter.AttackDamage *= 2f; // 공격력 2배 증가
-        battleCharacter.AttackRange *= 2f; // 공격 범위 2배 증가
+        battleCharacter.AttackRange *= 4f; // 공격 범위 2배 증가
+        battleCharacter.Agent.stoppingDistance = battleCharacter.AttackRange;
+        battleCharacter.UsingSkill = false;
         yield return new WaitForSeconds(10f); // 1초 대기
+        battleCharacter.UsingSkill = true;
         yield return StartCoroutine(Shrink(battleCharacter)); // 캐릭터 크기 감소 코루틴 실행
         battleCharacter.AttackDamage /= 2f; // 공격력 원래대로 되돌림
-        battleCharacter.AttackRange /= 2f; // 공격 범위 원래대로 되돌림
-        battleCharacter.UsingSkill = false; 
+        battleCharacter.AttackRange /= 4f; // 공격 범위 원래대로 되돌림
+        battleCharacter.Agent.stoppingDistance = battleCharacter.AttackRange;
+        battleCharacter.UsingSkill = false;
     }
 
     private IEnumerator Grow(BattleCharacter battleCharacter)
@@ -164,8 +170,12 @@ public class SkillLibrary : MonoBehaviour
     {
         battleCharacter.UsingSkill = true;
         battleCharacter.AttackRange *= 10f; // 사거리 6배 증가
+        battleCharacter.Agent.stoppingDistance = battleCharacter.AttackRange;
+        battleCharacter.UsingSkill = false;
         yield return new WaitForSeconds(5f);
+        battleCharacter.UsingSkill = true;
         battleCharacter.AttackRange /= 10f; // 사거리 원래대로 되돌림
+        battleCharacter.Agent.stoppingDistance = battleCharacter.AttackRange;
         battleCharacter.UsingSkill = false;
     }
 
@@ -178,7 +188,9 @@ public class SkillLibrary : MonoBehaviour
         battleCharacter.UsingSkill = true;
         battleCharacter.Animator.SetTrigger(battleCharacter.Skill); // 스킬 애니메이션 트리거 활성화
         battleCharacter.Invincible = true; // 죽지 않도록 설정
+        battleCharacter.UsingSkill = false;
         yield return StartCoroutine(EffectManager.Instance.Invincibility(battleCharacter.transform)); // 3초 동안 무적 상태 유지
+        battleCharacter.UsingSkill = true;
         battleCharacter.Invincible = false; // 무적 상태 해제
         battleCharacter.UsingSkill = false; // 스킬 사용 종료
     }
@@ -200,7 +212,9 @@ public class SkillLibrary : MonoBehaviour
                 StartCoroutine(EffectManager.Instance.Invincibility(teamCharacter.transform)); // 팀원에게 무적 효과 적용
             }
         }
+        battleCharacter.UsingSkill = false;
         yield return new WaitForSeconds(3f);
+        battleCharacter.UsingSkill = true;
         foreach (var hit in hits)
         {
             if (hit.TryGetComponent<BattleCharacter>(out var teamCharacter))
