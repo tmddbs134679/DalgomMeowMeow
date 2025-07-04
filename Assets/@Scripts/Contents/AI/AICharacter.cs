@@ -69,7 +69,7 @@ public class AICharacter : BaseObject
     public Action<int> CharacterGainExp;
     public Action<int> Levelup;
     private float clickStartTime = 0f;
-    private float longPressThreshold = 0.5f;
+    private float longPressThreshold = 0.2f;
     private bool longPressHandled = false;
     [SerializeField]
     private LayerMask groundLayer;
@@ -102,7 +102,8 @@ public class AICharacter : BaseObject
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
                 if (hit.collider.gameObject == this.gameObject &&
-                    Controller.CurrentState() is not CharacterHelloState)
+                    Controller.CurrentState() is  CharacterIdleState ||
+                    Controller.CurrentState() is CharacterMoveToState)
                 {
                     clickStartTime += Time.deltaTime;
                     if (clickStartTime > longPressThreshold)
