@@ -6,6 +6,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Experimental.Rendering;
+using UnityEngine.VFX;
 using static Define;
 
 [Serializable]
@@ -14,14 +15,14 @@ public class GameData
     public float Gold = 0;
 
     //public List <캐릭터들>
-   
+
     // 저장 전용
     public List<Character> CharacterList = new List<Character>();
     public List<Equipment> OwnedEquipments = new List<Equipment>();
 }
 
 
-public class GameManager 
+public class GameManager
 {
     public GameData _gameData = new GameData();
 
@@ -136,7 +137,7 @@ public class GameManager
         Equipment ac1 = new Equipment("E0101");
         Equipment ac2 = new Equipment("E0102");
         Equipment bag1 = new Equipment("E0201");
-       // Equipment bag2 = new Equipment("E0204");
+        // Equipment bag2 = new Equipment("E0204");
         OwnedEquipments.Add(hat);
         OwnedEquipments.Add(hat2);
         OwnedEquipments.Add(hat3);
@@ -163,7 +164,7 @@ public class GameManager
     }
     private bool LoadGame()
     {
-   
+
         if (File.Exists(_path) == false)
             return false;
 
@@ -198,13 +199,13 @@ public class GameManager
 
     public void EquipItem(string characterId, EEquipmentType type, Equipment equipment)
     {
-        if(_characters.TryGetValue(characterId, out var character) == false)
+        if (_characters.TryGetValue(characterId, out var character) == false)
         {
             Debug.LogError("못찾음");
             return;
         }
 
-        if(character.EquippedItems.TryGetValue(type, out Equipment prevEquip))
+        if (character.EquippedItems.TryGetValue(type, out Equipment prevEquip))
         {
             prevEquip.IsEquipped = false;
         }
@@ -216,11 +217,55 @@ public class GameManager
         OnCharacterChanged?.Invoke();
     }
 
-    
+
 
 
     #endregion
 
+    #region Gacha
 
+    public string DrawRandomCreature()
+    {
+        var creatureDic = Managers.Data.CreatureDic;
+
+        var pairList = new List<KeyValuePair<string, Data.CreatureData>>(creatureDic);
+
+        int randIndex = UnityEngine.Random.Range(0, 11);
+
+        var randomPair = pairList[randIndex];
+
+
+        return randomPair.Key;
+    }
+
+    public AICharacter SpawnRandomGachaCharacter(Vector3 spawnPos)
+    {
+        string creatureId = DrawRandomCreature();
+
+        if (!Managers.Data.CreatureDic.TryGetValue(creatureId, out var creatureData))
+        {
+            return null;
+        }
+
+        Character newChar = new Character();
+        newChar.Init(creatureId, spawnPos);         
+        newChar.SetInfo(creatureData);
+
+        AICharacter aiChar = Managers.Object.Spawn<AICharacter>(spawnPos, creatureId, isReplica: false);
+
+        if (aiChar == null)
+        {
+            return null;
+        }
+
+        aiChar.SetInfo(newChar);
+
+
+        return aiChar;
+    }
+
+
+    #endregion
 
 }
+
