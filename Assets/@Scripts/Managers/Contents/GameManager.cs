@@ -240,27 +240,18 @@ public class GameManager
 
     public AICharacter SpawnRandomGachaCharacter(Vector3 spawnPos)
     {
-        // 1) 랜덤 Creature ID 뽑기
         string creatureId = DrawRandomCreature();
-        if (string.IsNullOrEmpty(creatureId))
-        {
-            Debug.LogError("가챠 ID 없음!");
-            return null;
-        }
 
-        // 2) CreatureData 가져오기
         if (!Managers.Data.CreatureDic.TryGetValue(creatureId, out var creatureData))
         {
             return null;
         }
 
-        // 3) Character 생성 (위치는 반드시 spawnPos로)
         Character newChar = new Character();
         string uniqueId = Guid.NewGuid().ToString();
-        newChar.Init(uniqueId, spawnPos);         // ✅ Character.Pos에 정확한 위치 저장!
+        newChar.Init(uniqueId, spawnPos);         
         newChar.SetInfo(creatureData);
 
-        // 4) ObjectManager 통해 AICharacter 스폰
         AICharacter aiChar = Managers.Object.Spawn<AICharacter>(spawnPos, creatureId, isReplica: false);
 
         if (aiChar == null)
@@ -268,10 +259,8 @@ public class GameManager
             return null;
         }
 
-        // 5) AICharacter.SetInfo()는 Character.Pos 그대로 적용
         aiChar.SetInfo(newChar);
 
-        Debug.Log($"[Gacha Spawn] CreatureID: {creatureId}, Pos: {spawnPos}, 실제 Pos: {aiChar.transform.position}");
 
         return aiChar;
     }
