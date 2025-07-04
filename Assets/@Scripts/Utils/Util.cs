@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /*
- * ÀÚÁÖ¾²ÀÌ´Â ¹ü¿ëÀûÀÎ ÇÔ¼öµé 
+ * ìì£¼ì“°ì´ëŠ” ë²”ìš©ì ì¸ í•¨ìˆ˜ë“¤ 
  */
 
 public static class Util 
@@ -80,5 +80,18 @@ public static class Util
                 return ai;
         }
         return null;
+    }
+
+    public static int GetIndexInLinkedList<T>(LinkedList<T> list, T value)
+    {
+        int index = 0;
+        foreach (var item in list)
+        {
+            if (EqualityComparer<T>.Default.Equals(item, value))
+                return index;
+
+            index++;
+        }
+        return -1; // ëª» ì°¾ì•˜ì„ ë•Œ
     }
 }

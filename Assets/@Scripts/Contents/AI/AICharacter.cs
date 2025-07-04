@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Xml;
 using JetBrains.Annotations;
 using Scripts.Contents.AI.FSM.State;
+using Unity.Burst.CompilerServices;
 using Unity.Mathematics;
 using UnityEditor.UI;
 using UnityEngine;
@@ -65,11 +66,20 @@ public class AICharacter : BaseObject
     public event Action<AICharacter> AnimalLeaved;
     public event Action<AICharacter> AnimalArrived;
     public event Action<AICharacter> AnimalDelivered;
-    public  Action<int> CharacterGainExp;
-    public  Action<int> Levelup;
-    //private float clickStartTime = 0f;
-    //private float longPressThreshold = 0.5f;
-    //private bool longPressHandled = false;
+    public Action<int> CharacterGainExp;
+    public Action<int> Levelup;
+    private float clickStartTime = 0f;
+    private float longPressThreshold = 0.5f;
+    private bool longPressHandled = false;
+    [SerializeField]
+    private LayerMask groundLayer;
+    private bool isFollowing;
+
+    Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
+
+
+    //UI 상에 보일 캐릭터들
+    public bool IsReplica = false;
 
     private void Awake()
     {
@@ -85,14 +95,57 @@ public class AICharacter : BaseObject
 
     private void Update()
     {
+        if (IsReplica)
+            return;
+
         _controller?.OnUpdate(Time.deltaTime);
         Exp = CharacterData.CurrentExp;
+        if (BuildingPlacer.Instance.isAI) OnClick();
+
+        if (Input.GetMouseButton(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit))
+            {
+                if (hit.collider.gameObject == this.gameObject &&
+                    Controller.CurrentState() is not CharacterHelloState)
+                {
+                    clickStartTime += Time.deltaTime;
+                    if (clickStartTime > longPressThreshold)
+                    {
+                        isFollowing = true;
+                        isClicked = false;
+                    }
+
+                }
+            }
+        }
+
+        if (isFollowing)
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if(Physics.Raycast(ray, out RaycastHit hit, 100f))
+            {
+                Vector3 mouspot = hit.point;
+                animator.SetInteger("animation", 49);
+                nav.speed = 0;
+                this.transform.position = new Vector3(mouspot.x, 2f, mouspot.z);
+            }
+        }
+        if (Input.GetMouseButtonUp(0))
+        {
+            isFollowing = false;
+            SetAnimation(CurrentAnimation);
+            if(tempSpeed > 0)
+                nav.speed = tempSpeed;
+            this.transform.position = new Vector3(transform.position.x, 0.616f, transform.position.z);
+            clickStartTime = 0f;
+        }
     }
 
     private void LateUpdate()
     {
         _controller?.OnLateUpdate(Time.deltaTime);
-        if(BuildingPlacer.Instance.isAI)OnClick();
         Clicked();
     }
 
@@ -117,7 +170,7 @@ public class AICharacter : BaseObject
         CharacterData = ch;
         // 위치값
         transform.position = ch.Pos.ToVector3();
-
+        CurrentState = ch.CurrentState;
         // TODO : FSM 등 상태 적용
     }
 
@@ -196,8 +249,8 @@ public class AICharacter : BaseObject
 
     public void OnDisable()
     {
-        AIManager.Instance.Unregister(this);
         Controller?.Dispose();
+        AIManager.Instance.Unregister(this);
     }
 
     public void SetEmotion(int index)
@@ -217,55 +270,21 @@ public class AICharacter : BaseObject
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
-                // 내 캐릭터에만 반응하도록
                 if (hit.collider.gameObject == this.gameObject &&
                     Controller.CurrentState() is not CharacterHelloState)
                 {
-                    //clickStartTime = Time.time;
                     isClicked = !isClicked;
                     if (isClicked)
                     {
                         tempSpeed = nav.speed;
                     }
-                    else
-                    {
-                        SetAnimation(CurrentAnimation);
-                        infoButton.SetActive(false);
-                        nav.speed = tempSpeed;
-                    }
+                    
                 }
             }
         }
-
-        //if (Input.GetMouseButton(0))
-        //{
-        //    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        //    if (Physics.Raycast(ray, out RaycastHit hit))
-        //    {
-        //        float heldtime = Time.time - clickStartTime;
-
-        //        if(heldtime >= longPressThreshold && !longPressHandled)
-        //        {
-        //            longPressHandled = true;
-        //            if (hit.collider.gameObject == this.gameObject)
-        //            {
-        //                // 롱프레스 이벤트 처리
-        //                Debug.Log("롱프레스 감지됨");
-        //                isClicked = false; // 롱프레스 시 클릭 상태 유지
-        //                nav.speed = 0; // 이동 중지
-        //            }
-
-        //        }
-
-        //        else if ( heldtime <= longPressThreshold && !longPressHandled)
-        //        {
-        //            SetAnimation(CurrentAnimation);
-        //            nav.speed = tempSpeed;
-        //        }
-
-        //    }
-        //}
     }
+
+   
     private void Clicked()
     {
         if (isClicked)
@@ -276,26 +295,14 @@ public class AICharacter : BaseObject
             infoButton.SetActive(true);
             animator.SetInteger("animation", 36);
         }
+        
+        else if (!isClicked && tempSpeed >0)
+        {
+            SetAnimation(CurrentAnimation);
+            infoButton.SetActive(false);
+            nav.speed = tempSpeed;
+        }
     }
-
-
-
-    //public void OnDragStart(Vector3 hitPos)
-    //{
-
-    //}
-
-    //public void OnDrag(Vector3 hitPos)
-    //{
-    //}
-
-    //public void OnDragEnd()
-    //{
-    //}
-
-    //public void OnLongPress()
-    //{
-    //}
 }
 
 

@@ -32,6 +32,7 @@ private Vector3 _dragOffset;
         _offsetx = (gameObject.transform.localScale.x % 2 == 0) ? (gridSize / 2f) : 0f;
         _offsety = (gameObject.transform.localScale.z % 2 == 0) ? (gridSize / 2f) : 0f;
         isBuild = CheckTilesUnderBuilding();
+        
         _isBuildColor = GetComponent<IsBuildColor>();
     }
 
@@ -64,7 +65,7 @@ private Vector3 _dragOffset;
             isLongPress = false;
             BuildingPlacer.Instance.isSelect = true;
             isDrag = true;
-            Debug.Log(this + "롱프레스 감지!");
+            Managers.Debug.Log($"{this}+롱프레스 감지!", Define.EDebugType.Drag);
             Managers.UI.ShowPopupUI<UI_SaveMoveBuild>();
             StartCoroutine(WaitAndSetup());
             //건물설치함수 불러오기

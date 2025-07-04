@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 945032672255512106}
   - component: {fileID: 2851948592429297827}
   - component: {fileID: -4140315742466721826}
+  - component: {fileID: 5645637195588719195}
   - component: {fileID: 6429962510822675972}
   m_Layer: 7
   m_Name: StorageBuilding
@@ -48,7 +49,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac99a8473202cef4eb50b8d59c8062ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BuildActiontUI: {fileID: 0}
+  _uI_BuildAction: {fileID: 0}
   buildMap: {fileID: 0}
   isBuild: 0
   isDrag: 0
@@ -81,6 +82,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5645637195588719195
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4833702243874293581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f42900895886da846a46721a29d8ad6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &6429962510822675972
 MonoBehaviour:
   m_ObjectHideFlags: 0

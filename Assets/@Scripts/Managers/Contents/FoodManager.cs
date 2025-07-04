@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Data;
@@ -31,11 +31,15 @@ public class FoodManager
             if (first != null)
             {
                 Food soldFood = first.Value;
-                soldFood.FoodData.Price = Mathf.FloorToInt(soldFood.FoodData.Price * 0.5f);
+
+     
                 Cancel(soldFood);
 
+                OnFoodSold?.Invoke(soldFood);
+
+                soldFood.FoodData.Price = Mathf.FloorToInt(soldFood.FoodData.Price * 0.5f);
                 Managers.Game.Gold += soldFood.FoodData.Price;
-                OnFoodSold?.Invoke(soldFood); 
+               
             }
         }
     }
@@ -44,6 +48,7 @@ public class FoodManager
     {
         if (_nodeMap.TryGetValue(food, out var node))
         {
+
             _foodList.Remove(node);
             _nodeMap.Remove(food);
 
