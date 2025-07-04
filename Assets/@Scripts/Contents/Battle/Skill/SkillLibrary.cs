@@ -23,6 +23,7 @@ public class SkillLibrary : MonoBehaviour
             { 5, RangedAttack },
             { 6, Invincible },
             { 7, TeamInvincible },
+            { 8, Rain   }
         };
     }
 
@@ -126,8 +127,11 @@ public class SkillLibrary : MonoBehaviour
         battleCharacter.Animator.SetTrigger(battleCharacter.Skill); // 스킬 애니메이션 트리거 활성화
         yield return StartCoroutine(Grow(battleCharacter)); // 캐릭터 크기 증가 코루틴 실행
         battleCharacter.AttackDamage *= 2f; // 공격력 2배 증가
+        battleCharacter.AttackRange *= 2f; // 공격 범위 2배 증가
         yield return new WaitForSeconds(10f); // 1초 대기
         yield return StartCoroutine(Shrink(battleCharacter)); // 캐릭터 크기 감소 코루틴 실행
+        battleCharacter.AttackDamage /= 2f; // 공격력 원래대로 되돌림
+        battleCharacter.AttackRange /= 2f; // 공격 범위 원래대로 되돌림
         battleCharacter.UsingSkill = false; 
     }
 
@@ -159,9 +163,9 @@ public class SkillLibrary : MonoBehaviour
     private IEnumerator RangedAttack(BattleCharacter battleCharacter)
     {
         battleCharacter.UsingSkill = true;
-        battleCharacter.AttackRange *= 3f; // 사거리 3배 증가
-        yield return new WaitForSeconds(5f); // 임시로 null 반환
-        battleCharacter.AttackRange /= 3f; // 사거리 원래대로 되돌림
+        battleCharacter.AttackRange *= 6f; // 사거리 6배 증가
+        yield return new WaitForSeconds(5f);
+        battleCharacter.AttackRange /= 6f; // 사거리 원래대로 되돌림
         battleCharacter.UsingSkill = false;
     }
 
@@ -206,5 +210,39 @@ public class SkillLibrary : MonoBehaviour
         }
         battleCharacter.UsingSkill = false;
     }
+    #endregion
+
+
+    #region Rain
+
+    private IEnumerator Rain(BattleCharacter battleCharacter)
+    {
+        if (battleCharacter.TargetLocation != null)
+        {
+            battleCharacter.UsingSkill = true;
+            battleCharacter.Animator.SetTrigger(battleCharacter.Skill); // 스킬 애니메이션 트리거 활성화
+            StartCoroutine(EffectManager.Instance.Rain(battleCharacter.TargetLocation.position));
+            yield return StartCoroutine(RainDamage(battleCharacter)); // RainDamage 코루틴 실행
+            battleCharacter.UsingSkill = false;
+        }
+    }
+
+    private IEnumerator RainDamage(BattleCharacter battleCharacter)
+    {
+        for (int i = 0; i < 5; i++) // 5초 동안 지속
+        {
+            Collider[] hits = Physics.OverlapSphere(battleCharacter.TargetLocation.position, 2.5f, LayerMask.GetMask("Enemy")); // 적 캐릭터 레이어 마스크 사용
+            foreach (var hit in hits)
+            {
+                if (hit.TryGetComponent<BattleCharacter>(out var targetCharacter))
+                {
+                    targetCharacter.HpControl(battleCharacter.AttackDamage);
+                }
+            }
+            yield return new WaitForSeconds(1f);
+        }
+    }
+
+
     #endregion
 }

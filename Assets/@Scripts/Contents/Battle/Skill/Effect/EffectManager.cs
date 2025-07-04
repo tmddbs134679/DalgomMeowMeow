@@ -7,7 +7,7 @@ public class EffectManager : MonoBehaviour
 
     public GameObject FireHandPrefab;
     public GameObject YellowShieldPrefab;
-
+    public GameObject RainAreaPrefab;
 
     private void Awake()
     {
@@ -144,6 +144,19 @@ public class EffectManager : MonoBehaviour
         }
         shield.GetComponent<ParticleSystem>().Play(); // 파티클 효과 재생
         yield return new WaitForSeconds(3f);
+    }
+
+    #endregion
+
+    #region Rain
+
+    public IEnumerator Rain(Vector3 pos)
+    {
+        RainAreaPrefab.transform.position = pos;
+        RainAreaPrefab.SetActive(true);
+        RainAreaPrefab.GetComponent<ParticleSystem>().Play(); // 비 효과 재생
+        yield return new WaitForSeconds(5f); // 5초 동안 비 효과 유지
+        RainAreaPrefab.SetActive(false); // 비 효과 비활성화
     }
 
     #endregion
