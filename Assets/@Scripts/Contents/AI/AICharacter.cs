@@ -1,17 +1,9 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Xml;
-using JetBrains.Annotations;
 using Scripts.Contents.AI.FSM.State;
-using Unity.Burst.CompilerServices;
 using Unity.Mathematics;
-using UnityEditor.UI;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.TextCore.Text;
-using UnityEngine.UIElements;
 
 public class AICharacter : BaseObject
 {
@@ -70,13 +62,9 @@ public class AICharacter : BaseObject
     public Action<int> Levelup;
     private float clickStartTime = 0f;
     private float longPressThreshold = 0.2f;
-    private bool longPressHandled = false;
     [SerializeField]
     private LayerMask groundLayer;
     private bool isFollowing;
-
-    Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
-
 
     //UI 상에 보일 캐릭터들
     public bool IsReplica = false;
@@ -98,51 +86,17 @@ public class AICharacter : BaseObject
         if (IsReplica)
             return;
 
+        if (CharacterData == null)
+        {
+            Managers.Debug.Log("캐릭터 데이터 없음", Define.EDebugType.AI);
+            return;
+        }
         _controller?.OnUpdate(Time.deltaTime);
-        Exp = CharacterData.CurrentExp;
         if (BuildingPlacer.Instance.isAI) OnClick();
 
-        if (Input.GetMouseButton(0))
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit))
-            {
-                if (hit.collider.gameObject == this.gameObject &&
-                    Controller.CurrentState() is  CharacterIdleState ||
-                    Controller.CurrentState() is CharacterMoveToState)
-                {
-                    clickStartTime += Time.deltaTime;
-                    if (clickStartTime > longPressThreshold)
-                    {
-                        isFollowing = true;
-                        isClicked = false;
-                    }
-
-                }
-            }
-        }
-
-        if (isFollowing)
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if(Physics.Raycast(ray, out RaycastHit hit, 100f))
-            {
-                Vector3 mouspot = hit.point;
-                animator.SetInteger("animation", 49);
-                nav.speed = 0;
-                this.transform.position = new Vector3(mouspot.x, 2f, mouspot.z);
-            }
-        }
-        if (Input.GetMouseButtonUp(0))
-        {
-            isFollowing = false;
-            SetAnimation(CurrentAnimation);
-            if(tempSpeed > 0)
-                nav.speed = tempSpeed;
-            this.transform.position = new Vector3(transform.position.x, 0.616f, transform.position.z);
-            clickStartTime = 0f;
-        }
+        LongPressClick();
     }
+
 
     private void LateUpdate()
     {
@@ -152,6 +106,7 @@ public class AICharacter : BaseObject
 
     public override bool Init()
     {
+
         nav = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         skinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
@@ -173,8 +128,14 @@ public class AICharacter : BaseObject
         transform.position = ch.Pos.ToVector3();
         CurrentState = ch.CurrentState;
         // TODO : FSM 등 상태 적용
+
+        if (_controller == null)
+        {
+            ControllerRegister();
+        }
     }
 
+    #region FSM Register
     public void ControllerRegister()
     {
         _controller = new AIController(new CharacterResetState(), this, Define.EAIState.None);
@@ -188,13 +149,9 @@ public class AICharacter : BaseObject
         _controller.RegisterState(new CharacterDeliverState(), this, Define.EAIState.Delivery);
         _controller.RegisterState(new CharacterHelloState(), this, Define.EAIState.Hello);
     }
+    #endregion
 
-    public void SetAnimation(int animNum)
-    {
-        animator.SetInteger("animation", animNum);
-        CurrentAnimation = animNum;
-    }
-
+    #region 건물 상호작용
     public void OnAnimalArrived()
     {
         AnimalArrived?.Invoke(this);
@@ -209,23 +166,9 @@ public class AICharacter : BaseObject
     {
         AnimalDelivered?.Invoke(this);
     }
+    #endregion
 
-    public void UseStamina(float amount)
-    {
-        if (CharacterData.CurrentStamina - amount < 0)
-        {
-            return;
-        }
-        CharacterData.CurrentStamina = Mathf.Max(0, CharacterData.CurrentStamina - amount);
-        //Managers.Debug.Log($"스태미나 사용 : {amount}, 남은 스태미나: {CharacterData.CurrentStamina}", Define.EDebugType.AI);
-    }
-
-    public void RecoverStamina(float amount)
-    {
-        CharacterData.CurrentStamina = Mathf.Min(100, CharacterData.CurrentStamina + amount);
-        //Managers.Debug.Log($"스태미나 회복 : {amount}, 현재: {CharacterData.CurrentStamina}", Define.EDebugType.AI);
-    }
-
+    #region 캐릭터 스탯 관련
     public void OnLevelUp()
     {
         CharacterData.MoveSpeed += 1;
@@ -248,10 +191,36 @@ public class AICharacter : BaseObject
         CharacterGainExp?.Invoke(value);
     }
 
+    public void UseStamina(float amount)
+    {
+        if (CharacterData.CurrentStamina - amount < 0)
+        {
+            return;
+        }
+        CharacterData.CurrentStamina = Mathf.Max(0, CharacterData.CurrentStamina - amount);
+        //Managers.Debug.Log($"스태미나 사용 : {amount}, 남은 스태미나: {CharacterData.CurrentStamina}", Define.EDebugType.AI);
+    }
+
+    public void RecoverStamina(float amount)
+    {
+        CharacterData.CurrentStamina = Mathf.Min(100, CharacterData.CurrentStamina + amount);
+        //Managers.Debug.Log($"스태미나 회복 : {amount}, 현재: {CharacterData.CurrentStamina}", Define.EDebugType.AI);
+    }
+    #endregion
+
+    #region 캐릭터 제거 시
     public void OnDisable()
     {
         Controller?.Dispose();
         AIManager.Instance.Unregister(this);
+    }
+    #endregion
+
+    #region 애니메이션 설정
+    public void SetAnimation(int animNum)
+    {
+        animator.SetInteger("animation", animNum);
+        CurrentAnimation = animNum;
     }
 
     public void SetEmotion(int index)
@@ -264,6 +233,9 @@ public class AICharacter : BaseObject
         skinnedMeshRenderer.materials = mats;
     }
 
+    #endregion
+
+    #region 클릭 상호작용
     public override void OnClick()
     {
         if (Input.GetMouseButtonDown(0))
@@ -279,13 +251,58 @@ public class AICharacter : BaseObject
                     {
                         tempSpeed = nav.speed;
                     }
-                    
+
                 }
             }
         }
     }
 
-   
+    private void LongPressClick()
+    {
+        if (Input.GetMouseButton(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit))
+            {
+                if (hit.collider.gameObject == this.gameObject &&
+                    (
+                    Controller.CurrentState() is CharacterIdleState ||
+                    Controller.CurrentState() is CharacterMoveToState)
+                    )
+
+                {
+                    clickStartTime += Time.deltaTime;
+                    if (clickStartTime > longPressThreshold)
+                    {
+                        isFollowing = true;
+                        isClicked = false;
+                    }
+
+                }
+            }
+        }
+
+        if (isFollowing)
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit, 1000f, groundLayer = 1 << 6))
+            {
+                Vector3 mouspot = hit.point;
+                animator.SetInteger("animation", 49);
+                nav.speed = 0;
+                this.transform.position = new Vector3(mouspot.x, 2f, mouspot.z);
+            }
+        }
+        if (Input.GetMouseButtonUp(0))
+        {
+            isFollowing = false;
+            SetAnimation(CurrentAnimation);
+            if (tempSpeed > 0)
+                nav.speed = tempSpeed;
+            this.transform.position = new Vector3(transform.position.x, 0.616f, transform.position.z);
+            clickStartTime = 0f;
+        }
+    }
     private void Clicked()
     {
         if (isClicked)
@@ -296,15 +313,15 @@ public class AICharacter : BaseObject
             infoButton.SetActive(true);
             animator.SetInteger("animation", 36);
         }
-        
-        else if (!isClicked && tempSpeed >0)
+
+        else if (!isClicked && tempSpeed > 0)
         {
             SetAnimation(CurrentAnimation);
             infoButton.SetActive(false);
             nav.speed = tempSpeed;
         }
     }
+    #endregion 
 }
-
 
 
