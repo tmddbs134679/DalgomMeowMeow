@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public class ForestBattleContext
+{
+    public static int PendingUnlockForestId = -1;
+}
 public class ForestRegion : BaseObject
 {
     public int Id;
@@ -55,13 +59,13 @@ public class ForestRegion : BaseObject
     {
         if (IsUnlocked)
         {
-            Debug.Log($"{Id}해제된 지역");
+            Managers.Debug.Log($"{Id}해제된 지역",Define.EDebugType.Building);
             return;
         }
         if (!IsUnlocked)
         {
             ForestBattleContext.PendingUnlockForestId = Id;
-            Debug.Log($"[TEST] Forest {Id} 클릭됨 → BattleScene 이동");
+            Managers.Debug.Log($"[TEST] Forest {Id} 클릭됨 → BattleScene 이동",Define.EDebugType.Building);
             Unlock();
             //전투 씬 이동
         }

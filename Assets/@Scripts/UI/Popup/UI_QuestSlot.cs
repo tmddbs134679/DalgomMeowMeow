@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -51,6 +52,16 @@ public class UI_QuestSlot : UI_Base
             {
                 // Daily 퀘스트는 클릭 시 맨 아래로 이동
                 transform.SetAsLastSibling();
+            }
+            // 업적일 경우 UI 갱신 (다음 퀘스트 등장)
+            if (_quest.QuestData.Type == QuestType.Achievement)
+            {
+                UI_QuestPopup popup = GetComponentInParent<UI_QuestPopup>();
+                popup?.CreateAchievementSlots();
+            }
+            else
+            {
+                SetQuest(_quest); // 일반 데일리 퀘스트는 상태만 갱신
             }
 
             SetQuest(_quest); // UI 갱신
