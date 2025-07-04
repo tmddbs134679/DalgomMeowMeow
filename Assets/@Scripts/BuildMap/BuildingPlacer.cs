@@ -43,6 +43,7 @@ public class BuildingPlacer : MonoBehaviour
     public bool isAI=false;
 
     public Action OnBuildingCancel;
+        public Action OnBuildingAccept;
 
     private void Awake()
     {
@@ -85,8 +86,9 @@ public class BuildingPlacer : MonoBehaviour
     /// </summary>
     public void SetRefOBJ(GameObject tempOBJ)
     {
+        
         _saveBuildingSO = tempOBJ.GetComponent<BuildingBase>()?.BuildingData;
-        _tempOBJ = tempOBJ.GetComponent<BuildingBase>()?.BuildingData.previewOBJ;
+        _tempOBJ =Instantiate(tempOBJ.GetComponent<BuildingBase>()?.BuildingData.previewOBJ);
         _tempOBJ.SetActive(false);
         _CurBuildData = new BuildData
         {
@@ -149,7 +151,6 @@ public class BuildingPlacer : MonoBehaviour
             buildMap.LoadBuild(); //오브젝트 갱신
             surface.BuildNavMesh(); //네브매쉬 깔기
             isLongPressAcceptBuild = false;
-            
         }
     }
 

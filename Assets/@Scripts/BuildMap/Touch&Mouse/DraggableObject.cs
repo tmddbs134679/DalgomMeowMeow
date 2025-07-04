@@ -60,6 +60,7 @@ private Vector3 _dragOffset;
         //버그수정중
         if (isLongPress)
         {
+            buildMap.ColliderAllOff();
                     BuildingPlacer.Instance.tempDraggleOBJ = this;
             BuildingPlacer.Instance.isLongPressAcceptBuild = true;
             isLongPress = false;

@@ -60,6 +60,7 @@ public class UI_BuildPopup : UI_Popup
 
         Managers.Game.OnResourcesChagned += Refresh;
         BuildingPlacer.Instance.OnBuildingCancel += CancelBuildUI;
+            BuildingPlacer.Instance.OnBuildingAccept += AcceptBuildUI;
         Refresh();
 
         return true;
@@ -70,9 +71,10 @@ public class UI_BuildPopup : UI_Popup
         if (Managers.Game != null)
         {
             Managers.Game.OnResourcesChagned -= Refresh;
-           
+
         }
         BuildingPlacer.Instance.OnBuildingCancel -= CancelBuildUI;
+                BuildingPlacer.Instance.OnBuildingAccept -= AcceptBuildUI;
 
     }
 
@@ -88,6 +90,12 @@ public class UI_BuildPopup : UI_Popup
     private void CancelBuildUI()
     {
         Managers.UI.ClosePopupUI(this);
+        (Managers.UI.SceneUI as UI_GameScene).gameObject.SetActive(true);
+    }
+
+    private void AcceptBuildUI()
+    {
+            Managers.UI.ClosePopupUI(this);
         (Managers.UI.SceneUI as UI_GameScene).gameObject.SetActive(true);
     }
 

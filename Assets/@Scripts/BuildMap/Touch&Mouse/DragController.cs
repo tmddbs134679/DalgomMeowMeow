@@ -7,17 +7,31 @@ using UnityEngine;
 public class DragController : MonoBehaviour
 {
     public LayerMask groundLayer;
-    public float longPressThreshold = 1.3f; // 몇 초 이상 눌러야 롱프레스인지
+    public float longPressThreshold = 1.5f; // 몇 초 이상 눌러야 롱프레스인지
     public bool isDragging = false;
     public float dragThreshold = 10f; // 10픽셀 이상 움직이면 드래그로 간주
 
     private IDraggable currentTarget = null;
     private bool isPointerDown = false;
     private float pointerDownTimer = 0f;
+    private bool isDelay = false;
+    private float delayTime = 0f;
     private Vector3 dragStartPos;   // 클릭한 화면상의 위치
 
     void Update()
     {
+        if (isDelay)
+        {
+            delayTime += Time.deltaTime;
+            if (delayTime >= 0.3f)
+            {
+                delayTime = 0f;
+                isDelay = false;
+                            isPointerDown = true;
+            }
+        }
+
+
         if (isPointerDown)
         {
             pointerDownTimer += Time.deltaTime;
@@ -28,8 +42,6 @@ public class DragController : MonoBehaviour
                 isPointerDown = false; // 1회 실행 후 초기화
             }
         }
-
-
 
         Vector3 inputPos = Vector3.zero;
         bool began = false, moved = false, ended = false;
@@ -53,7 +65,7 @@ public class DragController : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(inputPos);
         if (began)
         {
-            isPointerDown = true;
+                        isDelay = true;
             pointerDownTimer = 0f;
 
             if (Physics.Raycast(ray, out var hit))
@@ -75,6 +87,7 @@ public class DragController : MonoBehaviour
             // 아직 드래그 시작 안했으면 거리 체크
             if (!isDragging)
             {
+                            isDelay = true;
                 float dist = Vector2.Distance(inputPos, dragStartPos);
                 if (dist >= dragThreshold)
                 {
@@ -85,6 +98,7 @@ public class DragController : MonoBehaviour
             // 드래그 중일 때만 이동
             if (isDragging)
             {
+                            isDelay = false;
                 if (Physics.Raycast(ray, out var groundHit, 1000f, groundLayer))
                 {
                     currentTarget.OnDrag(groundHit.point);
@@ -93,8 +107,8 @@ public class DragController : MonoBehaviour
         }
         else if (ended && currentTarget != null)
         {
+            isDelay = false;
             isPointerDown = false;
-            pointerDownTimer = 0f;
 
             if (isDragging)
             {
