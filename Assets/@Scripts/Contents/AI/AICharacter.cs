@@ -71,6 +71,9 @@ public class AICharacter : BaseObject
     //private float longPressThreshold = 0.5f;
     //private bool longPressHandled = false;
 
+    //UI 상에 보일 캐릭터들
+    public bool IsReplica = false;
+
     private void Awake()
     {
         ObjectType = Define.EObjectType.Character;
@@ -85,6 +88,9 @@ public class AICharacter : BaseObject
 
     private void Update()
     {
+        if (IsReplica)
+            return;
+
         _controller?.OnUpdate(Time.deltaTime);
         Exp = CharacterData.CurrentExp;
     }
@@ -277,9 +283,6 @@ public class AICharacter : BaseObject
             animator.SetInteger("animation", 36);
         }
     }
-
-
-
     //public void OnDragStart(Vector3 hitPos)
     //{
 

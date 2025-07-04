@@ -64,6 +64,7 @@ public class Character
 
 
         Data = data;
+        MoveSpeed = Data.MoveSpeed;
         DataId = data.DataId;
     }
 

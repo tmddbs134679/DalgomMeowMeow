@@ -78,8 +78,8 @@ public class CookingBuilding : BuildingBase
         
         
         StoredCount++; //  생산 누적
-        
-        Debug.Log($"요리 완성! 누적 수량: {StoredCount}");
+
+        Managers.Debug.Log($"요리 완성! 누적 수량: {StoredCount}", Define.EDebugType.Building);
 
         if (deliveredVegetableCount == 0)
         {
