@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor.Rendering.Universal;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
@@ -39,6 +40,7 @@ public class UI_CharacterTypeSlot : UI_Base
             return false;
 
         gameObject.BindEvent(OnClickObject);
+        gameObject.GetOrAddComponent<UI_ButtonAnimation>();
         BindObject(typeof(GameObjects));
         BindButton(typeof(Buttons));
         BindImage(typeof(Images));

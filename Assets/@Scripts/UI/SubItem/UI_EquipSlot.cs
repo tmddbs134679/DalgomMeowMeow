@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class UI_EquipSlot : UI_Base
@@ -45,6 +46,7 @@ public class UI_EquipSlot : UI_Base
         BindText(typeof(Texts));
 
         gameObject.BindEvent(OnClickEquipment);
+        gameObject.GetOrAddComponent<UI_ButtonAnimation>();
         return true;
     }
 
