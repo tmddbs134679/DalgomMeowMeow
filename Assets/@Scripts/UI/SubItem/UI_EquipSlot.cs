@@ -41,6 +41,7 @@ public class UI_EquipSlot : UI_Base
 
         BindObject(typeof(GameObjects));
         BindButton(typeof(Buttons));
+        BindImage(typeof(Images));
         BindText(typeof(Texts));
 
         gameObject.BindEvent(OnClickEquipment);
@@ -57,9 +58,9 @@ public class UI_EquipSlot : UI_Base
 
         _equipment = equipment;
 
-
-       // GetImage((int)Images.EquipImage).sprite = Managers.Resource.Load<Sprite>(_equipment.EquipmentData.SpriteName);
-        //GetImage((int)Images.CharacterOwnerImage).sprite = Managers.Resource.Load<Sprite>(_equipment.EquippedByCharacterId);
+        Sprite spr = Managers.Resource.Load<Sprite>(_equipment.EquipmentData.SpriteName);
+        GetImage((int)Images.EquipImage).sprite = spr;
+       // GetImage((int)Images.CharacterOwnerImage).sprite = Managers.Resource.Load<Sprite>(_equipment.EquippedByCharacterId);
 
     }
 
