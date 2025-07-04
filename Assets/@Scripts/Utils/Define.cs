@@ -130,5 +130,6 @@ public class Define
         Building,
         AI,
         UI,
+        Drag,
     }
 }

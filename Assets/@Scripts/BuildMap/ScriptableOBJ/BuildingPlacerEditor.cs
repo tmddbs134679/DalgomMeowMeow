@@ -32,7 +32,7 @@ public class BuildingPlacerEditor : Editor
             //  배열로 변환해서 넣기
             placer.buildingSO = soList.ToArray();
 
-            Debug.Log($" {soList.Count}개의 SO가 자동 등록되었습니다.");
+            Managers.Debug.Log($" {soList.Count}개의 SO가 자동 등록되었습니다.", Define.EDebugType.None);
             EditorUtility.SetDirty(placer);
         }
     }
