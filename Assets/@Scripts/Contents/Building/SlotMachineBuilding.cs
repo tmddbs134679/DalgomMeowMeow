@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class SlotResult
 {
-    public string Symbol;       // 예: "🍒", "⭐", "7"
+    public string Symbol;       
     public int RewardGold;
 }
 
@@ -18,7 +18,7 @@ public class SlotMachineTestData
         new SlotResult { Symbol = "고양이",  RewardGold = 1000 }
     };
 }
-public class SlotMachineBuilding : MonoBehaviour
+public class SlotMachineBuilding : BaseObject
 {
     private List<SlotResult> _results => SlotMachineTestData.TestResults;
 
@@ -28,12 +28,12 @@ public class SlotMachineBuilding : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Debug.Log("슬롯머신 테스트 시작!");
+            Managers.Debug.Log("슬롯머신 테스트 시작!",Define.EDebugType.Building);
             RollSlot();
         }
     }
 
-    private void RollSlot()
+    public void RollSlot()
     {
         for (int i = 0; i < 3; i++)
         {
@@ -41,7 +41,7 @@ public class SlotMachineBuilding : MonoBehaviour
             _currentResult[i] = _results[index].Symbol;
         }
 
-        Debug.Log($"슬롯 결과: {_currentResult[0]} | {_currentResult[1]} | {_currentResult[2]}");
+        Managers.Debug.Log($"슬롯 결과: {_currentResult[0]} | {_currentResult[1]} | {_currentResult[2]}",Define.EDebugType.Building);
 
         CheckReward();
     }
@@ -55,23 +55,19 @@ public class SlotMachineBuilding : MonoBehaviour
 
             if (match != null)
             {
-                Debug.Log($"당첨! {symbol} x3 → 보상: {match.RewardGold}골드");
+                Managers.Debug.Log($"당첨! {symbol} x3 → 보상: {match.RewardGold}골드",Define.EDebugType.Building);
                 //Managers.Game.Gold += match.RewardGold;
             }
         }
         else
         {
-            Debug.Log("꽝!");
+            Managers.Debug.Log("꽝",Define.EDebugType.Building);
         }
     }
-
-    // public override void OnClick()
-    // {
-    //     
-    // }
-    //
-    // public override void Produce()
-    // {
-    //     
-    // }
+    
+    public override void OnClick()
+    {
+        Managers.UI.ShowPopupUI<UI_SlotMachinePopup>();
+        UI_SlotMachinePopup popup = Managers.UI.ShowPopupUI<UI_SlotMachinePopup>();
+    }
 }

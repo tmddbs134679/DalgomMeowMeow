@@ -30,9 +30,6 @@ public class UI_QuestPopup : UI_Popup
         GetButton((int)Buttons.DailyButton).gameObject.BindEvent(DailyButton);
         GetButton((int)Buttons.AchievementButton).gameObject.BindEvent(AchievementButton);
 
-        QuestManager.Instance.OnQuestUpdated += RefreshProgressOnly;
-
-
         CreateQuestSlots();
 
         return true;
