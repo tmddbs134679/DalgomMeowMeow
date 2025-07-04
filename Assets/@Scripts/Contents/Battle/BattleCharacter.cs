@@ -228,13 +228,15 @@ public class BattleCharacter : BaseObject
 
     public void Attack()
     {
+        if(_targetCharacter.Invincible == true)
+            return;
         _targetCharacter.HpControl(this.AttackDamage); // 타겟의 체력 감소
     }
 
 
     public void HpControl(float Damage)
     {
-        if (IsDead && Invincible) // 이미 죽었거나 무적 상태이면 아무런 행동도 하지 않음
+        if (IsDead) // 이미 죽었거나 무적 상태이면 아무런 행동도 하지 않음
             return; 
 
         Health -= Damage; // 공격력만큼 체력 감소

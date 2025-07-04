@@ -222,16 +222,16 @@ public class SkillLibrary : MonoBehaviour
             battleCharacter.UsingSkill = true;
             battleCharacter.Animator.SetTrigger(battleCharacter.Skill); // 스킬 애니메이션 트리거 활성화
             StartCoroutine(EffectManager.Instance.Rain(battleCharacter.TargetLocation.position));
-            yield return StartCoroutine(RainDamage(battleCharacter)); // RainDamage 코루틴 실행
+            yield return StartCoroutine(RainDamage(battleCharacter, battleCharacter.TargetLocation.position)); // RainDamage 코루틴 실행
             battleCharacter.UsingSkill = false;
         }
     }
 
-    private IEnumerator RainDamage(BattleCharacter battleCharacter)
+    private IEnumerator RainDamage(BattleCharacter battleCharacter, Vector3 pos)
     {
         for (int i = 0; i < 5; i++) // 5초 동안 지속
         {
-            Collider[] hits = Physics.OverlapSphere(battleCharacter.TargetLocation.position, 2.5f, LayerMask.GetMask("Enemy")); // 적 캐릭터 레이어 마스크 사용
+            Collider[] hits = Physics.OverlapSphere(pos, 2.5f, LayerMask.GetMask("Enemy")); // 적 캐릭터 레이어 마스크 사용
             foreach (var hit in hits)
             {
                 if (hit.TryGetComponent<BattleCharacter>(out var targetCharacter))
