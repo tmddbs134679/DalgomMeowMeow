@@ -174,7 +174,7 @@ public class SkillLibrary : MonoBehaviour
         battleCharacter.UsingSkill = true;
         battleCharacter.Animator.SetTrigger(battleCharacter.Skill); // 스킬 애니메이션 트리거 활성화
         battleCharacter.Invincible = true; // 죽지 않도록 설정
-        yield return new WaitForSeconds(3f); // 5초 동안 무적 상태 유지
+        yield return StartCoroutine(EffectManager.Instance.Invincibility(battleCharacter.transform)); // 3초 동안 무적 상태 유지
         battleCharacter.Invincible = false; // 무적 상태 해제
         battleCharacter.UsingSkill = false; // 스킬 사용 종료
     }
@@ -193,6 +193,7 @@ public class SkillLibrary : MonoBehaviour
             if (hit.TryGetComponent<BattleCharacter>(out var teamCharacter))
             {
                 teamCharacter.Invincible = true;
+                StartCoroutine(EffectManager.Instance.Invincibility(teamCharacter.transform)); // 팀원에게 무적 효과 적용
             }
         }
         yield return new WaitForSeconds(3f);

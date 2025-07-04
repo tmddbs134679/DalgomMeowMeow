@@ -5,12 +5,8 @@ public class EffectManager : MonoBehaviour
 {
     public static EffectManager Instance;
 
-    public GameObject HealEffectPrefab;
-    public GameObject AttackEffectPrefab;
-    public GameObject BuffEffectPrefab;
-    public GameObject DebuffEffectPrefab;
-
-    
+    public GameObject FireHandPrefab;
+    public GameObject YellowShieldPrefab;
 
 
     private void Awake()
@@ -29,9 +25,9 @@ public class EffectManager : MonoBehaviour
     #region PunchEffect
     public IEnumerator Punch(Vector3 pos)
     {
-        AttackEffectPrefab.transform.position = pos + Vector3.up*5;
-        AttackEffectPrefab.SetActive(true);
-        yield return StartCoroutine(MoveDown(AttackEffectPrefab));
+        FireHandPrefab.transform.position = pos + Vector3.up*5;
+        FireHandPrefab.SetActive(true);
+        yield return StartCoroutine(MoveDown(FireHandPrefab));
     }
 
     private IEnumerator MoveDown(GameObject effect)
@@ -47,7 +43,7 @@ public class EffectManager : MonoBehaviour
             elapsed += delta;
             yield return null;
         }
-        AttackEffectPrefab.SetActive(false); // 효과 비활성화
+        FireHandPrefab.SetActive(false); // 효과 비활성화
     }
     #endregion
 
@@ -59,8 +55,8 @@ public class EffectManager : MonoBehaviour
 
         if (left.childCount == 0 && right.childCount == 0)
         {
-            LfireEffect = Instantiate(BuffEffectPrefab, left);
-            RfireEffect = Instantiate(BuffEffectPrefab, right);
+            LfireEffect = Instantiate(FireHandPrefab, left);
+            RfireEffect = Instantiate(FireHandPrefab, right);
         }
         else
         {
@@ -88,9 +84,6 @@ public class EffectManager : MonoBehaviour
 
     #endregion
 
-
-
-
     #region RangedAttack
     public IEnumerator RangedAttack(Transform left, Transform right)
     {
@@ -99,8 +92,8 @@ public class EffectManager : MonoBehaviour
 
         if (left.childCount == 0 && right.childCount == 0)
         {
-            LfireEffect = Instantiate(BuffEffectPrefab, left);
-            RfireEffect = Instantiate(BuffEffectPrefab, right);
+            LfireEffect = Instantiate(FireHandPrefab, left);
+            RfireEffect = Instantiate(FireHandPrefab, right);
         }
         else
         {
@@ -125,6 +118,33 @@ public class EffectManager : MonoBehaviour
 
 
 
+
+    #endregion
+
+    #region Invincibility
+
+    public IEnumerator Invincibility(Transform parent)
+    {
+        // 이미 자식에 YellowShield 오브젝트가 있는지 검사
+        Transform existingShield = parent.Find("Invincible");
+
+        GameObject shield;
+
+        if (existingShield == null)
+        {
+            // 없으면 새로 생성
+            shield = Instantiate(YellowShieldPrefab, Vector3.zero, Quaternion.identity);
+            shield.name = "Invincible"; // 나중에 찾기 쉽도록 이름 지정
+            shield.transform.SetParent(parent);
+            shield.transform.localPosition = Vector3.zero;
+        }
+        else
+        {
+            shield = existingShield.gameObject;
+        }
+        shield.GetComponent<ParticleSystem>().Play(); // 파티클 효과 재생
+        yield return new WaitForSeconds(3f);
+    }
 
     #endregion
 }
