@@ -7,7 +7,12 @@ public class HealthBarUI : MonoBehaviour
     public Vector3 offset = new Vector3(0, 2.25f, 0); // 머리 위 위치 조정
     public Image HpBar;
     public BattleCharacter BattleCharacter => target.GetComponent<BattleCharacter>();
+    public BattleManager BattleManager;
 
+    private void Awake()
+    {
+        BattleManager = GetComponentInParent<BattleManager>();
+    }
     private void Start()
     {
         HpBar = transform.Find("HPbar").GetComponent<Image>();
@@ -16,6 +21,10 @@ public class HealthBarUI : MonoBehaviour
 
     private void Update()
     {
+        if(BattleManager.Victory)
+        {
+            this.gameObject.SetActive(false);
+        }
         if (HpBar == null)
             return;
 

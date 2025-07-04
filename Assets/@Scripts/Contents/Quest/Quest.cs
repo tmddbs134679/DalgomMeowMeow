@@ -44,7 +44,7 @@ public class Quest
         if (Progress >= QuestData.GoalCount)
         {
             State = QuestProgressState.Completed;
-            Debug.Log($"[퀘스트 완료] {QuestData.Title}");
+            Managers.Debug.Log($"[퀘스트 완료] {QuestData.Title}", Define.EDebugType.Building);
         }
     }
 
@@ -53,7 +53,7 @@ public class Quest
         if (State == QuestProgressState.Completed)
         {
             State = QuestProgressState.Rewarded;
-            Debug.Log($"[보상 지급] {QuestData.Reward}");
+            Managers.Debug.Log($"[보상 지급] {QuestData.Reward}", Define.EDebugType.Building);
             Managers.Game.Gold += QuestData.Reward.Gold;
             
             // 다음 퀘스트 열기

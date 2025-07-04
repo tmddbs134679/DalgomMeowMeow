@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class ObjectManager 
 {
@@ -49,7 +50,7 @@ public class ObjectManager
         Buildings.Clear();
     }
 
-    public T Spawn<T>(Vector3 position, string templateID, string prefabName = "") where T : BaseObject
+    public T Spawn<T>(Vector3 position, string templateID, bool isReplica = false, string prefabName = "") where T : BaseObject
     {
         System.Type type = typeof(T);
 
@@ -58,11 +59,14 @@ public class ObjectManager
             GameObject go = Managers.Resource.Instantiate(Managers.Data.CreatureDic[templateID].PrefabLabel, pooling: true);
             go.transform.position = position;
             AICharacter pc = go.GetOrAddComponent<AICharacter>();
+            if (isReplica)
+            {
+                pc.GetComponent<NavMeshAgent>().enabled = false;
+                pc.IsReplica = true;    
+            }
             return pc as T;
         }
-        
-
-
+       
             return null;
     }
 

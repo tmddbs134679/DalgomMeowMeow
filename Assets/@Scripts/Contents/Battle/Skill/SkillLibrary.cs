@@ -1,9 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class SkillLibrary : MonoBehaviour
@@ -21,7 +18,12 @@ public class SkillLibrary : MonoBehaviour
         {
             { 1, HealDance },
             { 2, NyangPunch },
-            { 3, AttackSpeedBuff }
+            { 3, AttackSpeedBuff },
+            { 4, Bigger },
+            { 5, RangedAttack },
+            { 6, Invincible },
+            { 7, TeamInvincible },
+            { 8, Rain   }
         };
     }
 
@@ -35,14 +37,13 @@ public class SkillLibrary : MonoBehaviour
         }
         if (_skillMap.TryGetValue(skillNum, out var coroutineFunc))
         {
-            if (_runningCoroutines.TryGetValue(skillNum, out var running))  //실행된게 있으면 멈추기
+            if (_runningCoroutines.TryGetValue(skillNum, out var running) && running != null)  //실행된게 있으면 멈추기
             {
                 StopCoroutine(running);
             }
-
+            targetCharacter.Animator.SetInteger(targetCharacter.SkillHash, skillNum); // 스킬 애니메이션 출력
             Coroutine co = StartCoroutine(coroutineFunc(targetCharacter));  //코루틴 실행
             _runningCoroutines[skillNum] = co;  //실행중인 코루틴 넣기
-            targetCharacter.Animator.SetInteger(targetCharacter.SkillHash, skillNum); // 스킬 애니메이션 출력
         }
         else
         {
@@ -84,35 +85,164 @@ public class SkillLibrary : MonoBehaviour
 
     private IEnumerator NyangPunch(BattleCharacter battleCharacter)
     {
-        if (battleCharacter.TargetLocation == null)
-            yield break;
-        battleCharacter.UsingSkill = true;
-        battleCharacter.Animator.SetTrigger(battleCharacter.Skill); // 스킬 애니메이션 트리거 활성화
-        yield return StartCoroutine(EffectManager.Instance.Punch(battleCharacter.TargetLocation.position));
-        Collider[] hits = Physics.OverlapSphere(battleCharacter.transform.position, 3.5f, LayerMask.GetMask("Enemy")); // 적 캐릭터 레이어 마스크 사용
-        foreach (var hit in hits)
+        if (battleCharacter.TargetLocation != null)
         {
-            if (hit.TryGetComponent<BattleCharacter>(out var targetCharacter))
+            battleCharacter.UsingSkill = true;
+            battleCharacter.Animator.SetTrigger(battleCharacter.Skill); // 스킬 애니메이션 트리거 활성화
+            yield return StartCoroutine(EffectManager.Instance.Punch(battleCharacter.TargetLocation.position));
+            Collider[] hits = Physics.OverlapSphere(battleCharacter.TargetLocation.position, 2.5f, LayerMask.GetMask("Enemy")); // 적 캐릭터 레이어 마스크 사용
+            foreach (var hit in hits)
             {
-                targetCharacter.HpControl(battleCharacter.AttackDamage);
+                if (hit.TryGetComponent<BattleCharacter>(out var targetCharacter))
+                {
+                    targetCharacter.HpControl(battleCharacter.AttackDamage);
+                }
             }
+            battleCharacter.UsingSkill = false;
         }
-        battleCharacter.UsingSkill = false;
     }
 
-    #endregion
+    #endregion 
 
 
     #region ASBoost
     private IEnumerator AttackSpeedBuff(BattleCharacter battleCharacter)
     {
         battleCharacter.UsingSkill = true;
-        battleCharacter._attackDelay /= 2f; // 공격 딜레이를 절반으로 줄임
+        battleCharacter.AttackDelay /= 2f; // 공격 딜레이를 절반으로 줄임
         battleCharacter.Animator.speed = 2f; // 애니메이션 속도를 두 배로 증가시킴
-        yield return StartCoroutine(EffectManager.Instance.FireHand(battleCharacter.leftHandPivot, battleCharacter.rightHandPivot)); // FireHand 효과 실행
-        battleCharacter._attackDelay *= 2f; // 공격 딜레이를 원래대로 되돌림
+        yield return StartCoroutine(EffectManager.Instance.FireHand(battleCharacter.LeftHandPivot, battleCharacter.RightHandPivot)); // FireHand 효과 실행
+        battleCharacter.AttackDelay *= 2f; // 공격 딜레이를 원래대로 되돌림
         battleCharacter.Animator.speed = 1f; // 애니메이션 속도를 원래대로 되돌림
         battleCharacter.UsingSkill = false; // 스킬 사용 종료
     }
+    #endregion
+
+
+    #region Giant
+
+    private IEnumerator Bigger(BattleCharacter battleCharacter)
+    {
+        battleCharacter.UsingSkill = true;
+        battleCharacter.Animator.SetTrigger(battleCharacter.Skill); // 스킬 애니메이션 트리거 활성화
+        yield return StartCoroutine(Grow(battleCharacter)); // 캐릭터 크기 증가 코루틴 실행
+        battleCharacter.AttackDamage *= 2f; // 공격력 2배 증가
+        battleCharacter.AttackRange *= 2f; // 공격 범위 2배 증가
+        yield return new WaitForSeconds(10f); // 1초 대기
+        yield return StartCoroutine(Shrink(battleCharacter)); // 캐릭터 크기 감소 코루틴 실행
+        battleCharacter.AttackDamage /= 2f; // 공격력 원래대로 되돌림
+        battleCharacter.AttackRange /= 2f; // 공격 범위 원래대로 되돌림
+        battleCharacter.UsingSkill = false; 
+    }
+
+    private IEnumerator Grow(BattleCharacter battleCharacter)
+    {
+        while (battleCharacter.transform.localScale.x < 2f) // 최대 크기 2배
+        {
+            battleCharacter.transform.localScale += new Vector3(0.1f, 0.1f, 0.1f); // 캐릭터 크기 증가
+            yield return new WaitForSeconds(0.1f); // 0.1초 대기
+        }
+    }
+
+    private IEnumerator Shrink(BattleCharacter battleCharacter)
+    {
+        while (battleCharacter.transform.localScale.x > 1f) // 원래 크기로 되돌리기
+        {
+            battleCharacter.transform.localScale -= new Vector3(0.1f, 0.1f, 0.1f); // 캐릭터 크기 감소
+            yield return new WaitForSeconds(0.1f); // 0.1초 대기
+        }
+        battleCharacter.transform.localScale = Vector3.one; // 최종적으로 원래 크기로 설정
+    }
+
+
+    #endregion
+
+
+    #region RangedAttack
+
+    private IEnumerator RangedAttack(BattleCharacter battleCharacter)
+    {
+        battleCharacter.UsingSkill = true;
+        battleCharacter.AttackRange *= 6f; // 사거리 6배 증가
+        yield return new WaitForSeconds(5f);
+        battleCharacter.AttackRange /= 6f; // 사거리 원래대로 되돌림
+        battleCharacter.UsingSkill = false;
+    }
+
+    #endregion
+
+
+    #region Invincible
+    private IEnumerator Invincible(BattleCharacter battleCharacter)
+    {
+        battleCharacter.UsingSkill = true;
+        battleCharacter.Animator.SetTrigger(battleCharacter.Skill); // 스킬 애니메이션 트리거 활성화
+        battleCharacter.Invincible = true; // 죽지 않도록 설정
+        yield return StartCoroutine(EffectManager.Instance.Invincibility(battleCharacter.transform)); // 3초 동안 무적 상태 유지
+        battleCharacter.Invincible = false; // 무적 상태 해제
+        battleCharacter.UsingSkill = false; // 스킬 사용 종료
+    }
+    #endregion
+
+
+    #region TeamInvincible
+    private IEnumerator TeamInvincible(BattleCharacter battleCharacter)
+    {
+        battleCharacter.UsingSkill = true;
+        battleCharacter.Animator.SetTrigger(battleCharacter.Skill);
+        yield return new WaitForSeconds(1f); // 스킬 애니메이션 딜레이
+        Collider[] hits = Physics.OverlapSphere(battleCharacter.transform.position, 5f, LayerMask.GetMask("Player"));
+        foreach (var hit in hits)
+        {
+            if (hit.TryGetComponent<BattleCharacter>(out var teamCharacter))
+            {
+                teamCharacter.Invincible = true;
+                StartCoroutine(EffectManager.Instance.Invincibility(teamCharacter.transform)); // 팀원에게 무적 효과 적용
+            }
+        }
+        yield return new WaitForSeconds(3f);
+        foreach (var hit in hits)
+        {
+            if (hit.TryGetComponent<BattleCharacter>(out var teamCharacter))
+            {
+                teamCharacter.Invincible = false;
+            }
+        }
+        battleCharacter.UsingSkill = false;
+    }
+    #endregion
+
+
+    #region Rain
+
+    private IEnumerator Rain(BattleCharacter battleCharacter)
+    {
+        if (battleCharacter.TargetLocation != null)
+        {
+            battleCharacter.UsingSkill = true;
+            battleCharacter.Animator.SetTrigger(battleCharacter.Skill); // 스킬 애니메이션 트리거 활성화
+            StartCoroutine(EffectManager.Instance.Rain(battleCharacter.TargetLocation.position));
+            yield return StartCoroutine(RainDamage(battleCharacter, battleCharacter.TargetLocation.position)); // RainDamage 코루틴 실행
+            battleCharacter.UsingSkill = false;
+        }
+    }
+
+    private IEnumerator RainDamage(BattleCharacter battleCharacter, Vector3 pos)
+    {
+        for (int i = 0; i < 5; i++) // 5초 동안 지속
+        {
+            Collider[] hits = Physics.OverlapSphere(pos, 2.5f, LayerMask.GetMask("Enemy")); // 적 캐릭터 레이어 마스크 사용
+            foreach (var hit in hits)
+            {
+                if (hit.TryGetComponent<BattleCharacter>(out var targetCharacter))
+                {
+                    targetCharacter.HpControl(battleCharacter.AttackDamage);
+                }
+            }
+            yield return new WaitForSeconds(1f);
+        }
+    }
+
+
     #endregion
 }

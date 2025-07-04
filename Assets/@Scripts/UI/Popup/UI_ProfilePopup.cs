@@ -138,7 +138,7 @@ public class UI_ProfilePopup : UI_Popup
         _equipAccessoryItem.SetInfo(_character);
         _equipBagItem.SetInfo(_character);
 
-        _characterAI = Managers.Object.Spawn<AICharacter>(new Vector3(500, 500, 500), _character.DataId);
+        _characterAI = Managers.Object.Spawn<AICharacter>(new Vector3(500, 500, 500), _character.DataId, true);
     }
 
 

@@ -132,16 +132,17 @@ public class UI_GameScene : UI_Scene
             if (child.localPosition.x > removedPosition.x)
             {
                 Vector3 targetPos = child.localPosition;
-                targetPos.x -= GetSlotWidth() + UI_GROUP_SPACING; // ���ŵ� ���� �ʺ� + Spacing ũ��
+                targetPos.x -= GetSlotWidth() + UI_GROUP_SPACING;
                 child.DOLocalMoveX(targetPos.x, 0.3f).SetEase(Ease.OutQuad);
             }
         }
 
         yield return new WaitForSeconds(0.3f);
 
-
-        GetObject((int)GameObjects.StorageObject).GetComponent<HorizontalLayoutGroup>().enabled = true;
-        LayoutRebuilder.ForceRebuildLayoutImmediate(transform as RectTransform);
+        // 💡 레이아웃 강제 리빌드
+        var layout = GetObject((int)GameObjects.StorageObject).GetComponent<HorizontalLayoutGroup>();
+        layout.enabled = true;
+        LayoutRebuilder.ForceRebuildLayoutImmediate(layout.transform as RectTransform);
     }
 
     //Slot �ʺ� ���ϴ� �Լ� 
@@ -162,24 +163,37 @@ public class UI_GameScene : UI_Scene
 
     void AddFoodSlot(Food food)
     {
-        UI_FoodItem item = Managers.UI.MakeSubItem<UI_FoodItem>(GetObject((int)GameObjects.StorageObject).transform);
+        var layout = GetObject((int)GameObjects.StorageObject).GetComponent<HorizontalLayoutGroup>();
+        layout.enabled = false;
+
+        UI_FoodItem item = Managers.UI.MakeSubItem<UI_FoodItem>(layout.transform);
+
+        //임시로 화면 밖으로 보내기
+        item.transform.localPosition = new Vector3(9999, 9999, 0);
+
         item.SetInfo(food);
+
+        // LinkedList 순서 정리
+        int index = Util.GetIndexInLinkedList(Managers.Food._foodList, food);
+        item.transform.SetSiblingIndex(index);
+
+        layout.enabled = true;
+        LayoutRebuilder.ForceRebuildLayoutImmediate(layout.transform as RectTransform);
     }
 
     void RemoveFoodSlot(Food food)
     {
-        // ������� �ڽ� �� �ش� ������ ���� ������ ã�Ƽ� �ִϸ��̼� ����
+        // 정확히 Food 객체를 비교해서 찾음
         foreach (Transform child in GetObject((int)GameObjects.StorageObject).transform)
         {
             var item = child.GetComponent<UI_FoodItem>();
-            if (item != null && item._food == food)
+            if (item != null && ReferenceEquals(item._food, food))
             {
                 RemoveSlotAnimated(item);
                 break;
             }
         }
     }
-
 
     #region Battle
     private void OnClickBattleButton()

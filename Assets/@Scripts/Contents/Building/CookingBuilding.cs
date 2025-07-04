@@ -22,27 +22,18 @@ public class CookingBuilding : BuildingBase
 
     private void Start()
     {
-        Debug.Log($"현재 레벨: {CurrentLevel}");
+        Managers.Debug.Log($"현재 레벨: {CurrentLevel}",Define.EDebugType.Building);
         var key = (BuildingData.Id.ToString(), CurrentLevel + 1);
         if (Managers.Data.BuildingLevelDic.TryGetValue(key, out var levelData))
         {
-            Debug.Log($"[UpgradeTest] 다음 레벨 정보 있음: {levelData.ProducedFoodId}, 비용: {levelData.UpgradeCost}");
+            Managers.Debug.Log($"[UpgradeTest] 다음 레벨 정보 있음: {levelData.ProducedFoodId}, 비용: {levelData.UpgradeCost}",Define.EDebugType.Building);
         }
         else
         {
             Debug.LogWarning($"[UpgradeTest] 다음 레벨 정보 없음: {key}");
         }
     }
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.U))
-        {
-            if (Upgrade())
-                Debug.Log("업그레이드 성공!");
-            else
-                Debug.Log("업그레이드 실패!");
-        }
-    }
+
     public override bool Init()
     {
         base.Init();
@@ -78,9 +69,8 @@ public class CookingBuilding : BuildingBase
         
         
         StoredCount++; //  생산 누적
-
-        Managers.Debug.Log($"요리 완성! 누적 수량: {StoredCount}", Define.EDebugType.Building);
-
+        
+        Managers.Debug.Log($"요리 완성! 누적 수량: {StoredCount}",Define.EDebugType.Building);
         if (deliveredVegetableCount == 0)
         {
             Managers.Food.MakeFood();
@@ -116,8 +106,6 @@ public class CookingBuilding : BuildingBase
     {
         if (StoredCount <= 0) return;
 
-        Debug.Log($" {StoredCount}개 요리를 수확했습니다!");
-
         
         StoredCount = 0;
         CurrentState = BuildingState.Producing;
@@ -132,8 +120,7 @@ public class CookingBuilding : BuildingBase
         if (CurrentState != BuildingState.Producing) return;
 
             deliveredVegetableCount++;
-            Debug.Log($"[야채 도착] 누적 채소 수: {deliveredVegetableCount}");
-
+            Managers.Debug.Log($"[야채 도착] 누적 채소 수: {deliveredVegetableCount}",Define.EDebugType.Building);
     }
     
     private void OnTriggerEnter(Collider other)
@@ -144,8 +131,7 @@ public class CookingBuilding : BuildingBase
         if (animal.CurrentState == Define.EAIState.Delivery)
         {
             deliveredVegetableCount++;
-            Debug.Log($"[야채 도착] 누적 채소 수: {deliveredVegetableCount}");
-
+            Managers.Debug.Log($"[야채 도착] 누적 채소 수: {deliveredVegetableCount}",Define.EDebugType.Building);
         }
     }
     
@@ -162,13 +148,14 @@ public class CookingBuilding : BuildingBase
         if (Managers.Game.Gold <= next.UpgradeCost)
             return false;
 
+        Managers.Game.Gold -= next.UpgradeCost;
         CurrentLevel++;
         ApplyLevel();
         return true;
     }
     private void ApplyLevel()
     {
-        Debug.Log($"[CookingBuilding] 업그레이드 완료 → Lv.{CurrentLevel}");
+        Managers.Debug.Log($"[CookingBuilding] 업그레이드 완료 → Lv.{CurrentLevel}",Define.EDebugType.Building);
         //Debug.Log($"[CookingBuilding] 업그레이드 완료 → Lv.{CurrentLevel}, 생산 요리: {LevelData.ProducedFood.Name}");
         // 외형 변경, 사운드 등도 여기에
     }

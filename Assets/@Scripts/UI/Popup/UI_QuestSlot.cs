@@ -1,0 +1,85 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class UI_QuestSlot : UI_Base
+{
+    enum Texts { QuestTitleText, ProgressText }
+    enum Images { ProgressBarFill }
+    enum Buttons { RewardButton }
+
+    Quest _quest;
+
+    public override bool Init()
+    {
+        if (!base.Init()) return false;
+
+        BindText(typeof(Texts));
+        BindButton(typeof(Buttons));
+        BindImage(typeof(Images));
+
+        GetButton((int)Buttons.RewardButton).gameObject.BindEvent(OnClickRewardButton);
+        return true;
+    }
+
+    public void SetQuest(Quest quest)
+    {
+        Init();
+
+        _quest = quest;
+        
+        int current = quest.Progress;
+        int goal = quest.QuestData.GoalCount;
+        float percent = (float)current / goal;
+        
+        GetText((int)Texts.QuestTitleText).text = quest.QuestData.Title;
+        GetText((int)Texts.ProgressText).text = $"{quest.Progress}/{quest.QuestData.GoalCount}";
+        GetImage((int)Images.ProgressBarFill).fillAmount = percent;
+        
+
+        bool canClaim = quest.State == QuestProgressState.Completed;
+        GetButton((int)Buttons.RewardButton).interactable = canClaim;
+    }
+
+    void OnClickRewardButton()
+    {
+        if (_quest.State == QuestProgressState.Completed)
+        {
+            QuestManager.Instance.GiveReward(_quest.QuestData.QuestId);
+            
+            if (_quest.QuestData.Type == QuestType.Daily)
+            {
+                // Daily 퀘스트는 클릭 시 맨 아래로 이동
+                transform.SetAsLastSibling();
+            }
+            // 업적일 경우 UI 갱신 (다음 퀘스트 등장)
+            if (_quest.QuestData.Type == QuestType.Achievement)
+            {
+                UI_QuestPopup popup = GetComponentInParent<UI_QuestPopup>();
+                popup?.CreateAchievementSlots();
+            }
+            else
+            {
+                SetQuest(_quest); // 일반 데일리 퀘스트는 상태만 갱신
+            }
+
+            SetQuest(_quest); // UI 갱신
+        }
+    }
+    
+    public void UpdateProgressUI()
+    {
+        if (_quest == null) return;
+
+        GetText((int)Texts.ProgressText).text = $"{_quest.Progress}/{_quest.QuestData.GoalCount}";
+
+        // 진행도 바 시각화 예시
+        float percent = (float)_quest.Progress / _quest.QuestData.GoalCount;
+        GetImage((int)Images.ProgressBarFill).fillAmount = percent;
+
+        // 완료되었으면 버튼 활성화
+        GetButton((int)Buttons.RewardButton).interactable = _quest.State == QuestProgressState.Completed;
+    }
+}
+

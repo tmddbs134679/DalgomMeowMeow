@@ -78,6 +78,9 @@ public class AICharacter : BaseObject
     Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
 
 
+    //UI 상에 보일 캐릭터들
+    public bool IsReplica = false;
+
     private void Awake()
     {
         ObjectType = Define.EObjectType.Character;
@@ -92,6 +95,9 @@ public class AICharacter : BaseObject
 
     private void Update()
     {
+        if (IsReplica)
+            return;
+
         _controller?.OnUpdate(Time.deltaTime);
         Exp = CharacterData.CurrentExp;
         if (BuildingPlacer.Instance.isAI) OnClick();
@@ -298,7 +304,6 @@ public class AICharacter : BaseObject
             nav.speed = tempSpeed;
         }
     }
-
 }
 
 
