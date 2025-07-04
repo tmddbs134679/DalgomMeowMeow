@@ -75,8 +75,6 @@ public class GameManager
     #endregion
 
 
-
-
     #region Save
 
     string _path;
@@ -132,7 +130,7 @@ public class GameManager
 
         // 초기 장비 생성
         Equipment hat = new Equipment("E0001");
-        Equipment hat2 = new Equipment("E0002");
+        Equipment hat2 = new Equipment("E0004");
         Equipment hat3 = new Equipment("E0003");
         Equipment ac1 = new Equipment("E0101");
         Equipment ac2 = new Equipment("E0102");

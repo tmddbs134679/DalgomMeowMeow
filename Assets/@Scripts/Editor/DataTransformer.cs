@@ -79,9 +79,7 @@ public class DataTransformer : EditorWindow
             cd.DataId = ConvertValue<string>(row[i++]);
             cd.PrefabLabel = ConvertValue<string>(row[i++]);
             cd.Name = ConvertValue<string>(row[i++]);
-            cd.Level = ConvertValue<int>(row[i++]);
             cd.MaxExp = ConvertValue<int>(row[i++]);
-            cd.curretExp = ConvertValue<int>(row[i++]);
             cd.MaxHp = ConvertValue<float>(row[i++]);
             cd.Atk = ConvertValue<float>(row[i++]);
             cd.MaxStamina = ConvertValue<float>(row[i++]);

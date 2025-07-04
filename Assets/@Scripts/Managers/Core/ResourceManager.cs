@@ -54,6 +54,11 @@ public class ResourceManager
     #region 어드레서블
     public void LoadAsync<T>(string key, Action<T> callback = null) where T : UnityEngine.Object
     {
+        //스프라이트인 경우 하위객체의 찐이름으로 로드하면 스프라이트로 로딩이 됌
+        string loadKey = key;
+        if (key.Contains(".sprite"))
+            loadKey = $"{key}[{key.Replace(".sprite", "")}]";
+
         var asyncOperation = Addressables.LoadAssetAsync<T>(key);
         asyncOperation.Completed += (op) =>
         {
@@ -76,11 +81,22 @@ public class ResourceManager
             int totalCount = op.Result.Count;
             foreach (var result in op.Result)
             {
-                LoadAsync<T>(result.PrimaryKey, (obj) =>
+                if (result.PrimaryKey.Contains(".sprite"))
                 {
-                    loadCount++;
-                    callback?.Invoke(result.PrimaryKey, loadCount, totalCount);
-                });
+                    LoadAsync<Sprite>(result.PrimaryKey, (obj) =>
+                    {
+                        loadCount++;
+                        callback?.Invoke(result.PrimaryKey, loadCount, totalCount);
+                    });
+                }
+                else
+                {
+                    LoadAsync<T>(result.PrimaryKey, (obj) =>
+                    {
+                        loadCount++;
+                        callback?.Invoke(result.PrimaryKey, loadCount, totalCount);
+                    });
+                }
             }
         };
     }

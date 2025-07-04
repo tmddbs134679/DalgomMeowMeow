@@ -43,14 +43,14 @@ public class Character
     {
         Id = id;
         Pos = new Vector3Data(position);
-        Level = Data?.Level ?? 1;
+        //Level = Data?.Level ?? 1;
         Hp = Data?.MaxHp ?? 100f; // 최대 체력
         MaxExp = Data?.MaxExp ?? 15f; // 최대 경험치    
-        CurrentExp = Data?.curretExp ?? 0; // 현재 경험치
+        //CurrentExp = Data?.curretExp ?? 0; // 현재 경험치
         CurrentState = EAIState.Idle;
         CurrentStamina = Data?.MaxStamina ?? 100f;
         MoveSpeed =  Data?.MoveSpeed ?? 1f;
-        WalkSpeed = Data?.WalkSpeed ?? 1.5f;
+       // WalkSpeed = Data?.WalkSpeed ?? 1.5f;
         EquippedItemIds = new();
     }
 

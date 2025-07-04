@@ -14,7 +14,7 @@ public class UIManager
     UI_Scene _sceneUI = null;
     public UI_Scene SceneUI { get { return _sceneUI; } }
 
-    //public event Action<int> OnTimeScaleChanged;
+    public Action<Character> OnCharacterChange;
     public GameObject Root
     {
         get

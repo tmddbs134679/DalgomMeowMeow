@@ -43,6 +43,7 @@ public class UI_CharacterInfo : UI_Base
         BindObject(typeof(GameObjects));
         BindButton(typeof(Buttons));
         BindText(typeof(Texts));
+        BindImage(typeof(Images));
 
         gameObject.BindEvent(OnClickObjectButton);
         return true;
@@ -57,7 +58,7 @@ public class UI_CharacterInfo : UI_Base
     public void SetInfo(Character character)
     {
         _characterInfo = character;
-        //GetImage((int)Images.CharacterImage).sprite = Managers.Resource.Load<Sprite>(_characterInfo.Data.IconLabel);
+        GetImage((int)Images.CharacterImage).sprite = Managers.Resource.Load<Sprite>(_characterInfo.Data.IconLabel);
         GetText((int)Texts.CharacterName).text = _characterInfo.Data.Name;
     }
 }
