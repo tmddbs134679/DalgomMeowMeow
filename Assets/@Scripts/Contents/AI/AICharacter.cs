@@ -72,7 +72,7 @@ public class AICharacter : BaseObject
     private float longPressThreshold = 0.5f;
     private bool longPressHandled = false;
     [SerializeField]
-    private LayerMask CharacterLayerMask;
+    private LayerMask groundLayer;
     private bool isFollowing;
 
     Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
@@ -114,24 +114,27 @@ public class AICharacter : BaseObject
                     if (clickStartTime > longPressThreshold)
                     {
                         isFollowing = true;
-                        animator.SetInteger("animation", 49);
                         isClicked = false;
-                        nav.speed = 0;
-                        if (isFollowing)
-                        {
-
-                        }
-
-                        Vector3 hitPoint = hit.point;
-                        Vector3 hitpoint = new Vector3(hitPoint.x, 2, hitPoint.z);
-                        this.transform.position = hitpoint;
                     }
 
                 }
             }
         }
+
+        if (isFollowing)
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if(Physics.Raycast(ray, out RaycastHit hit, 100f))
+            {
+                Vector3 mouspot = hit.point;
+                animator.SetInteger("animation", 49);
+                nav.speed = 0;
+                this.transform.position = new Vector3(mouspot.x, 2f, mouspot.z);
+            }
+        }
         if (Input.GetMouseButtonUp(0))
         {
+            isFollowing = false;
             SetAnimation(CurrentAnimation);
             if(tempSpeed > 0)
                 nav.speed = tempSpeed;
