@@ -135,6 +135,8 @@ public class AICharacter : BaseObject
         }
     }
 
+    //public void Setinfo(Character ch, )
+
     #region FSM Register
     public void ControllerRegister()
     {

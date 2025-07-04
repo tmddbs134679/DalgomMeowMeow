@@ -248,8 +248,7 @@ public class GameManager
         }
 
         Character newChar = new Character();
-        string uniqueId = Guid.NewGuid().ToString();
-        newChar.Init(uniqueId, spawnPos);         
+        newChar.Init(creatureId, spawnPos);         
         newChar.SetInfo(creatureData);
 
         AICharacter aiChar = Managers.Object.Spawn<AICharacter>(spawnPos, creatureId, isReplica: false);
