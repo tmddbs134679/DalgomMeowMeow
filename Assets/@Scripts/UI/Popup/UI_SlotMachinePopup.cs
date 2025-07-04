@@ -15,7 +15,10 @@ public class UI_SlotMachinePopup : UI_Popup
         Background
     }
     enum Texts { Slot1, Slot2, Slot3, Result }
+    
     private SlotMachineBuilding _targetBuilding;
+    private bool _isSpinning = false;
+    private int _finishedCount = 0;
     
     public override bool Init()
     {
@@ -26,7 +29,7 @@ public class UI_SlotMachinePopup : UI_Popup
         BindText(typeof(Texts));
         BindButton(typeof(Buttons));
 
-        GetButton((int)Buttons.SlotButton).gameObject.BindEvent(OnClickSlotButton);
+        GetButton((int)Buttons.SlotButton).gameObject.BindEvent(() => StartCoroutine(OnClickSlotButton()));
         GetButton((int)Buttons.Background).gameObject.BindEvent(OnClickBackgroundButton);
 
         return true;
@@ -37,28 +40,97 @@ public class UI_SlotMachinePopup : UI_Popup
         this.gameObject.SetActive(false);
     }
 
-    private void OnClickSlotButton()
+    private IEnumerator OnClickSlotButton()
     {
-        // 슬롯 실행 → 결과 받아오기
-        string[] result;
-        int reward;
-        SlotMachineBuilding slot = FindObjectOfType<SlotMachineBuilding>();
-        (result, reward) = slot.RollSlotAndReturn();
-        
-        GetText((int)Texts.Slot1).text = $"{result[0]}";
-        GetText((int)Texts.Slot2).text = $"{result[1]}";
-        GetText((int)Texts.Slot3).text = $"{result[2]}";
-        GetText((int)Texts.Result).text = reward switch
+        if (_isSpinning) yield break;
+        _isSpinning = true;
+
+        _finishedCount = 0;
+        for (int i = 0; i < 3; i++)
         {
-            > 0 => $"Congratulation: {reward} Gold",
-            < 0 => $"Bad Shark ! {reward} Gold!",
-            _ => "Try again!"
-        };
+            StartCoroutine(RollSingleSlot(i));
+        }
+
+        while (_finishedCount < 3)
+            yield return null;
+
+        FinalizeRewardText();
+
+        _isSpinning = false;
+        // yield return StartCoroutine(_targetBuilding.StartAllSlots());
+        //
+        // string[] result = _targetBuilding.CurrentResult; // CurrentResult는 public으로 만들어야 함
+        //
+        // GetText((int)Texts.Slot1).text = result[0];
+        // GetText((int)Texts.Slot2).text = result[1];
+        // GetText((int)Texts.Slot3).text = result[2];
+        //
+        // string a = result[0], b = result[1], c = result[2];
+        // string rewardText = "Try again!";
+        // if (a == b && b == c)
+        // {
+        //     var match = SlotMachineTestData.TestResults.Find(r => r.Symbol == a);
+        //     if (match != null)
+        //     {
+        //         if (match.RewardGold > 0)
+        //             rewardText = $"🎉 {a} x3 → +{match.RewardGold} Gold";
+        //         else
+        //             rewardText = $"🦈 {a} x3 → {match.RewardGold} Gold";
+        //     }
+        // }
+        //
+        // GetText((int)Texts.Result).text = rewardText;
 
     }
     
+    private IEnumerator RollSingleSlot(int index)
+    {
+        float duration = Random.Range(0.5f, 1.5f);
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            string symbol =  _targetBuilding.GetRandomResult().Symbol;
+            _targetBuilding.CurrentResult[index] = symbol;
+
+            // 슬롯 텍스트 즉시 반영
+            GetText((int)Texts.Slot1 + index).text = symbol;
+
+            elapsed += 0.1f;
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        // 멈출 때의 최종 결과
+        string final = _targetBuilding.GetRandomResult().Symbol;
+        _targetBuilding.CurrentResult[index] = final;
+        GetText((int)Texts.Slot1 + index).text = final;
+
+        _finishedCount++;
+    }
+    private void FinalizeRewardText()
+    {
+        string[] result = _targetBuilding.CurrentResult;
+
+        string a = result[0], b = result[1], c = result[2];
+        string rewardText = "Try again!";
+
+        if (a == b && b == c)
+        {
+            var match = SlotMachineTestData.TestResults.Find(r => r.Symbol == a);
+            if (match != null)
+            {
+                if (match.RewardGold > 0)
+                    rewardText = $" {a} x3 → +{match.RewardGold} Gold";
+                else
+                    rewardText = $" {a} x3 → {match.RewardGold} Gold";
+            }
+        }
+
+        GetText((int)Texts.Result).text = rewardText;
+    }
     public void SetTarget(SlotMachineBuilding building)
     {
         _targetBuilding = building;
     }
+    
 }
