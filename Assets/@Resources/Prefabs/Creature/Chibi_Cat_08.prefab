@@ -531,7 +531,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7050387334929120272
 RectTransform:
   m_ObjectHideFlags: 0
@@ -939,7 +939,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &4310216886538276087
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3295,8 +3295,11 @@ MonoBehaviour:
   isClicked: 0
   camera: {fileID: 0}
   tempSpeed: 0
-  infoButton: {fileID: 2597363366456217551}
+  infoButton: {fileID: 2016841483460451922}
   Exp: 0
+  CharacterLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!136 &87279126941025039
 CapsuleCollider:
   m_ObjectHideFlags: 0

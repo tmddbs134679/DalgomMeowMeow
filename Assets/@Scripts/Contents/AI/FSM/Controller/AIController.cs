@@ -60,7 +60,7 @@ public class AIController : BaseController<AICharacter>
           registedState.TryGetValue(Define.EAIState.Delivery, out BaseState<AICharacter> deliverBase) &&
             deliverBase is CharacterDeliverState deliveryTo)
         {
-            deliveryTo.SetDestination(targetPos - new Vector3(0,0,1.2f));
+            deliveryTo.SetDestination(targetPos - new Vector3(1.5f,0, 1.5f));
             ChangeState(Define.EAIState.Delivery);
             return;
         }
@@ -92,6 +92,7 @@ public class AIController : BaseController<AICharacter>
         if (action == Define.EAIState.Delivery)
         {
             var nearbuilding = FineOnlyBuilding(type);
+
             return nearbuilding.transform.position;
         }
 
@@ -102,7 +103,7 @@ public class AIController : BaseController<AICharacter>
 
         if (building == null)
         {
-            Debug.LogWarning($"[{type}] 타입 건물을 찾을 수 없습니다.");
+            ChangeState(Define.EAIState.Idle);
             return character.transform.position;
         }
 
@@ -285,6 +286,7 @@ public class AIController : BaseController<AICharacter>
             if (helloTimer > 30f)
             {
                 character._isHelloReady = true;
+                helloTimer = 0f; // 타이머 초기화
                 return;
             }
             helloTimer += deltaTime;
