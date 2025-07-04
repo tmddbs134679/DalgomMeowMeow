@@ -40,6 +40,10 @@ public class BuildingPlacer : MonoBehaviour
     public bool isLongPressAcceptBuild=false;
     public UI_BuildAction uI_BuildAction;
 
+    public bool isAI=false;
+
+    public Action OnBuildingCancel;
+
     private void Awake()
     {
         if (Instance == null)
@@ -53,6 +57,7 @@ public class BuildingPlacer : MonoBehaviour
     /// </summary>
     public void SelectBuildingType(int type)
     {
+        isAI = true;
         isSelect = true;
         buildMap.ColliderAllOff();
 
@@ -115,6 +120,8 @@ public class BuildingPlacer : MonoBehaviour
     /// </summary>
     public void AcceptBuild()
     {
+        isAI = false;
+         isSelect = false;
         _isGold = CheckBuildGold();
         CanPlaceBuilding();
         if (isLongPressAcceptBuild) _isGold = true;
@@ -150,6 +157,7 @@ public class BuildingPlacer : MonoBehaviour
     /// </summary>
     public void CancelBuild()
     {
+        isAI = false;
         isSelect = false;
 
         if (_tempOBJ != null)
