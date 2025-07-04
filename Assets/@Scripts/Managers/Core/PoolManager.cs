@@ -83,6 +83,7 @@ public class PoolManager
         if (_pools.ContainsKey(go.name) == false)
             return false;
 
+
         _pools[go.name].Push(go);
         return true;
     }
@@ -96,5 +97,11 @@ public class PoolManager
     {
         Pool pool = new Pool(original);
         _pools.Add(original.name, pool);
+    }
+
+    public bool IsPooled(GameObject go)
+    {
+        return _pools.ContainsKey(go.name); 
+                                                   
     }
 }
