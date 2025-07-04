@@ -24,4 +24,10 @@ public abstract class BaseObject : MonoBehaviour
     }
 
     public abstract void OnClick();
+
+
+        // 이거 넣어줘야함
+        //if(UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+        //    return;
+        
 }
