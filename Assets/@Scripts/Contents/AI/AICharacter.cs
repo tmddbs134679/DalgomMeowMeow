@@ -4,6 +4,7 @@ using Scripts.Contents.AI.FSM.State;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UIElements;
 
 public class AICharacter : BaseObject
 {
@@ -114,10 +115,10 @@ public class AICharacter : BaseObject
 
         currentEmo = skinnedMeshRenderer.materials[1];
         emo = AIManager.Instance.EmotionMaterials;
-
+        groundLayer = LayerMask.GetMask("Ground");
         AIManager.Instance.Register(this);
-        ControllerRegister();
-
+        if (_controller == null) { ControllerRegister(); }
+        characterAction.OnAction += Controller.OnActionPerformed;
         return true;
     }
 
@@ -211,7 +212,7 @@ public class AICharacter : BaseObject
     #endregion
 
     #region 캐릭터 제거 시
-    public void OnDisable()
+    public void OnDestroy()
     {
         Controller?.Dispose();
         AIManager.Instance.Unregister(this);
@@ -248,11 +249,8 @@ public class AICharacter : BaseObject
                 if (hit.collider.gameObject == this.gameObject &&
                     Controller.CurrentState() is not CharacterHelloState)
                 {
+                    clickStartTime = 0;
                     isClicked = !isClicked;
-                    if (isClicked)
-                    {
-                        tempSpeed = nav.speed;
-                    }
 
                 }
             }
@@ -276,8 +274,8 @@ public class AICharacter : BaseObject
                     clickStartTime += Time.deltaTime;
                     if (clickStartTime > longPressThreshold)
                     {
-                        isFollowing = true;
                         isClicked = false;
+                        isFollowing = true;
                     }
 
                 }
@@ -287,21 +285,21 @@ public class AICharacter : BaseObject
         if (isFollowing)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit, 1000f, groundLayer = 1 << 6))
+            if (Physics.Raycast(ray, out RaycastHit hit, 1000f, groundLayer))
             {
                 Vector3 mouspot = hit.point;
                 animator.SetInteger("animation", 49);
-                nav.speed = 0;
+                nav.enabled = false;
                 this.transform.position = new Vector3(mouspot.x, 2f, mouspot.z);
             }
         }
         if (Input.GetMouseButtonUp(0))
         {
+            if (isFollowing)
+                this.transform.position = new Vector3(transform.position.x, 0.616f, transform.position.z);
             isFollowing = false;
             SetAnimation(CurrentAnimation);
-            if (tempSpeed > 0)
-                nav.speed = tempSpeed;
-            this.transform.position = new Vector3(transform.position.x, 0.616f, transform.position.z);
+            nav.enabled = true;
             clickStartTime = 0f;
         }
     }
@@ -316,11 +314,15 @@ public class AICharacter : BaseObject
             animator.SetInteger("animation", 36);
         }
 
-        else if (!isClicked && tempSpeed > 0)
+        else if (!isClicked)
         {
+            if (Controller.CurrentState() is CharacterIdleState)
+                nav.speed = CharacterData.MoveSpeed;
+            else
+                nav.speed = CharacterData.MoveSpeed;
             SetAnimation(CurrentAnimation);
             infoButton.SetActive(false);
-            nav.speed = tempSpeed;
+            nav.enabled = true;
         }
     }
     #endregion 

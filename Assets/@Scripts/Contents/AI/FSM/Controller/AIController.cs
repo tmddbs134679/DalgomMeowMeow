@@ -16,7 +16,7 @@ public class AIController : BaseController<AICharacter>
     public AIController(AIState initState, AICharacter owner, Define.EAIState idle) : base(initState, owner, idle)
     {
         character = owner;
-        character.characterAction.OnAction += OnActionPerformed;
+        //character.characterAction.OnAction += OnActionPerformed;
     }
 
     public override void OnUpdate(float deltaTime)
@@ -40,7 +40,7 @@ public class AIController : BaseController<AICharacter>
 
     #region FSM - Action 처리
 
-    private void OnActionPerformed(Define.EAIState action)
+    public void OnActionPerformed(Define.EAIState action)
     {
         if (action == Define.EAIState.Idle)
         {
