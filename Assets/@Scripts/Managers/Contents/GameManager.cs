@@ -96,6 +96,10 @@ public class GameManager
                 if (Managers.Data.CreatureDic.TryGetValue(character.DataId, out var creatureData))
                     character.SetInfo(creatureData);
 
+
+                // 기존에 장착된 아이템이 있다면, 해당 아이템을 캐릭터에 다시 장착
+                SetInitEquipment(character);
+
                 _characters[character.DataId] = character;
             }
 
@@ -215,8 +219,23 @@ public class GameManager
         OnCharacterChanged?.Invoke();
     }
 
+    public void ApplyEquippedPreview(AICharacter aicharacter, Character character, Equipment equipment)
+    {
+        foreach (var equippedItem in character.EquippedItems)
+        {
+            // 예시: 갑옷의 경우 캐릭터에 적용
+            if (equippedItem.Key == equipment.EquipmentData.EquipmentType)
+            {
+              
+            }
+            // 다른 장비 종류도 비슷한 방식으로 처리
+        }
+    }
 
-
+    public void SetInitEquipment(Character character)
+    {
+       // List<Equipment> equipments = character.EquippedItems
+    }
 
     #endregion
 
@@ -264,6 +283,9 @@ public class GameManager
 
 
     #endregion
+
+
+
 
 }
 

@@ -54,7 +54,7 @@ public class ResourceManager
     #region 어드레서블
     public void LoadAsync<T>(string key, Action<T> callback = null) where T : UnityEngine.Object
     {
-        //스프라이트인 경우 하위객체의 찐이름으로 로드하면 스프라이트로 로딩이 됌
+     
         string loadKey = key;
         if (key.Contains(".sprite"))
             loadKey = $"{key}[{key.Replace(".sprite", "")}]";
