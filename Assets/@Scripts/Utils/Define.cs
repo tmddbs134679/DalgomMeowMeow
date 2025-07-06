@@ -112,7 +112,8 @@ public class Define
         Shop,
         STORAGE,
         Playing,
-        Load,
+        SlotMachine,
+        Road,
     
     }
 

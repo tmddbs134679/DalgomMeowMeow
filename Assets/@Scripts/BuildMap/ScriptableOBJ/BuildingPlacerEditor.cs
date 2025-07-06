@@ -32,7 +32,8 @@ public class BuildingPlacerEditor : Editor
             //  배열로 변환해서 넣기
             placer.buildingSO = soList.ToArray();
 
-            Managers.Debug.Log($" {soList.Count}개의 SO가 자동 등록되었습니다.", Define.EDebugType.None);
+//manager.debug.log 부르면 managers를 호출하는거라서 플레이전에 dondestroyedload 사용을 금지해야한다.
+            Debug.Log($" {soList.Count}개의 SO가 자동 등록되었습니다.");
             EditorUtility.SetDirty(placer);
         }
     }

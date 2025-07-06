@@ -5,6 +5,7 @@ using Unity.AI.Navigation;
 
 /// <summary>
 /// 저장되어있는 데이터맵 가져와서 그리드맵 생성및 타일에 정보전달
+/// 현재까지는 Collider ON,Off를 하기 위한 장치
 /// </summary>
 public class BuildMap : MonoBehaviour
 {
@@ -39,6 +40,7 @@ public class BuildMap : MonoBehaviour
             {
                 // 건설 후 추가 생성
                 GameObject go = Instantiate(data.testBaseBuilding.buildOBJ, new Vector3(data.posX, 1f, data.posZ), Quaternion.identity, transform);
+            go.GetComponent<DraggableObject>().buildMap = gameObject.GetComponent<BuildMap>();
                 go.GetComponent<Collider>().enabled = false;
                 _spawnedBuilds.Add(key, go);
             }
@@ -50,10 +52,16 @@ public class BuildMap : MonoBehaviour
         foreach (BuildData data in arrayBuildPos.baseBuilding)
         {
             Vector2 key = new Vector2(data.posX, data.posZ);
-            if (_spawnedBuilds.ContainsKey(key))
+
+            if (_spawnedBuilds.TryGetValue(key, out GameObject obj) && obj != null)
             {
-                _spawnedBuilds[key].GetComponent<Collider>().enabled = true;
+                Collider col = obj.GetComponent<Collider>();
+                if (col != null)
+                    col.enabled = true;
+                else
+                    Managers.Debug.Log($"ColliderAllOn null 발생", Define.EDebugType.Building);
             }
+
         }
 
 
@@ -63,9 +71,13 @@ public class BuildMap : MonoBehaviour
         foreach (BuildData data in arrayBuildPos.baseBuilding)
         {
             Vector2 key = new Vector2(data.posX, data.posZ);
-            if (_spawnedBuilds.ContainsKey(key))
+            if (_spawnedBuilds.TryGetValue(key, out GameObject obj) && obj != null)
             {
-                _spawnedBuilds[key].GetComponent<Collider>().enabled = false;
+                Collider col = obj.GetComponent<Collider>();
+                if (col != null)
+                    col.enabled = false;
+                else
+                    Managers.Debug.Log($"ColliderAllOn null 발생", Define.EDebugType.Building);
             }
         }
     }

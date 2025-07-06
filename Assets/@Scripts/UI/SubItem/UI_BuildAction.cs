@@ -47,15 +47,21 @@ public class UI_BuildAction : UI_Popup
     }
     private void AcceptBuild()
     {
-                if(BuildingPlacer.Instance.isLongPressAcceptBuild)BuildingPlacer.Instance.OnBuildingAccept?.Invoke();
-      if (BuildingPlacer.Instance.isLongPressAcceptBuild) Managers.UI.CloseAllPopupUI();
-        BuildingPlacer.Instance.AcceptBuild();
+        if (BuildingPlacer.Instance.isLongPressAcceptBuild) BuildingPlacer.Instance.OnBuildingAccept?.Invoke();
+        if (BuildingPlacer.Instance.isLongPressAcceptBuild) Managers.UI.CloseAllPopupUI();
+        if (BuildingPlacer.Instance.isLongPressAcceptBuild)
+        {
+            BuildingPlacer.Instance.AcceptLongPressBuild();
+        }
+        else
+        {
+                       BuildingPlacer.Instance.AcceptBuild(); 
+        }
     }
     private void CancelBuild()
     {
         BuildingPlacer.Instance.OnBuildingCancel?.Invoke();
         BuildingPlacer.Instance.CancelBuild();
-        (Managers.UI.SceneUI as UI_GameScene).gameObject.SetActive(true);
     }
     private void Update()
     {

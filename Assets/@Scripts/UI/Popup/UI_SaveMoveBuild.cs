@@ -35,6 +35,7 @@ CancelButton
         BindText(typeof(Texts));
 
         GetButton((int)Buttons.CancelButton).gameObject.BindEvent(CancelBuildUI);
+                BuildingPlacer.Instance.OnBuildingCancel += CancelBuildUI;
         return true;
     }
     void Start()
@@ -47,7 +48,7 @@ CancelButton
     private void CancelBuildUI()
     {
         BuildingPlacer.Instance.isSelect = false;
-        Managers.UI.CloseAllPopupUI();
+        Managers.UI.ClosePopupUI(this);
         (Managers.UI.SceneUI as UI_GameScene).gameObject.SetActive(true);
     }
 
