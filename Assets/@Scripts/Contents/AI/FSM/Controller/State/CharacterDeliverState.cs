@@ -22,7 +22,7 @@ namespace Scripts.Contents.AI.FSM.State
         {
             base.OnEnter();
             character.Controller.Move(targetPosition); // 이동할 위치 설정
-            character.nav.speed = character.CharacterData.MoveSpeed / 2;
+            character.SetSpeed(character.CharacterData.MoveSpeed / 2);
             character.SetAnimation(47);
             character.Controller.NavRotateTrue(); // 회전 활성화
 

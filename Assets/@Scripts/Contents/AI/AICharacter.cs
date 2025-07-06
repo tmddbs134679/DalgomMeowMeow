@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using Scripts.Contents.AI.FSM.State;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.TextCore.Text;
 using UnityEngine.UIElements;
 
 public class AICharacter : BaseObject
@@ -65,7 +67,7 @@ public class AICharacter : BaseObject
     private float longPressThreshold = 0.2f;
     [SerializeField]
     private LayerMask groundLayer;
-    private bool isFollowing;
+    public bool isFollowing;
 
     //UI 상에 보일 캐릭터들
     public bool IsReplica = false;
@@ -101,24 +103,30 @@ public class AICharacter : BaseObject
 
     private void LateUpdate()
     {
+        if (CharacterData == null)
+        {
+            Managers.Debug.Log("캐릭터 데이터 없음", Define.EDebugType.AI);
+            return;
+        }
         _controller?.OnLateUpdate(Time.deltaTime);
         Clicked();
     }
 
     public override bool Init()
     {
-
         nav = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         skinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
         characterAction = GetComponent<CharacterAction>();
 
+        groundLayer = LayerMask.GetMask("Ground");
+
         currentEmo = skinnedMeshRenderer.materials[1];
         emo = AIManager.Instance.EmotionMaterials;
-        groundLayer = LayerMask.GetMask("Ground");
-        AIManager.Instance.Register(this);
         if (_controller == null) { ControllerRegister(); }
-        characterAction.OnAction += Controller.OnActionPerformed;
+        Controller.Setup();
+        AIManager.Instance.Register(this);
+
         return true;
     }
 
@@ -219,7 +227,7 @@ public class AICharacter : BaseObject
     }
     #endregion
 
-    #region 애니메이션 설정
+    #region 애니메이션 / 속도 설정
     public void SetAnimation(int animNum)
     {
         animator.SetInteger("animation", animNum);
@@ -235,6 +243,12 @@ public class AICharacter : BaseObject
         mats[1] = emo[index];
         skinnedMeshRenderer.materials = mats;
     }
+
+    public void SetSpeed(float speed)
+    {
+        nav.speed = speed;
+    }
+
 
     #endregion
 
@@ -267,7 +281,8 @@ public class AICharacter : BaseObject
                 if (hit.collider.gameObject == this.gameObject &&
                     (
                     Controller.CurrentState() is CharacterIdleState ||
-                    Controller.CurrentState() is CharacterMoveToState)
+                    Controller.CurrentState() is CharacterMoveToState ||
+                    Controller.CurrentState() is CharacterDeliverState)
                     )
 
                 {
@@ -287,19 +302,25 @@ public class AICharacter : BaseObject
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit, 1000f, groundLayer))
             {
+                infoButton.SetActive(false);
                 Vector3 mouspot = hit.point;
                 animator.SetInteger("animation", 49);
-                nav.enabled = false;
+                SetSpeed(0);
                 this.transform.position = new Vector3(mouspot.x, 2f, mouspot.z);
             }
         }
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0)  && isFollowing)
         {
             if (isFollowing)
                 this.transform.position = new Vector3(transform.position.x, 0.616f, transform.position.z);
             isFollowing = false;
-            SetAnimation(CurrentAnimation);
-            nav.enabled = true;
+            if (Controller.CurrentState() is CharacterIdleState)
+                SetSpeed(CharacterData.WalkSpeed);
+            else if (Controller.CurrentState() is CharacterDeliverState)
+                SetSpeed(CharacterData.MoveSpeed / 2);
+            else
+                SetSpeed(CharacterData.MoveSpeed);
+                SetAnimation(CurrentAnimation);
             clickStartTime = 0f;
         }
     }
@@ -307,22 +328,24 @@ public class AICharacter : BaseObject
     {
         if (isClicked)
         {
-            nav.speed = 0;
+            SetSpeed(0);
             this.gameObject.transform.rotation = Quaternion.Euler(0, camera.transform.eulerAngles.y + 180, 0);
             head.transform.localRotation = quaternion.Euler(0, 0, -12);
             infoButton.SetActive(true);
             animator.SetInteger("animation", 36);
         }
 
-        else if (!isClicked)
+        else if (!isClicked && !isFollowing)
         {
             if (Controller.CurrentState() is CharacterIdleState)
-                nav.speed = CharacterData.MoveSpeed;
+                SetSpeed(CharacterData.WalkSpeed);
+            else if (Controller.CurrentState() is CharacterDeliverState)
+                SetSpeed(CharacterData.MoveSpeed / 2);
             else
-                nav.speed = CharacterData.MoveSpeed;
+                SetSpeed(CharacterData.MoveSpeed);
+
             SetAnimation(CurrentAnimation);
             infoButton.SetActive(false);
-            nav.enabled = true;
         }
     }
     #endregion 

@@ -13,8 +13,8 @@ public class GachaButton : MonoBehaviour
 
     private Vector3 GetRandomSpawnPosition()
     {
-        float x = Random.Range(-5f, 5f);
-        float z = Random.Range(-5f, 5f);
+        float x = 38f;
+        float z = 27f;
         return new Vector3(x, 0, z);
     }
 }

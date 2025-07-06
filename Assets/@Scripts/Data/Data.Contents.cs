@@ -18,12 +18,12 @@ namespace Data
         public float Atk;
         public float MaxStamina;
         public float MoveSpeed;
-        public float WalkSpeed;
         public float HpRate;
         public float AtkRate;
         public float MoveSpeedRate;
         public string IconLabel;
         public List<string> SkillTypeList;
+        public float WalkSpeed;
 
     }
 

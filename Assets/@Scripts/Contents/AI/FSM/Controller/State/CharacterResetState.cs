@@ -23,7 +23,7 @@ namespace Scripts.Contents.AI.FSM.State
             base.OnUpdate(deltaTime);
             if (elapsedTime > 0.5f)
             {
-            character.characterAction.Idle();
+                character.characterAction.Idle();
                 return;
 
             }

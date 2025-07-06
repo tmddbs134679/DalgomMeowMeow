@@ -33,7 +33,7 @@ public class Character
     public Vector3Data Pos { get; set; } = new Vector3Data();
     public float CurrentStamina { get; set; } 
     public float Hp { get; set; }
-    public float MoveSpeed { get; set; } = 3f;// 이동 속도
+    public float MoveSpeed { get; set; }
     public float WalkSpeed { get; set; } = 1.5f;
 
     public List<string> EquippedItemIds { get; set; } = new();
@@ -63,7 +63,7 @@ public class Character
         }
 
 
-        Data = data;
+        this.Data = data;
         MoveSpeed = Data.MoveSpeed;
         WalkSpeed = Data.WalkSpeed;
         DataId = data.DataId;

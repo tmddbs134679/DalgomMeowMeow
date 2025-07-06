@@ -13,10 +13,9 @@ public class AIController : BaseController<AICharacter>
     private float patrolTimer = 0f;
     private float helloTimer = 0f;
 
-    public AIController(AIState initState, AICharacter owner, Define.EAIState idle) : base(initState, owner, idle)
+    public AIController(AIState initState, AICharacter owner, Define.EAIState reset) : base(initState, owner, reset)
     {
         character = owner;
-        //character.characterAction.OnAction += OnActionPerformed;
     }
 
     public override void OnUpdate(float deltaTime)
@@ -28,6 +27,11 @@ public class AIController : BaseController<AICharacter>
     public override void OnLateUpdate(float deltaTime)
     {
         base.OnLateUpdate(deltaTime);
+    }
+
+    public void Setup()
+    {
+        character.characterAction.OnAction += OnActionPerformed;
     }
 
     public void Dispose()
@@ -68,6 +72,11 @@ public class AIController : BaseController<AICharacter>
         if (action == Define.EAIState.Playing)
         {
             targetPos -= new Vector3(0.9f, 0, 0); // 플레이 위치 조정
+        }
+
+        if (action == Define.EAIState.Resting)
+        {
+            targetPos -= new Vector3(0f, 0f, 0.3f);
         }
 
 
@@ -149,7 +158,17 @@ public class AIController : BaseController<AICharacter>
     public void NavRotateFalse()
     {
         character.nav.updateRotation = false;
-        character.transform.eulerAngles = new Vector3(0f, -146f, 0f); // 기본 회전값 설정
+        
+        if (currentState is CharacterRestState)
+        {
+            character.transform.eulerAngles = new Vector3(0f, -180f, 0f);
+        }
+
+        else
+        {
+            character.transform.eulerAngles = new Vector3(0f, -146f, 0f); // 기본 회전값 설정
+        }
+
     }
 
     public void NavRotateTrue()
@@ -244,13 +263,15 @@ public class AIController : BaseController<AICharacter>
             return;
         if (character.isClicked)
             return;
+        if (character.isFollowing) return;
 
         // 주변 모든 캐릭터 탐색
         foreach (var other in AIManager.Instance.AllCharacters)
         {
             if (other == character) continue; // 자기 자신 제외
             if (!other._isHelloReady) continue;
-            if(other.isClicked) continue; // 클릭된 캐릭터 제외
+            if(other.isClicked) continue;
+            if (other.isFollowing) continue;// 클릭된 캐릭터 제외
 
 
             float distance = Vector3.Distance(character.transform.position, other.transform.position);
