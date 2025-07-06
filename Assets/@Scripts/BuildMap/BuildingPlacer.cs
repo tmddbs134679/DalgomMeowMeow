@@ -86,10 +86,14 @@ public class BuildingPlacer : MonoBehaviour
     /// </summary>
     public void SetRefOBJ(GameObject tempOBJ)
     {
-        
         _saveBuildingSO = tempOBJ.GetComponent<BuildingBase>()?.BuildingData;
-        _tempOBJ =Instantiate(tempOBJ.GetComponent<BuildingBase>()?.BuildingData.previewOBJ);
-        _tempOBJ.SetActive(false);
+        _tempOBJ =Instantiate(tempOBJ.GetComponent<BuildingBase>()?.BuildingData.previewOBJ,
+                new Vector3(tempOBJ.transform.position.x,tempOBJ.transform.position.y + _heightOffset,tempOBJ.transform.position.z),
+                Quaternion.identity);
+                    tempDraggleOBJ = _tempOBJ.GetComponent<DraggableObject>();
+            tempDraggleOBJ.isDrag = true;
+            tempDraggleOBJ.isLongPress = false;
+        tempOBJ.SetActive(false);
         _CurBuildData = new BuildData
         {
             posX = _tempOBJ.transform.position.x,
