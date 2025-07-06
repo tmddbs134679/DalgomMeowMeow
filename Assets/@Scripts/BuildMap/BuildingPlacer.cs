@@ -175,7 +175,7 @@ _isGold = true;
 
             arrayBuildPos.GetBuildData(_buildData);//설치할 오브젝트
             arrayBuildPos.RemoveBuildData(_CurBuildData);//기존에 있던 오브젝트 제거
-
+            buildMap.Remove(new Vector2(_CurBuildData.posX,_CurBuildData.posZ));
             _tempOBJ.GetComponent<DraggableObject>().SetTileIsBuild();//새롭게 설치할 오브젝트의 타일
             ClearTile();//기존에 있던 오브젝트의 타일 제거
             _tempOBJ.GetComponent<DraggableObject>().isLongPress = true;

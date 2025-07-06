@@ -46,6 +46,10 @@ public class BuildMap : MonoBehaviour
             }
         }
     }
+    public void Remove(Vector2 key)
+    {
+            _spawnedBuilds.Remove(key);
+    }
 
     public void ColliderAllOn()
     {

@@ -22,6 +22,7 @@ public class UI_BuildPopup : UI_Popup
         SlotMachineButton,
         RoadButton,
         CancelButton,
+        UnlockAreaButton,
 
     }
 
@@ -58,6 +59,7 @@ public class UI_BuildPopup : UI_Popup
         GetButton((int)Buttons.StorageButton).gameObject.BindEvent(() => SelectBuildingType(5));
         GetButton((int)Buttons.SlotMachineButton).gameObject.BindEvent(() => SelectBuildingType(6));
         GetButton((int)Buttons.RoadButton).gameObject.BindEvent(() => SelectBuildingType(7));
+                GetButton((int)Buttons.UnlockAreaButton).gameObject.BindEvent(() => SelectBuildingType(8));
         GetButton((int)Buttons.CancelButton).gameObject.BindEvent(CancelBuildUI);
         Managers.Game.OnResourcesChagned += Refresh;
         BuildingPlacer.Instance.OnBuildingCancel += CancelBuildUI;

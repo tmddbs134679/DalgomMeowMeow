@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 
+///사용가능성 적은 스크립트
+/// </summary>
 public class BuildUI : MonoBehaviour
 {
 
@@ -9,7 +13,7 @@ public class BuildUI : MonoBehaviour
     public GameObject BuildTypeUI;
     public GameObject BuildActiontUI;
     public GameObject MoneyUI;
-public MoneyPreview moneyPreview;
+    public MoneyPreview moneyPreview;
 
     void Start()
     {
@@ -40,12 +44,12 @@ public MoneyPreview moneyPreview;
         MoneyUI.SetActive(false);
         BuildUi.SetActive(true);
     }
-    
+
     public void SelectBuildingType(int type)
     {
         OnSelectBuilding();
     }
-public bool CheckMoneyEnough()
+    public bool CheckMoneyEnough()
     {
         return moneyPreview.money > 0;
     }
