@@ -139,7 +139,6 @@ public class ObjectManager
             if (parent != null)
             {
                 go = Managers.Resource.Instantiate(prefabLabel, parent, false);
-                go.transform.localPosition = Vector3.zero;
             }
             else
             {
@@ -147,6 +146,7 @@ public class ObjectManager
                 go.transform.position = position;
             }
 
+        
             return go.GetOrAddComponent<EquipmentController>() as T;
         }
 

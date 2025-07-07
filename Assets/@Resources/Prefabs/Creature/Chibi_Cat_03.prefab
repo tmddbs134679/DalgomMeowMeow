@@ -1029,6 +1029,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8300693880116812485}
+  - {fileID: 513887896817843066}
   - {fileID: 5764780944306273358}
   - {fileID: 249456936528567156}
   - {fileID: 8761375728152747891}
@@ -2270,6 +2271,37 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.50653994, y: -0.05716282, z: 0.00000008940697}
     m_Extent: {x: 0.89047134, y: 0.5877145, z: 0.9307356}
   m_DirtyAABB: 0
+--- !u!1 &5511701812053520537
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 513887896817843066}
+  m_Layer: 26
+  m_Name: Accessory_equipment
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &513887896817843066
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5511701812053520537}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.5498939, y: -0.44454098, z: -0.5498939, w: -0.44454098}
+  m_LocalPosition: {x: 0.00000003347651, y: 0.000000006615356, z: -1.4119053e-17}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1595885046442731004}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5572283587557918201
 GameObject:
   m_ObjectHideFlags: 0
@@ -2873,11 +2905,11 @@ MonoBehaviour:
   sprite: {fileID: 0}
   hatBone: {fileID: 4335440602484753967}
   bagBone: {fileID: 8300693880116812485}
-  accessoryBone: {fileID: 8300693880116812485}
+  accessoryBone: {fileID: 513887896817843066}
   isClicked: 0
   camera: {fileID: 0}
   tempSpeed: 0
-  infoButton: {fileID: 8148946395146509985}
+  infoButton: {fileID: 1952568533348031385}
   Exp: 0
   groundLayer:
     serializedVersion: 2

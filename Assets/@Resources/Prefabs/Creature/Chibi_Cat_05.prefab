@@ -382,6 +382,37 @@ Transform:
   - {fileID: 7336705202007433541}
   m_Father: {fileID: 8782233636282508894}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1297078797658048522
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1434688739844305067}
+  m_Layer: 26
+  m_Name: Accessory_equipment
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1434688739844305067
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1297078797658048522}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.5498939, y: -0.44454098, z: -0.5498939, w: -0.44454098}
+  m_LocalPosition: {x: 0.00000003347651, y: 0.000000006615356, z: -1.4119053e-17}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6753265206019842896}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1375654741765582555
 GameObject:
   m_ObjectHideFlags: 0
@@ -1749,7 +1780,7 @@ MonoBehaviour:
   sprite: {fileID: 0}
   hatBone: {fileID: 6968226223222375576}
   bagBone: {fileID: 2010591167880181196}
-  accessoryBone: {fileID: 2010591167880181196}
+  accessoryBone: {fileID: 1434688739844305067}
   isClicked: 0
   camera: {fileID: 0}
   tempSpeed: 0
@@ -2637,6 +2668,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2010591167880181196}
+  - {fileID: 1434688739844305067}
   - {fileID: 8714292838436675246}
   - {fileID: 4654667775757236652}
   - {fileID: 7221724679721300281}

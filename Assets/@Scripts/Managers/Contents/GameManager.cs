@@ -136,20 +136,35 @@ public class GameManager
 
 
         // 초기 장비 생성
-        Equipment hat = new Equipment("E0001");
-        Equipment hat2 = new Equipment("E0004");
-        Equipment hat3 = new Equipment("E0003");
-        Equipment ac1 = new Equipment("E0101");
-        Equipment ac2 = new Equipment("E0102");
-        Equipment bag1 = new Equipment("E0201");
-        // Equipment bag2 = new Equipment("E0204");
-        OwnedEquipments.Add(hat);
-        OwnedEquipments.Add(hat2);
-        OwnedEquipments.Add(hat3);
-        OwnedEquipments.Add(ac1);
-        OwnedEquipments.Add(ac2);
-        OwnedEquipments.Add(bag1);
-        //OwnedEquipments.Add(bag2);
+        Equipment eq1 = new Equipment("E0001");
+        Equipment eq2 = new Equipment("E0002");
+        Equipment eq3 = new Equipment("E0003");
+        Equipment eq4 = new Equipment("E0004");
+        Equipment eq5 = new Equipment("E0005");
+        Equipment eq6 = new Equipment("E0006");
+        Equipment eq7 = new Equipment("E0007");
+        Equipment eq8 = new Equipment("E0101");
+        Equipment eq9 = new Equipment("E0102");
+        Equipment eq10 = new Equipment("E0201");
+        Equipment eq11 = new Equipment("E0202");
+        Equipment eq12 = new Equipment("E0203");
+        Equipment eq13 = new Equipment("E0205");
+        Equipment eq14 = new Equipment("E0207");
+        OwnedEquipments.Add(eq1);
+        OwnedEquipments.Add(eq2);
+        OwnedEquipments.Add(eq3);
+        OwnedEquipments.Add(eq4);
+        OwnedEquipments.Add(eq5);
+        OwnedEquipments.Add(eq6);
+        OwnedEquipments.Add(eq7);
+        OwnedEquipments.Add(eq8);
+        OwnedEquipments.Add(eq9);
+        OwnedEquipments.Add(eq10);
+        OwnedEquipments.Add(eq11);
+        OwnedEquipments.Add(eq12);
+        OwnedEquipments.Add(eq13);
+        OwnedEquipments.Add(eq14);
+ 
 
         SaveGame();
         IsLoaded = true;
@@ -384,6 +399,7 @@ public class GameManager
         }
 
         EquipmentController go = Managers.Object.Spawn<EquipmentController>(Vector3.zero, equipment.EquipmentData.DataId, bone);
+
     }
 
     private void DetachEquipmentFromCharacter(AICharacter ai, EEquipmentType type)
