@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BattleManager : MonoBehaviour
 {
     [SerializeField] private TeamCameraController _teamCameraController;
+    [SerializeField] private TeamController _teamController;
     [SerializeField] private GameObject _titleBtn;
     private StageManager _currentstage
         ;
@@ -21,6 +23,7 @@ public class BattleManager : MonoBehaviour
         _playerLayer = LayerMask.NameToLayer("Player");
         _teamCameraController = GetComponentInChildren<TeamCameraController>();
         _currentstage = GetComponentInParent<StageManager>();
+        _teamController = GetComponentInChildren<TeamController>();
     }
     private void Start()
     {
@@ -48,6 +51,8 @@ public class BattleManager : MonoBehaviour
         if (EnemyCount == 0 && !Victory)
         {
             Victory = true;
+            _teamController._members.ForEach(m => { m.AttackRange = 1; m.Agent.stoppingDistance = 1; });
+            _teamController._members.ForEach(m => m.CharacterObject.transform.localScale = new Vector3(1, 1, 1));
             _teamCameraController.Victory();
             Invoke(nameof(CallBtn), 2f);
 

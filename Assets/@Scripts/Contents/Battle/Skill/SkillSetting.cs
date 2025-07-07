@@ -49,6 +49,7 @@ public class SkillSetting : MonoBehaviour
             img.sprite = icon;
             cooldownImg.sprite = icon;
             cooldownImg.color = new Color(0, 0, 0, 0.5f); // 쿨타임 이미지 투명도 설정
+            cooldownImg.gameObject.SetActive(false); // 쿨타임 이미지 비활성화
         }
         else
             Debug.LogWarning($"❌ 아이콘 없음: {id}");

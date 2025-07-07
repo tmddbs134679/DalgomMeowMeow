@@ -14,11 +14,10 @@ public class BattleCharacter : BaseObject
     [SerializeField] private Color _damageColor = Color.red;
     [SerializeField] private float _detectRange = 10f;
     [SerializeField] private float _flashDuration = 0.05f;
-
     [SerializeField] protected SkinnedMeshRenderer[] _characterRenderer; // 캐릭터 렌더러
     [SerializeField] protected Vector3 _originalPosition; // 원래 위치 저장
     
-    public Transform CharacterObject; // 캐릭터 오브젝트 (프리팹)
+    
 
 
 
@@ -28,7 +27,9 @@ public class BattleCharacter : BaseObject
     public Transform LeftHandPivot;
     public Transform RightHandPivot;
     public Transform HeadPivot;
+    public Transform CharacterObject; // 캐릭터 오브젝트 (프리팹)
 
+    public HealthBarUI _hpBar;
     public GameObject damageTextPrefab; // 피격 시 데미지 텍스트 프리팹
 
     #region Stats
@@ -106,7 +107,6 @@ public class BattleCharacter : BaseObject
         Agent = GetComponent<NavMeshAgent>();
         Health = MaxHP;
         _heal = GetComponentInChildren<ParticleSystem>();
-        CharacterObject = GetComponentInChildren<Transform>(); 
     }
 
     protected virtual void Start()

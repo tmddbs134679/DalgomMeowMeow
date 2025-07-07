@@ -150,9 +150,9 @@ public class SkillLibrary : MonoBehaviour
         while (battleCharacter.CharacterObject.transform.localScale.x < 2f) // 최대 크기 2배
         {
             battleCharacter.CharacterObject.transform.localScale += new Vector3(0.1f, 0.1f, 0.1f); // 캐릭터 크기 증가
+            battleCharacter._hpBar.offset.y += 0.15f;
             yield return new WaitForSeconds(0.1f); // 0.1초 대기
         }
-        battleCharacter.CharacterObject.transform.localScale += new Vector3(2f, 2f, 2f); //2배 크기로 설정
     }
 
     private IEnumerator Shrink(BattleCharacter battleCharacter)
@@ -160,6 +160,7 @@ public class SkillLibrary : MonoBehaviour
         while (battleCharacter.CharacterObject.transform.localScale.x > 1f) // 원래 크기로 되돌리기
         {
             battleCharacter.CharacterObject.transform.localScale -= new Vector3(0.1f, 0.1f, 0.1f); // 캐릭터 크기 감소
+            battleCharacter._hpBar.offset.y -= 0.15f;
             yield return new WaitForSeconds(0.1f); // 0.1초 대기
         }
         battleCharacter.CharacterObject.transform.localScale = Vector3.one; // 최종적으로 원래 크기로 설정

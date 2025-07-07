@@ -14,8 +14,7 @@ public class PlayerCharacter : BattleCharacter
         SkillHash = Animator.StringToHash("Skills"); // 스킬 애니메이션 해시 초기화
         SkillTrigger = Animator.StringToHash("Skill"); // 스킬 애니메이션 이름 해시 초기화
         _characterRenderer = GetComponentsInChildren<SkinnedMeshRenderer>();
-
-
+        CharacterObject = transform.GetChild(0);
     }
     protected override void Start()
     {
