@@ -99,10 +99,11 @@ public class CookingBuilding : BuildingBase
     }
     public override void OnClick()
     {
-                if(UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
-           return;
-        UI_BuildingPopup popup = Managers.UI.ShowPopupUI<UI_BuildingPopup>();
-        popup.SetTarget(this); // 클릭한 CookingBuilding 인스턴스
+        if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+            return;
+       UI_BuildContent popup= Managers.UI.ShowPopupUI<UI_BuildContent>();
+        popup.SetTarget(gameObject);
+
     }
     public void Collect()
     {
