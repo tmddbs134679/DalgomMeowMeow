@@ -41,7 +41,7 @@ public class AICharacter : BaseObject
     public Sprite sprite;
 
     public Character CharacterData { get; set; }
-    [SerializeField] private Dictionary<EEquipmentType, Transform> equipmentBones = new Dictionary<EEquipmentType, Transform>();
+    [SerializeField] public Dictionary<EEquipmentType, Transform> equipmentBones = new Dictionary<EEquipmentType, Transform>();
 
     [HideInInspector]
     public int CurrentAnimation { get; set; }

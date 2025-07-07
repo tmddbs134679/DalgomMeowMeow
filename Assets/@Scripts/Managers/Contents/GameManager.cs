@@ -6,6 +6,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Experimental.Rendering;
+using UnityEngine.TextCore.Text;
 using UnityEngine.VFX;
 using static Define;
 
@@ -95,10 +96,6 @@ public class GameManager
             {
                 if (Managers.Data.CreatureDic.TryGetValue(character.DataId, out var creatureData))
                     character.SetInfo(creatureData);
-
-
-                // 기존에 장착된 아이템이 있다면, 해당 아이템을 캐릭터에 다시 장착
-                SetInitEquipment(character);
 
                 _characters[character.DataId] = character;
             }
@@ -199,42 +196,81 @@ public class GameManager
 
     #region Equipment
 
-    public void EquipItem(string characterId, EEquipmentType type, Equipment equipment)
+    //public void EquipItem(string characterId, EEquipmentType type, Equipment equipment)
+    //{
+    //    if (_characters.TryGetValue(characterId, out var character) == false)
+    //    {
+    //        Debug.LogError("못찾음");
+    //        return;
+    //    }
+
+    //    if (character.EquippedItems.TryGetValue(type, out Equipment prevEquip))
+    //    {
+    //        prevEquip.IsEquipped = false;
+    //    }
+
+    //    character.EquippedItems[type] = equipment;
+    //    equipment.IsEquipped = true;
+
+    //    SaveGame();
+    //    OnCharacterChanged?.Invoke();
+    //}
+
+    private void EquipCharacterVisual(AICharacter ai, Character character)
     {
-        if (_characters.TryGetValue(characterId, out var character) == false)
+        foreach (var equipId in character.EquippedItemIds)
         {
-            Debug.LogError("못찾음");
+            Equipment equip = OwnedEquipments.Find(e => e.key == equipId);
+            if (equip == null)
+            {
+                Debug.LogWarning($"장비 ID {equipId}를 찾을 수 없음");
+                continue;
+            }
+
+            // View용 오브젝트 장착 시각화
+            AttachEquipmentToCharacter(ai, equip);
+
+            // 캐릭터 데이터 딕셔너리도 구성
+            if (!character.EquippedItems.ContainsKey(equip.EquipmentData.EquipmentType))
+                character.EquippedItems[equip.EquipmentData.EquipmentType] = equip;
+        }
+    }
+
+    private void AttachEquipmentToCharacter(AICharacter ai, Equipment equipment)
+    {
+        var type = equipment.EquipmentData.EquipmentType;
+
+        if (!ai.equipmentBones.TryGetValue(type, out var bone))
+        {
+            Debug.LogWarning($"장비 본이 존재하지 않음: {type}");
             return;
         }
 
-        if (character.EquippedItems.TryGetValue(type, out Equipment prevEquip))
-        {
-            prevEquip.IsEquipped = false;
-        }
+        // 기존 장비 제거
+        Transform old = bone.Find("Equipped_" + type);
+        if (old != null)
+            GameObject.Destroy(old.gameObject);
 
-        character.EquippedItems[type] = equipment;
-        equipment.IsEquipped = true;
-
-        SaveGame();
-        OnCharacterChanged?.Invoke();
+       // GameObject go = GameObject.Instantiate(equipment.EquipmentData.Prefab, bone);
+        go.name = "Equipped_" + type;
     }
-
-    public void ApplyEquippedPreview(AICharacter aicharacter, Character character, Equipment equipment)
+    public void SetInitEquipment(AICharacter character)
     {
-        foreach (var equippedItem in character.EquippedItems)
+        foreach (var equipId in character.EquippedItemIds)
         {
-            // 예시: 갑옷의 경우 캐릭터에 적용
-            if (equippedItem.Key == equipment.EquipmentData.EquipmentType)
+            Equipment equip = OwnedEquipments.Find(e => e.key == equipId);
+            if (equip == null)
             {
-              
+                Debug.LogWarning($"장착 장비 {equipId} 를 못 찾음");
+                continue;
             }
-            // 다른 장비 종류도 비슷한 방식으로 처리
-        }
-    }
 
-    public void SetInitEquipment(Character character)
-    {
-       // List<Equipment> equipments = character.EquippedItems
+            // Dictionary에도 넣어줌
+            if (!character.CharacterData.EquippedItems.ContainsKey(equip.EquipmentData.EquipmentType))
+                character.CharacterData.EquippedItems.Add(equip.EquipmentData.EquipmentType, equip);
+
+            AttachEquipmentToCharacter(character, equip);
+        }
     }
 
     #endregion
