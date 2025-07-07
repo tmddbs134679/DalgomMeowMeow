@@ -92,6 +92,7 @@ public class AICharacter : BaseObject
         Init();
         camera = Camera.main;
         head = transform.Find("root/pelvis/spine_01/spine_02/spine_03/neck_01");
+        nav.enabled = true;
     }
 
     private void Update()

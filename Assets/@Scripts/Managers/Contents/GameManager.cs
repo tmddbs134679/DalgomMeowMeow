@@ -1,3 +1,4 @@
+using Data;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
@@ -114,13 +115,13 @@ public class GameManager
 
         // 최초 생성
         var newChar = new Character();
-        newChar.Init("A2002", new Vector3(39f, 0, 27f)); // 위치 초기값
-        newChar.SetInfo(Managers.Data.CreatureDic["A20002"]);
+        newChar.Init("A10002", new Vector3(39f, 0, 27f)); // 위치 초기값
+        newChar.SetInfo(Managers.Data.CreatureDic["A10002"]);
         _characters[newChar.Id] = newChar;
 
         var newChar1 = new Character();
-        newChar1.Init("A20006", new Vector3(38f, 0, 27f)); // 위치 초기값
-        newChar1.SetInfo(Managers.Data.CreatureDic["A20006"]);
+        newChar1.Init("A10006", new Vector3(38f, 0, 27f)); // 위치 초기값
+        newChar1.SetInfo(Managers.Data.CreatureDic["A10006"]);
         _characters[newChar1.Id] = newChar1;
 
         //var newChar2 = new Character();
@@ -128,10 +129,10 @@ public class GameManager
         //newChar2.SetInfo(Managers.Data.CreatureDic["A10003"]);
         //_characters[newChar2.Id] = newChar2;
 
-        //var newChar3 = new Character();
-        //newChar3.Init("A20001", new Vector3(38f, 0, 27f)); // 위치 초기값
-        //newChar3.SetInfo(Managers.Data.CreatureDic["A20001"]);
-        //_characters[newChar3.Id] = newChar3;
+        var newChar3 = new Character();
+        newChar3.Init("A10001", new Vector3(38f, 0, 27f)); // 위치 초기값
+        newChar3.SetInfo(Managers.Data.CreatureDic["A10001"]);
+        _characters[newChar3.Id] = newChar3;
 
 
 
@@ -402,17 +403,40 @@ public class GameManager
 
     public string DrawRandomCreature()
     {
-        var creatureDic = Managers.Data.CreatureDic;
+        var validList = new List<GachaData>();
+        foreach (var pair in Managers.Data.GachaDic)
+        {
+            if (pair.Value.Probability > 0)
+                validList.Add(pair.Value);
+        }
 
-        var pairList = new List<KeyValuePair<string, Data.CreatureData>>(creatureDic);
-                
-        int randIndex = UnityEngine.Random.Range(0, 10);
+        if (validList.Count == 0)
+        {
+            Debug.LogError("[Gacha] No available creatures!");
+            return null;
+        }
 
-        var randomPair = pairList[randIndex];
+        float totalProb = 0f;
+        foreach (var data in validList)
+            totalProb += data.Probability;
 
+        float rand = UnityEngine.Random.Range(0f, totalProb);
+        float sum = 0f;
 
-        return randomPair.Key;
+        foreach (var data in validList)
+        {
+            sum += data.Probability;
+            if (rand <= sum)
+            {
+                Debug.Log($"[Gacha] 당첨! {data.DataId}");
+                return data.DataId;
+            }
+        }
+
+        Debug.LogWarning("[Gacha] Fallback to first");
+        return validList[0].DataId;
     }
+
 
     public AICharacter SpawnRandomGachaCharacter(Vector3 spawnPos)
     {

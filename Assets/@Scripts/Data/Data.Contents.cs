@@ -166,4 +166,29 @@ namespace Data
 
 
     #endregion
+
+    #region GachaData
+    [Serializable]
+    public class GachaData
+    {
+        public string DataId;
+        public float Probability;
+    }
+
+    [Serializable]
+    public class GachaDataLoader : ILoader<string, GachaData>
+    {
+        public List<GachaData> Gachas = new();
+
+        public Dictionary<string, GachaData> MakeDict()
+        {
+            Dictionary<string, GachaData> dict = new();
+            foreach (var gacha in Gachas)
+            {
+                dict[gacha.DataId] = gacha;
+            }
+            return dict;
+        }
+    }
+    #endregion
 }
