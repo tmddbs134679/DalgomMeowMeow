@@ -37,7 +37,8 @@ public class UI_SlotMachinePopup : UI_Popup
 
     private void OnClickBackgroundButton()
     {
-        this.gameObject.SetActive(false);
+        // this.gameObject.SetActive(false);
+        Managers.UI.ClosePopupUI(this);
     }
 
     private IEnumerator OnClickSlotButton()
