@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.TextCore.Text;
 using UnityEngine.UIElements;
+using static Define;
 
 public class AICharacter : BaseObject
 {
@@ -43,6 +44,7 @@ public class AICharacter : BaseObject
     public Sprite sprite;
 
     public Character CharacterData { get; set; }
+    [SerializeField] public Dictionary<EEquipmentType, Transform> equipmentBones = new Dictionary<EEquipmentType, Transform>();
 
     [HideInInspector]
     public int CurrentAnimation { get; set; }
@@ -75,6 +77,7 @@ public class AICharacter : BaseObject
     private void Awake()
     {
         ObjectType = Define.EObjectType.Character;
+
     }
 
     private void Start()
@@ -126,6 +129,7 @@ public class AICharacter : BaseObject
         if (_controller == null) { ControllerRegister(); }
         Controller.Setup();
         AIManager.Instance.Register(this);
+        InitEquipBones();
 
         return true;
     }
@@ -348,7 +352,20 @@ public class AICharacter : BaseObject
             infoButton.SetActive(false);
         }
     }
-    #endregion 
+    #endregion
+
+
+    #region 장비설정
+
+    private void InitEquipBones()
+    {
+        equipmentBones[EEquipmentType.Hat] = transform.Find("head"); // 모자 -> Head
+        equipmentBones[EEquipmentType.Bag] = transform.Find("spine_03"); // 가방 -> Spine
+        equipmentBones[EEquipmentType.Accessory] = transform.Find("head"); // 악세사리 -> Hand
+    }
+
+
+    #endregion
 }
 
 

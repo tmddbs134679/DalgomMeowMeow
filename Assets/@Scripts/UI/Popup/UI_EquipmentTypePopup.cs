@@ -121,11 +121,14 @@ public class UI_EquipmentTypePopup : UI_Popup
 
         _aicharacter = Managers.Object.Spawn<AICharacter>(new Vector3(500, 500, 500), _character.DataId, true);
         //추가 장비 장착
-    
+
+
+       // Managers.Game.ApplyEquippedPreview(_aicharacter, _character, _equipment);
 
         GetText((int)Texts.CharacterNameText).text = _character.Data.Name;
 
     }
+
 
     //레플리카 캐릭터 클리어
     private void Clear()
