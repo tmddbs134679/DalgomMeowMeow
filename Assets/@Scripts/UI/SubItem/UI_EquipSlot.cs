@@ -62,8 +62,11 @@ public class UI_EquipSlot : UI_Base
 
         Sprite spr = Managers.Resource.Load<Sprite>(_equipment.EquipmentData.SpriteName);
         GetImage((int)Images.EquipImage).sprite = spr;
-       // GetImage((int)Images.CharacterOwnerImage).sprite = Managers.Resource.Load<Sprite>(_equipment.EquippedByCharacterId);
 
+        if (_equipment.EquippedByCharacterId != null)
+            GetImage((int)Images.CharacterOwnerImage).sprite = Managers.Resource.Load<Sprite>(_equipment.EquippedByCharacterId);
+        else
+            GetImage((int)Images.CharacterOwnerImage).sprite = null;
     }
 
 

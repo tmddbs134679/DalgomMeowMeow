@@ -31,7 +31,7 @@ public class UI_EquipmentInfoPopup : UI_Popup
     {
         EquipmentImage,
         EquippedCharacterImage,
-
+        UnEquipCharacterImage
 
     }
     #endregion
@@ -64,8 +64,14 @@ public class UI_EquipmentInfoPopup : UI_Popup
     private void OnEnable()
     {
         PopupOpenAnimation(GetObject((int)GameObjects.ContentObject));
+
+        Managers.Game.EquipInfoChanged += Refresh;
     }
 
+    private void OnDestroy()
+    {
+        Managers.Game.EquipInfoChanged -= Refresh;
+    }
     private void OnCilckEquipButton()
     {
         UI_EquipmentTypePopup popUp = Managers.UI.ShowPopupUI<UI_EquipmentTypePopup>();
@@ -98,11 +104,24 @@ public class UI_EquipmentInfoPopup : UI_Popup
     {
         // 장비가 착용된 상태
         GetObject((int)GameObjects.EquippedObject).gameObject.SetActive(isEquipped);
+        GetImage((int)Images.UnEquipCharacterImage).gameObject.SetActive(!isEquipped);
+        GetImage((int)Images.EquippedCharacterImage).gameObject.SetActive(isEquipped);
 
-        if(isEquipped)
-            GetText((int)Texts.EquipButonText).text = _equipText;
-        else
+        if (isEquipped)
+        {
+            GetImage((int)Images.EquippedCharacterImage).sprite = Managers.Resource.Load<Sprite>(_equipment.EquippedByCharacterId);
             GetText((int)Texts.EquipButonText).text = _equipChangeText;
+            
+        }
+        else
+        {
+            GetText((int)Texts.EquipButonText).text = _equipText;
+        }
+    }
 
+    private void Refresh()
+    {
+        GetImage((int)Images.EquippedCharacterImage).sprite = null;
+        SetEquipUIActive(false);
     }
 }

@@ -44,6 +44,13 @@ public class UI_EquipPopup : UI_Popup
         ToggleInit();
        
         OnClickTypeToggle();
+
+        Managers.Game.EquipInfoChanged += Refresh;
+    }
+
+    private void OnDestroy()
+    {
+        Managers.Game.EquipInfoChanged -= Refresh;
     }
     public override bool Init()
     {
@@ -121,5 +128,6 @@ public class UI_EquipPopup : UI_Popup
     private void Refresh()
     {
         GetObject((int)GameObjects.EquipGroupObject).DestroyChilds();
+        OnClickTypeToggle();
     }
 }
