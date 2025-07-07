@@ -17,9 +17,9 @@ public class UI_BattleScene : UI_Scene
     enum Buttons
     {
         PauseButton,
-        Skill_1,
-        Skill_2,
-        Skill_3,
+        Skill_1_Btn,
+        Skill_2_Btn,
+        Skill_3_Btn,
     }
     #endregion
 
@@ -35,6 +35,9 @@ public class UI_BattleScene : UI_Scene
 
         BindButton(typeof(Buttons));
         GetButton((int)Buttons.PauseButton).gameObject.BindEvent(OnClickPauseButton);
+        GetButton((int)Buttons.Skill_1_Btn).gameObject.BindEvent(OnClickSkill_1Button);
+        GetButton((int)Buttons.Skill_2_Btn).gameObject.BindEvent(OnClickSkill_2Button);
+        GetButton((int)Buttons.Skill_3_Btn).gameObject.BindEvent(OnClickSkill_3Button);
 
 
 

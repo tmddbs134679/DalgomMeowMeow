@@ -1,4 +1,4 @@
-﻿using Data;
+using Data;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +9,7 @@ public class StageManager : BaseObject
     [SerializeField] private GameObject[] _parent; //적들이 생성될 부모 오브젝트들
 
 
-    private int currentStageIndex;  //현재 스테이지 캐싱용
+    public int currentStageIndex;  //현재 스테이지 캐싱용
     private int _playerStageProceed; //플레이어의 진행 중인 스테이지(저장 가능한 정보) json으로 세이브 로드 가능
     private int _playerSelectedStage;
 

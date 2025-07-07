@@ -21,7 +21,14 @@ public class HealthBarUI : MonoBehaviour
 
     private void Update()
     {
-        if(BattleCharacter.Health <= 0 || BattleCharacter.IsDead)
+        if(Mathf.Approximately(BattleCharacter.CharacterObject.localScale.sqrMagnitude, 12f))
+            offset.y += 4f; //거대화시 y값 올리기
+        else if(Mathf.Approximately(BattleCharacter.CharacterObject.localScale.sqrMagnitude, 3f))
+            offset.y -= 4f; //작아지면 y값 내리기
+
+
+
+        if (BattleCharacter.Health <= 0 || BattleCharacter.IsDead)
         {
             this.gameObject.SetActive(false);
         }

@@ -56,7 +56,7 @@ public class SkillLibrary : MonoBehaviour
     {
         battleCharacter.UsingSkill = true;
         battleCharacter.SkillCooldown = 10f; // 스킬 쿨타임 설정
-        battleCharacter.Animator.SetTrigger(battleCharacter.Skill); // 스킬 애니메이션 트리거 활성화
+        battleCharacter.Animator.SetTrigger(battleCharacter.SkillTrigger); // 스킬 애니메이션 트리거 활성화
         yield return StartCoroutine(Heal(battleCharacter.transform.position)) ;
         battleCharacter.UsingSkill = false; // 스킬 사용 종료
     }
@@ -90,7 +90,7 @@ public class SkillLibrary : MonoBehaviour
         {
             battleCharacter.UsingSkill = true;
             battleCharacter.SkillCooldown = 5f; // 스킬 쿨타임 설정
-            battleCharacter.Animator.SetTrigger(battleCharacter.Skill); // 스킬 애니메이션 트리거 활성화
+            battleCharacter.Animator.SetTrigger(battleCharacter.SkillTrigger); // 스킬 애니메이션 트리거 활성화
             yield return StartCoroutine(EffectManager.Instance.Punch(battleCharacter.TargetLocation.position));
             Collider[] hits = Physics.OverlapSphere(battleCharacter.TargetLocation.position, 2.5f, LayerMask.GetMask("Enemy")); // 적 캐릭터 레이어 마스크 사용
             foreach (var hit in hits)
@@ -130,7 +130,7 @@ public class SkillLibrary : MonoBehaviour
     {
         battleCharacter.UsingSkill = true;
         battleCharacter.SkillCooldown = 25f; // 스킬 쿨타임 설정
-        battleCharacter.Animator.SetTrigger(battleCharacter.Skill); // 스킬 애니메이션 트리거 활성화
+        battleCharacter.Animator.SetTrigger(battleCharacter.SkillTrigger); // 스킬 애니메이션 트리거 활성화
         yield return StartCoroutine(Grow(battleCharacter)); // 캐릭터 크기 증가 코루틴 실행
         battleCharacter.AttackDamage *= 2f; // 공격력 2배 증가
         battleCharacter.AttackRange *= 4f; // 공격 범위 2배 증가
@@ -147,21 +147,22 @@ public class SkillLibrary : MonoBehaviour
 
     private IEnumerator Grow(BattleCharacter battleCharacter)
     {
-        while (battleCharacter.transform.localScale.x < 2f) // 최대 크기 2배
+        while (battleCharacter.CharacterObject.transform.localScale.x < 2f) // 최대 크기 2배
         {
-            battleCharacter.transform.localScale += new Vector3(0.1f, 0.1f, 0.1f); // 캐릭터 크기 증가
+            battleCharacter.CharacterObject.transform.localScale += new Vector3(0.1f, 0.1f, 0.1f); // 캐릭터 크기 증가
             yield return new WaitForSeconds(0.1f); // 0.1초 대기
         }
+        battleCharacter.CharacterObject.transform.localScale += new Vector3(2f, 2f, 2f); //2배 크기로 설정
     }
 
     private IEnumerator Shrink(BattleCharacter battleCharacter)
     {
-        while (battleCharacter.transform.localScale.x > 1f) // 원래 크기로 되돌리기
+        while (battleCharacter.CharacterObject.transform.localScale.x > 1f) // 원래 크기로 되돌리기
         {
-            battleCharacter.transform.localScale -= new Vector3(0.1f, 0.1f, 0.1f); // 캐릭터 크기 감소
+            battleCharacter.CharacterObject.transform.localScale -= new Vector3(0.1f, 0.1f, 0.1f); // 캐릭터 크기 감소
             yield return new WaitForSeconds(0.1f); // 0.1초 대기
         }
-        battleCharacter.transform.localScale = Vector3.one; // 최종적으로 원래 크기로 설정
+        battleCharacter.CharacterObject.transform.localScale = Vector3.one; // 최종적으로 원래 크기로 설정
     }
 
 
@@ -192,7 +193,7 @@ public class SkillLibrary : MonoBehaviour
     {
         battleCharacter.UsingSkill = true;
         battleCharacter.SkillCooldown = 15f; // 스킬 쿨타임 설정
-        battleCharacter.Animator.SetTrigger(battleCharacter.Skill); // 스킬 애니메이션 트리거 활성화
+        battleCharacter.Animator.SetTrigger(battleCharacter.SkillTrigger); // 스킬 애니메이션 트리거 활성화
         battleCharacter.Invincible = true; // 죽지 않도록 설정
         battleCharacter.UsingSkill = false;
         yield return StartCoroutine(EffectManager.Instance.Invincibility(battleCharacter.transform)); // 3초 동안 무적 상태 유지
@@ -208,7 +209,7 @@ public class SkillLibrary : MonoBehaviour
     {
         battleCharacter.UsingSkill = true;
         battleCharacter.SkillCooldown = 20f; // 스킬 쿨타임 설정
-        battleCharacter.Animator.SetTrigger(battleCharacter.Skill);
+        battleCharacter.Animator.SetTrigger(battleCharacter.SkillTrigger);
         yield return new WaitForSeconds(1f); // 스킬 애니메이션 딜레이
         Collider[] hits = Physics.OverlapSphere(battleCharacter.transform.position, 5f, LayerMask.GetMask("Player"));
         foreach (var hit in hits)
@@ -242,7 +243,7 @@ public class SkillLibrary : MonoBehaviour
         {
             battleCharacter.UsingSkill = true;
             battleCharacter.SkillCooldown = 20f; // 스킬 쿨타임 설정
-            battleCharacter.Animator.SetTrigger(battleCharacter.Skill); // 스킬 애니메이션 트리거 활성화
+            battleCharacter.Animator.SetTrigger(battleCharacter.SkillTrigger); // 스킬 애니메이션 트리거 활성화
             StartCoroutine(EffectManager.Instance.Rain(battleCharacter.TargetLocation.position));
             yield return StartCoroutine(RainDamage(battleCharacter, battleCharacter.TargetLocation.position)); // RainDamage 코루틴 실행
             battleCharacter.UsingSkill = false;

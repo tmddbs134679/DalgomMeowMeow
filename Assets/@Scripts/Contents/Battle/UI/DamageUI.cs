@@ -27,7 +27,7 @@ public class DamageUI : MonoBehaviour
         else if (layer == LayerMask.NameToLayer("Enemy"))
             text.color = Color.yellow;
 
-        text.text = Mathf.FloorToInt(damage).ToString();
+        text.text = Mathf.FloorToInt(damage*-1).ToString();
 
         transform.position = worldPos + Vector3.up * 2f;
 

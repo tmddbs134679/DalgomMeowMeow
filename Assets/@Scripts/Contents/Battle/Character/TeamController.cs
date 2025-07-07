@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -26,8 +26,10 @@ public class TeamController : MonoBehaviour
             GameOver();
             return;  // 더 이상 진행하지 않고 함수 종료
         }
+
         if(_battleManager.Victory && _currentState != TeamState.Returning)
         {
+            _members.ForEach(m => m.CharacterObject.transform.localScale = new Vector3(1,1,1));
             _members.ForEach(m => m.Animator.SetInteger("animation", 8));
             return;
         }

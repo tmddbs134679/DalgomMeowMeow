@@ -17,8 +17,10 @@ public class BattleCharacter : BaseObject
 
     [SerializeField] protected SkinnedMeshRenderer[] _characterRenderer; // 캐릭터 렌더러
     [SerializeField] protected Vector3 _originalPosition; // 원래 위치 저장
-
     
+    public Transform CharacterObject; // 캐릭터 오브젝트 (프리팹)
+
+
 
     public NavMeshAgent Agent { get; private set; } // NavMeshAgent 컴포넌트
     public Animator Animator; // 애니메이터 컴포넌트
@@ -37,11 +39,12 @@ public class BattleCharacter : BaseObject
     public float AttackRange = 1.5f;
     public bool Invincible = false; // 무적 상태 여부
     public string SkillID;
-    public int Skill;
+    public int Skillnum;
     public float SkillCooldown = 5f; // 스킬 쿨타임 (초 단위)
     #endregion
 
     public int AnimationHash;
+    public int SkillTrigger;
     public int SkillHash;
     
 
@@ -103,6 +106,7 @@ public class BattleCharacter : BaseObject
         Agent = GetComponent<NavMeshAgent>();
         Health = MaxHP;
         _heal = GetComponentInChildren<ParticleSystem>();
+        CharacterObject = GetComponentInChildren<Transform>(); 
     }
 
     protected virtual void Start()
@@ -322,7 +326,7 @@ public class BattleCharacter : BaseObject
 
     public void ActiveSkill()
     {
-        _skillLibrary.UseSkill(this.Skill, this); // 스킬 라이브러리에서 스킬 사용
+        _skillLibrary.UseSkill(this.Skillnum, this); // 스킬 라이브러리에서 스킬 사용
     }
        
 
