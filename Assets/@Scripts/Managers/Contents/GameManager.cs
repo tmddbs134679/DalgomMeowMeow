@@ -221,26 +221,6 @@ public class GameManager
 
     #region Equipment
 
-    //public void EquipItem(string characterId, EEquipmentType type, Equipment equipment)
-    //{
-    //    if (_characters.TryGetValue(characterId, out var character) == false)
-    //    {
-    //        Debug.LogError("못찾음");
-    //        return;
-    //    }
-
-    //    if (character.EquippedItems.TryGetValue(type, out Equipment prevEquip))
-    //    {
-    //        prevEquip.IsEquipped = false;
-    //    }
-
-    //    character.EquippedItems[type] = equipment;
-    //    equipment.IsEquipped = true;
-
-    //    SaveGame();
-    //    OnCharacterChanged?.Invoke();
-    //}
-
     public void EquipCharacterVisual(AICharacter ai, Character character, Equipment previewEquipment = null)
     {
         // 기존 장비 장착 (진짜 착용 정보 기반)

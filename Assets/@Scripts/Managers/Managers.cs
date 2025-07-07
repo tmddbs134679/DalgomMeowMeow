@@ -12,8 +12,14 @@ public class Managers : MonoBehaviour
     //Contents
     GameManager _game = new GameManager();
     FoodManager _food = new FoodManager();
+    TimeManager _time;
+
+
     public static GameManager Game { get { return Instance?._game; } }
     public static FoodManager Food { get { return Instance?._food; } }
+
+    public static TimeManager Time { get { return Instance?._time; } }
+
     //Core
     DataManager _data = new DataManager();
     ResourceManager _resource = new ResourceManager();
@@ -52,6 +58,7 @@ public class Managers : MonoBehaviour
             }
             DontDestroyOnLoad(go);
             s_instance = go.GetComponent<Managers>();
+            s_instance._time = go.AddComponent<TimeManager>();
           
         }
     }
