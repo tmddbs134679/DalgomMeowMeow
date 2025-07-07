@@ -178,6 +178,7 @@ public class AIController : BaseController<AICharacter>
 
     public async void Move(Vector3 destination)
     {
+        if (!character.nav.enabled || !character.nav.isOnNavMesh) return;
         await Task.Delay(10);
 
         character.nav.ResetPath();
@@ -186,6 +187,7 @@ public class AIController : BaseController<AICharacter>
 
     public void PatrolMove(float patrolDelay)
     {
+        if (!character.nav.enabled || !character.nav.isOnNavMesh) return;
         patrolTimer += Time.deltaTime;
 
         if (patrolTimer >= patrolDelay)
