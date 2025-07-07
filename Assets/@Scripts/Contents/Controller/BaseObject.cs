@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEditor.SearchService;
 using UnityEngine;
 using static Define;
-
 public abstract class BaseObject : MonoBehaviour
 {
     public EObjectType ObjectType { get; protected set; }
@@ -27,7 +26,6 @@ public abstract class BaseObject : MonoBehaviour
 
 
         // 이거 넣어줘야함
-        //if(UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
-        //    return;
+
         
 }

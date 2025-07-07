@@ -252,7 +252,7 @@ public class GameManager
             GameObject.Destroy(old.gameObject);
 
        // GameObject go = GameObject.Instantiate(equipment.EquipmentData.Prefab, bone);
-        go.name = "Equipped_" + type;
+      //  go.name = "Equipped_" + type;
     }
     public void SetInitEquipment(AICharacter character)
     {

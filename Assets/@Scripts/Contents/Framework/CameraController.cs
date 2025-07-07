@@ -128,6 +128,8 @@ public class CameraController : MonoBehaviour
 
     void ClickObject(Vector2 screenPos)
     {
+                    if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+                return;
         Ray ray = _cam.ScreenPointToRay(screenPos);
         if (Physics.Raycast(ray, out RaycastHit hit, 100f, layerMask))
         {
@@ -140,8 +142,7 @@ public class CameraController : MonoBehaviour
             Managers.Debug.Log($" Click on:  { hit.collider.name}", Define.EDebugType.None);
             var clickable = hit.collider.GetComponent<BaseObject>();
 
-            if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
-                return;
+
 
             if (clickable != null)
                 clickable.OnClick();
