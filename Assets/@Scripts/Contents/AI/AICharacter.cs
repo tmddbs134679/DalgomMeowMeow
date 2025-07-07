@@ -44,8 +44,14 @@ public class AICharacter : BaseObject
     public Sprite sprite;
 
     public Character CharacterData { get; set; }
+
+    #region Bone
+    [SerializeField] private Transform hatBone;
+    [SerializeField] private Transform bagBone;
+    [SerializeField] private Transform accessoryBone;
     [SerializeField] public Dictionary<EEquipmentType, Transform> equipmentBones = new Dictionary<EEquipmentType, Transform>();
 
+    #endregion
     [HideInInspector]
     public int CurrentAnimation { get; set; }
 
@@ -77,7 +83,7 @@ public class AICharacter : BaseObject
     private void Awake()
     {
         ObjectType = Define.EObjectType.Character;
-
+        InitEquipBones();
     }
 
     private void Start()
@@ -129,7 +135,7 @@ public class AICharacter : BaseObject
         if (_controller == null) { ControllerRegister(); }
         Controller.Setup();
         AIManager.Instance.Register(this);
-        InitEquipBones();
+   
 
         return true;
     }
@@ -359,9 +365,10 @@ public class AICharacter : BaseObject
 
     private void InitEquipBones()
     {
-        equipmentBones[EEquipmentType.Hat] = transform.Find("head"); // 모자 -> Head
-        equipmentBones[EEquipmentType.Bag] = transform.Find("spine_03"); // 가방 -> Spine
-        equipmentBones[EEquipmentType.Accessory] = transform.Find("head"); // 악세사리 -> Hand
+        equipmentBones[EEquipmentType.Hat] = hatBone;
+        equipmentBones[EEquipmentType.Bag] = bagBone;
+        equipmentBones[EEquipmentType.Accessory] = accessoryBone;
+
     }
 
 

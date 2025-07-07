@@ -977,14 +977,19 @@ MonoBehaviour:
   emo: []
   sprites: []
   sprite: {fileID: 0}
+  hatBone: {fileID: 4647289128412862887}
+  bagBone: {fileID: 7373809646481540441}
+  accessoryBone: {fileID: 7373809646481540441}
   isClicked: 0
   camera: {fileID: 0}
   tempSpeed: 0
   infoButton: {fileID: 3098667571601273523}
   Exp: 0
-  CharacterLayerMask:
+  groundLayer:
     serializedVersion: 2
     m_Bits: 0
+  isFollowing: 0
+  IsReplica: 0
 --- !u!136 &7227195154501785062
 CapsuleCollider:
   m_ObjectHideFlags: 0

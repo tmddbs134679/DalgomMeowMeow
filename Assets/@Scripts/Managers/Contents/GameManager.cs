@@ -3,6 +3,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Experimental.Rendering;
@@ -29,6 +31,10 @@ public class GameManager
 
 
     private Dictionary<string, Character> _characters = new Dictionary<string, Character>();
+
+    public Dictionary<string, Character> CharacterMap = new();
+    // 씬에 존재하는 실제 캐릭터 오브젝트
+    public Dictionary<string, AICharacter> CharactersInScene = new();
 
     public bool IsLoaded = false;
 
@@ -112,20 +118,20 @@ public class GameManager
         newChar.SetInfo(Managers.Data.CreatureDic["A20002"]);
         _characters[newChar.Id] = newChar;
 
-        var newChar1 = new Character();
-        newChar1.Init("A20006", new Vector3(38f, 0, 27f)); // 위치 초기값
-        newChar1.SetInfo(Managers.Data.CreatureDic["A20006"]);
-        _characters[newChar1.Id] = newChar1;
+        //var newChar1 = new Character();
+        //newChar1.Init("A20006", new Vector3(38f, 0, 27f)); // 위치 초기값
+        //newChar1.SetInfo(Managers.Data.CreatureDic["A20006"]);
+        //_characters[newChar1.Id] = newChar1;
 
-        var newChar2 = new Character();
-        newChar2.Init("A10003", new Vector3(38f, 0, 27f)); // 위치 초기값
-        newChar2.SetInfo(Managers.Data.CreatureDic["A10003"]);
-        _characters[newChar2.Id] = newChar2;
+        //var newChar2 = new Character();
+        //newChar2.Init("A10003", new Vector3(38f, 0, 27f)); // 위치 초기값
+        //newChar2.SetInfo(Managers.Data.CreatureDic["A10003"]);
+        //_characters[newChar2.Id] = newChar2;
 
-        var newChar3 = new Character();
-        newChar3.Init("A20001", new Vector3(38f, 0, 27f)); // 위치 초기값
-        newChar3.SetInfo(Managers.Data.CreatureDic["A20001"]);
-        _characters[newChar3.Id] = newChar3;
+        //var newChar3 = new Character();
+        //newChar3.Init("A20001", new Vector3(38f, 0, 27f)); // 위치 초기값
+        //newChar3.SetInfo(Managers.Data.CreatureDic["A20001"]);
+        //_characters[newChar3.Id] = newChar3;
 
 
 
@@ -171,7 +177,11 @@ public class GameManager
         string fileStr = File.ReadAllText(_path);
         GameData data = JsonConvert.DeserializeObject<GameData>(fileStr);
         if (data != null)
+        {
             _gameData = data;
+            CharacterMap = _gameData.CharacterList.ToDictionary(c => c.Id, c => c);
+        }
+          
 
         IsLoaded = true;
         return true;
@@ -216,26 +226,68 @@ public class GameManager
     //    OnCharacterChanged?.Invoke();
     //}
 
-    private void EquipCharacterVisual(AICharacter ai, Character character)
+    public void EquipCharacterVisual(AICharacter ai, Character character, Equipment previewEquipment = null)
     {
+        // 기존 장비 장착 (진짜 착용 정보 기반)
         foreach (var equipId in character.EquippedItemIds)
+        {
+            Equipment equip = OwnedEquipments.Find(e => e.key == equipId);
+            if (equip == null) continue;
+
+            AttachEquipmentToCharacter(ai, equip);
+        }
+
+        // 선택된 미리보기 장비 장착
+        if (previewEquipment != null)
+        {
+           // AttachPreviewToCharacter(ai, previewEquipment);
+        }
+    }
+
+    public void EquipmentItem(Character character, Equipment equipment)
+    {
+
+        var id = character.Id;
+        var targetCharacter = CharacterMap.ContainsKey(id) ? CharacterMap[id] : Characters.Find(c => c.Id == id);
+        if (targetCharacter == null) return;
+
+        // 1. 데이터 반영
+        var type = equipment.EquipmentData.EquipmentType;
+        targetCharacter.EquippedItems[type] = equipment;
+        if (!targetCharacter.EquippedItemIds.Contains(equipment.key))
+            targetCharacter.EquippedItemIds.Add(equipment.key);
+
+        // 2. 시각화
+        if (CharactersInScene.TryGetValue(id, out var ai))
+            AttachEquipmentToCharacter(ai, equipment);
+
+        equipment.EquippedByCharacterId = targetCharacter.DataId;
+        equipment.IsEquipped = true;
+
+        // 3. 이벤트/저장
+        OnCharacterChanged?.Invoke();
+        EquipInfoChanged?.Invoke();
+        SaveGame();
+    }
+
+    public void SetInitEquipment(AICharacter character)
+    {
+        foreach (var equipId in character.CharacterData.EquippedItemIds)
         {
             Equipment equip = OwnedEquipments.Find(e => e.key == equipId);
             if (equip == null)
             {
-                Debug.LogWarning($"장비 ID {equipId}를 찾을 수 없음");
+                Debug.LogWarning($"장착 장비 {equipId} 를 못 찾음");
                 continue;
             }
 
-            // View용 오브젝트 장착 시각화
-            AttachEquipmentToCharacter(ai, equip);
+            // Dictionary에도 넣어줌
+            if (!character.CharacterData.EquippedItems.ContainsKey(equip.EquipmentData.EquipmentType))
+                character.CharacterData.EquippedItems.Add(equip.EquipmentData.EquipmentType, equip);
 
-            // 캐릭터 데이터 딕셔너리도 구성
-            if (!character.EquippedItems.ContainsKey(equip.EquipmentData.EquipmentType))
-                character.EquippedItems[equip.EquipmentData.EquipmentType] = equip;
+            EquipmentItem(character.CharacterData, equip);
         }
     }
-
     private void AttachEquipmentToCharacter(AICharacter ai, Equipment equipment)
     {
         var type = equipment.EquipmentData.EquipmentType;
@@ -250,29 +302,8 @@ public class GameManager
         Transform old = bone.Find("Equipped_" + type);
         if (old != null)
             GameObject.Destroy(old.gameObject);
-
-       // GameObject go = GameObject.Instantiate(equipment.EquipmentData.Prefab, bone);
-      //  go.name = "Equipped_" + type;
+        EquipmentController go = Managers.Object.Spawn<EquipmentController>(Vector3.zero, equipment.EquipmentData.DataId, bone);
     }
-    public void SetInitEquipment(AICharacter character)
-    {
-        foreach (var equipId in character.EquippedItemIds)
-        {
-            Equipment equip = OwnedEquipments.Find(e => e.key == equipId);
-            if (equip == null)
-            {
-                Debug.LogWarning($"장착 장비 {equipId} 를 못 찾음");
-                continue;
-            }
-
-            // Dictionary에도 넣어줌
-            if (!character.CharacterData.EquippedItems.ContainsKey(equip.EquipmentData.EquipmentType))
-                character.CharacterData.EquippedItems.Add(equip.EquipmentData.EquipmentType, equip);
-
-            AttachEquipmentToCharacter(character, equip);
-        }
-    }
-
     #endregion
 
     #region Gacha

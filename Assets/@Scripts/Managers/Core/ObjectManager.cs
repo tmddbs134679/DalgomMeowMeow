@@ -50,45 +50,124 @@ public class ObjectManager
         Buildings.Clear();
     }
 
-    public T Spawn<T>(Vector3 position, string templateID, bool isReplica = false, string prefabName = "") where T : BaseObject
+    //public T Spawn<T>(Vector3 position, string templateID, bool isReplica = false, string prefabName = "") where T : BaseObject
+    //{
+    //    System.Type type = typeof(T);
+
+    //    if (type == typeof(AICharacter))
+    //    {
+    //        GameObject go = Managers.Resource.Instantiate(Managers.Data.CreatureDic[templateID].PrefabLabel, pooling: true);
+    //        go.transform.position = position;
+    //        AICharacter pc = go.GetOrAddComponent<AICharacter>();
+    //        if (isReplica)
+    //        {
+    //            pc.GetComponent<NavMeshAgent>().enabled = false;
+    //            pc.IsReplica = true;    
+    //        }
+    //        return pc as T;
+    //    }
+    //    else if(type == typeof(EquipmentController))
+    //    {
+    //        GameObject go = Managers.Resource.Instantiate(Managers.Data.EquipmentDic[templateID].Name, pooling: true);
+    //        go.transform.position = position;
+            
+    //    }
+       
+    //        return null;
+    //}
+
+    //public T Spawn<T>(Vector3 position, string templateID, Transform parent) where T : BaseObject
+    //{
+    //    System.Type type = typeof(T);
+    //    GameObject go;
+
+    //    // 부모가 있으면 parent 기준으로 생성
+    //    if (parent != null)
+    //    {
+    //        go = Managers.Resource.Instantiate(Managers.Data.CreatureDic[templateID].PrefabLabel, parent, false);
+    //        go.transform.localPosition = Vector3.zero;
+    //    }
+    //    else
+    //    {
+    //        go = Managers.Resource.Instantiate(Managers.Data.CreatureDic[templateID].PrefabLabel);
+    //        go.transform.position = position;
+    //    }
+
+    //    if (type == typeof(AICharacter))
+    //        return go.GetOrAddComponent<AICharacter>() as T;
+
+    //    return null;
+    //}
+
+
+    public T Spawn<T>(Vector3 position, string templateID, Transform parent = null, bool isReplica = false, string prefabName = "") where T : BaseObject
     {
         System.Type type = typeof(T);
+        GameObject go = null;
 
+        // 1. 캐릭터 (AICharacter)
         if (type == typeof(AICharacter))
         {
-            GameObject go = Managers.Resource.Instantiate(Managers.Data.CreatureDic[templateID].PrefabLabel, pooling: true);
-            go.transform.position = position;
-            AICharacter pc = go.GetOrAddComponent<AICharacter>();
+            string prefabLabel = Managers.Data.CreatureDic[templateID].PrefabLabel;
+
+            if (parent != null)
+            {
+                go = Managers.Resource.Instantiate(prefabLabel, parent, false);
+                go.transform.localPosition = Vector3.zero;
+            }
+            else
+            {
+                go = Managers.Resource.Instantiate(prefabLabel, pooling: true);
+                go.transform.position = position;
+            }
+
+            AICharacter ai = go.GetOrAddComponent<AICharacter>();
+
             if (isReplica)
             {
-                pc.GetComponent<NavMeshAgent>().enabled = false;
-                pc.IsReplica = true;    
+                ai.GetComponent<NavMeshAgent>().enabled = false;
+                ai.IsReplica = true;
             }
-            return pc as T;
+
+            return ai as T;
         }
-       
-            return null;
-    }
 
-    public T Spawn<T>(Vector3 position, string templateID, Transform parent) where T : BaseObject
-    {
-        System.Type type = typeof(T);
-        GameObject go;
-
-        // 부모가 있으면 parent 기준으로 생성
-        if (parent != null)
+        // 2. 장비 (EquipmentController)
+        else if (type == typeof(EquipmentController))
         {
-            go = Managers.Resource.Instantiate(Managers.Data.CreatureDic[templateID].PrefabLabel, parent, false);
-            go.transform.localPosition = Vector3.zero;
-        }
-        else
-        {
-            go = Managers.Resource.Instantiate(Managers.Data.CreatureDic[templateID].PrefabLabel);
-            go.transform.position = position;
+            string prefabLabel = templateID;
+            if (parent != null)
+            {
+                go = Managers.Resource.Instantiate(prefabLabel, parent, false);
+                go.transform.localPosition = Vector3.zero;
+            }
+            else
+            {
+                go = Managers.Resource.Instantiate(prefabLabel, pooling: true);
+                go.transform.position = position;
+            }
+
+            return go.GetOrAddComponent<EquipmentController>() as T;
         }
 
-        if (type == typeof(AICharacter))
-            return go.GetOrAddComponent<AICharacter>() as T;
+        else if (type == typeof(BattleCharacter))
+        {
+            // 부모가 있으면 parent 기준으로 생성
+            if (parent != null)
+            {
+                go = Managers.Resource.Instantiate(Managers.Data.CreatureDic[templateID].PrefabLabel, parent, false);
+                go.transform.localPosition = Vector3.zero;
+            }
+            else
+            {
+                go = Managers.Resource.Instantiate(Managers.Data.CreatureDic[templateID].PrefabLabel);
+                go.transform.position = position;
+            }
+
+            if (type == typeof(AICharacter))
+                return go.GetOrAddComponent<AICharacter>() as T;
+
+        }
 
         return null;
     }

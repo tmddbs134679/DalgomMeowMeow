@@ -78,8 +78,11 @@ public class UI_EquipmentTypePopup : UI_Popup
 
     private void OnClickEquipButton()
     {
-        Clear();
+      
         Managers.Debug.Log("장비 착용", EDebugType.UI);
+
+        Managers.Game.EquipmentItem(_character, _equipment);
+
         Managers.UI.ClosePopupUI(this);
     }
 
@@ -119,11 +122,10 @@ public class UI_EquipmentTypePopup : UI_Popup
 
         _character = character;
 
-        _aicharacter = Managers.Object.Spawn<AICharacter>(new Vector3(500, 500, 500), _character.DataId, true);
+        _aicharacter = Managers.Object.Spawn<AICharacter>(new Vector3(500, 500, 500), _character.DataId, null, true);
         //추가 장비 장착
 
-
-       // Managers.Game.ApplyEquippedPreview(_aicharacter, _character, _equipment);
+        Managers.Game.EquipCharacterVisual(_aicharacter, _character, _equipment);
 
         GetText((int)Texts.CharacterNameText).text = _character.Data.Name;
 
