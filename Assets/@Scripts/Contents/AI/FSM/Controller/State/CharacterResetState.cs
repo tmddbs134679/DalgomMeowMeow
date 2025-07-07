@@ -1,4 +1,4 @@
-﻿using Unity.VisualScripting;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 
@@ -21,9 +21,9 @@ namespace Scripts.Contents.AI.FSM.State
         public override void OnUpdate(float deltaTime)
         {
             base.OnUpdate(deltaTime);
-            if (elapsedTime > 0.1f)
+            if (elapsedTime > 0.5f)
             {
-            character.characterAction.Idle();
+                character.characterAction.Idle();
                 return;
 
             }

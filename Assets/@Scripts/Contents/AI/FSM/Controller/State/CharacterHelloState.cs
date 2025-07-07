@@ -16,7 +16,9 @@ namespace Scripts.Contents.AI.FSM.State
         {
             base.OnEnter();
             character._isHelloReady = false; // Hello 준비 상태를 false로 설정
-            character.nav.speed = 0;
+            character.nav.isStopped = true;
+            character.nav.ResetPath();
+            character.SetSpeed(0);
             character.SetAnimation(3); 
         }
 
@@ -35,6 +37,7 @@ namespace Scripts.Contents.AI.FSM.State
         public override void OnExit()
         {
             base.OnExit();
+            character.nav.isStopped = false;
         }
     }
 }

@@ -116,15 +116,15 @@ public class GameManager
         newChar1.SetInfo(Managers.Data.CreatureDic["A20006"]);
         _characters[newChar1.Id] = newChar1;
 
-        //var newChar2 = new Character();
-        //newChar2.Init("A10003", new Vector3(10f, 0, 8f)); // 위치 초기값
-        //newChar2.SetInfo(Managers.Data.CreatureDic["A10003"]);
-        //_characters[newChar2.Id] = newChar2;
+        var newChar2 = new Character();
+        newChar2.Init("A10003", new Vector3(38f, 0, 27f)); // 위치 초기값
+        newChar2.SetInfo(Managers.Data.CreatureDic["A10003"]);
+        _characters[newChar2.Id] = newChar2;
 
-        //var newChar3 = new Character();
-        //newChar3.Init("A20001", new Vector3(10f, 0, 8f)); // 위치 초기값
-        //newChar3.SetInfo(Managers.Data.CreatureDic["A20001"]);
-        //_characters[newChar3.Id] = newChar3;
+        var newChar3 = new Character();
+        newChar3.Init("A20001", new Vector3(38f, 0, 27f)); // 위치 초기값
+        newChar3.SetInfo(Managers.Data.CreatureDic["A20001"]);
+        _characters[newChar3.Id] = newChar3;
 
 
 
@@ -246,8 +246,8 @@ public class GameManager
         }
 
         Character newChar = new Character();
-        newChar.Init(creatureId, spawnPos);         
         newChar.SetInfo(creatureData);
+        newChar.Init(creatureId, spawnPos);
 
         AICharacter aiChar = Managers.Object.Spawn<AICharacter>(spawnPos, creatureId, isReplica: false);
 
@@ -257,7 +257,7 @@ public class GameManager
         }
 
         aiChar.SetInfo(newChar);
-
+        Init();
 
         return aiChar;
     }

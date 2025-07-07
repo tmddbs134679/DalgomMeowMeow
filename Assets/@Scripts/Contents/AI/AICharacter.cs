@@ -2,8 +2,11 @@ using System;
 using System.Collections.Generic;
 using Scripts.Contents.AI.FSM.State;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.TextCore.Text;
+using UnityEngine.UIElements;
 
 public class AICharacter : BaseObject
 {
@@ -64,7 +67,7 @@ public class AICharacter : BaseObject
     private float longPressThreshold = 0.2f;
     [SerializeField]
     private LayerMask groundLayer;
-    private bool isFollowing;
+    public bool isFollowing;
 
     //UI 상에 보일 캐릭터들
     public bool IsReplica = false;
@@ -100,23 +103,29 @@ public class AICharacter : BaseObject
 
     private void LateUpdate()
     {
+        if (CharacterData == null)
+        {
+            Managers.Debug.Log("캐릭터 데이터 없음", Define.EDebugType.AI);
+            return;
+        }
         _controller?.OnLateUpdate(Time.deltaTime);
         Clicked();
     }
 
     public override bool Init()
     {
-
         nav = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         skinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
         characterAction = GetComponent<CharacterAction>();
 
+        groundLayer = LayerMask.GetMask("Ground");
+
         currentEmo = skinnedMeshRenderer.materials[1];
         emo = AIManager.Instance.EmotionMaterials;
-
+        if (_controller == null) { ControllerRegister(); }
+        Controller.Setup();
         AIManager.Instance.Register(this);
-        ControllerRegister();
 
         return true;
     }
@@ -211,14 +220,14 @@ public class AICharacter : BaseObject
     #endregion
 
     #region 캐릭터 제거 시
-    public void OnDisable()
+    public void OnDestroy()
     {
         Controller?.Dispose();
         AIManager.Instance.Unregister(this);
     }
     #endregion
 
-    #region 애니메이션 설정
+    #region 애니메이션 / 속도 설정
     public void SetAnimation(int animNum)
     {
         animator.SetInteger("animation", animNum);
@@ -235,6 +244,12 @@ public class AICharacter : BaseObject
         skinnedMeshRenderer.materials = mats;
     }
 
+    public void SetSpeed(float speed)
+    {
+        nav.speed = speed;
+    }
+
+
     #endregion
 
     #region 클릭 상호작용
@@ -248,11 +263,8 @@ public class AICharacter : BaseObject
                 if (hit.collider.gameObject == this.gameObject &&
                     Controller.CurrentState() is not CharacterHelloState)
                 {
+                    clickStartTime = 0;
                     isClicked = !isClicked;
-                    if (isClicked)
-                    {
-                        tempSpeed = nav.speed;
-                    }
 
                 }
             }
@@ -269,15 +281,16 @@ public class AICharacter : BaseObject
                 if (hit.collider.gameObject == this.gameObject &&
                     (
                     Controller.CurrentState() is CharacterIdleState ||
-                    Controller.CurrentState() is CharacterMoveToState)
+                    Controller.CurrentState() is CharacterMoveToState ||
+                    Controller.CurrentState() is CharacterDeliverState)
                     )
 
                 {
                     clickStartTime += Time.deltaTime;
                     if (clickStartTime > longPressThreshold)
                     {
-                        isFollowing = true;
                         isClicked = false;
+                        isFollowing = true;
                     }
 
                 }
@@ -287,21 +300,27 @@ public class AICharacter : BaseObject
         if (isFollowing)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit, 1000f, groundLayer = 1 << 6))
+            if (Physics.Raycast(ray, out RaycastHit hit, 1000f, groundLayer))
             {
+                infoButton.SetActive(false);
                 Vector3 mouspot = hit.point;
                 animator.SetInteger("animation", 49);
-                nav.speed = 0;
+                SetSpeed(0);
                 this.transform.position = new Vector3(mouspot.x, 2f, mouspot.z);
             }
         }
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0)  && isFollowing)
         {
+            if (isFollowing)
+                this.transform.position = new Vector3(transform.position.x, 0.616f, transform.position.z);
             isFollowing = false;
-            SetAnimation(CurrentAnimation);
-            if (tempSpeed > 0)
-                nav.speed = tempSpeed;
-            this.transform.position = new Vector3(transform.position.x, 0.616f, transform.position.z);
+            if (Controller.CurrentState() is CharacterIdleState)
+                SetSpeed(CharacterData.WalkSpeed);
+            else if (Controller.CurrentState() is CharacterDeliverState)
+                SetSpeed(CharacterData.MoveSpeed / 2);
+            else
+                SetSpeed(CharacterData.MoveSpeed);
+                SetAnimation(CurrentAnimation);
             clickStartTime = 0f;
         }
     }
@@ -309,18 +328,24 @@ public class AICharacter : BaseObject
     {
         if (isClicked)
         {
-            nav.speed = 0;
+            SetSpeed(0);
             this.gameObject.transform.rotation = Quaternion.Euler(0, camera.transform.eulerAngles.y + 180, 0);
             head.transform.localRotation = quaternion.Euler(0, 0, -12);
             infoButton.SetActive(true);
             animator.SetInteger("animation", 36);
         }
 
-        else if (!isClicked && tempSpeed > 0)
+        else if (!isClicked && !isFollowing)
         {
+            if (Controller.CurrentState() is CharacterIdleState)
+                SetSpeed(CharacterData.WalkSpeed);
+            else if (Controller.CurrentState() is CharacterDeliverState)
+                SetSpeed(CharacterData.MoveSpeed / 2);
+            else
+                SetSpeed(CharacterData.MoveSpeed);
+
             SetAnimation(CurrentAnimation);
             infoButton.SetActive(false);
-            nav.speed = tempSpeed;
         }
     }
     #endregion 
