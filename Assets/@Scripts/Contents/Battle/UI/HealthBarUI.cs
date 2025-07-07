@@ -6,6 +6,7 @@ public class HealthBarUI : MonoBehaviour
     public Transform target; // 캐릭터 Transform
     public Vector3 offset = new Vector3(0, 2.25f, 0); // 머리 위 위치 조정
     public Image HpBar;
+    public bool IsGiant;
     public BattleCharacter BattleCharacter => target.GetComponent<BattleCharacter>();
     public BattleManager BattleManager;
 
@@ -21,7 +22,7 @@ public class HealthBarUI : MonoBehaviour
 
     private void Update()
     {
-        if(BattleCharacter.Health <= 0 || BattleCharacter.IsDead)
+        if (BattleCharacter.Health <= 0 || BattleCharacter.IsDead)
         {
             this.gameObject.SetActive(false);
         }

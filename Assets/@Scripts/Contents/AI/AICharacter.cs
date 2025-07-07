@@ -5,6 +5,7 @@ using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.EventSystems;
 using UnityEngine.TextCore.Text;
 using UnityEngine.UIElements;
 using static Define;
@@ -117,7 +118,6 @@ public class AICharacter : BaseObject
             Managers.Debug.Log("캐릭터 데이터 없음", Define.EDebugType.AI);
             return;
         }
-        _controller?.OnLateUpdate(Time.deltaTime);
         Clicked();
     }
 
@@ -153,8 +153,6 @@ public class AICharacter : BaseObject
             ControllerRegister();
         }
     }
-
-    //public void Setinfo(Character ch, )
 
     #region FSM Register
     public void ControllerRegister()
@@ -265,6 +263,8 @@ public class AICharacter : BaseObject
     #region 클릭 상호작용
     public override void OnClick()
     {
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
         if (Input.GetMouseButtonDown(0))
         {
                                if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
@@ -285,6 +285,8 @@ public class AICharacter : BaseObject
 
     private void LongPressClick()
     {
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
         if (Input.GetMouseButton(0))
         {
                                if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -9,7 +9,7 @@ public class TeamController : MonoBehaviour
     [SerializeField] private TeamState _currentState;
     [SerializeField] private float _moveSpeed = 2f;
     private BattleManager _battleManager;
-    private List<PlayerCharacter> _members;
+    public List<PlayerCharacter> _members;
 
     private void Awake()
     {
@@ -26,6 +26,7 @@ public class TeamController : MonoBehaviour
             GameOver();
             return;  // 더 이상 진행하지 않고 함수 종료
         }
+
         if(_battleManager.Victory && _currentState != TeamState.Returning)
         {
             _members.ForEach(m => m.Animator.SetInteger("animation", 8));

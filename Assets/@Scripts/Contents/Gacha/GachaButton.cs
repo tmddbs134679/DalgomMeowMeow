@@ -15,6 +15,6 @@ public class GachaButton : MonoBehaviour
     {
         float x = 38f;
         float z = 27f;
-        return new Vector3(x, 0, z);
+        return new Vector3(x, 0.616f, z);
     }
 }

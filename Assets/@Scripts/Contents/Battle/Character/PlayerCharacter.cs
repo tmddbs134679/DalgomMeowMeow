@@ -12,10 +12,9 @@ public class PlayerCharacter : BattleCharacter
         Animator = GetComponentInChildren<Animator>();
         AnimationHash = Animator.StringToHash("animation"); // 애니메이션 해시 초기화
         SkillHash = Animator.StringToHash("Skills"); // 스킬 애니메이션 해시 초기화
-        Skill = Animator.StringToHash("Skill"); // 스킬 애니메이션 이름 해시 초기화
+        SkillTrigger = Animator.StringToHash("Skill"); // 스킬 애니메이션 이름 해시 초기화
         _characterRenderer = GetComponentsInChildren<SkinnedMeshRenderer>();
-
-
+        CharacterObject = transform.GetChild(0);
     }
     protected override void Start()
     {
@@ -23,7 +22,7 @@ public class PlayerCharacter : BattleCharacter
         _battleManager = GetComponentInParent<BattleManager>();
         _originalPosition = transform.localPosition;
         string numberPart = SkillID.Substring(1); // 시작하면 숫자 파싱
-        Skill = int.Parse(numberPart);
+        Skillnum = int.Parse(numberPart);
 
     }
 

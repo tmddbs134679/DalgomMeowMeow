@@ -405,8 +405,8 @@ public class GameManager
         var creatureDic = Managers.Data.CreatureDic;
 
         var pairList = new List<KeyValuePair<string, Data.CreatureData>>(creatureDic);
-
-        int randIndex = UnityEngine.Random.Range(0, 11);
+                
+        int randIndex = UnityEngine.Random.Range(0, 10);
 
         var randomPair = pairList[randIndex];
 
