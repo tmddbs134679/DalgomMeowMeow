@@ -22,6 +22,7 @@ public class DataTransformer : EditorWindow
         ParseFoodData("Food");
         ParseBuildingData("Building");
         ParseEquipmentData("Equipment");
+        ParseGachaData("Gacha");
     }
 
  
@@ -89,6 +90,7 @@ public class DataTransformer : EditorWindow
             cd.MoveSpeedRate = ConvertValue<float>(row[i++]);
             cd.IconLabel = ConvertValue<string>(row[i++]);
             cd.SkillTypeList = ConvertList<string>(row[i++]);
+            cd.WalkSpeed = ConvertValue<float>(row[i++]);
             loader.creatures.Add(cd);
         }
 
@@ -167,6 +169,33 @@ public class DataTransformer : EditorWindow
 
         #endregion
 
+        string jsonStr = JsonConvert.SerializeObject(loader, Formatting.Indented);
+        File.WriteAllText($"{Application.dataPath}/@Resources/Data/JsonData/{filename}Data.json", jsonStr);
+        AssetDatabase.Refresh();
+    }
+    static void ParseGachaData(string filename)
+    {
+        GachaDataLoader loader = new GachaDataLoader();
+        #region ExcelData
+        string[] lines = File.ReadAllText($"{Application.dataPath}/@Resources/Data/Excel/{filename}Data.csv").Split("\n");
+        for (int y = 1; y < lines.Length; y++)
+        {
+            string[] row = lines[y].Replace("\r", "").Split(',');
+
+            if (row.Length == 0)
+                continue;
+            if (string.IsNullOrEmpty(row[0]))
+                continue;
+            int i = 0;
+
+            GachaData gc = new GachaData();
+            gc.DataId = ConvertValue<string>(row[i++]);
+            gc.Probability = ConvertValue<float>(row[i++]);
+            loader.Gachas.Add(gc);
+
+
+        }
+        #endregion
         string jsonStr = JsonConvert.SerializeObject(loader, Formatting.Indented);
         File.WriteAllText($"{Application.dataPath}/@Resources/Data/JsonData/{filename}Data.json", jsonStr);
         AssetDatabase.Refresh();

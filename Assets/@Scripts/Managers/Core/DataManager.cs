@@ -15,6 +15,7 @@ public class DataManager
 
     public Dictionary<string, Data.EquipmentData> EquipmentDic { get; private set; } = new Dictionary<string, Data.EquipmentData>();
     public Dictionary<string, Data.BuildingData> BuildingDic { get; private set; } = new Dictionary<string, Data.BuildingData>();
+    public Dictionary<string, Data.GachaData> GachaDic { get; private set; } = new();
     public Dictionary<(string, int), Data.BuildingLevelData> BuildingLevelDic { get; private set; } = new Dictionary<(string, int), Data.BuildingLevelData>();
     public void Init()
     {
@@ -23,6 +24,7 @@ public class DataManager
         BuildingDic = LoadJson<Data.BuildingDataLoader, string, Data.BuildingData>("BuildingData").MakeDict();
         EquipmentDic = LoadJson<Data.EquipmentDataLoader, string, Data.EquipmentData>("EquipmentData").MakeDict();
         BuildingLevelDic = LoadJson<Data.BuildingLevelDataLoader, (string, int), Data.BuildingLevelData>("BuildingLevelData").MakeDict();
+        GachaDic = LoadJson<Data.GachaDataLoader, string, Data.GachaData>("GachaData").MakeDict();
     }
 
 
