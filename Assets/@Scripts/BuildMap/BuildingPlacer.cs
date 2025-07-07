@@ -209,7 +209,25 @@ _isGold = true;
             }
         buildMap.ColliderAllOn();
     }
-    
+
+    public void RemoveBuild()
+    {
+                        _saveBuildingSO = tempDraggleOBJ.GetComponent<BuildingBase>()?.BuildingData;
+                _CurBuildData = new BuildData
+        {
+            posX = _tempOBJ.transform.position.x,
+            posZ = _tempOBJ.transform.position.z,
+            testBaseBuilding = _saveBuildingSO
+        };
+                    arrayBuildPos.RemoveBuildData(_CurBuildData);//기존에 있던 오브젝트 제거
+        //tempDraggleOBJ
+        buildMap.Remove(new Vector2(_CurBuildData.posX, _CurBuildData.posZ));
+        ClearTile();//기존에 있던 오브젝트의 타일 제거
+          
+                      gridMap.LoadMap(); //맵갱신
+            buildMap.LoadBuild(); //오브젝트 갱신
+            surface.BuildNavMesh(); //네브매쉬 깔기
+    }
 
     /// <summary>
     /// 해당 오브젝트 아래 타일 초기화

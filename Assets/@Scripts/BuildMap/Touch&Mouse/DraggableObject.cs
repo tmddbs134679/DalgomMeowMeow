@@ -25,6 +25,12 @@ private Vector3 _dragOffset;
 
     private IsBuildColor _isBuildColor;
 
+    void Start()
+    {
+        _isBuildColor = GetComponent<IsBuildColor>();
+        isBuild = CheckTilesUnderBuilding();
+                  if (_isBuildColor != null) _isBuildColor.SetIsBUildColor(isBuild);        
+    }
     //드래그 스타트
     public void OnDragStart(Vector3 hitPos)
     {
@@ -32,8 +38,7 @@ private Vector3 _dragOffset;
         _offsetx = (gameObject.transform.localScale.x % 2 == 0) ? (gridSize / 2f) : 0f;
         _offsety = (gameObject.transform.localScale.z % 2 == 0) ? (gridSize / 2f) : 0f;
         isBuild = CheckTilesUnderBuilding();
-        
-        _isBuildColor = GetComponent<IsBuildColor>();
+
     }
 
     //드래그

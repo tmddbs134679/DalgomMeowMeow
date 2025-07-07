@@ -12,7 +12,8 @@ public class UI_BuildAction : UI_Popup
     enum Buttons
     {
         AcceptButton,
-        CancelButton
+        CancelButton,
+        RemoveButton,
     }
 
     enum Texts
@@ -42,6 +43,7 @@ public class UI_BuildAction : UI_Popup
 
         GetButton((int)Buttons.AcceptButton).gameObject.BindEvent(AcceptBuild);
         GetButton((int)Buttons.CancelButton).gameObject.BindEvent(CancelBuild);
+        GetButton((int)Buttons.RemoveButton).gameObject.BindEvent(RemoveBuild);
 
         return true;
     }
@@ -55,13 +57,18 @@ public class UI_BuildAction : UI_Popup
         }
         else
         {
-                       BuildingPlacer.Instance.AcceptBuild(); 
+            BuildingPlacer.Instance.AcceptBuild();
         }
     }
     private void CancelBuild()
     {
-        BuildingPlacer.Instance.OnBuildingCancel?.Invoke();
+        BuildingPlacer.Instance.OnBuildingCancel?.Invoke();//UI끄기 이벤트
         BuildingPlacer.Instance.CancelBuild();
+    }
+
+    private void RemoveBuild()
+    {
+       if (BuildingPlacer.Instance.isLongPressAcceptBuild) BuildingPlacer.Instance.RemoveBuild();
     }
     private void Update()
     {
