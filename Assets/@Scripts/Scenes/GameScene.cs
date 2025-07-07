@@ -18,7 +18,7 @@ public class GameScene : BaseScene
         {
             AICharacter ai = Managers.Object.Spawn<AICharacter>(ch.Pos.ToVector3(), ch.DataId);
             ai.SetInfo(ch);
-            Managers.Game.CharactersInScene[ch.Id] = ai;
+            Managers.Game.CharactersInScene[ch.DataId] = ai;
             Managers.Game.SetInitEquipment(ai);
         }
     }

@@ -64,8 +64,14 @@ public class UI_EquipmentInfoPopup : UI_Popup
     private void OnEnable()
     {
         PopupOpenAnimation(GetObject((int)GameObjects.ContentObject));
+
+        Managers.Game.EquipInfoChanged += Refresh;
     }
 
+    private void OnDestroy()
+    {
+        Managers.Game.EquipInfoChanged -= Refresh;
+    }
     private void OnCilckEquipButton()
     {
         UI_EquipmentTypePopup popUp = Managers.UI.ShowPopupUI<UI_EquipmentTypePopup>();
@@ -111,7 +117,11 @@ public class UI_EquipmentInfoPopup : UI_Popup
         {
             GetText((int)Texts.EquipButonText).text = _equipText;
         }
-           
+    }
 
+    private void Refresh()
+    {
+        GetImage((int)Images.EquippedCharacterImage).sprite = null;
+        SetEquipUIActive(false);
     }
 }
