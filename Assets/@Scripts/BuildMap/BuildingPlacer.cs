@@ -46,6 +46,8 @@ public class BuildingPlacer : MonoBehaviour
         public Action OnBuildingAccept;
 
     public GameObject tempOBJ2; //롱프레스쪽 임시저장 오브젝트
+    
+    public static event Action<BaseBuildingSO> OnBuildingAccepted;
 
     private void Awake()
     {
@@ -156,6 +158,7 @@ _isGold = true;
             buildMap.LoadBuild(); //오브젝트 갱신
             surface.BuildNavMesh(); //네브매쉬 깔기
             isLongPressAcceptBuild = false;
+            OnBuildingAccepted?.Invoke(_saveBuildingSO);
         }
     }
     
