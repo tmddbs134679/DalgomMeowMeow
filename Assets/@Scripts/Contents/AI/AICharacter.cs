@@ -268,8 +268,6 @@ public class AICharacter : BaseObject
             return;
         if (Input.GetMouseButtonDown(0))
         {
-                               if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
-                return;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
@@ -290,8 +288,6 @@ public class AICharacter : BaseObject
             return;
         if (Input.GetMouseButton(0))
         {
-                               if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
-                return;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
@@ -343,8 +339,6 @@ public class AICharacter : BaseObject
     }
     private void Clicked()
     {
-                           if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
-                return;
         if (isClicked)
         {
             SetSpeed(0);
