@@ -7,7 +7,7 @@ public class GachaButton : MonoBehaviour
     public void OnClick_Gacha()
     {
         Vector3 spawnPos = GetRandomSpawnPosition();
-        var newAI = Managers.Game.SpawnRandomGachaCharacter(spawnPos);
+        Managers.Game.SpawnRandomGachaCharacter(spawnPos);
 
     }
 
