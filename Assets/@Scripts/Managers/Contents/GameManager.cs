@@ -244,7 +244,7 @@ public class GameManager
         }
     }
 
-    public void EquipmentItem(Character character, Equipment equipment)
+    public void EquipItem(Character character, Equipment equipment)
     {
 
         var id = character.Id;
@@ -270,6 +270,40 @@ public class GameManager
         SaveGame();
     }
 
+    public void UnEquipItem(Character character, Equipment equipment)
+    {
+        var id = character.Id;
+        var targetCharacter = CharacterMap.ContainsKey(id) ? CharacterMap[id] : Characters.Find(c => c.Id == id);
+        if (targetCharacter == null) return;
+
+        var type = equipment.EquipmentData.EquipmentType;
+
+        if (targetCharacter.EquippedItems.ContainsKey(type))
+            targetCharacter.EquippedItems.Remove(type);
+
+        targetCharacter.EquippedItemIds.Remove(equipment.key);
+
+        equipment.EquippedByCharacterId = null;
+        equipment.IsEquipped = false;
+
+  
+        if (CharactersInScene.TryGetValue(id, out var ai))
+        {
+            if (ai.equipmentBones.TryGetValue(type, out var bone))
+            {
+                var old = bone.Find("Equipped_" + type);
+                if (old != null)
+                    GameObject.Destroy(old.gameObject);
+            }
+        }
+
+  
+        OnCharacterChanged?.Invoke();
+        EquipInfoChanged?.Invoke();
+        SaveGame();
+    }
+
+
     public void SetInitEquipment(AICharacter character)
     {
         foreach (var equipId in character.CharacterData.EquippedItemIds)
@@ -285,7 +319,7 @@ public class GameManager
             if (!character.CharacterData.EquippedItems.ContainsKey(equip.EquipmentData.EquipmentType))
                 character.CharacterData.EquippedItems.Add(equip.EquipmentData.EquipmentType, equip);
 
-            EquipmentItem(character.CharacterData, equip);
+            EquipItem(character.CharacterData, equip);
         }
     }
     private void AttachEquipmentToCharacter(AICharacter ai, Equipment equipment)
