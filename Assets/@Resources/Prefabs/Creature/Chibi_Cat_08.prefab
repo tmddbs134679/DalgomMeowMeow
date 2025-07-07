@@ -3205,7 +3205,7 @@ Transform:
   m_GameObject: {fileID: 8641021785801605083}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 40.35, y: 0.000024795532, z: 23.46945}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3297,9 +3297,11 @@ MonoBehaviour:
   tempSpeed: 0
   infoButton: {fileID: 2016841483460451922}
   Exp: 0
-  CharacterLayerMask:
+  groundLayer:
     serializedVersion: 2
     m_Bits: 0
+  isFollowing: 0
+  IsReplica: 0
 --- !u!136 &87279126941025039
 CapsuleCollider:
   m_ObjectHideFlags: 0
