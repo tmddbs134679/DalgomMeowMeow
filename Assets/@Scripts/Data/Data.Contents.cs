@@ -71,7 +71,6 @@ namespace Data
 
     #endregion
 
-
     #region BuildingData
 
     [Serializable]
@@ -191,4 +190,56 @@ namespace Data
         }
     }
     #endregion
+
+    #region CheckOut
+
+    public class CheckOutData
+    {
+        public int Day;
+        public int RewardItemId;
+        public int RewardItemValue;
+    }
+
+    [Serializable]
+    public class CheckOutDataLoader : ILoader<int, CheckOutData>
+    {
+        public List<CheckOutData> checkouts = new List<CheckOutData>();
+
+        public Dictionary<int, CheckOutData> MakeDict()
+        {
+            Dictionary<int, CheckOutData> dict = new Dictionary<int, CheckOutData>();
+            foreach (CheckOutData checkOut in checkouts)
+                dict.Add(checkOut.Day, checkOut);
+            return dict;
+        }
+    }
+    #endregion
+
+    #region Material
+
+    public class MaterialData
+    {
+        public int DataId;
+        public Define.EMaterialType MaterialType;
+        public string NameTextID;
+        public string DescriptionTextID;
+        public string SpriteName;
+    }
+
+    [Serializable]
+    public class MaterialDataLoader : ILoader<int, MaterialData>
+    {
+        public List<MaterialData> Materials = new List<MaterialData>();
+
+        public Dictionary<int, MaterialData> MakeDict()
+        {
+            Dictionary<int, MaterialData> dict = new Dictionary<int, MaterialData>();
+            foreach (MaterialData material in Materials)
+                dict.Add(material.DataId, material);
+            return dict;
+        }
+    }
+    #endregion
+
+
 }
