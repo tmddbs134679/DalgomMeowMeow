@@ -91,7 +91,8 @@ public class UI_GameScene : UI_Scene
             return;
         }
 
-        _checkOutPopupUI.SetInfo(Managers.Time.AttendanceDay);
+        //_checkOutPopupUI.SetInfo(Managers.Time.AttendanceDay);
+        _checkOutPopupUI.SetInfo(3);
         _checkOutPopupUI.gameObject.SetActive(true);
 
     }
@@ -156,7 +157,7 @@ public class UI_GameScene : UI_Scene
 
         yield return new WaitForSeconds(0.3f);
 
-        // 💡 레이아웃 강제 리빌드
+        // 레이아웃 강제 리빌드
         var layout = GetObject((int)GameObjects.StorageObject).GetComponent<HorizontalLayoutGroup>();
         layout.enabled = true;
         LayoutRebuilder.ForceRebuildLayoutImmediate(layout.transform as RectTransform);

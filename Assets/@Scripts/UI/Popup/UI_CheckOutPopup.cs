@@ -38,9 +38,14 @@ public class UI_CheckOutPopup : UI_Popup
     private void OnEnable()
     {
         PopupOpenAnimation(GetObject((int)GameObjects.ContentObject));
+        Managers.Game.OnResourcesChagned += Refresh;
     }
 
 
+    private void OnDestroy()
+    {
+        Managers.Game.OnResourcesChagned -= Refresh;
+    }
     public override bool Init()
     {
         if (base.Init() == false)
@@ -79,22 +84,42 @@ public class UI_CheckOutPopup : UI_Popup
         _monthCount = _CheckOutDay % 30;
         _dailyCount = _monthCount % 10;
 
-        //if (_dailyCount == 0)
-        //{
-        //    _dailyCount = 10;
-        //}
+
+        if (_dailyCount == 0)
+        {
+            _dailyCount = 10;
+        }
+
         GetObject((int)GameObjects.CheckOutBoardObject).DestroyChilds();
 
         Transform parent = GetObject((int)GameObjects.CheckOutBoardObject).transform;
+
+        int boardOffset = (_CheckOutDay / 10) * 10;
         for (int count = 1; count <= 10; count++)
         {
+            // 전역 출석일수 (1일부터 시작)
+            int globalDay = boardOffset + count;
+
+            // 배열 범위 체크
+            if (globalDay - 1 >= Managers.Game.AttendanceReceived.Length)
+                break;
+
+            bool isReceived = Managers.Game.AttendanceReceived[globalDay - 1];
+
             UI_CheckOutItem item = Managers.UI.MakeSubItem<UI_CheckOutItem>(parent);
             item.transform.SetAsLastSibling();
 
-            if (_dailyCount >= count)
-                item.SetInfo(count, true);
+            if (_CheckOutDay >= globalDay)
+            {
+                // 출석일이 지났음 → 클릭 가능 여부
+                item.SetInfo(globalDay, isReceived, canClick: !isReceived);
+            }
             else
-                item.SetInfo(count, false);
+            {
+                // 출석일이 아직 안 됨 → 잠김
+                item.SetInfo(globalDay, isReceived, canClick: false);
+            }
+
         }
 
     }
