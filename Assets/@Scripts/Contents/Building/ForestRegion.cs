@@ -5,6 +5,7 @@ using UnityEngine;
 public class ForestBattleContext
 {
     public static int PendingUnlockForestId = -1;
+    public static bool IsVictory = false;
 }
 public class ForestRegion : BaseObject
 {
@@ -16,7 +17,10 @@ public class ForestRegion : BaseObject
     private void Start()
     {
         LoadUnlockState();
-        UpdateVisual();
+        
+        if (IsUnlocked)
+            gameObject.SetActive(false);
+        //UpdateVisual();
     }
 
     // 전투에서 승리하면 외부에서 이 함수 호출
@@ -26,7 +30,8 @@ public class ForestRegion : BaseObject
 
         IsUnlocked = true;
         SaveUnlockState();
-        UpdateVisual();
+        //UpdateVisual();
+        gameObject.SetActive(false);
     }
 
     private void UpdateVisual()
@@ -60,13 +65,15 @@ public class ForestRegion : BaseObject
         if (IsUnlocked)
         {
             Managers.Debug.Log($"{Id}해제된 지역",Define.EDebugType.Building);
+            // Debug.Log($"{Id}해제된 지역");
             return;
         }
         if (!IsUnlocked)
         {
             ForestBattleContext.PendingUnlockForestId = Id;
             Managers.Debug.Log($"[TEST] Forest {Id} 클릭됨 → BattleScene 이동",Define.EDebugType.Building);
-            Unlock();
+            // Debug.Log($"[TEST] Forest {Id} 클릭됨 → BattleScene 이동");
+            UI_ForestPopup popup = Managers.UI.ShowPopupUI<UI_ForestPopup>();
             //전투 씬 이동
         }
     }
