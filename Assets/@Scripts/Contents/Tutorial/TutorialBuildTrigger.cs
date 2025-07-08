@@ -7,7 +7,7 @@ public class TutorialBuildTrigger : MonoBehaviour
     private void OnEnable()
     {
         BuildingPlacer.OnBuildingAccepted += Check;
-    }
+    }   
 
     private void OnDisable()
     {

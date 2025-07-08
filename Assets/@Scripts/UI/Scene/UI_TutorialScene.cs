@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UI_TutorialScene : MonoBehaviour
 {
     public GameObject Panel;
-    public Text TitleText;
-    public Text DescriptionText;
+    public TMP_Text TitleText;
+    public TMP_Text DescriptionText;
     public void Show(string title, string desc)
     {
         Panel.SetActive(true);
