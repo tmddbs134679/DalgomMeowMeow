@@ -9,7 +9,7 @@ namespace Scripts.Contents.AI.FSM.State
         public override void Init(AICharacter owner)
         {
             base.Init(owner);
-            state = Define.EAIState.Farming;
+            state = Define.EAIState.Farm;
         }
 
         public override void OnEnter()

@@ -13,7 +13,10 @@ namespace Data
         public string DataId;
         public string PrefabLabel;
         public string Name;
+        public float Level;
         public float MaxExp;
+        public float CurrentExp;
+        public EAIState CurrentState;
         public float MaxHp;
         public float Atk;
         public float MaxStamina;

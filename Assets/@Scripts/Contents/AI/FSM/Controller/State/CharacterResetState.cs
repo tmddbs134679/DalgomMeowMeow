@@ -21,7 +21,7 @@ namespace Scripts.Contents.AI.FSM.State
         public override void OnUpdate(float deltaTime)
         {
             base.OnUpdate(deltaTime);
-            if (elapsedTime > 0.5f)
+            if (elapsedTime > 0.1f)
             {
                 character.characterAction.Idle();
                 return;

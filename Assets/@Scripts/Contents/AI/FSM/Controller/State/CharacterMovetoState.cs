@@ -27,7 +27,7 @@ namespace Scripts.Contents.AI.FSM.State
             character.SetAnimation(18); // 이동 애니메이션 설정
             character.Controller.NavRotateTrue(); // 회전 활성화
             character.Controller.Move(targetPosition);
-            character.SetSpeed(character.CharacterData.MoveSpeed);
+            character.SetSpeed(character.Data.MoveSpeed);
 
         }
 

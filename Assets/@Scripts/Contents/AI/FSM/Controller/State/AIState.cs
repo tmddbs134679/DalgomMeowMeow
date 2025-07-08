@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.PlasticSCM.Editor.WebApi;
 using UnityEngine;
@@ -15,8 +15,8 @@ public class AIState : BaseState<AICharacter>
     public override void OnEnter()
     {
         base.OnEnter();
-        character.CharacterData.CurrentState = state;
-        character.CurrentState = character.CharacterData.CurrentState;
+        character.Data.CurrentState = state;
+        character.CurrentState = character.Data.CurrentState;
     }
 
     public Define.EAIState GetState() { return state; }

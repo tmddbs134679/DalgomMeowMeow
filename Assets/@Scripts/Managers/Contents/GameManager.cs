@@ -213,8 +213,8 @@ public class GameManager
             if (ai == null) continue;
 
             character.Pos = new Vector3Data(ai.transform.position);
-            character.CurrentState = ai.CharacterData.CurrentState;
-            character.CurrentStamina = ai.CharacterData.CurrentStamina;
+            character.CurrentState = ai.Data.CurrentState;
+            character.CurrentStamina = ai.Data.CurrentStamina;
         }
     }
 
@@ -326,7 +326,7 @@ public class GameManager
     public void SetInitEquipment(AICharacter character)
     {
         // 복사본을 만듦
-        var equippedIdsCopy = new List<string>(character.CharacterData.EquippedItemIds);
+        var equippedIdsCopy = new List<string>(character.Data.EquippedItemIds);
 
         foreach (var equipId in equippedIdsCopy)
         {
@@ -337,10 +337,10 @@ public class GameManager
                 continue;
             }
 
-            if (!character.CharacterData.EquippedItems.ContainsKey(equip.EquipmentData.EquipmentType))
-                character.CharacterData.EquippedItems.Add(equip.EquipmentData.EquipmentType, equip);
+            if (!character.Data.EquippedItems.ContainsKey(equip.EquipmentData.EquipmentType))
+                character.Data.EquippedItems.Add(equip.EquipmentData.EquipmentType, equip);
 
-            EquipItem(character.CharacterData, equip);
+            EquipItem(character.Data, equip);
         }
     }
 
@@ -428,8 +428,8 @@ public class GameManager
             sum += data.Probability;
             if (rand <= sum)
             {
-                Managers.Debug.Log($"[Gacha] 당첨! {data.DataId}",Define.EDebugType.None);
-                Managers.Debug.Log($"[Gacha] 확률: {data.Probability}, 총합: {totalProb}",Define.EDebugType.None);
+                Managers.Debug.Log($"[Gacha] 당첨! {data.DataId}",Define.EDebugType.UI);
+                Managers.Debug.Log($"[Gacha] 확률: {data.Probability}, 총합: {totalProb}",Define.EDebugType.UI);
                 return data.DataId;
             }
         }

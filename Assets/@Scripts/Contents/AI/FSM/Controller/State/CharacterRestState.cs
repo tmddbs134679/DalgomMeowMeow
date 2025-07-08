@@ -7,7 +7,7 @@ namespace Scripts.Contents.AI.FSM.State
         public override void Init(AICharacter owner)
         {
             base.Init(owner);
-            state = Define.EAIState.Resting;
+            state = Define.EAIState.Rest;
         }
 
         public override void OnEnter()
@@ -22,15 +22,15 @@ namespace Scripts.Contents.AI.FSM.State
         public override void OnUpdate(float deltaTime)
         {
             base.OnUpdate(deltaTime);
-            if (character.CharacterData.CurrentStamina == 100)
+            if (character.Data.CurrentStamina == character.Data.MaxStamina)
             {
                 character.characterAction.Idle();
                 return;
             }
 
-            if (character.CharacterData.CurrentStamina <= 100 && elapsedTime > 1)
+            if (character.Data.CurrentStamina <= character.Data.MaxStamina && elapsedTime > 1)
             {
-                character.RecoverStamina(10f);
+                character.RecoverStamina(character.Data.MaxStamina / 10);
                 elapsedTime = 0; 
                 return;
             }
