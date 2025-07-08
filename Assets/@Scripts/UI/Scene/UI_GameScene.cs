@@ -91,8 +91,7 @@ public class UI_GameScene : UI_Scene
             return;
         }
 
-        //_checkOutPopupUI.SetInfo(Managers.Time.AttendanceDay);
-        _checkOutPopupUI.SetInfo(3);
+        _checkOutPopupUI.SetInfo(Managers.Time.AttendanceDay);
         _checkOutPopupUI.gameObject.SetActive(true);
 
     }
@@ -132,7 +131,6 @@ public class UI_GameScene : UI_Scene
         Vector3 removedPos = slot.transform.localPosition;
 
         Managers.Resource.Destroy(slot.gameObject); 
-        //Destroy(slot.gameObject);
 
         StartCoroutine(AnimateForwardShift(removedPos));
     }
