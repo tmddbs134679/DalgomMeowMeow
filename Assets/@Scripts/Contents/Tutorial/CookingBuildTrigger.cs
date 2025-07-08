@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RoadBuildTrigger : MonoBehaviour
+public class CookingBuildTrigger : MonoBehaviour
 {
     private void OnEnable()
     {
@@ -16,9 +16,9 @@ public class RoadBuildTrigger : MonoBehaviour
 
     private void Check(BaseBuildingSO building)
     {
-        if (!TutorialManager.Instance.IsStepActive("도로건설")) return;
+        if (!TutorialManager.Instance.IsStepActive("요리건물건설")) return;
 
-        if (building.BuildingType == Define.BuildingType.Road)
+        if (building.BuildingType == Define.BuildingType.Cooking)
         {
             TutorialManager.Instance.CompleteStep();
         }
