@@ -18,7 +18,6 @@ public class GameScene : BaseScene
             AICharacter ai = Managers.Object.Spawn<AICharacter>(ch.Pos.ToVector3(), ch.DataId);
             ai.Init();
             ai.SetInfo(ch);
-            ai.emo = Managers.AI.EmotionMaterials;
 
             Managers.Game.CharactersInScene[ch.DataId] = ai;
             Managers.Game.SetInitEquipment(ai);
