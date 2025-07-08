@@ -1,25 +1,32 @@
+using System.Collections;
 using UnityEngine;
 
 public class ForestUnlocker : MonoBehaviour
 {
-    private void Start()
+    private IEnumerator Start()
     {
-        int unlockId = ForestBattleContext.PendingUnlockForestId;
-        if (unlockId < 0) return; // 전투 결과가 없는 경우
+        yield return null; // 한 프레임 대기 (씬 생성 완료 대기)
 
-        // 현재 씬에 있는 모든 ForestRegion을 찾음
-        ForestRegion[] regions = FindObjectsOfType<ForestRegion>();
+        if (!ForestBattleContext.IsVictory) yield break;
+
+        int unlockId = ForestBattleContext.PendingUnlockForestId;
+        if (unlockId < 0) yield break;
+
+        ForestRegion[] regions = FindObjectsOfType<ForestRegion>(true);
+        //Debug.Log($"[ForestUnlocker] 지역 개수: {regions.Length}");
+
         foreach (var region in regions)
         {
+            //Debug.Log($"[ForestUnlocker] 검사 중: ID {region.Id}");
             if (region.Id == unlockId)
             {
                 region.Unlock();
-                Debug.Log($"[ForestUnlocker] Forest {unlockId} 해금 완료");
+                //Debug.Log($"[ForestUnlocker] Forest {unlockId} 해금 완료");
                 break;
             }
         }
 
-        // ID 초기화 (중복 해금 방지)
         ForestBattleContext.PendingUnlockForestId = -1;
+        ForestBattleContext.IsVictory = false;
     }
 }
