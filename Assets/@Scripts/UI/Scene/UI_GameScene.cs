@@ -23,7 +23,7 @@ public class UI_GameScene : UI_Scene
         NoticeButton,
         SettingButton,
         QuestButton,
-        ArchivementButton,
+        CheckOutButton,
         QuickButton,
         ShopButton,
         BuildButton,
@@ -39,6 +39,7 @@ public class UI_GameScene : UI_Scene
     #endregion
 
     UI_QuickMenu _quickMenuPopupUI;
+    UI_CheckOutPopup _checkOutPopupUI;
     public override bool Init()
     {
         if (base.Init() == false)
@@ -49,8 +50,10 @@ public class UI_GameScene : UI_Scene
         BindText(typeof(Texts));
 
         _quickMenuPopupUI =  Managers.UI.ShowPopupUI<UI_QuickMenu>();
+        _checkOutPopupUI = Managers.UI.ShowPopupUI<UI_CheckOutPopup>();
 
         _quickMenuPopupUI.gameObject.SetActive(false);
+        _checkOutPopupUI.gameObject.SetActive(false);
 
         GetObject((int)GameObjects.StorageObject).GetComponent<HorizontalLayoutGroup>().spacing = UI_GROUP_SPACING;
         GetButton((int)Buttons.BattleButton).gameObject.BindEvent(OnClickBattleButton);
@@ -59,7 +62,8 @@ public class UI_GameScene : UI_Scene
         GetButton((int)Buttons.QuickButton).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
         GetButton((int)Buttons.BuildButton).gameObject.BindEvent(OnClickBuildButton);
         GetButton((int)Buttons.BuildButton).GetOrAddComponent<UI_ButtonAnimation>();
-        GetButton((int)Buttons.ArchivementButton).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
+        GetButton((int)Buttons.CheckOutButton).gameObject.BindEvent(OnClickCheckOutButton);
+        GetButton((int)Buttons.CheckOutButton).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
         GetButton((int)Buttons.QuestButton).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
 
         GetButton((int)Buttons.QuestButton).gameObject.BindEvent(OnClickQuestButton);
@@ -77,6 +81,19 @@ public class UI_GameScene : UI_Scene
         Refresh();
 
         return true;
+    }
+
+    private void OnClickCheckOutButton()
+    {
+        if (_checkOutPopupUI == null)
+        {
+            Managers.Debug.LogError("_checkOutPopupUI가 없음", EDebugType.UI);
+            return;
+        }
+
+        _checkOutPopupUI.SetInfo(Managers.Time.AttendanceDay);
+        _checkOutPopupUI.gameObject.SetActive(true);
+
     }
 
     private void OnClickBuildButton()

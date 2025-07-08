@@ -11,7 +11,7 @@ public class UI_CheckOutPopup : UI_Popup
     enum GameObjects
     {
         ContentObject,
-
+        CheckOutBoardObject,
     }
 
     enum Buttons
@@ -64,17 +64,43 @@ public class UI_CheckOutPopup : UI_Popup
 
     public void SetInfo(int checkOutDay)
     {
-
+        _CheckOutDay = checkOutDay;
+        Refresh();
     }
 
     void Refresh()
     {
+        if (_init == false)
+            return;
 
+        if (_CheckOutDay == 0)
+            return;
+
+        _monthCount = _CheckOutDay % 30;
+        _dailyCount = _monthCount % 10;
+
+        //if (_dailyCount == 0)
+        //{
+        //    _dailyCount = 10;
+        //}
+        GetObject((int)GameObjects.CheckOutBoardObject).DestroyChilds();
+
+        Transform parent = GetObject((int)GameObjects.CheckOutBoardObject).transform;
+        for (int count = 1; count <= 10; count++)
+        {
+            UI_CheckOutItem item = Managers.UI.MakeSubItem<UI_CheckOutItem>(parent);
+            item.transform.SetAsLastSibling();
+
+            if (_dailyCount >= count)
+                item.SetInfo(count, true);
+            else
+                item.SetInfo(count, false);
+        }
 
     }
 
     private void OnClickExitButton()
     {
-        Managers.UI.ClosePopupUI(this);
+        gameObject.SetActive(false);
     }
 }
