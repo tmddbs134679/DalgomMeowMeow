@@ -66,7 +66,6 @@ public class Character
 
 
         this.Data = data;
-        MaxStamina =Data.MaxStamina;
         DataId = Data.DataId;
     }
 
