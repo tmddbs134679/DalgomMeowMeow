@@ -27,6 +27,7 @@ public class Managers : MonoBehaviour
     UIManager _ui = new UIManager();
     ObjectManager _object = new ObjectManager();
     PoolManager _pool = new PoolManager();
+    AIManager _ai = new AIManager();
     //Edit
     DebugManager _debug = new DebugManager();
 
@@ -34,6 +35,7 @@ public class Managers : MonoBehaviour
     public static ResourceManager Resource { get { return Instance?._resource; } }
     public static MySceneManager Scene { get { return Instance?._scene; } }
     public static UIManager UI { get { return Instance?._ui; } }
+    public static AIManager AI { get { return Instance?._ai; } }
 
     public static DebugManager Debug { get { return Instance?._debug; } }
     public static ObjectManager Object { get { return Instance?._object; } }

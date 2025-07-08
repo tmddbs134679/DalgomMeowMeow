@@ -42,7 +42,6 @@ namespace Scripts.Contents.AI.FSM.State
             character.SetEmotion(Random.Range(0, character.emo.Length)); // Reset emotion to a random value
             if (character.currentBuilding != null)
             {
-                character.currentBuilding.DisconnectAnimal();
                 character.currentBuilding = null; // Clear current building reference
             }
         }

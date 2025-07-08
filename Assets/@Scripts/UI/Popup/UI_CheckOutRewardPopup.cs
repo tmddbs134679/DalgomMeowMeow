@@ -60,7 +60,7 @@ public class UI_CheckOutRewardPopup : UI_Popup
     {
         GameObject GroupObject = GetObject((int)GameObjects.RewardGroupObject);
         UI_CheckOutItem slot = Managers.UI.MakeSubItem<UI_CheckOutItem>(GroupObject.transform);
-        slot.SetInfo(dayCount, false, true);
+        slot.SetInfo(dayCount, false, false);
     }
 
     private void OnClickBackgroundButton()

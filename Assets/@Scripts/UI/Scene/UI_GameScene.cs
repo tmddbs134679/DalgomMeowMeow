@@ -131,7 +131,6 @@ public class UI_GameScene : UI_Scene
         Vector3 removedPos = slot.transform.localPosition;
 
         Managers.Resource.Destroy(slot.gameObject); 
-        //Destroy(slot.gameObject);
 
         StartCoroutine(AnimateForwardShift(removedPos));
     }
@@ -156,7 +155,7 @@ public class UI_GameScene : UI_Scene
 
         yield return new WaitForSeconds(0.3f);
 
-        // 💡 레이아웃 강제 리빌드
+        // 레이아웃 강제 리빌드
         var layout = GetObject((int)GameObjects.StorageObject).GetComponent<HorizontalLayoutGroup>();
         layout.enabled = true;
         LayoutRebuilder.ForceRebuildLayoutImmediate(layout.transform as RectTransform);

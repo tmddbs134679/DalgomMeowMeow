@@ -43,7 +43,7 @@ public class BuildingPlacer : MonoBehaviour
     public bool isAI=false;
 
     public Action OnBuildingCancel;
-        public Action OnBuildingAccept;
+        public Action OnBuildingAccept; //사용 안하는중
 
     public GameObject refTempOBJ; //롱프레스쪽 임시저장 오브젝트
     
@@ -116,7 +116,8 @@ public class BuildingPlacer : MonoBehaviour
     /// </summary>
     bool CheckBuildGold()
     {
-        return Managers.Game.Gold > 0;
+       
+        return Managers.Game.Gold-_saveBuildingSO.BuyMoney >= 0;
     }
 
     /// <summary>
@@ -137,7 +138,6 @@ public class BuildingPlacer : MonoBehaviour
          isSelect = false;
         _isGold = CheckBuildGold();
         CanPlaceBuilding();
-_isGold = true;
         if (_isGold && _isBuild)
         {
 
@@ -175,7 +175,8 @@ _isGold = true;
                 posZ = _PreviewOBJ.transform.position.z,
                 testBaseBuilding = _saveBuildingSO
             };
-            arrayBuildPos.ChangeBuildData(_CurBuildData, _buildData);
+            arrayBuildPos.GetBuildData(_buildData);//설치할 오브젝트
+            arrayBuildPos.RemoveBuildData(_CurBuildData);//기존에 있던 오브젝트 제거
             buildMap.Remove(new Vector2(_CurBuildData.posX,_CurBuildData.posZ));
             _PreviewOBJ.GetComponent<DraggableObject>().SetTileIsBuild();//새롭게 설치할 오브젝트의 타일
             ClearTile();//기존에 있던 오브젝트의 타일 제거

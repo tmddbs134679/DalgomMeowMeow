@@ -66,7 +66,8 @@ public class ArrayBuildPos : ScriptableObject
             {
                 posX = data.posX,
                 posZ = data.posZ,
-                buildingName = data.testBaseBuilding.name // 오브젝트 자체의 이름만 저장
+                buildingName = data.testBaseBuilding.name, // 오브젝트 자체의 이름만 저장
+                UnlockId = data.UnlockId
             });
         }
 
@@ -106,7 +107,8 @@ public class ArrayBuildPos : ScriptableObject
             {
                 posX = data.posX,
                 posZ = data.posZ,
-                testBaseBuilding = so
+                testBaseBuilding = so,
+                UnlockId = data.UnlockId
             });
         }
         baseBuilding = buildDataList;
@@ -121,6 +123,7 @@ public class BuildData
     public float posX;
     public float posZ;
     public string buildingName;
+    public int UnlockId;
     public BaseBuildingSO testBaseBuilding;
 }
 

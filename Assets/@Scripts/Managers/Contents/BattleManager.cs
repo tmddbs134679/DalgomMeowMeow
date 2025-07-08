@@ -55,9 +55,11 @@ public class BattleManager : MonoBehaviour
             _teamController._members.ForEach(m => m.CharacterObject.transform.localScale = new Vector3(1, 1, 1));
             _teamCameraController.Victory();
             Invoke(nameof(CallBtn), 2f);
-
+            
             if (_currentstage.currentStageIndex >= Managers.Game.CurrentStage)
                 Managers.Game.CurrentStage++;
+            
+            ForestBattleContext.IsVictory = true; //숲에 승리
         }
 
         if(PlayerCount == 0)
