@@ -44,7 +44,7 @@ public class EffectManager : MonoBehaviour
             elapsed += delta;
             yield return null;
         }
-        FireHandPrefab.SetActive(false); // 효과 비활성화
+        PunchEffectPrefab.SetActive(false); // 효과 비활성화
     }
     #endregion
 

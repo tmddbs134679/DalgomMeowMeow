@@ -1,4 +1,4 @@
-﻿using Cinemachine;
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,6 +24,12 @@ public class TeamCameraController : MonoBehaviour
     {
         _mainCamera.orthographic = false;
         _vCamVictory.Priority = 20;
+        Invoke(nameof(CallBtn), 1f);
+    }
+
+    public void CallBtn()
+    {
+        Managers.UI.ShowPopupUI<UI_Victory>();
     }
 
 
