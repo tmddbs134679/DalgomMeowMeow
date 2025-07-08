@@ -116,7 +116,8 @@ public class BuildingPlacer : MonoBehaviour
     /// </summary>
     bool CheckBuildGold()
     {
-        return Managers.Game.Gold > 0;
+       
+        return Managers.Game.Gold-_saveBuildingSO.BuyMoney >= 0;
     }
 
     /// <summary>
@@ -137,7 +138,6 @@ public class BuildingPlacer : MonoBehaviour
          isSelect = false;
         _isGold = CheckBuildGold();
         CanPlaceBuilding();
-_isGold = true;
         if (_isGold && _isBuild)
         {
 
