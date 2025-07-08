@@ -134,4 +134,11 @@ public class Define
         UI,
         Drag,
     }
+
+    public enum EMaterialType
+    {
+        None,
+        Gold,
+        Ticket,
+    }
 }

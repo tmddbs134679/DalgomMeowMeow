@@ -188,8 +188,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uC77C\uC77C\uBBF8\uC158"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 0eb20ffb2fc34254083b312a19e5ae5e, type: 2}
-  m_sharedMaterial: {fileID: -30627120118440305, guid: 0eb20ffb2fc34254083b312a19e5ae5e, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c6e9ac5354b91b1489a810b014bf3cb3, type: 2}
+  m_sharedMaterial: {fileID: -4798784786891260859, guid: c6e9ac5354b91b1489a810b014bf3cb3, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -702,8 +702,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uC5C5\uC801"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 0eb20ffb2fc34254083b312a19e5ae5e, type: 2}
-  m_sharedMaterial: {fileID: -30627120118440305, guid: 0eb20ffb2fc34254083b312a19e5ae5e, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c6e9ac5354b91b1489a810b014bf3cb3, type: 2}
+  m_sharedMaterial: {fileID: -4798784786891260859, guid: c6e9ac5354b91b1489a810b014bf3cb3, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1170,6 +1170,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 111876042361175308}
     m_Modifications:
+    - target: {fileID: 294075536637518111, guid: 6e2ae73da1ac47845818107d9205d27b, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: c6e9ac5354b91b1489a810b014bf3cb3, type: 2}
+    - target: {fileID: 294075536637518111, guid: 6e2ae73da1ac47845818107d9205d27b, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -4798784786891260859, guid: c6e9ac5354b91b1489a810b014bf3cb3, type: 2}
+    - target: {fileID: 294075536637518111, guid: 6e2ae73da1ac47845818107d9205d27b, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2949118640388987899, guid: 6e2ae73da1ac47845818107d9205d27b, type: 3}
       propertyPath: m_Name
       value: UI_QuestSlot
@@ -1254,6 +1266,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5249454832565428051, guid: 6e2ae73da1ac47845818107d9205d27b, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 5249454832565428051, guid: 6e2ae73da1ac47845818107d9205d27b, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

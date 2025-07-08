@@ -23,9 +23,74 @@ public class DataTransformer : EditorWindow
         ParseBuildingData("Building");
         ParseEquipmentData("Equipment");
         ParseGachaData("Gacha");
+        ParseCheckOutData("CheckOut");
+        ParseMaterialData("Material");
     }
 
- 
+    private static void ParseMaterialData(string filename)
+    {
+        MaterialDataLoader loader = new MaterialDataLoader();
+
+        #region ExcelData
+        string[] lines = File.ReadAllText($"{Application.dataPath}/@Resources/Data/Excel/{filename}Data.csv").Split("\n");
+
+        for (int y = 1; y < lines.Length; y++)
+        {
+            string[] row = lines[y].Replace("\r", "").Split(',');
+            if (row.Length == 0)
+                continue;
+            if (string.IsNullOrEmpty(row[0]))
+                continue;
+
+            int i = 0;
+
+            MaterialData material = new MaterialData();
+            material.DataId = ConvertValue<int>(row[i++]);
+            material.MaterialType = ConvertValue<Define.EMaterialType>(row[i++]);
+            material.NameTextID = ConvertValue<string>(row[i++]);
+            material.DescriptionTextID = ConvertValue<string>(row[i++]);
+            material.SpriteName = ConvertValue<string>(row[i++]);
+
+            loader.Materials.Add(material);
+        }
+        #endregion
+
+        string jsonStr = JsonConvert.SerializeObject(loader, Formatting.Indented);
+        File.WriteAllText($"{Application.dataPath}/@Resources/Data/JsonData/{filename}Data.json", jsonStr);
+        AssetDatabase.Refresh();
+    }
+
+    private static void ParseCheckOutData(string filename)
+    {
+        CheckOutDataLoader loader = new CheckOutDataLoader();
+
+        #region ExcelData
+        string[] lines = File.ReadAllText($"{Application.dataPath}/@Resources/Data/Excel/{filename}Data.csv").Split("\n");
+
+        for (int y = 1; y < lines.Length; y++)
+        {
+            string[] row = lines[y].Replace("\r", "").Split(',');
+
+            if (row.Length == 0)
+                continue;
+            if (string.IsNullOrEmpty(row[0]))
+                continue;
+
+            int i = 0;
+            CheckOutData chk = new CheckOutData();
+            chk.Day = ConvertValue<int>(row[i++]);
+            chk.RewardItemId = ConvertValue<int>(row[i++]);
+            chk.RewardItemValue = ConvertValue<int>(row[i++]);
+
+            loader.checkouts.Add(chk);
+        }
+
+        #endregion
+
+        string jsonStr = JsonConvert.SerializeObject(loader, Formatting.Indented);
+        File.WriteAllText($"{Application.dataPath}/@Resources/Data/JsonData/{filename}Data.json", jsonStr);
+        AssetDatabase.Refresh();
+    }
 
     static void ParseFoodData(string filename)
     {

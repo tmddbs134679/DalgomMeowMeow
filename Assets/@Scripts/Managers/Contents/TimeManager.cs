@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class TimeManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public int AttendanceDay
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        get
+        {
+            int savedTime = PlayerPrefs.GetInt("AttendanceDay", 1);
+            return savedTime;
+        }
+        set
+        {
+            PlayerPrefs.SetInt("AttendanceDay", value);
+            PlayerPrefs.Save();
+        }
     }
 }

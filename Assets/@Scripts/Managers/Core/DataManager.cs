@@ -1,3 +1,4 @@
+using Data;
 using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,6 +18,9 @@ public class DataManager
     public Dictionary<string, Data.BuildingData> BuildingDic { get; private set; } = new Dictionary<string, Data.BuildingData>();
     public Dictionary<string, Data.GachaData> GachaDic { get; private set; } = new();
     public Dictionary<(string, int), Data.BuildingLevelData> BuildingLevelDic { get; private set; } = new Dictionary<(string, int), Data.BuildingLevelData>();
+    public Dictionary<int, CheckOutData> CheckOutDataDic { get; private set; } = new Dictionary<int, Data.CheckOutData>();
+    public Dictionary<int, Data.MaterialData> MaterialDic { get; private set; } = new Dictionary<int, Data.MaterialData>();
+
     public void Init()
     {
         CreatureDic = LoadJson<Data.CreatureDataLoader, string, Data.CreatureData>("CreatureData").MakeDict();
@@ -25,6 +29,8 @@ public class DataManager
         EquipmentDic = LoadJson<Data.EquipmentDataLoader, string, Data.EquipmentData>("EquipmentData").MakeDict();
         BuildingLevelDic = LoadJson<Data.BuildingLevelDataLoader, (string, int), Data.BuildingLevelData>("BuildingLevelData").MakeDict();
         GachaDic = LoadJson<Data.GachaDataLoader, string, Data.GachaData>("GachaData").MakeDict();
+        CheckOutDataDic = LoadJson<Data.CheckOutDataLoader, int, Data.CheckOutData>("CheckOutData").MakeDict();
+        MaterialDic = LoadJson<Data.MaterialDataLoader, int, Data.MaterialData>("MaterialData").MakeDict();
     }
 
 
