@@ -81,8 +81,8 @@ public class UI_BattleScene : UI_Scene
         //색바꾸기 or 이미지 바꾸기 등
 
         _skillScene.SetActive(true); // 스킬 UI 활성화
-        Time.timeScale = 0f; // 게임 일시 정지
-        yield return new WaitForSecondsRealtime(1f); // 0.5초 대기
+        Time.timeScale = 0.25f; // 게임 느리게
+        yield return new WaitForSecondsRealtime(1.5f); // 1.2초 대기
         Time.timeScale = 1f; // 게임 재개
         _skillScene.SetActive(false); // 스킬 UI 비활성화
     }
