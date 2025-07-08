@@ -44,7 +44,7 @@ public class AICharacter : BaseObject
     [HideInInspector]
     public Sprite sprite;
 
-    public Character CharacterData { get; set; }
+    public Character Data { get; set; }
 
     #region Bone
     [SerializeField] private Transform hatBone;
@@ -66,16 +66,20 @@ public class AICharacter : BaseObject
     [SerializeField]
     private GameObject infoButton;
 
-    public float Exp;
+    public float Level;
+    public float currentExp;
+    public float currentStamina;
+    public float MaxExp;
     public event Action<AICharacter> AnimalLeaved;
     public event Action<AICharacter> AnimalArrived;
     public event Action<AICharacter> AnimalDelivered;
     public Action<int> CharacterGainExp;
-    public Action<int> Levelup;
+    public Action<float> Levelup;
     private float clickStartTime = 0f;
     private float longPressThreshold = 0.2f;
     [SerializeField]
     private LayerMask groundLayer;
+    [HideInInspector]
     public bool isFollowing;
 
     //UI 상에 보일 캐릭터들
@@ -97,29 +101,23 @@ public class AICharacter : BaseObject
 
     private void Update()
     {
-        if (IsReplica)
-            return;
+        if (IsReplica) return;
 
-        if (CharacterData == null)
-        {
-            Managers.Debug.Log("캐릭터 데이터 없음", Define.EDebugType.AI);
-            return;
-        }
+        if (_controller == null) return;
+        
         _controller?.OnUpdate(Time.deltaTime);
         if (BuildingPlacer.Instance.isAI) OnClick();
-
+        Level = Data.Level;
+        currentStamina = Data.CurrentStamina;
+        currentExp = Data.CurrentExp;
+        MaxExp = Data.MaxExp;
         LongPressClick();
     }
 
 
     private void LateUpdate()
     {
-        if (CharacterData == null)
-        {
-            Managers.Debug.Log("캐릭터 데이터 없음", Define.EDebugType.AI);
-            return;
-        }
-        Clicked();
+        ClickToSet();
     }
 
     public override bool Init()
@@ -143,10 +141,15 @@ public class AICharacter : BaseObject
 
     public void SetInfo(Character ch)
     {
-        CharacterData = ch;
+        Data = ch;
         // 위치값
         transform.position = ch.Pos.ToVector3();
         CurrentState = ch.CurrentState;
+        Level = ch.Level;
+        currentExp = ch.CurrentExp;
+        MaxExp = ch.MaxExp;
+        currentStamina = ch.CurrentStamina;
+
         // TODO : FSM 등 상태 적용
 
         if (_controller == null)
@@ -158,16 +161,16 @@ public class AICharacter : BaseObject
     #region FSM Register
     public void ControllerRegister()
     {
-        _controller = new AIController(new CharacterResetState(), this, Define.EAIState.None);
-        _controller.RegisterState(new CharacterIdleState(), this, Define.EAIState.Idle);
-        _controller.RegisterState(new CharacterBuildingState(), this, Define.EAIState.Building);
-        _controller.RegisterState(new CharacterCookState(), this, Define.EAIState.Cooking); ;
-        _controller.RegisterState(new CharacterFarmingState(), this, Define.EAIState.Farming);
-        _controller.RegisterState(new CharacterPlayState(), this, Define.EAIState.Playing);
-        _controller.RegisterState(new CharacterRestState(), this, Define.EAIState.Resting);
-        _controller.RegisterState(new CharacterMoveToState(), this, Define.EAIState.MoveTo);
-        _controller.RegisterState(new CharacterDeliverState(), this, Define.EAIState.Delivery);
-        _controller.RegisterState(new CharacterHelloState(), this, Define.EAIState.Hello);
+            _controller = new AIController(new CharacterResetState(), this, Define.EAIState.None);
+            _controller.RegisterState(new CharacterIdleState(), this, Define.EAIState.Idle);
+            _controller.RegisterState(new CharacterBuildingState(), this, Define.EAIState.Build);
+            _controller.RegisterState(new CharacterCookState(), this, Define.EAIState.Cook); ;
+            _controller.RegisterState(new CharacterFarmingState(), this, Define.EAIState.Farm);
+            _controller.RegisterState(new CharacterPlayState(), this, Define.EAIState.Play);
+            _controller.RegisterState(new CharacterRestState(), this, Define.EAIState.Rest);
+            _controller.RegisterState(new CharacterMoveToState(), this, Define.EAIState.MoveTo);
+            _controller.RegisterState(new CharacterDeliverState(), this, Define.EAIState.Deliver);
+            _controller.RegisterState(new CharacterHelloState(), this, Define.EAIState.Hello);
     }
     #endregion
 
@@ -191,39 +194,39 @@ public class AICharacter : BaseObject
     #region 캐릭터 스탯 관련
     public void OnLevelUp()
     {
-        CharacterData.MoveSpeed += 1;
-        CharacterData.Hp += 10;
-        CharacterData.MaxExp += 5; // 레벨업 시 최대 경험치 증가
-        CharacterData.Level++;
-        Managers.Debug.Log($"레벨업! 현재 레벨: {CharacterData.Level}", Define.EDebugType.AI);
-        Levelup?.Invoke(CharacterData.Level);
+        Data.MoveSpeed += 0.5f; // 레벨업 시 이동 속도 증가
+        Data.MoveSpeed = MathF.Min(6,Data.MoveSpeed);
+        Data.MaxExp *= 1.3f; // 레벨업 시 최대 경험치 증가
+        Data.Level++;
+        Managers.Debug.Log($"레벨업! 현재 레벨: {Data.Level}", Define.EDebugType.AI);
+        Levelup?.Invoke(Data.Level);
     }
 
     public void GainExp(int value)
     {
-        CharacterData.CurrentExp += value;
-        while (CharacterData.CurrentExp >= CharacterData.MaxExp)
+        Data.CurrentExp += value;
+        while (Data.CurrentExp >= Data.MaxExp)
         {
-            CharacterData.CurrentExp -= CharacterData.MaxExp;
+            Data.CurrentExp -= Data.MaxExp;
             OnLevelUp();
         }
-        Managers.Debug.Log($"경험치 획득: {value}, 현재 경험치: {CharacterData.CurrentExp}, 최대 경험치: {CharacterData.MaxExp}", Define.EDebugType.AI);
+        Managers.Debug.Log($"경험치 획득: {value}, 현재 경험치: {Data.CurrentExp}, 최대 경험치: {Data.MaxExp}", Define.EDebugType.AI);
         CharacterGainExp?.Invoke(value);
     }
 
     public void UseStamina(float amount)
     {
-        if (CharacterData.CurrentStamina - amount < 0)
+        if (Data.CurrentStamina - amount < 0)
         {
             return;
         }
-        CharacterData.CurrentStamina = Mathf.Max(0, CharacterData.CurrentStamina - amount);
+        Data.CurrentStamina = Mathf.Max(0, Data.CurrentStamina - amount);
         //Managers.Debug.Log($"스태미나 사용 : {amount}, 남은 스태미나: {CharacterData.CurrentStamina}", Define.EDebugType.AI);
     }
 
     public void RecoverStamina(float amount)
     {
-        CharacterData.CurrentStamina = Mathf.Min(100, CharacterData.CurrentStamina + amount);
+        Data.CurrentStamina = Mathf.Min(100, Data.CurrentStamina + amount);
         //Managers.Debug.Log($"스태미나 회복 : {amount}, 현재: {CharacterData.CurrentStamina}", Define.EDebugType.AI);
     }
     #endregion
@@ -328,16 +331,16 @@ public class AICharacter : BaseObject
                 this.transform.position = new Vector3(transform.position.x, 0.616f, transform.position.z);
             isFollowing = false;
             if (Controller.CurrentState() is CharacterIdleState)
-                SetSpeed(CharacterData.WalkSpeed);
+                SetSpeed(Data.WalkSpeed);
             else if (Controller.CurrentState() is CharacterDeliverState)
-                SetSpeed(CharacterData.MoveSpeed / 2);
+                SetSpeed(Data.MoveSpeed / 2);
             else
-                SetSpeed(CharacterData.MoveSpeed);
+                SetSpeed(Data.MoveSpeed);
                 SetAnimation(CurrentAnimation);
             clickStartTime = 0f;
         }
     }
-    private void Clicked()
+    private void ClickToSet()
     {
         if (isClicked)
         {
@@ -351,11 +354,11 @@ public class AICharacter : BaseObject
         else if (!isClicked && !isFollowing)
         {
             if (Controller.CurrentState() is CharacterIdleState)
-                SetSpeed(CharacterData.WalkSpeed);
+                SetSpeed(Data.WalkSpeed);
             else if (Controller.CurrentState() is CharacterDeliverState)
-                SetSpeed(CharacterData.MoveSpeed / 2);
+                SetSpeed(Data.MoveSpeed / 2);
             else
-                SetSpeed(CharacterData.MoveSpeed);
+                SetSpeed(Data.MoveSpeed);
 
             SetAnimation(CurrentAnimation);
             infoButton.SetActive(false);

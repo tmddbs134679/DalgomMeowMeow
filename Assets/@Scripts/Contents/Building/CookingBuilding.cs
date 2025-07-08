@@ -131,7 +131,7 @@ public class CookingBuilding : BuildingBase
         AICharacter animal = other.GetComponent<AICharacter>();
         if (animal == null) return;
 
-        if (animal.CurrentState == Define.EAIState.Delivery)
+        if (animal.CurrentState == Define.EAIState.Deliver)
         {
             deliveredVegetableCount++;
             Managers.Debug.Log($"[야채 도착] 누적 채소 수: {deliveredVegetableCount}",Define.EDebugType.Building);

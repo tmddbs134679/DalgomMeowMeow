@@ -8,7 +8,7 @@ namespace Scripts.Contents.AI.FSM.State
         public override void Init(AICharacter owner)
         {
             base.Init(owner);
-            state = Define.EAIState.Cooking;
+            state = Define.EAIState.Cook;
         }
         
         public override void OnEnter()

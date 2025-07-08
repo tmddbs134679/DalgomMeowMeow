@@ -51,14 +51,14 @@ public class Define
     public enum EAIState
     {
         Idle,
-        Cooking,
+        Cook,
         MoveTo,
-        Playing,
-        Farming,
-        Resting,
-        Delivery,
-        Collecting,
-        Building,
+        Play,
+        Farm,
+        Rest,
+        Deliver,
+        Collect,
+        Build,
         Hello,
         None,
 

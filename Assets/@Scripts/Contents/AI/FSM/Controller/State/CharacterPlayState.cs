@@ -5,7 +5,7 @@ namespace Scripts.Contents.AI.FSM.State
         public override void Init(AICharacter owner)
         {
             base.Init(owner);
-            state = Define.EAIState.Playing;
+            state = Define.EAIState.Play;
         }
         
         public override void OnEnter()

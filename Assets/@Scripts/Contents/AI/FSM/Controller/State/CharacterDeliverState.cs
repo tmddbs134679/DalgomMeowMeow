@@ -9,7 +9,7 @@ namespace Scripts.Contents.AI.FSM.State
         public override void Init(AICharacter owner)
         {
             base.Init(owner);
-            state = Define.EAIState.Delivery;
+            state = Define.EAIState.Deliver;
         }
 
         public void SetDestination(Vector3 target)
@@ -22,7 +22,7 @@ namespace Scripts.Contents.AI.FSM.State
         {
             base.OnEnter();
             character.Controller.Move(targetPosition); // 이동할 위치 설정
-            character.SetSpeed(character.CharacterData.MoveSpeed / 2);
+            character.SetSpeed(character.Data.MoveSpeed / 2);
             character.SetAnimation(47);
             character.Controller.NavRotateTrue(); // 회전 활성화
 

@@ -60,21 +60,21 @@ public class AIController : BaseController<AICharacter>
         Vector3 targetPos = FindNearestBuilding(action);
 
 
-        if (action == Define.EAIState.Delivery &&
-          registedState.TryGetValue(Define.EAIState.Delivery, out BaseState<AICharacter> deliverBase) &&
+        if (action == Define.EAIState.Deliver &&
+          registedState.TryGetValue(Define.EAIState.Deliver, out BaseState<AICharacter> deliverBase) &&
             deliverBase is CharacterDeliverState deliveryTo)
         {
             deliveryTo.SetDestination(targetPos - new Vector3(1.5f,0, 1.5f));
-            ChangeState(Define.EAIState.Delivery);
+            ChangeState(Define.EAIState.Deliver);
             return;
         }
 
-        if (action == Define.EAIState.Playing)
+        if (action == Define.EAIState.Play)
         {
             targetPos -= new Vector3(0.9f, 0, 0); // 플레이 위치 조정
         }
 
-        if (action == Define.EAIState.Resting)
+        if (action == Define.EAIState.Rest)
         {
             targetPos -= new Vector3(0f, 0f, 0.3f);
         }
@@ -98,7 +98,7 @@ public class AIController : BaseController<AICharacter>
     {
         var type = GetBuildingType(action);
 
-        if (action == Define.EAIState.Delivery)
+        if (action == Define.EAIState.Deliver)
         {
             var nearbuilding = FineOnlyBuilding(type);
 
@@ -143,11 +143,11 @@ public class AIController : BaseController<AICharacter>
     {
         return action switch
         {
-            Define.EAIState.Cooking => Define.BuildingType.Cooking,
-            Define.EAIState.Farming => Define.BuildingType.Farm,
-            Define.EAIState.Resting => Define.BuildingType.Resting,
-            Define.EAIState.Playing => Define.BuildingType.Playing,
-            Define.EAIState.Delivery => Define.BuildingType.Cooking,
+            Define.EAIState.Cook => Define.BuildingType.Cooking,
+            Define.EAIState.Farm => Define.BuildingType.Farm,
+            Define.EAIState.Rest => Define.BuildingType.Resting,
+            Define.EAIState.Play => Define.BuildingType.Playing,
+            Define.EAIState.Deliver => Define.BuildingType.Cooking,
 
         };
     }
