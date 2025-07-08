@@ -87,7 +87,8 @@ public class Define
         LobbyScene,
         GameScene,
         FrameworkTestScene,
-        Test_Battle
+        Test_Battle,
+        TutorialScene
     }
 
     public enum EBuildingType

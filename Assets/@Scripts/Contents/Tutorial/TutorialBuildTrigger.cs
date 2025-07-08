@@ -4,15 +4,23 @@ using UnityEngine;
 
 public class TutorialBuildTrigger : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private void OnEnable()
     {
-        
+        BuildingPlacer.OnBuildingAccepted += Check;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnDisable()
     {
-        
+        BuildingPlacer.OnBuildingAccepted -= Check;
+    }
+
+    private void Check(BaseBuildingSO building)
+    {
+        if (!TutorialManager.Instance.IsStepActive("도로건설")) return;
+
+        if (building.BuildingType == Define.BuildingType.Road)
+        {
+            TutorialManager.Instance.CompleteStep();
+        }
     }
 }

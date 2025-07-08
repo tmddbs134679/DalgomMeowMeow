@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,6 +24,11 @@ public class TutorialManager : MonoBehaviour
 
     void Awake() => Instance = this;
 
+    private void Start()
+    {
+        StartTutorial();
+    }
+
     public void StartTutorial()
     {
         IsRunning = true;
@@ -32,6 +38,7 @@ public class TutorialManager : MonoBehaviour
 
     public void CompleteStep()
     {
+        Debug.Log("Step Complete");
         Steps[currentStep].OnComplete?.Invoke();
 
         currentStep++;
