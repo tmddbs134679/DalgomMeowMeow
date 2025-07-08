@@ -8,6 +8,7 @@ public class EffectManager : MonoBehaviour
     public GameObject FireHandPrefab;
     public GameObject YellowShieldPrefab;
     public GameObject RainAreaPrefab;
+    public GameObject PunchEffectPrefab;
 
     private void Awake()
     {
@@ -25,9 +26,9 @@ public class EffectManager : MonoBehaviour
     #region PunchEffect
     public IEnumerator Punch(Vector3 pos)
     {
-        FireHandPrefab.transform.position = pos + Vector3.up*5;
-        FireHandPrefab.SetActive(true);
-        yield return StartCoroutine(MoveDown(FireHandPrefab));
+        PunchEffectPrefab.transform.position = pos + Vector3.up*5;
+        PunchEffectPrefab.SetActive(true);
+        yield return StartCoroutine(MoveDown(PunchEffectPrefab));
     }
 
     private IEnumerator MoveDown(GameObject effect)
@@ -43,7 +44,7 @@ public class EffectManager : MonoBehaviour
             elapsed += delta;
             yield return null;
         }
-        FireHandPrefab.SetActive(false); // 효과 비활성화
+        PunchEffectPrefab.SetActive(false); // 효과 비활성화
     }
     #endregion
 
