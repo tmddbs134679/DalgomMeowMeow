@@ -19,7 +19,10 @@ public class BuildMap : MonoBehaviour
         {
             GameObject go = Instantiate(data.testBaseBuilding.buildOBJ, new Vector3(data.posX, 1f, data.posZ), Quaternion.identity, transform);
             go.GetComponent<DraggableObject>().buildMap = gameObject.GetComponent<BuildMap>();
-
+                if (go.TryGetComponent(out ForestRegion region))
+                {
+                    region.Id = data.UnlockId;
+                }
             _spawnedBuilds.Add(new Vector2(data.posX, data.posZ), go);
         }
         surface.BuildNavMesh();
@@ -40,7 +43,11 @@ public class BuildMap : MonoBehaviour
             {
                 // 건설 후 추가 생성
                 GameObject go = Instantiate(data.testBaseBuilding.buildOBJ, new Vector3(data.posX, 1f, data.posZ), Quaternion.identity, transform);
-            go.GetComponent<DraggableObject>().buildMap = gameObject.GetComponent<BuildMap>();
+                go.GetComponent<DraggableObject>().buildMap = gameObject.GetComponent<BuildMap>();
+                if (go.TryGetComponent(out ForestRegion region))
+                {
+                    region.Id = data.UnlockId;
+                }
                 go.GetComponent<Collider>().enabled = false;
                 _spawnedBuilds.Add(key, go);
             }
@@ -48,7 +55,7 @@ public class BuildMap : MonoBehaviour
     }
     public void Remove(Vector2 key)
     {
-            _spawnedBuilds.Remove(key);
+        _spawnedBuilds.Remove(key);
     }
 
     public void ColliderAllOn()
