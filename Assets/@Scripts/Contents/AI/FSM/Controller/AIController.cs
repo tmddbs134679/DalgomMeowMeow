@@ -16,6 +16,7 @@ public class AIController : BaseController<AICharacter>
     public AIController(AIState initState, AICharacter owner, Define.EAIState reset) : base(initState, owner, reset)
     {
         character = owner;
+        Setup();
     }
 
     public override void OnUpdate(float deltaTime)
@@ -128,7 +129,7 @@ public class AIController : BaseController<AICharacter>
     public BuildingBase FindAvailableBuilding(Define.BuildingType type)
     {
         var allAssigned = new HashSet<BuildingBase>(
-            AIManager.Instance.AllCharacters
+            Managers.AI.AllCharacters
                 .Select(c => c.currentBuilding)
                 .Where(b => b != null)
         );
@@ -268,7 +269,7 @@ public class AIController : BaseController<AICharacter>
         if (character.isFollowing) return;
 
         // 주변 모든 캐릭터 탐색
-        foreach (var other in AIManager.Instance.AllCharacters)
+        foreach (var other in Managers.AI.AllCharacters)
         {
             if (other == character) continue; // 자기 자신 제외
             if (!other._isHelloReady) continue;

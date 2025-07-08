@@ -93,7 +93,6 @@ public class AICharacter : BaseObject
 
     private void Start()
     {
-        Init();
         camera = Camera.main;
         head = transform.Find("root/pelvis/spine_01/spine_02/spine_03/neck_01");
         nav.enabled = true;
@@ -117,6 +116,7 @@ public class AICharacter : BaseObject
 
     private void LateUpdate()
     {
+        if (_controller == null) return;
         ClickToSet();
     }
 
@@ -126,16 +126,8 @@ public class AICharacter : BaseObject
         animator = GetComponent<Animator>();
         skinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
         characterAction = GetComponent<CharacterAction>();
-
         groundLayer = LayerMask.GetMask("Ground");
-
         currentEmo = skinnedMeshRenderer.materials[1];
-        emo = AIManager.Instance.EmotionMaterials;
-        if (_controller == null) { ControllerRegister(); }
-        Controller.Setup();
-        AIManager.Instance.Register(this);
-   
-
         return true;
     }
 
@@ -143,19 +135,16 @@ public class AICharacter : BaseObject
     {
         Data = ch;
         // 위치값
-        transform.position = ch.Pos.ToVector3();
-        CurrentState = ch.CurrentState;
-        Level = ch.Level;
-        currentExp = ch.CurrentExp;
-        MaxExp = ch.MaxExp;
-        currentStamina = ch.CurrentStamina;
+        transform.position = Data.Pos.ToVector3();
+        CurrentState = Data.CurrentState;
+        Level = Data.Level;
+        currentExp = Data.CurrentExp;
+        MaxExp = Data.MaxExp;
+        currentStamina = Data.CurrentStamina;
 
         // TODO : FSM 등 상태 적용
-
-        if (_controller == null)
-        {
-            ControllerRegister();
-        }
+        ControllerRegister();
+        
     }
 
     #region FSM Register
@@ -235,7 +224,7 @@ public class AICharacter : BaseObject
     public void OnDestroy()
     {
         Controller?.Dispose();
-        AIManager.Instance.Unregister(this);
+        Managers.AI.Unregister(this);
     }
     #endregion
 
