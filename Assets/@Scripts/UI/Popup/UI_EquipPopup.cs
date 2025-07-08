@@ -32,6 +32,8 @@ public class UI_EquipPopup : UI_Popup
     }
     #endregion
 
+
+    EEquipmentType _currentType;
     private void Awake()
     {
         Init();
@@ -100,18 +102,19 @@ public class UI_EquipPopup : UI_Popup
     //}
 
     //null일떈 전부 보이게 설정함.
-    private void OnClickTypeToggle(EEquipmentType? type = null)
+    private void OnClickTypeToggle(EEquipmentType? type = EEquipmentType.None)
     {
+        _currentType = (EEquipmentType)type;
         GetObject((int)GameObjects.EquipGroupObject).DestroyChilds();
 
         List<Equipment> equipments = Managers.Game.OwnedEquipments;
 
-        if (type == null)
+        if (type == EEquipmentType.None)
             equipments.Sort((a, b) => string.Compare(a.key, b.key, StringComparison.Ordinal));
 
         foreach (Equipment equipment in equipments)
         {
-            if (type != null && equipment.EquipmentData.EquipmentType != type.Value)
+            if (type != EEquipmentType.None && equipment.EquipmentData.EquipmentType != type.Value)
                 continue;
 
             UI_EquipSlot slot = Managers.UI.MakeSubItem<UI_EquipSlot>(GetObject((int)GameObjects.EquipGroupObject).transform);
@@ -122,12 +125,13 @@ public class UI_EquipPopup : UI_Popup
     private void OnClickExitButton()
     {
        gameObject.SetActive(false);
+        _currentType = Define.EEquipmentType.None;
     }
 
 
     private void Refresh()
     {
         GetObject((int)GameObjects.EquipGroupObject).DestroyChilds();
-        OnClickTypeToggle();
+        OnClickTypeToggle(_currentType);
     }
 }

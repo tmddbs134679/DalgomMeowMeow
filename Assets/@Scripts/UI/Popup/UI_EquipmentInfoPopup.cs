@@ -121,7 +121,9 @@ public class UI_EquipmentInfoPopup : UI_Popup
 
     private void Refresh()
     {
-        GetImage((int)Images.EquippedCharacterImage).sprite = null;
-        SetEquipUIActive(false);
+        //GetImage((int)Images.EquippedCharacterImage).sprite = null;
+        //SetEquipUIActive(false);
+        SetInfo(_equipment);
+
     }
 }
