@@ -13,9 +13,19 @@ public class ArrayMapPosEditor : Editor
 
         ArrayMapPos map = (ArrayMapPos)target;
 
-        if (GUILayout.Button("맵 초기화하기"))
+        if (GUILayout.Button("캐싱 된 맵 초기화하기"))
         {
             map.InitializeMap(); // 원하는 너비/높이로 설정
+        }
+
+                if (GUILayout.Button("데이터 저장"))
+        {
+            map.SaveMapTileData();
+        }
+
+        if (GUILayout.Button("데이터 불러오기"))
+        {
+            map.LoadMapTileData();
         }
     }
 }

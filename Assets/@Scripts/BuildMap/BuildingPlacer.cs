@@ -45,7 +45,7 @@ public class BuildingPlacer : MonoBehaviour
     public Action OnBuildingCancel;
         public Action OnBuildingAccept;
 
-    public GameObject tempOBJ2; //롱프레스쪽 임시저장 오브젝트
+    public GameObject refTempOBJ; //롱프레스쪽 임시저장 오브젝트
     
     public static event Action<BaseBuildingSO> OnBuildingAccepted;
 
@@ -89,17 +89,17 @@ public class BuildingPlacer : MonoBehaviour
     /// DraggableObject에서 LongPress가 호출 될 시 현상태의 오브젝트 가져오기
     /// _tempOBJ=
     /// </summary>
-    public void SetRefOBJ(GameObject tempOBJ)
+    public void SetRefOBJ(GameObject refOBJ)
     {
-        _saveBuildingSO = tempOBJ.GetComponent<BuildingBase>()?.BuildingData;
-        _PreviewOBJ =Instantiate(tempOBJ.GetComponent<BuildingBase>()?.BuildingData.previewOBJ,
-                new Vector3(tempOBJ.transform.position.x,tempOBJ.transform.position.y + _heightOffset,tempOBJ.transform.position.z),
+        _saveBuildingSO = refOBJ.GetComponent<BuildingBase>()?.BuildingData;
+        _PreviewOBJ =Instantiate(refOBJ.GetComponent<BuildingBase>()?.BuildingData.previewOBJ,
+                new Vector3(refOBJ.transform.position.x,refOBJ.transform.position.y + _heightOffset,refOBJ.transform.position.z),
                 Quaternion.identity);
                     tempDraggleOBJ = _PreviewOBJ.GetComponent<DraggableObject>();
             tempDraggleOBJ.isDrag = true;
             tempDraggleOBJ.isLongPress = false;
-        tempOBJ2 = tempOBJ;
-        tempOBJ2.SetActive(false);
+        refTempOBJ = refOBJ;
+        refTempOBJ.SetActive(false);
         _CurBuildData = new BuildData
         {
             posX = _PreviewOBJ.transform.position.x,
@@ -175,15 +175,13 @@ _isGold = true;
                 posZ = _PreviewOBJ.transform.position.z,
                 testBaseBuilding = _saveBuildingSO
             };
-
-            arrayBuildPos.GetBuildData(_buildData);//설치할 오브젝트
-            arrayBuildPos.RemoveBuildData(_CurBuildData);//기존에 있던 오브젝트 제거
+            arrayBuildPos.ChangeBuildData(_CurBuildData, _buildData);
             buildMap.Remove(new Vector2(_CurBuildData.posX,_CurBuildData.posZ));
             _PreviewOBJ.GetComponent<DraggableObject>().SetTileIsBuild();//새롭게 설치할 오브젝트의 타일
             ClearTile();//기존에 있던 오브젝트의 타일 제거
             _PreviewOBJ.GetComponent<DraggableObject>().isLongPress = true;
             Destroy(_PreviewOBJ);
-            Destroy(tempOBJ2);
+            Destroy(refTempOBJ);
             gridMap.LoadMap(); //맵갱신
             buildMap.LoadBuild(); //오브젝트 갱신
             surface.BuildNavMesh(); //네브매쉬 깔기
@@ -201,9 +199,9 @@ _isGold = true;
         isSelect = false;
         if (isLongPressAcceptBuild)
         {
-            tempOBJ2.SetActive(true);
-            tempOBJ2.GetComponent<DraggableObject>().isLongPress = true;
-            tempOBJ2.GetComponent<DraggableObject>().isDrag = true;
+            refTempOBJ.SetActive(true);
+            refTempOBJ.GetComponent<DraggableObject>().isLongPress = true;
+            refTempOBJ.GetComponent<DraggableObject>().isDrag = true;
         }
         if (_PreviewOBJ != null)
             {

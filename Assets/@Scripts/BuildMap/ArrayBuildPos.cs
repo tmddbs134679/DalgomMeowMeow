@@ -2,7 +2,8 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
-
+using System.IO;
+using Newtonsoft.Json;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -24,20 +25,26 @@ public class ArrayBuildPos : ScriptableObject
     {
         baseBuilding.Add(buildData);
     }
-public void RemoveBuildData(BuildData buildData)
-{
+    public void RemoveBuildData(BuildData buildData)
+    {
         float targetX = buildData.posX;
         float targetZ = buildData.posZ;
-    BuildData dataToRemove = baseBuilding.Find(data => 
-        math.abs(data.posX - targetX) < 0.01f && 
-        math.abs(data.posZ - targetZ) < 0.01f);
+        BuildData dataToRemove = baseBuilding.Find(data =>
+            math.abs(data.posX - targetX) < 0.01f &&
+            math.abs(data.posZ - targetZ) < 0.01f);
 
-    if (dataToRemove != null)
-    {
-        baseBuilding.Remove(dataToRemove);
+        if (dataToRemove != null)
+        {
+            baseBuilding.Remove(dataToRemove);
+        }
     }
-}
 
+    public void ChangeBuildData(BuildData Curbuild, BuildData Fixbuild)
+    {
+        Curbuild.posX = Fixbuild.posX;
+        Curbuild.posZ = Fixbuild.posZ;
+        Curbuild.testBaseBuilding = Fixbuild.testBaseBuilding;
+    }
 #if UNITY_EDITOR
     public void InitializeBuild()
     {
@@ -47,11 +54,63 @@ public void RemoveBuildData(BuildData buildData)
 #endif
 
 #if UNITY_EDITOR
-//파일에서 건물데이터 불러오기
-    public void BuildDataToFile()
+    //파일에서 건물데이터 저장하기
+    public void SaveMapData()
     {
-        baseBuilding.Clear();
-        EditorUtility.SetDirty(this);
+        string path = $"{Application.dataPath}/@Resources/Map/MapData.json";
+        MapSaveData saveData = new MapSaveData();
+
+        foreach (var data in baseBuilding)
+        {
+            saveData.buildings.Add(new BuildData
+            {
+                posX = data.posX,
+                posZ = data.posZ,
+                buildingName = data.testBaseBuilding.name // 오브젝트 자체의 이름만 저장
+            });
+        }
+
+        string json = JsonConvert.SerializeObject(saveData, Formatting.Indented);
+        File.WriteAllText(path, json);
+        Debug.Log("건물 데이터 저장 완료!");
+    }
+#endif
+
+#if UNITY_EDITOR
+    //파일에서 건물데이터 불러오기
+    public void LoadMapData()
+    {
+        string path = $"{Application.dataPath}/@Resources/Map/MapData.json";
+
+        if (!File.Exists(path))
+        {
+            Debug.LogError("건물 데이터 파일이 없습니다!");
+            return;
+        }
+
+        string json = File.ReadAllText(path);
+        MapSaveData saveData = JsonConvert.DeserializeObject<MapSaveData>(json);
+
+        List<BuildData> buildDataList = new List<BuildData>();
+
+        foreach (var data in saveData.buildings)
+        {
+            string sopath = $"Assets/@Scripts/BuildMap/ScriptableOBJ/BuildSO/{data.buildingName}.asset";
+            if (!File.Exists(sopath))
+            {
+                Debug.LogError("건물 So 파일이 없습니다!");
+                return;
+            }
+            BaseBuildingSO so = AssetDatabase.LoadAssetAtPath<BaseBuildingSO>(sopath);
+            buildDataList.Add(new BuildData
+            {
+                posX = data.posX,
+                posZ = data.posZ,
+                testBaseBuilding = so
+            });
+        }
+        baseBuilding = buildDataList;
+        Debug.Log("건물 데이터 불러오기 완료!");
     }
 #endif
 }
@@ -59,10 +118,16 @@ public void RemoveBuildData(BuildData buildData)
 [Serializable]
 public class BuildData
 {
-    public int index;
     public float posX;
     public float posZ;
-
+    public string buildingName;
     public BaseBuildingSO testBaseBuilding;
-
 }
+
+[Serializable]
+public class MapSaveData
+{
+    public List<BuildData> buildings = new List<BuildData>();
+}
+
+

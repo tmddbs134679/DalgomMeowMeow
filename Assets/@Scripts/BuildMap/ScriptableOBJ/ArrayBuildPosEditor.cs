@@ -13,9 +13,20 @@ public class ArrayBuildPosEditor : Editor
 
         ArrayBuildPos Build = (ArrayBuildPos)target;
 
-        if (GUILayout.Button("건물 초기화하기"))
+        if (GUILayout.Button("캐싱 된 건물 초기화하기"))
         {
             Build.InitializeBuild();
         }
+
+        if (GUILayout.Button("데이터 저장"))
+        {
+            Build.SaveMapData();
+        }
+
+        if (GUILayout.Button("데이터 불러오기"))
+        {
+            Build.LoadMapData();
+        }
+        
     }
 }

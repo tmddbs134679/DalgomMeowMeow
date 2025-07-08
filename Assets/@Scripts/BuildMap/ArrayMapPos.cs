@@ -2,6 +2,8 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
+using System.IO;
+using Newtonsoft.Json;
 
 
 #if UNITY_EDITOR
@@ -31,7 +33,7 @@ public class ArrayMapPos : ScriptableObject
         rows[y].columns[x].isNotBuild = isbuild;
     }
 
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
     public void InitializeMap()
     {
         rows = new List<TileRow>();
@@ -49,6 +51,51 @@ public class ArrayMapPos : ScriptableObject
         EditorUtility.SetDirty(this);
     }
 #endif
+
+#if UNITY_EDITOR
+    public void SaveMapTileData()
+    {
+        string path = $"{Application.dataPath}/@Resources/Map/MapTileData.json";
+
+        MapTileSaveData saveData = new MapTileSaveData
+        {
+            width = this.width,
+            height = this.height,
+            rows = this.rows
+        };
+
+        string json = JsonConvert.SerializeObject(saveData, Formatting.Indented);
+        File.WriteAllText(path, json);
+
+        Debug.Log("맵 타일 데이터 저장 완료!");
+    }
+#endif
+
+#if UNITY_EDITOR
+    public void LoadMapTileData()
+    {
+        string path = $"{Application.dataPath}/@Resources/Map/MapTileData.json";
+
+        if (!File.Exists(path))
+        {
+            Debug.LogError("맵 타일 데이터 파일이 없습니다!");
+            return;
+        }
+
+        string json = File.ReadAllText(path);
+        MapTileSaveData saveData = JsonConvert.DeserializeObject<MapTileSaveData>(json);
+
+        this.width = saveData.width;
+        this.height = saveData.height;
+        this.rows = saveData.rows;
+
+        Debug.Log("맵 타일 데이터 로드 완료!");
+        EditorUtility.SetDirty(this);
+    }
+#endif
+
+
+
 }
 
 //TileData->TileRow
@@ -63,4 +110,13 @@ public class TileData
 {
     public bool isNotGround;
     public bool isNotBuild;
+}
+
+
+[Serializable]
+public class MapTileSaveData
+{
+    public int width;
+    public int height;
+    public List<TileRow> rows;
 }
