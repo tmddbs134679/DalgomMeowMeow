@@ -23,6 +23,10 @@ public class GameData
     // 저장 전용
     public List<Character> CharacterList = new List<Character>();
     public List<Equipment> OwnedEquipments = new List<Equipment>();
+
+
+    public bool[] AttendanceReceived = new bool[30];
+
 }
 
 
@@ -79,6 +83,13 @@ public class GameManager
 
             EquipInfoChanged?.Invoke();
         }
+    }
+
+    public bool[] AttendanceReceived
+    {
+        get { return _gameData.AttendanceReceived; }
+        set { _gameData.AttendanceReceived = value; }
+
     }
     #endregion
 
