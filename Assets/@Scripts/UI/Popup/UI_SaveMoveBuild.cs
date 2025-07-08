@@ -48,6 +48,7 @@ CancelButton
     private void CancelBuildUI()
     {
         BuildingPlacer.Instance.isSelect = false;
+        BuildingPlacer.Instance.CancelBuild();
         Managers.UI.ClosePopupUI(this);
         (Managers.UI.SceneUI as UI_GameScene).gameObject.SetActive(true);
     }
