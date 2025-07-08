@@ -30,7 +30,7 @@ namespace Scripts.Contents.AI.FSM.State
 
             if (character.Data.CurrentStamina <= character.Data.MaxStamina && elapsedTime > 1)
             {
-                character.RecoverStamina(character.Data.MaxStamina / 10);
+                character.RecoverStamina(10);
                 elapsedTime = 0; 
                 return;
             }

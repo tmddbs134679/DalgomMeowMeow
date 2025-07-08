@@ -20,6 +20,7 @@ namespace Data
         public float MaxHp;
         public float Atk;
         public float MaxStamina;
+        public float CurrentStamina;
         public float MoveSpeed;
         public float HpRate;
         public float AtkRate;

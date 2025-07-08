@@ -151,6 +151,7 @@ public class DataTransformer : EditorWindow
             cd.MaxHp = ConvertValue<float>(row[i++]);
             cd.Atk = ConvertValue<float>(row[i++]);
             cd.MaxStamina = ConvertValue<float>(row[i++]);
+            cd.CurrentStamina = ConvertValue<float>(row[i++]);
             cd.MoveSpeed = ConvertValue<float>(row[i++]);
             cd.HpRate = ConvertValue<float>(row[i++]);
             cd.AtkRate = ConvertValue<float>(row[i++]);
