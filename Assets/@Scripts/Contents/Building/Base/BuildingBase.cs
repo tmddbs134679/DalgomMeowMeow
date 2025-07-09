@@ -25,6 +25,10 @@ public abstract class BuildingBase : BaseObject
 
     public int CurrentLevel { get; protected set; } = 1;
     public string UniqueId { get; private set; }
+    
+    
+    public void SetUniqueId(string id) => UniqueId = id;
+    public void SetLevel(int level) => CurrentLevel = level;
     private void Awake()    
     {
         UniqueId = System.Guid.NewGuid().ToString(); // 최초 생성 시 고유값 부여
