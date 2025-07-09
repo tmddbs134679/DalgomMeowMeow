@@ -141,6 +141,8 @@ public class UI_ProfilePopup : UI_Popup
             Clear();
         }
         _characterAI = Managers.Object.Spawn<AICharacter>(new Vector3(500, 500, 500), _character.DataId, null, true);
+        _characterAI.ReplicaSetting(_character);
+       
     }
 
 

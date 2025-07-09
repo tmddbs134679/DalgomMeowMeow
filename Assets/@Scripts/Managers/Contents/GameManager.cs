@@ -352,6 +352,29 @@ public class GameManager
         }
     }
 
+    public void ApplyEquipmentPreview(AICharacter replica, Character character)
+    {
+        if (replica == null || character == null)
+            return;
+
+        // 기존 장비 제거
+        foreach (var kvp in replica.equipmentBones)
+        {
+            foreach (Transform child in kvp.Value)
+                Managers.Resource.Destroy(child.gameObject);
+        }
+
+        // 캐릭터 장비 복제해서 장착
+        foreach (var pair in character.EquippedItems)
+        {
+            var equipment = pair.Value;
+
+            if (equipment == null)
+                continue;
+
+           AttachEquipmentToCharacter(replica, equipment);
+        }
+    }
 
     private void AttachPreviewToCharacter(AICharacter ai, Equipment equipment)
     {
