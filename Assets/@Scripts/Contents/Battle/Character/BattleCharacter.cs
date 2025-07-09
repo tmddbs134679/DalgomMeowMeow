@@ -41,7 +41,7 @@ public class BattleCharacter : BaseObject
     public bool Invincible = false; // 무적 상태 여부
     public string SkillID;
     public int Skillnum;
-    public float SkillCooldown = 5f; // 스킬 쿨타임 (초 단위)
+    public float SkillCooldown; // 스킬 쿨타임 (초 단위)
     #endregion
 
     public int AnimationHash;

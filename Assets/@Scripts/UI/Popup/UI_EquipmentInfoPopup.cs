@@ -94,6 +94,7 @@ public class UI_EquipmentInfoPopup : UI_Popup
         GetText((int)Texts.EquipmentText).text = _equipment.EquipmentData.Name;
         GetText((int)Texts.EquipmentDescriptionText).text = _equipment.EquipmentData.Description;
         GetImage((int)Images.EquipmentImage).sprite = Managers.Resource.Load<Sprite>(_equipment.EquipmentData.SpriteName);
+
     }
     private void OnClickBackgroundButton()
     {

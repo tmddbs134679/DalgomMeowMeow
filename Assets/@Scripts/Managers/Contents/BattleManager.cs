@@ -8,7 +8,7 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private TeamCameraController _teamCameraController;
     [SerializeField] private TeamController _teamController;
     [SerializeField] private GameObject _titleBtn;
-    private StageManager _currentstage
+    private BattleStageManager _currentstage
         ;
     public int EnemyCount;
     public int PlayerCount;
@@ -22,7 +22,7 @@ public class BattleManager : MonoBehaviour
         _enemyLayer = LayerMask.NameToLayer("Enemy");
         _playerLayer = LayerMask.NameToLayer("Player");
         _teamCameraController = GetComponentInChildren<TeamCameraController>();
-        _currentstage = GetComponentInParent<StageManager>();
+        _currentstage = GetComponentInParent<BattleStageManager>();
         _teamController = GetComponentInChildren<TeamController>();
     }
     private void Start()
@@ -56,8 +56,7 @@ public class BattleManager : MonoBehaviour
             _teamCameraController.Victory();
             Invoke(nameof(CallBtn), 2f);
             
-            if (_currentstage.currentStageIndex >= Managers.Game.CurrentStage)
-                Managers.Game.CurrentStage++;
+            StageDataManager.Instance.StageClear(); //스테이지 클리어 데이터 저장
             
             ForestBattleContext.IsVictory = true; //숲에 승리
         }
