@@ -15,6 +15,8 @@ public class AICharacter : BaseObject
     public AIController Controller { get { return _controller; } }
     private AIController _controller;
 
+    public EAIState loadState;
+    public BuildingBase loadBuilding;
     [HideInInspector]
     public NavMeshAgent nav;
 
@@ -122,6 +124,7 @@ public class AICharacter : BaseObject
 
     public override bool Init()
     {
+        Debug.Log($"AI 캐릭터 초기화 : {gameObject.name}");
         nav = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         skinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
@@ -133,6 +136,7 @@ public class AICharacter : BaseObject
 
     public void SetInfo(Character ch)
     {
+        Debug.Log($"AI 캐릭터 정보 설정 : {ch.Id}, {ch.DataId}");
         Data = ch;
         // 위치값
         transform.position = Data.Pos.ToVector3();
@@ -141,6 +145,8 @@ public class AICharacter : BaseObject
         currentExp = Data.CurrentExp;
         MaxExp = Data.MaxExp;
         currentStamina = Data.CurrentStamina;
+        loadState = Data.CurrentState;
+        //loadBuilding = Data.LoadBuilding;
 
         // TODO : FSM 등 상태 적용
         ControllerRegister();

@@ -131,10 +131,11 @@ public class AIController : BaseController<AICharacter>
         var allAssigned = new HashSet<BuildingBase>(
             Managers.AI.AllCharacters
                 .Select(c => c.currentBuilding)
-                .Where(b => b != null)
+                .Where(b => b != null && b.gameObject != null)
         );
 
         return BuildingManager.Instance._buildings
+            .Where(b => b != null && b.gameObject != null)
             .Where(b => b.BuildingData.BuildingType == type && !allAssigned.Contains(b))
             .OrderBy(b => Vector3.Distance(b.transform.position, character.transform.position))
             .FirstOrDefault();

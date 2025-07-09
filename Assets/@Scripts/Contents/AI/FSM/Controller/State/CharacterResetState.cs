@@ -1,3 +1,4 @@
+using System.Xml;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
@@ -21,7 +22,12 @@ namespace Scripts.Contents.AI.FSM.State
         public override void OnUpdate(float deltaTime)
         {
             base.OnUpdate(deltaTime);
-            if (elapsedTime > 0.1f)
+            if (character.loadState != Define.EAIState.MoveTo && character.loadState != Define.EAIState.None)
+            {
+                character.Controller.OnActionPerformed(character.loadState);
+                return;
+            }
+            if (elapsedTime > 1f)
             {
                 character.characterAction.Idle();
                 return;
