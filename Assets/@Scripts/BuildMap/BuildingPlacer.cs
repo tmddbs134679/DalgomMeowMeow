@@ -62,7 +62,7 @@ public class BuildingPlacer : MonoBehaviour
     /// </summary>
     public void SelectBuildingType(int type)
     {
-        buildMap.ShowBuildInfo();
+
         isAI = true;
         isSelect = true;
         buildMap.ColliderAllOff();

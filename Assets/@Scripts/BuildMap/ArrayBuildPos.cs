@@ -39,6 +39,7 @@ public class ArrayBuildPos : ScriptableObject
         }
     }
 
+   // public void SaveBuildLv
     public void ChangeBuildData(BuildData Curbuild, BuildData Fixbuild)
     {
         Curbuild.posX = Fixbuild.posX;
@@ -125,6 +126,10 @@ public class BuildData
     public string buildingName;
     public int UnlockId;
     public BaseBuildingSO testBaseBuilding;
+
+    //레벨
+
+    //고유ID
 }
 
 //유니티 관련 오브젝트를 따로 저장할수는 없기 때문에 필요한 부분들만 따로 빼내서 저장하는걸 채택
