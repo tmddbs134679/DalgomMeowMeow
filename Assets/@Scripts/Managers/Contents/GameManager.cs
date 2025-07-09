@@ -113,7 +113,7 @@ public class GameManager
             _characters.Clear();
             foreach (Character character in _gameData.CharacterList)
             {
-                if (Managers.Data.CreatureDic.TryGetValue(character.UniqueId, out var creatureData))
+                if (Managers.Data.CreatureDic.TryGetValue(character.DataId, out var creatureData))
                     character.SetInfo(creatureData);
 
                 _characters[character.UniqueId] = character;
@@ -239,8 +239,8 @@ public class GameManager
         {
             Character character = pair.Value;
 
-            AICharacter ai = Util.FindAIById(character.UniqueId);
-            if (ai == null) continue;
+            if (!Managers.Game.CharactersInScene.TryGetValue(character.UniqueId, out AICharacter ai))
+                continue;
 
             character.Pos = new Vector3Data(ai.transform.position);
             character.CurrentState = ai.Data.CurrentState;

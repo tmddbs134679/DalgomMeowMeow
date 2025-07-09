@@ -42,7 +42,9 @@ public class Character
     public Dictionary<EEquipmentType, Equipment> EquippedItems = new();
     public void Init(string dataid, Vector3 position)
     {
-        UniqueId = $"{dataid}_UID_{Guid.NewGuid().ToString().Substring(0, 8)}";
+        if (string.IsNullOrEmpty(UniqueId)) // 이미 있으면 덮어쓰지 않음
+            UniqueId = $"{dataid}_UID_{Guid.NewGuid().ToString().Substring(0, 8)}";
+
         DataId = dataid;
         Pos = new Vector3Data(position);
         Level = Data?.Level ?? 1;
