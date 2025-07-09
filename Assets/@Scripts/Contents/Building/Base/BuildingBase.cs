@@ -23,7 +23,12 @@ public abstract class BuildingBase : BaseObject
     //protected Animal assignedAnimal;
     //주석추가
 
-    public int SerialID;
+    public int CurrentLevel { get; protected set; } = 1;
+    public string UniqueId { get; private set; }
+    private void Awake()    
+    {
+        UniqueId = System.Guid.NewGuid().ToString(); // 최초 생성 시 고유값 부여
+    }
     protected virtual void Start()
     {
         if (Timer == null)

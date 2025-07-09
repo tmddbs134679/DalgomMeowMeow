@@ -6,7 +6,6 @@ using UnityEngine;
 public class CookingBuilding : BuildingBase
 {
     [SerializeField] private Renderer buildingRenderer;
-    public int CurrentLevel { get; private set; } = 1; 
     
     private BuildingLevelData LevelData => 
         Managers.Data.BuildingLevelDic[(BuildingData.Id.ToString(), CurrentLevel)];
