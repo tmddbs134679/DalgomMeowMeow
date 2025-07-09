@@ -15,6 +15,8 @@ public class AICharacter : BaseObject
     public AIController Controller { get { return _controller; } }
     private AIController _controller;
 
+    public EAIState loadState;
+    public BuildingBase loadBuilding;
     [HideInInspector]
     public NavMeshAgent nav;
 
@@ -38,9 +40,11 @@ public class AICharacter : BaseObject
 
     [Header("AI 캐릭터 현재 상태")]
     public Define.EAIState CurrentState;
+
     [Header("캐릭터 이미지들")]
-    public Material[] emo;
+    public CharacterEmoSet emo;
     public Sprite[] sprites;
+
     [HideInInspector]
     public Sprite sprite;
 
@@ -120,6 +124,7 @@ public class AICharacter : BaseObject
         ClickToSet();
     }
 
+    #region 생성 시 초기화 및 불러오기
     public override bool Init()
     {
         nav = GetComponent<NavMeshAgent>();
@@ -141,11 +146,13 @@ public class AICharacter : BaseObject
         currentExp = Data.CurrentExp;
         MaxExp = Data.MaxExp;
         currentStamina = Data.CurrentStamina;
+        loadState = Data.CurrentState;
 
         // TODO : FSM 등 상태 적용
         ControllerRegister();
         
     }
+    #endregion
 
     #region FSM Register
     public void ControllerRegister()
@@ -237,11 +244,10 @@ public class AICharacter : BaseObject
 
     public void SetEmotion(int index)
     {
-        if (emo == null || emo.Length <= index) return;
-
-        currentEmo = emo[index];
+        if (emo == null) return;
+        currentEmo = emo.EmotionMaterials[index];
         var mats = skinnedMeshRenderer.materials;
-        mats[1] = emo[index];
+        mats[1] = emo.EmotionMaterials[index];
         skinnedMeshRenderer.materials = mats;
     }
 

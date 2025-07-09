@@ -39,7 +39,7 @@ namespace Scripts.Contents.AI.FSM.State
         public override void OnExit()
         {
             base.OnExit();
-            character.SetEmotion(Random.Range(0, character.emo.Length)); // Reset emotion to a random value
+            character.SetEmotion(Random.Range(0,character.emo.EmotionMaterials.Length)); // Reset emotion to a random value
             if (character.currentBuilding != null)
             {
                 character.currentBuilding = null; // Clear current building reference
