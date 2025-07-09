@@ -16,7 +16,6 @@ public class BuildButtonTrigger : MonoBehaviour
             return;
         }
         buildButton.onClick.AddListener(OnClick);
-        Debug.Log("Build Button Listener Attached");
     }
 
     private void OnClick()

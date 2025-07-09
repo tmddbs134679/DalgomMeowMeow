@@ -40,7 +40,7 @@ public class TutorialManager : MonoBehaviour
 
     public void CompleteStep()
     {
-        Debug.Log("Step Complete");
+        Debug.Log($"{currentStep}Step Complete");
         Steps[currentStep].OnComplete?.Invoke();
 
         currentStep++;
