@@ -423,7 +423,6 @@ public class GameManager
 
         if (validList.Count == 0)
         {
-            Debug.LogError("[Gacha] No available creatures!");
             return null;
         }
 
@@ -445,7 +444,6 @@ public class GameManager
             }
         }
 
-        Debug.LogWarning("[Gacha] Fallback to first");
         return validList[0].DataId;
     }
 
