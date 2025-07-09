@@ -90,6 +90,7 @@ public class SkillLibrary : MonoBehaviour
         {
             battleCharacter.UsingSkill = true;
             battleCharacter.SkillCooldown = 5f; // 스킬 쿨타임 설정
+            yield return new WaitForSecondsRealtime(1.5f); // 스킬 애니메이션 딜레이
             battleCharacter.Animator.SetTrigger(battleCharacter.SkillTrigger); // 스킬 애니메이션 트리거 활성화
             yield return StartCoroutine(EffectManager.Instance.Punch(battleCharacter.TargetLocation.position));
             Collider[] hits = Physics.OverlapSphere(battleCharacter.TargetLocation.position, 2.5f, LayerMask.GetMask("Enemy")); // 적 캐릭터 레이어 마스크 사용
