@@ -43,8 +43,6 @@ public class GameManager
 
     public bool IsLoaded = false;
 
-    public int CurrentStage;
-    public bool CurrentStageCleared;
     #region Action
 
     public event Action OnResourcesChagned;
