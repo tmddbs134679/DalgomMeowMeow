@@ -87,7 +87,7 @@ public class UI_ProfilePopup : UI_Popup
             return;
 
         // 중복 캐릭터면 고유 id를 사용해야하나? 생각
-        int currentIndex = characterList.FindIndex(c => c.Id == _character.Id);
+        int currentIndex = characterList.FindIndex(c => c.UniqueId == _character.UniqueId);
         if (currentIndex == -1)
             return;
 

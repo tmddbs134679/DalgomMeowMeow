@@ -62,7 +62,7 @@ public class UI_CharacterTypeSlot : UI_Base
         foreach (string itemId in _character.EquippedItemIds)
         {
             // 보유 장비 목록에서 ID로 Equipment 찾기
-            Equipment equipment = Managers.Game.OwnedEquipments.Find(e => e.key == itemId);
+            Equipment equipment = Managers.Game.OwnedEquipments.Find(e => e.UniqueId == itemId);
             if (equipment != null && equipment.EquipmentData.EquipmentType == type)
             {
                 GetImage((int)Images.EquipImage).sprite = Managers.Resource.Load<Sprite>(equipment.EquipmentData.SpriteName);

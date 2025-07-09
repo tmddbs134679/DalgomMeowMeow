@@ -109,7 +109,7 @@ public class UI_EquipmentTypePopup : UI_Popup
             List<Character> characterList = Managers.Game.Characters;
 
             // 장착 중인 캐릭터 찾기
-            Character equippedChar = characterList.Find(c => c.DataId == _equipment.EquippedByCharacterId);
+            Character equippedChar = characterList.Find(c => c.UniqueId == _equipment.EquippedByCharacterId);
             if (equippedChar != null)
             {
                 RefreshCharacterProfile(equippedChar);
@@ -151,7 +151,7 @@ public class UI_EquipmentTypePopup : UI_Popup
 
         // 해당 캐릭터가 장비의 주인인지 확인
         bool isEquippedByThisCharacter =
-            _equipment.EquippedByCharacterId == _character.DataId;
+            _equipment.EquippedByCharacterId == _character.UniqueId;
 
         if (isEquippedByThisCharacter)
         {
@@ -175,7 +175,7 @@ public class UI_EquipmentTypePopup : UI_Popup
     {
         // 현재 캐릭터가 이 장비를 착용 중인지 확인
         bool isEquippedByCurrentCharacter =
-            _equipment.EquippedByCharacterId == _character?.DataId;
+            _equipment.EquippedByCharacterId == _character?.UniqueId;
 
         GetButton((int)Buttons.EquipButton).gameObject.SetActive(!isEquippedByCurrentCharacter);
         GetButton((int)Buttons.UnEquipButton).gameObject.SetActive(isEquippedByCurrentCharacter);
