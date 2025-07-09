@@ -6,18 +6,34 @@ using UnityEngine.UI;
 
 public class UI_Tutorial : UI_Popup
 {
-    public GameObject Panel;
-    public TMP_Text TitleText;
-    public TMP_Text DescriptionText;
-    public void Show(string title, string desc)
+    enum GameObjects
     {
-        Panel.SetActive(true);
-        TitleText.text = title;
-        DescriptionText.text = desc;
+        Content
     }
 
-    public void Hide()
+
+    enum Texts { DescriptionText }
+    
+    
+    public override bool Init()
     {
-        Panel.SetActive(false);
+        if (!base.Init()) return false;
+
+        BindObject(typeof(GameObjects));
+        
+        BindText(typeof(Texts));
+        
+        SetInfo();
+        return true;
+    }
+
+    private void SetInfo()
+    {
+        GetText((int)Texts.DescriptionText).text = "description";
+    }
+
+    public void Show(string title, string description)
+    {
+        GetText((int)Texts.DescriptionText).text = description;
     }
 }

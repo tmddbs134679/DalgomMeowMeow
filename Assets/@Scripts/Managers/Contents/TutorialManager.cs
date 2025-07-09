@@ -63,7 +63,8 @@ public class TutorialManager : MonoBehaviour
         step.OnStart?.Invoke();
             
         // ⬇️ 설명 텍스트 보여주기
-        //UI.Show(step.Title, step.Description); 
+        UI.Init(); 
+        UI.Show(step.Title, step.Description); 
         
         if (step.Title == "건설 버튼 누르기" && step.HighlightTarget == null)
         {
