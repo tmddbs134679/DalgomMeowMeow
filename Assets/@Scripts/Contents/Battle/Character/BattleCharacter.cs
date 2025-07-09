@@ -326,6 +326,8 @@ public class BattleCharacter : BaseObject
 
     public void ActiveSkill()
     {
+        if (IsDead)
+            return;
         _skillLibrary.UseSkill(this.Skillnum, this); // 스킬 라이브러리에서 스킬 사용
     }
        

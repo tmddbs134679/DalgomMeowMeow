@@ -86,4 +86,8 @@ public class UI_BattleScene : UI_Scene
         Time.timeScale = 1f; // 게임 재개
         _skillScene.SetActive(false); // 스킬 UI 비활성화
     }
+    public void SetOFF()
+    {
+        this.gameObject.SetActive(false); // UI_BattleScene 비활성화
+    }
 }
