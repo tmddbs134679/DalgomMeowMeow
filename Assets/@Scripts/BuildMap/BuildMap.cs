@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.AI.Navigation;
-
+using System.Linq;
 /// <summary>
 /// 저장되어있는 데이터맵 가져와서 그리드맵 생성및 타일에 정보전달
 /// 현재까지는 remove,Collider ON,Off를 하기 위한 장치
@@ -94,4 +94,21 @@ public class BuildMap : MonoBehaviour
     }
 
 
+    public void ShowBuildInfo()
+    {
+        var valueCounts = _spawnedBuilds.Values
+                          .GroupBy(v => v.name)
+                          .ToDictionary(g => g.Key, g => g.Count());
+
+        foreach (var a in valueCounts)
+        {
+            Debug.Log($"#############{a.Key} : {a.Value}개");
+        }
+        
+                foreach (var a in _spawnedBuilds)
+        {
+            Debug.Log($"@@@@@@@@@@@@@{a.Key} : {a.Value}개");
+        }
+        
+    }
 }

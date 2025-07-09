@@ -54,12 +54,13 @@ public class UI_BuildAction : UI_Popup
         if (BuildingPlacer.Instance.isLongPressAcceptBuild)
         {
             BuildingPlacer.Instance.AcceptLongPressBuild();
+             if (!BuildingPlacer.Instance.isLongPressAcceptBuild&&BuildingPlacer.Instance._isBuild) Managers.UI.CloseAllPopupUI();
         }
         else
         {
             BuildingPlacer.Instance.AcceptBuild();
         }
-              if (!BuildingPlacer.Instance.isLongPressAcceptBuild&&BuildingPlacer.Instance._isBuild) Managers.UI.CloseAllPopupUI();
+             
     }
     private void CancelBuild()
     {
