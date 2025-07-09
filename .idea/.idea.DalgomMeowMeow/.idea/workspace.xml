@@ -6,12 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="f48e1cac-c49d-4f22-9686-b0c375630046" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DalgomMeowMeow/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DalgomMeowMeow/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Prefabs/BuildOBJ/Editor/Pre_UnlockArea.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Prefabs/BuildOBJ/Editor/Pre_UnlockArea.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Resources/UI/Popup/UI_Tutorial.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Resources/UI/Popup/UI_Tutorial.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/@Scenes/GameScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scenes/GameScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Contents/Building/ForestRegion.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Contents/Building/ForestRegion.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Contents/Building/ForestUnlocker.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Contents/Building/ForestUnlocker.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Managers/Contents/BattleManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Managers/Contents/BattleManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/AddressableAssetsData/AssetGroups/UI.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AddressableAssetsData/AssetGroups/UI.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Managers/Contents/TutorialManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Managers/Contents/TutorialManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/Scene/UI_Tutorial.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/Scene/UI_Tutorial.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,7 +33,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/UI/Popup/UI_BuildingPopup.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/UI/Popup/UI_ForestPopup.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/UI/Popup/UI_SlotMachinePopup.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/@Scripts/UI/Scene/UI_TutorialScene.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/@Scripts/UI/Scene/UI_Tutorial.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.burst@1.8.11/Tests/Runtime/Shared/090-Vectors-Indexers.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.cinemachine@2.9.7/Runtime/Core/CinemachineVirtualCameraBase.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.core@14.0.9/Runtime/Debugging/DebugUpdater.cs" root0="SKIP_HIGHLIGHTING" />
@@ -119,10 +117,10 @@
       <option name="PTY_MODE" value="Auto" />
       <method v="2" />
     </configuration>
-    <configuration name="Unity 에디터에 연결" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="17128">
+    <configuration name="Unity 에디터에 연결" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="17360">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="17128" />
+      <option name="pid" value="17360" />
       <option name="projectPathOnTarget" />
       <option name="runtimes">
         <list>
@@ -171,7 +169,8 @@
       <workItem from="1751468977027" duration="3268000" />
       <workItem from="1751586264061" duration="25857000" />
       <workItem from="1751849345498" duration="16791000" />
-      <workItem from="1751931901562" duration="24914000" />
+      <workItem from="1751931901562" duration="30836000" />
+      <workItem from="1752017543331" duration="17772000" />
     </task>
     <servers />
   </component>
@@ -203,19 +202,6 @@
           <properties exception="System.Threading.ThreadAbortException" breakIfHandledByOtherCode="false" displayValue="System.Threading.ThreadAbortException" />
           <option name="timeStamp" value="3" />
         </breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/@Scripts/Contents/Building/ForestRegion.cs</url>
-          <line>33</line>
-          <properties documentPath="C:\UnityProjects\git\waefwa\DalgomMeowMeow\Assets\@Scripts\Contents\Building\ForestRegion.cs" containingFunctionPresentation="메서드 'Unlock'">
-            <startOffsets>
-              <option value="737" />
-            </startOffsets>
-            <endOffsets>
-              <option value="765" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="10" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/@Scripts/Managers/Contents/BattleManager.cs</url>
           <line>61</line>
