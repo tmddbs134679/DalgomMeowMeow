@@ -25,7 +25,7 @@ public class MySceneManager
                 Managers.Clear();
                 break;
         }
-
+        Managers.Game.SaveGame();
     }
 
     string GetSceneName(EScene type)

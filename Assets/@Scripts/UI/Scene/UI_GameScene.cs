@@ -192,7 +192,6 @@ public class UI_GameScene : UI_Scene
 
         //임시로 화면 밖으로 보내기
         item.transform.localPosition = new Vector3(9999, 9999, 0);
-
         item.SetInfo(food);
 
         // LinkedList 순서 정리

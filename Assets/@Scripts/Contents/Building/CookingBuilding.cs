@@ -71,22 +71,9 @@ public class CookingBuilding : BuildingBase
         StoredCount++; //  생산 누적
         
         Managers.Debug.Log($"요리 완성! 누적 수량: {StoredCount}",Define.EDebugType.Building);
-        if (deliveredVegetableCount == 0)
-        {
-            Managers.Food.MakeFood();
-        }
-        else if(deliveredVegetableCount == 1)
-        {
-            Managers.Food.MakeFood();
-        }
-        else if (deliveredVegetableCount == 2)
-        {
-            Managers.Food.MakeFood();
-        }
-        else if (deliveredVegetableCount >= 3)
-        {
-            Managers.Food.MakeFood();
-        }
+    
+       Managers.Food.MakeFood(deliveredVegetableCount);
+     
         
         deliveredVegetableCount = 0; // 생산 후 초기화
         //(Managers.UI.SceneUI as UI_GameScene).ResetCookItem();
