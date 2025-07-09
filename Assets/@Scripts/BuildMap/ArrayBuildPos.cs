@@ -68,7 +68,9 @@ public class ArrayBuildPos : ScriptableObject
                 posX = data.posX,
                 posZ = data.posZ,
                 buildingName = data.testBaseBuilding.name, // 오브젝트 자체의 이름만 저장
-                UnlockId = data.UnlockId
+                UnlockId = data.UnlockId,
+                UniqueId =data.UniqueId,
+                LV=data.LV,
             });
         }
 
@@ -109,7 +111,9 @@ public class ArrayBuildPos : ScriptableObject
                 posX = data.posX,
                 posZ = data.posZ,
                 testBaseBuilding = so,
-                UnlockId = data.UnlockId
+                UnlockId = data.UnlockId,
+                UniqueId = data.UniqueId,
+                LV=data.LV,
             });
         }
         baseBuilding = buildDataList;
@@ -128,8 +132,9 @@ public class BuildData
     public BaseBuildingSO testBaseBuilding;
 
     //레벨
-
+    public int LV;
     //고유ID
+    public int UniqueId;
 }
 
 //유니티 관련 오브젝트를 따로 저장할수는 없기 때문에 필요한 부분들만 따로 빼내서 저장하는걸 채택

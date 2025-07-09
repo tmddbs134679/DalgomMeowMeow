@@ -24,11 +24,8 @@ public abstract class BuildingBase : BaseObject
     //주석추가
 
     public int CurrentLevel { get; protected set; } = 1;
-    public string UniqueId { get; private set; }
-    private void Awake()    
-    {
-        UniqueId = System.Guid.NewGuid().ToString(); // 최초 생성 시 고유값 부여
-    }
+    public int UniqueId { get; private set; }
+
     protected virtual void Start()
     {
         if (Timer == null)
