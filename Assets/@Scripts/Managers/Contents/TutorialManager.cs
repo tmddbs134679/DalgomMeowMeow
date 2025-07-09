@@ -17,6 +17,8 @@ public class TutorialManager : MonoBehaviour
 {
     public List<TutorialStep> Steps; 
     public UI_TutorialScene UI;
+    public Highlighter highlighter;
+    
     private int currentStep = 0;
     public bool IsRunning { get; private set; }
 
@@ -54,8 +56,10 @@ public class TutorialManager : MonoBehaviour
 
     private void ActivateStep(TutorialStep step)
     {
+
         step.OnStart?.Invoke();
-        UI.Show(step.Title, step.Description);
+        //UI.Show(step.Title, step.Description);
+
     }
 
     private void EndTutorial()
