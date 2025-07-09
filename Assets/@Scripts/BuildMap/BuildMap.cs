@@ -5,7 +5,7 @@ using Unity.AI.Navigation;
 
 /// <summary>
 /// 저장되어있는 데이터맵 가져와서 그리드맵 생성및 타일에 정보전달
-/// 현재까지는 Collider ON,Off를 하기 위한 장치
+/// 현재까지는 remove,Collider ON,Off를 하기 위한 장치
 /// </summary>
 public class BuildMap : MonoBehaviour
 {
@@ -19,10 +19,10 @@ public class BuildMap : MonoBehaviour
         {
             GameObject go = Instantiate(data.testBaseBuilding.buildOBJ, new Vector3(data.posX, 1f, data.posZ), Quaternion.identity, transform);
             go.GetComponent<DraggableObject>().buildMap = gameObject.GetComponent<BuildMap>();
-                if (go.TryGetComponent(out ForestRegion region))
-                {
-                    region.Id = data.UnlockId;
-                }
+            if (go.TryGetComponent(out ForestRegion region))
+            {
+                region.Id = data.UnlockId;
+            }
             _spawnedBuilds.Add(new Vector2(data.posX, data.posZ), go);
         }
         surface.BuildNavMesh();
@@ -92,5 +92,6 @@ public class BuildMap : MonoBehaviour
             }
         }
     }
+
 
 }

@@ -34,7 +34,7 @@ public class BuildingPlacer : MonoBehaviour
     private int buyMoney;
 
     private bool _isGold;
-    private bool _isBuild;
+    public bool _isBuild;
     public bool isSelect = false;
 
     public bool isLongPressAcceptBuild=false;
