@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
+using static Define;
+using static UnityEditor.Progress;
 
 public class UI_ProfilePopup : UI_Popup
 {
@@ -12,9 +14,6 @@ public class UI_ProfilePopup : UI_Popup
     {
         ContentObject,
         EquippedGroupObject,
-        EquippedIHattem,
-        EquippedAccessoryItem,
-        EquippedBagItem
     }
 
     enum Buttons
@@ -37,9 +36,14 @@ public class UI_ProfilePopup : UI_Popup
 
     Character _character;
     AICharacter _characterAI;
-    UI_EquipItem _equipHatItem;
-    UI_EquipItem _equipAccessoryItem;
-    UI_EquipItem _equipBagItem;
+
+    List<EEquipmentType> displayOrder = new()
+    {
+        EEquipmentType.Hat,
+        EEquipmentType.Accessory,
+        EEquipmentType.Bag
+    };
+
     private void Awake()
     {
         Init();
@@ -60,16 +64,10 @@ public class UI_ProfilePopup : UI_Popup
         BindText(typeof(Texts));
         
         GetButton((int)Buttons.ExitButton).gameObject.BindEvent(OnClickExitButton);
-        GetButton((int)Buttons.PrevCharacterButton).gameObject.BindEvent(() => OnClickChangeButton(-1));
-        GetButton((int)Buttons.NextCharacterButton).gameObject.BindEvent(() => OnClickChangeButton(1));
+        GetButton((int)Buttons.PrevCharacterButton).gameObject.BindEvent(() => OnClickChangeButton(1));
+        GetButton((int)Buttons.NextCharacterButton).gameObject.BindEvent(() => OnClickChangeButton(-1));
 
         //GetRawImage((int)Images.Image).
-
-
-        _equipHatItem = GetObject((int)GameObjects.EquippedIHattem).GetComponent<UI_EquipItem>();
-        _equipAccessoryItem = GetObject((int)GameObjects.EquippedAccessoryItem).GetComponent<UI_EquipItem>();
-        _equipBagItem = GetObject((int)GameObjects.EquippedBagItem).GetComponent<UI_EquipItem>();
-
         _character = Managers.Game.Characters[0];
 
         //Refresh();
@@ -87,7 +85,7 @@ public class UI_ProfilePopup : UI_Popup
             return;
 
         // 중복 캐릭터면 고유 id를 사용해야하나? 생각
-        int currentIndex = characterList.FindIndex(c => c.Id == _character.Id);
+        int currentIndex = characterList.FindIndex(c => c.UniqueId == _character.UniqueId);
         if (currentIndex == -1)
             return;
 
@@ -110,17 +108,26 @@ public class UI_ProfilePopup : UI_Popup
 
     public void SetInfo(Character character)
     {
+
+        GetObject((int)GameObjects.EquippedGroupObject).DestroyChilds();
+
+
         _character = character;
-        //GetImage((int)Images.Image).sprite = Managers.Resource.Load<Sprite>(_character.Data.IconLabel);
         GetText((int)Texts.CharacterNameText).text = _character.Data.Name;
 
-        //foreach(string quip in _character.EquippedItemIds)
-        //{
-        //    UI_EquipItem item = Managers.UI.MakeSubItem<UI_EquipItem>(GetObject((int)GameObjects.EquippedGroupObject).transform);
-        //    item.SetInfo(quip);
-        //}
 
-        //Todo : 모자, 가방, 악세서리 아이템 나오면 연결 MakeSubItem말고 고정값들
+        foreach (EEquipmentType type in displayOrder)
+        {
+            // 해당 타입의 장비를 찾아서 UI 생성
+
+            UI_EquipItem item = Managers.UI.MakeSubItem<UI_EquipItem>(GetObject((int)GameObjects.EquippedGroupObject).transform);
+            item.transform.SetAsLastSibling();
+
+            if (_character.EquippedItems.TryGetValue(type, out var equip))
+                item.SetInfo(equip.UniqueId);
+            else
+                item.SetInfo();
+        }
 
         Refresh();
     }
@@ -133,11 +140,6 @@ public class UI_ProfilePopup : UI_Popup
         {
             Clear();
         }
-
-        _equipHatItem.SetInfo(_character); 
-        _equipAccessoryItem.SetInfo(_character);
-        _equipBagItem.SetInfo(_character);
-
         _characterAI = Managers.Object.Spawn<AICharacter>(new Vector3(500, 500, 500), _character.DataId, null, true);
     }
 

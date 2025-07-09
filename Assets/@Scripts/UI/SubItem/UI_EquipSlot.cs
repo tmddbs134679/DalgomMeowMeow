@@ -63,10 +63,23 @@ public class UI_EquipSlot : UI_Base
         Sprite spr = Managers.Resource.Load<Sprite>(_equipment.EquipmentData.SpriteName);
         GetImage((int)Images.EquipImage).sprite = spr;
 
-        if (_equipment.EquippedByCharacterId != null)
-            GetImage((int)Images.CharacterOwnerImage).sprite = Managers.Resource.Load<Sprite>(_equipment.EquippedByCharacterId);
+        // 캐릭터 오너 스프라이트 표시 (DataId 기준)
+        if (!string.IsNullOrEmpty(_equipment.EquippedByCharacterId))
+        {
+            Character owner = Managers.Game.Characters.Find(c => c.UniqueId == _equipment.EquippedByCharacterId);
+            if (owner != null && !string.IsNullOrEmpty(owner.Data?.IconLabel))
+            {
+                GetImage((int)Images.CharacterOwnerImage).sprite = Managers.Resource.Load<Sprite>(owner.Data.IconLabel);
+            }
+            else
+            {
+                GetImage((int)Images.CharacterOwnerImage).sprite = null;
+            }
+        }
         else
+        {
             GetImage((int)Images.CharacterOwnerImage).sprite = null;
+        }
     }
 
 

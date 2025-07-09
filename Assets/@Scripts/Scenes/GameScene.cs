@@ -19,8 +19,8 @@ public class GameScene : BaseScene
             ai.Init();
             ai.SetInfo(ch);
 
-            Managers.Game.CharactersInScene[ch.DataId] = ai;
-            Managers.Game.SetInitEquipment(ai);
+            Managers.Game.CharactersInScene[ch.UniqueId] = ai;
+            Managers.Game.SetInitEquipment(Managers.Game.CharactersInScene[ch.UniqueId]);
             Managers.AI.Register(ai);
         }
 

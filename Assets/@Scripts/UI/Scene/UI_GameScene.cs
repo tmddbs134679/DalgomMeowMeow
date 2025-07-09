@@ -40,6 +40,7 @@ public class UI_GameScene : UI_Scene
 
     UI_QuickMenu _quickMenuPopupUI;
     UI_CheckOutPopup _checkOutPopupUI;
+
     public override bool Init()
     {
         if (base.Init() == false)
@@ -114,7 +115,12 @@ public class UI_GameScene : UI_Scene
     public void OnDestroy()
     {
         if (Managers.Game != null)
+        {
             Managers.Game.OnResourcesChagned -= Refresh;
+            Managers.Game.OnCharacterChanged -= Refresh;
+            Managers.Food.OnFoodAdded -= AddFoodSlot;
+            Managers.Food.OnFoodSold -= RemoveFoodSlot;
+        }
     }
 
     public void ResetCookItem(Food food)

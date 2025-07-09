@@ -28,7 +28,9 @@ public class UI_EquipItem : UI_Base
     }
     #endregion
 
-    Character _character;
+    //Character _character;
+
+    Equipment _equipment;
     private void Awake()
     {
         Init();
@@ -41,25 +43,32 @@ public class UI_EquipItem : UI_Base
         BindObject(typeof(GameObjects));
         BindButton(typeof(Buttons));
         BindText(typeof(Texts));
-
+        BindImage(typeof(Images));
         return true;
     }
 
-    public void SetInfo(Character character)
+    public void SetInfo(string equipUid = null)
     {
-       // Todo : ¾ÆÀÌÅÛ¿¡¼­ ¸®½ºÆ® »Ì±â
-       _character = character;
+        // Todo : ì•„ì´í…œì—ì„œ ë¦¬ìŠ¤íŠ¸ ë½‘ê¸°
+        // _character = character;
+        _equipment = Managers.Game.OwnedEquipments.Find(e => e.UniqueId == equipUid);
 
-        if(_character.EquippedItemIds.Count == 0)
+        bool hasEquip = _equipment != null;
+
+        if (_equipment != null)
         {
-            GetText((int)Texts.CostumeText).gameObject.SetActive(true);
-            GetText((int)Texts.NameText).gameObject.SetActive(false);
-            GetText((int)Texts.DescriptionText).gameObject.SetActive(false);
+            GetImage((int)Images.Image).sprite = Managers.Resource.Load<Sprite>(_equipment.EquipmentData.SpriteName);
+            GetText((int)Texts.NameText).text = _equipment.EquipmentData.Name;
+            GetText((int)Texts.DescriptionText).text = _equipment.EquipmentData.Description;
         }
         else
         {
-            //Todo : º¸À¯ Àåºñ ³ª¿­
+            GetImage((int)Images.Image).sprite = null;
         }
+
+        GetText((int)Texts.CostumeText).gameObject.SetActive(!hasEquip);
+        GetText((int)Texts.NameText).gameObject.SetActive(hasEquip);
+        GetText((int)Texts.DescriptionText).gameObject.SetActive(hasEquip);
 
 
     }

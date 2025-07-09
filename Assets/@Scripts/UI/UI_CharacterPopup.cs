@@ -32,6 +32,8 @@ public class UI_CharacterPopup : UI_Popup
     private void OnEnable()
     {
         PopupOpenAnimation(GetObject((int)GameObjects.ContentObject));
+
+        Refresh();
     }
 
     public override bool Init()
@@ -57,6 +59,8 @@ public class UI_CharacterPopup : UI_Popup
 
     private void Refresh()
     {
+        GetObject((int)GameObjects.CharacterInfoScrollContentObject).DestroyChilds();
+
         List<Character> characters = Managers.Game.Characters;
         foreach (Character ch in characters)
         {

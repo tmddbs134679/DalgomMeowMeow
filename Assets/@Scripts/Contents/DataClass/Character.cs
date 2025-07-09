@@ -24,7 +24,7 @@ public class Character
 {
     public Data.CreatureData Data;
 
-    public string Id { get; set; }              //고유 식별
+    public string UniqueId { get; set; }              //고유 식별
     public string DataId { get; set; }  //정적 데이터 키
     public float Level { get; set; } = 1; //레벨
     public float MaxExp { get; set; }
@@ -40,9 +40,12 @@ public class Character
     public List<string> EquippedItemIds { get; set; } = new();
 
     public Dictionary<EEquipmentType, Equipment> EquippedItems = new();
-    public void Init(string id, Vector3 position)
+    public void Init(string dataid, Vector3 position)
     {
-        Id = id;
+        if (string.IsNullOrEmpty(UniqueId)) // 이미 있으면 덮어쓰지 않음
+            UniqueId = $"{dataid}_UID_{Guid.NewGuid().ToString().Substring(0, 8)}";
+
+        DataId = dataid;
         Pos = new Vector3Data(position);
         Level = Data?.Level ?? 1;
         Hp = Data?.MaxHp ?? 100f; // 최대 체력

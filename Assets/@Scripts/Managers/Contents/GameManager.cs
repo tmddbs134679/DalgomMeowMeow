@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Xml;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
@@ -24,7 +25,7 @@ public class GameData
     public List<Character> CharacterList = new List<Character>();
     public List<Equipment> OwnedEquipments = new List<Equipment>();
 
-
+    
     public bool[] AttendanceReceived = new bool[30];
 
 }
@@ -115,8 +116,17 @@ public class GameManager
                 if (Managers.Data.CreatureDic.TryGetValue(character.DataId, out var creatureData))
                     character.SetInfo(creatureData);
 
-                _characters[character.DataId] = character;
+                _characters[character.UniqueId] = character;
             }
+
+            foreach (var equip in _gameData.OwnedEquipments)
+            {
+                if (string.IsNullOrEmpty(equip.UniqueId))
+                    equip.UniqueId = $"EQ_{Guid.NewGuid().ToString().Substring(0, 8)}";
+
+                equip.SetInfo(Managers.Data.EquipmentDic[equip.key]);
+            }
+
 
             return;
         }
@@ -128,22 +138,27 @@ public class GameManager
         var newChar = new Character();
         newChar.Init("A10002", new Vector3(39f, 0, 27f)); // 위치 초기값
         newChar.SetInfo(Managers.Data.CreatureDic["A10002"]);
-        _characters[newChar.Id] = newChar;
+        _characters[newChar.UniqueId] = newChar;
+
+        var newCharTest = new Character();
+        newCharTest.Init("A10002", new Vector3(39f, 0, 27f)); // 위치 초기값
+        newCharTest.SetInfo(Managers.Data.CreatureDic["A10002"]);
+        _characters[newCharTest.UniqueId] = newCharTest;
 
         var newChar1 = new Character();
         newChar1.Init("A10006", new Vector3(38f, 0, 27f)); // 위치 초기값
         newChar1.SetInfo(Managers.Data.CreatureDic["A10006"]);
-        _characters[newChar1.Id] = newChar1;
+        _characters[newChar1.UniqueId] = newChar1;
 
         var newChar2 = new Character();
         newChar2.Init("A10003", new Vector3(38f, 0, 27)); // 위치 초기값
         newChar2.SetInfo(Managers.Data.CreatureDic["A10003"]);
-        _characters[newChar2.Id] = newChar2;
+        _characters[newChar2.UniqueId] = newChar2;
 
         var newChar3 = new Character();
         newChar3.Init("A10001", new Vector3(38f, 0, 27)); // 위치 초기값
         newChar3.SetInfo(Managers.Data.CreatureDic["A10001"]);
-        _characters[newChar3.Id] = newChar3;
+        _characters[newChar3.UniqueId] = newChar3;
 
 
 
@@ -162,6 +177,9 @@ public class GameManager
         Equipment eq12 = new Equipment("E0203");
         Equipment eq13 = new Equipment("E0205");
         Equipment eq14 = new Equipment("E0207");
+        Equipment eq15 = new Equipment("E0001");
+        Equipment eq16 = new Equipment("E0001");
+
         OwnedEquipments.Add(eq1);
         OwnedEquipments.Add(eq2);
         OwnedEquipments.Add(eq3);
@@ -176,7 +194,8 @@ public class GameManager
         OwnedEquipments.Add(eq12);
         OwnedEquipments.Add(eq13);
         OwnedEquipments.Add(eq14);
- 
+        OwnedEquipments.Add(eq15);
+        OwnedEquipments.Add(eq16);
 
         SaveGame();
         IsLoaded = true;
@@ -206,7 +225,7 @@ public class GameManager
         if (data != null)
         {
             _gameData = data;
-            CharacterMap = _gameData.CharacterList.ToDictionary(c => c.Id, c => c);
+            CharacterMap = _gameData.CharacterList.ToDictionary(c => c.UniqueId, c => c);
         }
           
 
@@ -220,8 +239,8 @@ public class GameManager
         {
             Character character = pair.Value;
 
-            AICharacter ai = Util.FindAIById(character.DataId);
-            if (ai == null) continue;
+            if (!Managers.Game.CharactersInScene.TryGetValue(character.UniqueId, out AICharacter ai))
+                continue;
 
             character.Pos = new Vector3Data(ai.transform.position);
             character.CurrentState = ai.Data.CurrentState;
@@ -235,16 +254,13 @@ public class GameManager
 
     public void EquipCharacterVisual(AICharacter ai, Character character, Equipment previewEquipment = null)
     {
-        // 기존 장비 장착 (진짜 착용 정보 기반)
-        foreach (var equipId in character.EquippedItemIds)
+        foreach (var equipUid in character.EquippedItemIds)
         {
-            Equipment equip = OwnedEquipments.Find(e => e.key == equipId);
+            Equipment equip = OwnedEquipments.Find(e => e.UniqueId == equipUid);
             if (equip == null) continue;
-
             AttachEquipmentToCharacter(ai, equip);
         }
 
-        // 선택된 미리보기 장비 장착
         if (previewEquipment != null)
         {
             AttachPreviewToCharacter(ai, previewEquipment);
@@ -254,97 +270,80 @@ public class GameManager
     public void EquipItem(Character character, Equipment equipment)
     {
         if (character == null || equipment == null)
-        {
-            Debug.LogWarning("[EquipItem] character 또는 equipment 가 null입니다.");
             return;
-        }
 
-        var id = character.DataId;
+        var uniqueId = character.UniqueId;
 
-        // 실제 데이터 참조
-        var targetCharacter = CharacterMap.ContainsKey(id) ? CharacterMap[id] : Characters.Find(c => c.DataId == id);
+        var targetCharacter = CharacterMap.ContainsKey(uniqueId)
+            ? CharacterMap[uniqueId]
+            : Characters.Find(c => c.UniqueId == uniqueId);
         if (targetCharacter == null)
-        {
-            Debug.LogWarning($"[EquipItem] 캐릭터 {id} 을 찾을 수 없습니다.");
             return;
-        }
 
         var type = equipment.EquipmentData.EquipmentType;
 
-        // 기존에 이 장비를 착용하고 있던 캐릭터가 있다면 먼저 해제
         if (!string.IsNullOrEmpty(equipment.EquippedByCharacterId) &&
-            equipment.EquippedByCharacterId != targetCharacter.DataId)
+            equipment.EquippedByCharacterId != targetCharacter.UniqueId)
         {
-            var previousOwner = Characters.Find(c => c.DataId == equipment.EquippedByCharacterId);
+            var previousOwner = Characters.Find(c => c.UniqueId == equipment.EquippedByCharacterId);
             if (previousOwner != null)
-            {
                 UnEquipItem(previousOwner, equipment);
-            }
         }
-        // 기존 장비가 있으면 먼저 해제
+
         if (targetCharacter.EquippedItems.TryGetValue(type, out var oldEquipment))
-        {
             UnEquipItem(targetCharacter, oldEquipment);
-        }
 
-        // 데이터 반영
         targetCharacter.EquippedItems[type] = equipment;
-        if (!targetCharacter.EquippedItemIds.Contains(equipment.key))
-            targetCharacter.EquippedItemIds.Add(equipment.key);
+        if (!targetCharacter.EquippedItemIds.Contains(equipment.UniqueId))
+            targetCharacter.EquippedItemIds.Add(equipment.UniqueId);
 
-        equipment.EquippedByCharacterId = targetCharacter.DataId; // 수정: 
+        equipment.EquippedByCharacterId = targetCharacter.UniqueId;
         equipment.IsEquipped = true;
 
-        // 시각화 반영
-        if (CharactersInScene.TryGetValue(id, out var ai))
-        {
+        if (CharactersInScene.TryGetValue(uniqueId, out var ai))
             AttachEquipmentToCharacter(ai, equipment);
-        }
 
-        // 이벤트 및 저장
-        OnCharacterChanged?.Invoke();
         EquipInfoChanged?.Invoke();
+        OnCharacterChanged?.Invoke();
         SaveGame();
     }
 
     public void UnEquipItem(Character character, Equipment equipment)
     {
-        var id = character.DataId;
-        var targetCharacter = CharacterMap.ContainsKey(id) ? CharacterMap[id] : Characters.Find(c => c.DataId == id);
+        var uniqueId = character.UniqueId;
+
+        var targetCharacter = CharacterMap.ContainsKey(uniqueId)
+            ? CharacterMap[uniqueId]
+            : Characters.Find(c => c.UniqueId == uniqueId);
         if (targetCharacter == null) return;
 
         var type = equipment.EquipmentData.EquipmentType;
 
-        // 1. 데이터 제거
         targetCharacter.EquippedItems.Remove(type);
-        targetCharacter.EquippedItemIds.Remove(equipment.key);
+        targetCharacter.EquippedItemIds.Remove(equipment.UniqueId);
 
         equipment.EquippedByCharacterId = null;
         equipment.IsEquipped = false;
 
-        // 2. 시각화 제거
-        if (CharactersInScene.TryGetValue(id, out var ai))
-        {
+        if (CharactersInScene.TryGetValue(uniqueId, out var ai))
             DetachEquipmentFromCharacter(ai, type);
-        }
 
-        // 3. 이벤트/저장
-        OnCharacterChanged?.Invoke();
         EquipInfoChanged?.Invoke();
+        OnCharacterChanged?.Invoke();
         SaveGame();
     }
 
+
     public void SetInitEquipment(AICharacter character)
     {
-        // 복사본을 만듦
         var equippedIdsCopy = new List<string>(character.Data.EquippedItemIds);
 
-        foreach (var equipId in equippedIdsCopy)
+        foreach (var equipUid in equippedIdsCopy)
         {
-            Equipment equip = OwnedEquipments.Find(e => e.key == equipId);
+            Equipment equip = OwnedEquipments.Find(e => e.UniqueId == equipUid);
             if (equip == null)
             {
-                Debug.LogWarning($"장착 장비 {equipId} 를 못 찾음");
+                Debug.LogWarning($"장착 장비 UID {equipUid} 를 못 찾음");
                 continue;
             }
 
@@ -354,6 +353,7 @@ public class GameManager
             EquipItem(character.Data, equip);
         }
     }
+
 
     private void AttachPreviewToCharacter(AICharacter ai, Equipment equipment)
     {

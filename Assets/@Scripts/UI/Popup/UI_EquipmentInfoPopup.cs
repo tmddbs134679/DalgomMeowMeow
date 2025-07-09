@@ -109,7 +109,10 @@ public class UI_EquipmentInfoPopup : UI_Popup
 
         if (isEquipped)
         {
-            GetImage((int)Images.EquippedCharacterImage).sprite = Managers.Resource.Load<Sprite>(_equipment.EquippedByCharacterId);
+            Character character = Managers.Game.Characters.Find(c => c.UniqueId == _equipment.EquippedByCharacterId);
+            string spriteName = character.Data.IconLabel;
+
+            GetImage((int)Images.EquippedCharacterImage).sprite = Managers.Resource.Load<Sprite>(spriteName);
             GetText((int)Texts.EquipButonText).text = _equipChangeText;
             
         }

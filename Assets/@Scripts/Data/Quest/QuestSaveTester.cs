@@ -14,5 +14,6 @@ public class QuestSaveTester : MonoBehaviour
         // 게임 종료 시 퀘스트 데이터 저장
         var data = QuestManager.Instance.GetAllQuestSaveData();
         SaveQuestSystem.Save(data);
+        Managers.Game.SaveGame();
     }
 }

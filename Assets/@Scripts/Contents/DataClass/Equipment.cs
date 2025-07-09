@@ -1,4 +1,5 @@
 using Data;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
@@ -7,6 +8,8 @@ using static Cinemachine.DocumentationSortingAttribute;
 
 public class Equipment 
 {
+    public string UniqueId { get; set; }
+
     public string key = "";
 
     public Data.EquipmentData EquipmentData;
@@ -33,8 +36,18 @@ public class Equipment
 
         EquipmentData = Managers.Data.EquipmentDic[key];
 
+        // UniqueId가 이미 있으면 유지, 없으면 새로 생성
+        if (string.IsNullOrEmpty(UniqueId))
+        {
+            UniqueId = $"EQ_{Guid.NewGuid().ToString().Substring(0, 8)}";
+        }
         IsOwned = true;
     }
 
+
+    public void SetInfo(EquipmentData data)
+    {
+        EquipmentData = data;
+    }
 
 }
