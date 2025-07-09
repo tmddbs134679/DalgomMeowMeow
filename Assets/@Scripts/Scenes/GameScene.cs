@@ -24,6 +24,8 @@ public class GameScene : BaseScene
             Managers.AI.Register(ai);
         }
 
+        Managers.AI.Init();
+
     }
 
 
