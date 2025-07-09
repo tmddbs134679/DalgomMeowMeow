@@ -28,6 +28,8 @@ public abstract class BuildingBase : BaseObject
     public int UniqueId { get; private set; }
 
 
+    public void SetUniqueId(int id) => UniqueId = id;
+    public void SetLevel(int level) => CurrentLevel = level;
     protected virtual void Start()
     {
         if (Timer == null)

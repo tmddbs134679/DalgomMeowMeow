@@ -21,8 +21,13 @@ public class BuildMap : MonoBehaviour
         {
             GameObject go = Instantiate(data.testBaseBuilding.buildOBJ, new Vector3(data.posX, 1f, data.posZ), Quaternion.identity, transform);
             go.name = data.testBaseBuilding.buildOBJ.name;
-           // go.GetComponent<BuildingBase>().UniqueId=data.UniqueId;
-           // go.GetComponent<BuildingBase>().CurrentLevel=data.LV;
+            
+            if (go.GetComponent<BuildingBase>() != null)
+            {
+            go.GetComponent<BuildingBase>().SetUniqueId(data.UniqueId);
+            go.GetComponent<BuildingBase>().SetLevel(data.LV);
+            }
+
             go.GetComponent<DraggableObject>().buildMap = gameObject.GetComponent<BuildMap>();
             if (go.TryGetComponent(out ForestRegion region))
             {
