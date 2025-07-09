@@ -59,7 +59,7 @@ public class UI_BuildPopup : UI_Popup
         GetButton((int)Buttons.StorageButton).gameObject.BindEvent(() => SelectBuildingType(5));
         GetButton((int)Buttons.SlotMachineButton).gameObject.BindEvent(() => SelectBuildingType(6));
         GetButton((int)Buttons.RoadButton).gameObject.BindEvent(() => SelectBuildingType(7));
-                GetButton((int)Buttons.UnlockAreaButton).gameObject.BindEvent(() => SelectBuildingType(8));
+        GetButton((int)Buttons.UnlockAreaButton).gameObject.BindEvent(() => SelectBuildingType(8));
         GetButton((int)Buttons.CancelButton).gameObject.BindEvent(CancelBuildUI);
         Managers.Game.OnResourcesChagned += Refresh;
         BuildingPlacer.Instance.OnBuildingCancel += CancelBuildUI;
@@ -102,4 +102,9 @@ public class UI_BuildPopup : UI_Popup
     }
     #endregion
 
+
+    private void ValueCountsCheck()
+    {
+              if(BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue("CatSlotMachine",out int value)){}
+    }
 }
