@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_TutorialScene : MonoBehaviour
+public class UI_Tutorial : UI_Popup
 {
     public GameObject Panel;
     public TMP_Text TitleText;

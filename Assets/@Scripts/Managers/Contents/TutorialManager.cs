@@ -16,7 +16,7 @@ public class TutorialStep
 public class TutorialManager : MonoBehaviour
 {
     public List<TutorialStep> Steps; 
-    public UI_TutorialScene UI;
+    public UI_Tutorial UI;
     public Highlighter highlighter;
     
     private int currentStep = 0;
@@ -28,6 +28,8 @@ public class TutorialManager : MonoBehaviour
 
     private void Start()
     {
+        UI = Managers.UI.ShowPopupUI<UI_Tutorial>();
+        highlighter = UI.GetComponentInChildren<Highlighter>(true);
         StartTutorial();
     }
 
@@ -41,6 +43,7 @@ public class TutorialManager : MonoBehaviour
     public void CompleteStep()
     {
         Debug.Log($"{currentStep}Step Complete");
+        Managers.Debug.Log($"{currentStep}Step Complete",Define.EDebugType.Building);
         Steps[currentStep].OnComplete?.Invoke();
 
         currentStep++;
@@ -58,8 +61,25 @@ public class TutorialManager : MonoBehaviour
     {
 
         step.OnStart?.Invoke();
-        //UI.Show(step.Title, step.Description);
+            
+        // ⬇️ 설명 텍스트 보여주기
+        //UI.Show(step.Title, step.Description); 
+        
+        if (step.Title == "건설 버튼 누르기" && step.HighlightTarget == null)
+        {
+            GameObject buildBtn = GameObject.Find("BuildButton");
+            if (buildBtn != null)
+                step.HighlightTarget = buildBtn;
+        }
 
+        if (step.HighlightTarget != null && highlighter != null)
+        {
+            highlighter.Follow(step.HighlightTarget.GetComponent<RectTransform>());
+        }
+        else
+        {
+            highlighter.Hide();
+        }
     }
 
     private void EndTutorial()
