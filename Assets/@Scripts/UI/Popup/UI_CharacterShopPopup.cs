@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -49,9 +50,15 @@ public class UI_CharacterShopPopup : UI_Popup
         BindObject(typeof(GameObjects));
         BindButton(typeof(Buttons));
         BindText(typeof(Texts));
+        GetButton((int)Buttons.OneTimeGachaButton).gameObject.BindEvent(OnClickOneTimeGacha);
 
         GetButton((int)Buttons.OneTimeGachaButton).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
         GetButton((int)Buttons.FiveTimeGachaButton).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
         return true;
+    }
+
+    private void OnClickOneTimeGacha()
+    {
+        Managers.UI.ShowToast("골드가 부족합니다");
     }
 }
