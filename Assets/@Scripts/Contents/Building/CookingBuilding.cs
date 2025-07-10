@@ -152,6 +152,7 @@ public class CookingBuilding : BuildingBase
 
         Managers.Game.Gold -= next.UpgradeCost;
         CurrentLevel++;
+        _buildMap.UpdateBuildLevel(UniqueId, CurrentLevel);
         ApplyLevel();
         return true;
     }

@@ -26,6 +26,7 @@ public abstract class BuildingBase : BaseObject
     public int CurrentLevel { get; protected set; } = 1;
 
     public int UniqueId { get; private set; }
+    public BuildMap _buildMap;
 
 
     public void SetUniqueId(int id) => UniqueId = id;
@@ -91,5 +92,9 @@ public abstract class BuildingBase : BaseObject
         {
             Produce();
         }
+    }
+    public void SetBuildMap(BuildMap buildMap)
+    {
+        _buildMap = buildMap;
     }
 }
