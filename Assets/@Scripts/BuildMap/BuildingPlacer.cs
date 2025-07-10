@@ -49,6 +49,9 @@ public class BuildingPlacer : MonoBehaviour
 
     public static event Action<BaseBuildingSO> OnBuildingAccepted;
 
+    public string buildType;
+
+    public int BuyMoney { get => buyMoney; set => buyMoney = value; }
     private void Awake()
     {
         if (Instance == null)
@@ -74,15 +77,8 @@ public class BuildingPlacer : MonoBehaviour
         if (Physics.Raycast(ray, out var groundHit, 1000f, groundLayer))
         {
             _saveBuildingSO = buildingSO[type];
-            // buyMoney = buildingSO[type].BuyMoney;
-            if (buildMap.valueCounts.TryGetValue(((Define.BuildingType)type).ToString(), out int count))
-            {
-                buyMoney = (int)(buildingSO[type].BuyMoney * Mathf.Pow(1.2f, count));
-            }
-            else
-            {
-                buyMoney =buildingSO[type].BuyMoney;
-            }
+                buyMoney = buildingSO[type].BuyMoney;
+
             _PreviewOBJ = Instantiate(buildingSO[type].previewOBJ,
                 new Vector3(groundHit.point.x, groundHit.point.y + _heightOffset, groundHit.point.z),
                 Quaternion.identity);

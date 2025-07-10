@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System;
+using System.Linq;
 public class UI_BuildPopup : UI_Popup
 {
     #region Enum
@@ -28,7 +29,28 @@ public class UI_BuildPopup : UI_Popup
 
     enum Texts
     {
-        PlayerGoldText,
+        // PlayerGoldText,
+        CookGoldText,
+        FarmGoldText,
+        PlayGroundGoldText,
+        RestGoldText,
+        FishingGoldText,
+        StorageGoldText,
+        SlotMachineGoldText,
+        RoadGoldText,
+        d,
+
+
+        CookCountText = 100,
+        FarmCountText,
+        PlayGroundCountText,
+        RestCountText,
+        FishingCountText,
+        StorageCountText,
+        SlotMachineCountText,
+        RoadCountText,
+             dd,
+
     }
 
     enum Images
@@ -64,7 +86,7 @@ public class UI_BuildPopup : UI_Popup
         Managers.Game.OnResourcesChagned += Refresh;
         BuildingPlacer.Instance.OnBuildingCancel += CancelBuildUI;
         Refresh();
-
+        Setting();
         return true;
     }
 
@@ -81,13 +103,61 @@ public class UI_BuildPopup : UI_Popup
 
     #region Build
 
+    
+    private void Setting()
+    {
+        foreach (var a in BuildingPlacer.Instance.buildMap.valueCounts)
+        {
+            Debug.Log($"#############{a.Key} : {a.Value}개");
+        }
+        string buildType;
+        int textcount = Enum.GetValues(typeof(Texts))
+    .Cast<int>()
+    .Count(value => value < 100);
+
+        for (int i = 0; i < textcount - 1; i++)
+        {
+            buildType = ((Define.BuildingType)i).ToString();
+            if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(buildType, out int count))
+            {
+
+                GetText(i).text = (BuildingPlacer.Instance.buildingSO[i].BuyMoney * Mathf.Pow(1.2f, count)).ToString();
+                GetText(ToIndex((Texts)(100 + i))).text = count.ToString();
+            }
+            else
+            {
+                GetText(i).text = BuildingPlacer.Instance.buildingSO[i].BuyMoney.ToString();
+                GetText(ToIndex((Texts)(100 + i))).text ="0";
+            }
+        }
+    }
+
+    private int ToIndex(Texts text)
+    {
+        int value = (int)text;
+        return value >= 100 ? (value - 100) + 9 : value;
+    }
+
     private void SelectBuildingType(int type)
     {
-        BuildingPlacer.Instance.buildMap.ShowBuildInfo();
+        Setting();
+        string buildType = ((Define.BuildingType)type).ToString();
+        if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(buildType, out int count))
+        {
+            BuildingPlacer.Instance.BuyMoney = (int)(BuildingPlacer.Instance.buildingSO[type].BuyMoney * Mathf.Pow(1.2f, count));
+        }
+        else
+        {
+            BuildingPlacer.Instance.BuyMoney = BuildingPlacer.Instance.buildingSO[type].BuyMoney;
+        }
+
+        //   GetText(type).text = "돈";//Gold
+        //  GetText(type + 100).text = "갯수";//Count;
+
         if (type == (int)Define.BuildingType.SlotMachine)
         {
-           if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(Define.BuildingType.SlotMachine.ToString(), out int count) && count >= 1)
-    return;
+            if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(Define.BuildingType.SlotMachine.ToString(), out int count2) && count2 >= 1)
+                return;
         }
 
         GetObject((int)GameObjects.BuildScrollObject).SetActive(false);
@@ -105,7 +175,7 @@ public class UI_BuildPopup : UI_Popup
 
     private void Refresh()
     {
-        GetText((int)Texts.PlayerGoldText).text = Managers.Game.Gold.ToString();
+       // GetText((int)Texts.PlayerGoldText).text = Managers.Game.Gold.ToString();
     }
     #endregion
 

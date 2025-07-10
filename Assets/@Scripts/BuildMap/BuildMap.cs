@@ -39,7 +39,8 @@ public class BuildMap : MonoBehaviour
             }
             _spawnedBuilds.Add(new Vector2(data.posX, data.posZ), go);
         }
-        var _valueCounts = _spawnedBuilds.Values
+        
+        valueCounts = _spawnedBuilds.Values
                           .GroupBy(v => v.name)
                           .ToDictionary(g => g.Key, g => g.Count());
 
