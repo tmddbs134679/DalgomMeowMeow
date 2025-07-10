@@ -1,7 +1,7 @@
 using UnityEngine;
 using System;
 using System.Linq;
-using System.Collections; 
+using System.Collections;
 /// <summary>
 /// 건물 드래그앤드롭,그리드 스냅,건물 밑 타일 정보 반영
 /// </summary>
@@ -11,7 +11,7 @@ public class DraggableObject : MonoBehaviour, IDraggable
     public UI_BuildAction _uI_BuildAction;
     public BuildMap buildMap;
     public bool isBuild;
-    public bool isDrag=false;
+    public bool isDrag = false;
     public bool isLongPress = true;
     [SerializeField] private float gridSize = 1f;         // 한 칸 크기
     [SerializeField] private float heightOffset = 0.5f;   // 바닥 위 높이
@@ -26,7 +26,7 @@ public class DraggableObject : MonoBehaviour, IDraggable
     void Start()
     {
         _isBuildColor = GetComponent<IsBuildColor>();
-CheckTilesUnderBuilding();  
+        CheckTilesUnderBuilding();
     }
     //드래그 스타트
     public void OnDragStart(Vector3 hitPos)
@@ -34,7 +34,7 @@ CheckTilesUnderBuilding();
         BuildingPlacer.Instance.tempDraggleOBJ = this;
         _offsetx = (gameObject.transform.localScale.x % 2 == 0) ? (gridSize / 2f) : 0f;
         _offsety = (gameObject.transform.localScale.z % 2 == 0) ? (gridSize / 2f) : 0f;
-CheckTilesUnderBuilding();
+        CheckTilesUnderBuilding();
 
     }
 
@@ -45,7 +45,7 @@ CheckTilesUnderBuilding();
         {
             Vector3 snappedPos = GetSnappedPosition(groundPos);
             transform.position = snappedPos;
-CheckTilesUnderBuilding();
+            CheckTilesUnderBuilding();
 
             Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.main, transform.position);
             if (_uI_BuildAction != null)
@@ -61,9 +61,9 @@ CheckTilesUnderBuilding();
         //버그수정중
         if (isLongPress)
         {
-            CheckTilesUnderBuilding();  
-          buildMap.ColliderAllOff();
-                   // BuildingPlacer.Instance.tempDraggleOBJ = this;
+            CheckTilesUnderBuilding();
+            buildMap.ColliderAllOff();
+            // BuildingPlacer.Instance.tempDraggleOBJ = this;
             BuildingPlacer.Instance.isLongPressAcceptBuild = true;
             isLongPress = false;
             BuildingPlacer.Instance.isSelect = true;
@@ -78,16 +78,16 @@ CheckTilesUnderBuilding();
     }
 
     IEnumerator WaitAndSetup()
-{
-    yield return null; // 1프레임 대기
-    _uI_BuildAction = BuildingPlacer.Instance.uI_BuildAction;
-    if (_uI_BuildAction != null)
     {
-        _uI_BuildAction.SetActive(true);
-        Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.main, transform.position);
-        _uI_BuildAction.transform.position = screenPos;
+        yield return null; // 1프레임 대기
+        _uI_BuildAction = BuildingPlacer.Instance.uI_BuildAction;
+        if (_uI_BuildAction != null)
+        {
+            _uI_BuildAction.SetActive(true);
+            Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.main, transform.position);
+            _uI_BuildAction.transform.position = screenPos;
+        }
     }
-}
     //그리드 적용 스냅
     private Vector3 GetSnappedPosition(Vector3 targetPos)
     {
@@ -119,11 +119,11 @@ CheckTilesUnderBuilding();
                 if (tile.isLoadBuild) allcheck++;
             }
         }
-        isBuild = allcheck == hitColliders.Length?true:false;
+        isBuild = allcheck == hitColliders.Length ? true : false;
         if (_isBuildColor != null) _isBuildColor.SetIsBUildColor(isBuild);
     }
 
-//타일에 isLoadBuild값 전달후 SetTile()호출해 arrayMapPos맵데이터 갱신
+    //타일에 isLoadBuild값 전달후 SetTile()호출해 arrayMapPos맵데이터 갱신
     public void SetTileIsBuild()
     {
         Vector3 center = transform.position + Vector3.down * 0.5f;
@@ -149,8 +149,8 @@ CheckTilesUnderBuilding();
         Vector3 halfExtents = new Vector3(buildSize.x / 2.5f, 0.1f, buildSize.y / 2.5f);
 
         Collider[] hitColliders = Physics.OverlapBox(center, halfExtents, Quaternion.identity, tileLayer);
-       BuildingPlacer.Instance.TempCollider = hitColliders.ToArray();
-                     TempOBJ = gameObject;
+        BuildingPlacer.Instance.TempCollider = hitColliders.ToArray();
+        TempOBJ = gameObject;
     }
 
     //씬에서 기즈모 보여주기용
@@ -161,5 +161,12 @@ CheckTilesUnderBuilding();
         Gizmos.color = Color.green;
         Gizmos.DrawWireCube(center, halfExtents * 2f);
     }
+    
+    public void SnapToGrid(Vector3 targetPos)
+{
+    Vector3 snappedPos = GetSnappedPosition(targetPos);
+    transform.position = snappedPos;
+    CheckTilesUnderBuilding();
+}
 
 }
