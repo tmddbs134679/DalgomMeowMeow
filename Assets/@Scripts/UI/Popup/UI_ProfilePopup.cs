@@ -84,12 +84,17 @@ public class UI_ProfilePopup : UI_Popup
 
     private void OnInputFiled(string name)
     {
-        _character.Data.Name = name;
-        GetInputField((int)InputFields.InputFieldText).gameObject.SetActive(false);
-        GetText((int)Texts.CharacterNameText).gameObject.SetActive(true);
-        GetText((int)Texts.CharacterNameText).text = _character.Data.Name;
+        Character targetCharacter = Managers.Game.Characters.Find(c => c.UniqueId == _character.UniqueId);
 
-        Managers.UI.OnCharacterChange?.Invoke(_character);
+        if (targetCharacter != null)
+        {
+            targetCharacter.Name = name; // 이름 변경
+            GetInputField((int)InputFields.InputFieldText).gameObject.SetActive(false);
+            GetText((int)Texts.CharacterNameText).gameObject.SetActive(true);
+            GetText((int)Texts.CharacterNameText).text = targetCharacter.Name;
+
+            Managers.UI.OnCharacterChange?.Invoke(targetCharacter);
+        }
     } 
     
     private void OnClickName()
@@ -142,7 +147,7 @@ public class UI_ProfilePopup : UI_Popup
 
 
         _character = character;
-        GetText((int)Texts.CharacterNameText).text = _character.Data.Name;
+        GetText((int)Texts.CharacterNameText).text = _character.Name;
 
 
         foreach (EEquipmentType type in displayOrder)

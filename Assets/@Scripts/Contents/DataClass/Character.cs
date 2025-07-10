@@ -2,6 +2,7 @@ using Data;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Common;
 using UnityEngine;
 using UnityEngine.UIElements;
 using static Define;
@@ -25,6 +26,8 @@ public class Character
     public Data.CreatureData Data;
 
     public string UniqueId { get; set; }              //고유 식별
+
+    public string Name { get; set; }    
     public string DataId { get; set; }  //정적 데이터 키
     public float Level { get; set; } = 1; //레벨
     public float MaxExp { get; set; }
@@ -67,12 +70,21 @@ public class Character
             return;
         }
 
-        
-        if (string.IsNullOrEmpty(this.Data.Name))
+
+        if(this.Data == null)
         {
             this.Data = data;
-            DataId = Data.DataId;
+            this.Name = data.Name;
+            return;
         }
+
+        this.Data = data;
+
+        if (string.IsNullOrEmpty(this.Name))
+       {
+            this.Name = data.Name;
+        }
+
 
 
     }
