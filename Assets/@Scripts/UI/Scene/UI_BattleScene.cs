@@ -1,7 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class UI_BattleScene : UI_Scene
 {
@@ -85,5 +83,9 @@ public class UI_BattleScene : UI_Scene
         yield return new WaitForSecondsRealtime(1.5f); // 1.2초 대기
         Time.timeScale = 1f; // 게임 재개
         _skillScene.SetActive(false); // 스킬 UI 비활성화
+    }
+    public void SetOFF()
+    {
+        this.gameObject.SetActive(false); // UI_BattleScene 비활성화
     }
 }

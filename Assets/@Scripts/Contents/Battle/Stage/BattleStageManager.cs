@@ -1,11 +1,8 @@
-using Data;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BattleStageManager : BaseObject
 {
-    [SerializeField] private StageSO stages;
+    public StageSO stages;
     [SerializeField] private GameObject[] _parent; //적들이 생성될 부모 오브젝트들
 
 

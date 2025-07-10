@@ -1,4 +1,4 @@
-﻿using Data;
+using Data;
 using UnityEngine;
 
 
@@ -9,6 +9,9 @@ public class StageSO : ScriptableObject
     public string[] EnemyID;
     public float[] EnemySpawnRate;
     public StageType StageType;
+
+    public int ExpReward;
+    public int GoldReward;
 
 }
 public enum StageType

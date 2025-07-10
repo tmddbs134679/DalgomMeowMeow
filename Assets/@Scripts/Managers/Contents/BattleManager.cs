@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class BattleManager : MonoBehaviour
@@ -8,12 +5,10 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private TeamCameraController _teamCameraController;
     [SerializeField] private TeamController _teamController;
     [SerializeField] private GameObject _titleBtn;
-    private BattleStageManager _currentstage
-        ;
+    private BattleStageManager _currentstage;
     public int EnemyCount;
     public int PlayerCount;
     public bool Victory = false;
-
     private int _enemyLayer;
     private int _playerLayer;
 
@@ -24,9 +19,7 @@ public class BattleManager : MonoBehaviour
         _teamCameraController = GetComponentInChildren<TeamCameraController>();
         _currentstage = GetComponentInParent<BattleStageManager>();
         _teamController = GetComponentInChildren<TeamController>();
-    }
-    private void Start()
-    {
+
         BattleCharacter[] allCharacters = GetComponentsInChildren<BattleCharacter>();
 
         EnemyCount = 0;
@@ -45,6 +38,8 @@ public class BattleManager : MonoBehaviour
                 PlayerCount++;
         }
     }
+    
+    
 
     private void Update()
     {
@@ -54,10 +49,10 @@ public class BattleManager : MonoBehaviour
             _teamController._members.ForEach(m => { m.AttackRange = 1; m.Agent.stoppingDistance = 1; });
             _teamController._members.ForEach(m => m.CharacterObject.transform.localScale = new Vector3(1, 1, 1));
             _teamCameraController.Victory();
-            Invoke(nameof(CallBtn), 2f);
-            
-            StageDataManager.Instance.StageClear(); //스테이지 클리어 데이터 저장
-            
+
+            if (StageDataManager.Instance.CurrentStageNumber + 1< StageDataManager.Instance.stages.Count)
+                StageDataManager.Instance.StageClear(); //스테이지 넘버 증가
+            Reward(); //보상 지급
             ForestBattleContext.IsVictory = true; //숲에 승리
         }
 
@@ -66,13 +61,13 @@ public class BattleManager : MonoBehaviour
             //게임오버 로직
         }
     }
-    public void CallBtn()
-    {
-        _titleBtn.SetActive(true);
-    }
-
     public void BackToGame()
     {
         Managers.Scene.LoadScene(Define.EScene.GameScene);
     }
+    public void Reward()
+    {
+        StageDataManager.Instance.Reward(); //보상 지급
+    }
+    
 }
