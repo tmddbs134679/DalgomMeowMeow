@@ -15,17 +15,21 @@ public class BuildMap : MonoBehaviour
     public NavMeshSurface surface;
     private Dictionary<Vector2, GameObject> _spawnedBuilds = new Dictionary<Vector2, GameObject>();
     public Dictionary<String, int> valueCounts = new Dictionary<string, int>();
+    private Dictionary<int, BuildData> _buildDataMap = new Dictionary<int, BuildData>();
     void Start()
     {
         foreach (BuildData data in arrayBuildPos.baseBuilding)
         {
+            _buildDataMap[data.UniqueId] = data;
             GameObject go = Instantiate(data.testBaseBuilding.buildOBJ, new Vector3(data.posX, 1f, data.posZ), Quaternion.identity, transform);
              go.name = data.testBaseBuilding.BuildingType.ToString();
             
             if (go.GetComponent<BuildingBase>() != null)
             {
-            go.GetComponent<BuildingBase>().SetUniqueId(data.UniqueId);
-            go.GetComponent<BuildingBase>().SetLevel(data.LV);
+                var buildingBase = go.GetComponent<BuildingBase>();
+                buildingBase.SetUniqueId(data.UniqueId);
+                buildingBase.SetLevel(data.LV);
+                buildingBase.SetBuildMap(this);
             }
 
             go.GetComponent<DraggableObject>().buildMap = gameObject.GetComponent<BuildMap>();
@@ -57,7 +61,15 @@ public class BuildMap : MonoBehaviour
             {
                 // 건설 후 추가 생성
                 GameObject go = Instantiate(data.testBaseBuilding.buildOBJ, new Vector3(data.posX, 1f, data.posZ), Quaternion.identity, transform);
-                go.name = data.testBaseBuilding.BuildingType.ToString();
+             go.name = data.testBaseBuilding.BuildingType.ToString();
+            _buildDataMap[data.UniqueId] = data;
+            if (go.GetComponent<BuildingBase>() != null)
+            {
+                var buildingBase = go.GetComponent<BuildingBase>();
+                buildingBase.SetUniqueId(data.UniqueId);
+                buildingBase.SetLevel(data.LV);
+                buildingBase.SetBuildMap(this);
+            }
                 go.GetComponent<DraggableObject>().buildMap = gameObject.GetComponent<BuildMap>();
                 if (go.TryGetComponent(out ForestRegion region))
                 {
@@ -137,5 +149,17 @@ public class BuildMap : MonoBehaviour
         }
 
 
+    }
+    
+    public void UpdateBuildLevel(int uniqueId, int newLevel)
+    {
+        if (_buildDataMap.TryGetValue(uniqueId, out var data))
+        {
+            data.LV = newLevel;
+        }
+        else
+        {
+            Debug.LogWarning($"[BuildMap] 레벨 업데이트 실패: ID {uniqueId}를 찾을 수 없습니다.");
+        }
     }
 }
