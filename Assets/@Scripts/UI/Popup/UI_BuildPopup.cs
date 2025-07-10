@@ -22,6 +22,7 @@ public class UI_BuildPopup : UI_Popup
         StorageButton,
         SlotMachineButton,
         RoadButton,
+        ShopButton,
         CancelButton,
         UnlockAreaButton,
 
@@ -29,7 +30,6 @@ public class UI_BuildPopup : UI_Popup
 
     enum Texts
     {
-        // PlayerGoldText,
         CookGoldText,
         FarmGoldText,
         PlayGroundGoldText,
@@ -38,8 +38,8 @@ public class UI_BuildPopup : UI_Popup
         StorageGoldText,
         SlotMachineGoldText,
         RoadGoldText,
-        d,
-
+        ShopGoldText,
+        PlayerGoldText,
 
         CookCountText = 100,
         FarmCountText,
@@ -49,7 +49,7 @@ public class UI_BuildPopup : UI_Popup
         StorageCountText,
         SlotMachineCountText,
         RoadCountText,
-             dd,
+        ShopCountText,
 
     }
 
@@ -81,7 +81,8 @@ public class UI_BuildPopup : UI_Popup
         GetButton((int)Buttons.StorageButton).gameObject.BindEvent(() => SelectBuildingType(5));
         GetButton((int)Buttons.SlotMachineButton).gameObject.BindEvent(() => SelectBuildingType(6));
         GetButton((int)Buttons.RoadButton).gameObject.BindEvent(() => SelectBuildingType(7));
-        GetButton((int)Buttons.UnlockAreaButton).gameObject.BindEvent(() => SelectBuildingType(8));
+        GetButton((int)Buttons.ShopButton).gameObject.BindEvent(() => SelectBuildingType(8));
+        GetButton((int)Buttons.UnlockAreaButton).gameObject.BindEvent(() => SelectBuildingType(9));
         GetButton((int)Buttons.CancelButton).gameObject.BindEvent(CancelBuildUI);
         Managers.Game.OnResourcesChagned += Refresh;
         BuildingPlacer.Instance.OnBuildingCancel += CancelBuildUI;
@@ -103,7 +104,7 @@ public class UI_BuildPopup : UI_Popup
 
     #region Build
 
-    
+
     private void Setting()
     {
         foreach (var a in BuildingPlacer.Instance.buildMap.valueCounts)
@@ -123,7 +124,7 @@ public class UI_BuildPopup : UI_Popup
 
                 GetText(i).text = (BuildingPlacer.Instance.buildingSO[i].BuyMoney * Mathf.Pow(1.2f, count)).ToString();
                 GetText(ToIndex((Texts)(100 + i))).text = count.ToString();
-                
+
             }
             else
             {
@@ -136,11 +137,22 @@ public class UI_BuildPopup : UI_Popup
     private int ToIndex(Texts text)
     {
         int value = (int)text;
-        return value >= 100 ? (value - 100) + 9 : value;
+        return value >= 100 ? (value - 100) + 10 : value;
     }
 
     private void SelectBuildingType(int type)
     {
+                if (type == (int)Define.BuildingType.SlotMachine)
+        {
+            if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(Define.BuildingType.SlotMachine.ToString(), out int count2) && count2 >= 1)
+                return;
+        }
+                if (type == (int)Define.BuildingType.Shop)
+        {
+            if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(Define.BuildingType.Shop.ToString(), out int count2) && count2 >= 1)
+                return;
+        }
+
         Setting();
         string buildType = ((Define.BuildingType)type).ToString();
         if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(buildType, out int count))
@@ -154,12 +166,6 @@ public class UI_BuildPopup : UI_Popup
 
         //   GetText(type).text = "돈";//Gold
         //  GetText(type + 100).text = "갯수";//Count;
-
-        if (type == (int)Define.BuildingType.SlotMachine)
-        {
-            if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(Define.BuildingType.SlotMachine.ToString(), out int count2) && count2 >= 1)
-                return;
-        }
 
         GetObject((int)GameObjects.BuildScrollObject).SetActive(false);
         BuildingPlacer.Instance.SelectBuildingType(type);
@@ -176,13 +182,13 @@ public class UI_BuildPopup : UI_Popup
 
     private void Refresh()
     {
-       // GetText((int)Texts.PlayerGoldText).text = Managers.Game.Gold.ToString();
+        GetText((int)Texts.PlayerGoldText).text = Managers.Game.Gold.ToString();
     }
     #endregion
 
 
     private void ValueCountsCheck()
     {
-              if(BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue("CatSlotMachine",out int value)){}
+        if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue("CatSlotMachine", out int value)) { }
     }
 }
