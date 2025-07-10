@@ -13,6 +13,7 @@ using UnityEngine.Experimental.Rendering;
 using UnityEngine.TextCore.Text;
 using UnityEngine.VFX;
 using static Define;
+using Random = System.Random;
 
 [Serializable]
 public class GameData
@@ -429,6 +430,19 @@ public class GameManager
         }
     }
 
+    public Equipment AddEquipment(string key)
+    {
+        if (key.Equals("None"))
+            return null;
+
+        Equipment equip = new Equipment(key);
+        OwnedEquipments.Add(equip);
+        EquipInfoChanged?.Invoke();
+
+        return equip;
+    }
+
+
     #endregion
 
     #region Gacha
@@ -493,6 +507,52 @@ public class GameManager
         Init();
 
         return aiChar;
+    }
+
+    public List<Equipment> DoEquipmentGacha(int count)
+    {
+        List<Equipment> equipments = new List<Equipment>();
+
+
+        EEquipmentGrade grade = GetRandomGrade(COMMON_GACHA_GRADE);
+
+        var gachaEntries = Managers.Data.GachaTableDataDic.Values.
+            Where(item => item.Grade == grade).ToList();
+
+        int index = UnityEngine.Random.Range(0, gachaEntries.Count);
+        string key = gachaEntries[index].EquipmentID;
+
+        if (Managers.Data.EquipmentDic.ContainsKey(key))
+        {
+            equipments.Add(AddEquipment(key));
+        }
+
+
+        return equipments;
+    }
+
+
+    public static EEquipmentGrade GetRandomGrade(float[] prob)
+    {
+        float randomValue = UnityEngine.Random.value;
+        if (randomValue < prob[(int)EEquipmentGrade.Common])
+        {
+            return EEquipmentGrade.Common;
+        }
+        else if (randomValue < prob[(int)EEquipmentGrade.Common] + prob[(int)EEquipmentGrade.Uncommon])
+        {
+            return EEquipmentGrade.Uncommon;
+        }
+        else if (randomValue < prob[(int)EEquipmentGrade.Common] + prob[(int)EEquipmentGrade.Uncommon] + prob[(int)EEquipmentGrade.Rare])
+        {
+            return EEquipmentGrade.Rare;
+        }
+        else if (randomValue < prob[(int)EEquipmentGrade.Common] + prob[(int)EEquipmentGrade.Uncommon] + prob[(int)EEquipmentGrade.Rare] + prob[(int)EEquipmentGrade.Epic])
+        {
+            return EEquipmentGrade.Epic;
+        }
+
+        return EEquipmentGrade.Common;
     }
 
 

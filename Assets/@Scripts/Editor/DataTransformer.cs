@@ -25,6 +25,7 @@ public class DataTransformer : EditorWindow
         ParseGachaData("Gacha");
         ParseCheckOutData("CheckOut");
         ParseMaterialData("Material");
+        ParseEquipmentGacha("EquipmentGacha");
     }
 
     private static void ParseMaterialData(string filename)
@@ -262,6 +263,38 @@ public class DataTransformer : EditorWindow
 
         }
         #endregion
+        string jsonStr = JsonConvert.SerializeObject(loader, Formatting.Indented);
+        File.WriteAllText($"{Application.dataPath}/@Resources/Data/JsonData/{filename}Data.json", jsonStr);
+        AssetDatabase.Refresh();
+    }
+
+
+    private static void ParseEquipmentGacha(string filename)
+    {
+        EquipmentGachaDataLoader loader = new EquipmentGachaDataLoader();
+
+        #region EquipmentGachaData
+        string[] lines = File.ReadAllText($"{Application.dataPath}/@Resources/Data/Excel/{filename}Data.csv").Split("\n");
+
+        for (int y = 1; y < lines.Length; y++)
+        {
+            string[] row = lines[y].Replace("\r", "").Split(',');
+            if (row.Length == 0)
+                continue;
+            if (string.IsNullOrEmpty(row[0]))
+                continue;
+
+            int i = 0;
+
+            EquipmentGachaData Gacha = new EquipmentGachaData();
+            Gacha.EquipmentID = ConvertValue<string>(row[i++]);
+            Gacha.GachaRate = ConvertValue<float>(row[i++]);
+            Gacha.Grade = ConvertValue<Define.EEquipmentGrade>(row[i++]);   
+
+            loader.EquipmentGachaTable.Add(Gacha);
+        }
+        #endregion
+
         string jsonStr = JsonConvert.SerializeObject(loader, Formatting.Indented);
         File.WriteAllText($"{Application.dataPath}/@Resources/Data/JsonData/{filename}Data.json", jsonStr);
         AssetDatabase.Refresh();

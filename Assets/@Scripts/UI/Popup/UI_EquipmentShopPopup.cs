@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -48,9 +49,40 @@ public class UI_EquipmentShopPopup : UI_Popup
         BindButton(typeof(Buttons));
         BindText(typeof(Texts));
 
+
+        GetButton((int)Buttons.OneTimeGachaButton).gameObject.BindEvent(OnClickOneTimeGachaButon);
         GetButton((int)Buttons.OneTimeGachaButton).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
+
+        GetButton((int)Buttons.FiveTimeGachaButton).gameObject.BindEvent(OnClickFiveTimeGachaButon);
         GetButton((int)Buttons.FiveTimeGachaButton).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
 
         return true;
     }
+
+
+    private void OnClickOneTimeGachaButon()
+    {
+        //일단 골드로
+
+        if(Managers.Game.Gold > 1000)
+        {
+            Managers.Game.Gold -= 10000;
+
+            DoGacha();
+
+        }
+    }
+
+    private void DoGacha(int count = 1)
+    {
+        List<Equipment> equipment = new List<Equipment>();
+        equipment = Managers.Game.DoEquipmentGacha(count);
+    }
+
+    private void OnClickFiveTimeGachaButon()
+    {
+       
+    }
+
+ 
 }
