@@ -62,6 +62,14 @@ public class BuildMap : MonoBehaviour
                 // 건설 후 추가 생성
                 GameObject go = Instantiate(data.testBaseBuilding.buildOBJ, new Vector3(data.posX, 1f, data.posZ), Quaternion.identity, transform);
             go.name = data.testBaseBuilding.buildOBJ.name;
+            _buildDataMap[data.UniqueId] = data;
+            if (go.GetComponent<BuildingBase>() != null)
+            {
+                var buildingBase = go.GetComponent<BuildingBase>();
+                buildingBase.SetUniqueId(data.UniqueId);
+                buildingBase.SetLevel(data.LV);
+                buildingBase.SetBuildMap(this);
+            }
                 go.GetComponent<DraggableObject>().buildMap = gameObject.GetComponent<BuildMap>();
                 if (go.TryGetComponent(out ForestRegion region))
                 {

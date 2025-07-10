@@ -27,13 +27,11 @@ public class FarmBuilding : BuildingBase
         //재료소진
         ConsumeMaterials();
         
-        Debug.Log("농사 완성");
         
         StoredCount++; //  생산 누적
         
         IsHarvest?.Invoke();//수확 가능
         
-        Debug.Log($"농사 완성! 누적 수량: {StoredCount}");
 
         CurrentState = BuildingState.ReadyToCollect;
         // collectIcon.SetActive(true);
