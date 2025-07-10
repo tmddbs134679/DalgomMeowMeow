@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 [System.Serializable]
 public class TutorialStep
@@ -18,6 +19,7 @@ public class TutorialManager : MonoBehaviour
     public List<TutorialStep> Steps; 
     public UI_Tutorial UI;
     public Highlighter highlighter;
+    public Image dimOverlay; // 어두운 배경용
     
     private int currentStep = 0;
     public bool IsRunning { get; private set; }
@@ -30,6 +32,7 @@ public class TutorialManager : MonoBehaviour
     {
         UI = Managers.UI.ShowPopupUI<UI_Tutorial>();
         highlighter = UI.GetComponentInChildren<Highlighter>(true);
+        dimOverlay = UI.transform.Find("DimOverlay")?.GetComponent<Image>(); // 찾는 방식 주의
         StartTutorial();
     }
 
@@ -73,20 +76,25 @@ public class TutorialManager : MonoBehaviour
                 step.HighlightTarget = buildBtn;
         }
 
-        if (step.HighlightTarget != null && highlighter != null)
+        // 🔸 강조 타겟 설정
+        if (step.HighlightTarget != null)
         {
             highlighter.Follow(step.HighlightTarget.GetComponent<RectTransform>());
+            highlighter.gameObject.SetActive(true);
+            dimOverlay?.gameObject.SetActive(true);
         }
         else
         {
             highlighter.Hide();
+            dimOverlay?.gameObject.SetActive(false);
         }
     }
 
     private void EndTutorial()
     {
+        highlighter.Hide();
+        dimOverlay?.gameObject.SetActive(false);
         IsRunning = false;
-        //UI.Hide();
     }
 
     public bool IsStepActive(string title) =>
