@@ -105,6 +105,34 @@ public class UI_BuildPopup : UI_Popup
     #region Build
 
 
+
+//설치 건물 선택
+    private void SelectBuildingType(int type)
+    {
+        //건물 갯수 제한 코드 구간
+                if (type == (int)Define.BuildingType.SlotMachine)
+        {
+            if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(Define.BuildingType.SlotMachine.ToString(), out int count2) && count2 >= 1)
+                return;
+        }
+                if (type == (int)Define.BuildingType.Shop)
+        {
+            if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(Define.BuildingType.Shop.ToString(), out int count2) && count2 >= 1)
+                return;
+        }
+
+        Setting();//데이터 갱신
+
+
+        //   GetText(type).text = "돈";//Gold
+        //  GetText(type + 100).text = "갯수";//Count;
+
+        GetObject((int)GameObjects.BuildScrollObject).SetActive(false);
+        BuildingPlacer.Instance.SelectBuildingType(type);
+        Managers.UI.MakeSubItem<UI_BuildAction>(this.transform);
+    }
+
+//buildUI창 건설비용과 건물갯수 갱신
     private void Setting()
     {
         foreach (var a in BuildingPlacer.Instance.buildMap.valueCounts)
@@ -121,10 +149,8 @@ public class UI_BuildPopup : UI_Popup
             buildType = ((Define.BuildingType)i).ToString();
             if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(buildType, out int count))
             {
-
                 GetText(i).text = (BuildingPlacer.Instance.buildingSO[i].BuyMoney * Mathf.Pow(1.2f, count)).ToString();
                 GetText(ToIndex((Texts)(100 + i))).text = count.ToString();
-
             }
             else
             {
@@ -133,45 +159,11 @@ public class UI_BuildPopup : UI_Popup
             }
         }
     }
-
     private int ToIndex(Texts text)
     {
         int value = (int)text;
         return value >= 100 ? (value - 100) + 10 : value;
     }
-
-    private void SelectBuildingType(int type)
-    {
-                if (type == (int)Define.BuildingType.SlotMachine)
-        {
-            if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(Define.BuildingType.SlotMachine.ToString(), out int count2) && count2 >= 1)
-                return;
-        }
-                if (type == (int)Define.BuildingType.Shop)
-        {
-            if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(Define.BuildingType.Shop.ToString(), out int count2) && count2 >= 1)
-                return;
-        }
-
-        Setting();
-        string buildType = ((Define.BuildingType)type).ToString();
-        if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(buildType, out int count))
-        {
-            BuildingPlacer.Instance.BuyMoney = (int)(BuildingPlacer.Instance.buildingSO[type].BuyMoney * Mathf.Pow(1.2f, count));
-        }
-        else
-        {
-            BuildingPlacer.Instance.BuyMoney = BuildingPlacer.Instance.buildingSO[type].BuyMoney;
-        }
-
-        //   GetText(type).text = "돈";//Gold
-        //  GetText(type + 100).text = "갯수";//Count;
-
-        GetObject((int)GameObjects.BuildScrollObject).SetActive(false);
-        BuildingPlacer.Instance.SelectBuildingType(type);
-        Managers.UI.MakeSubItem<UI_BuildAction>(this.transform);
-    }
-
     private void CancelBuildUI()
     {
         Managers.UI.ClosePopupUI(this);
