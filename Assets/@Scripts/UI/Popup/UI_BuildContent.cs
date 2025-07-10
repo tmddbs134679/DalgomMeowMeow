@@ -18,7 +18,7 @@ MoveOBJ,
     enum Texts { }
     enum Images { }
 
-    private CookingBuilding _cookingBuilding;
+    private BuildingBase _cookingBuilding;
     public override bool Init()
     {
         if (!base.Init()) return false;
@@ -54,7 +54,7 @@ MoveOBJ,
     public void SetTarget(GameObject go)
     {
      //   GetObject((int)Buttons.BackgroundCloseButton).gameObject.transform.position = go.transform.position;
-       _cookingBuilding= go.GetComponent<CookingBuilding>();
+       _cookingBuilding= go.GetComponent<BuildingBase>();
     }
 
 }

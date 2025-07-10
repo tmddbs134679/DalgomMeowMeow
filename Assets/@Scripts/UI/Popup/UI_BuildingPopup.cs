@@ -17,7 +17,7 @@ public class UI_BuildingPopup : UI_Popup
     enum Texts { CurrentLevelText, NextLevelText, LevelUpCost }
     enum Images { Building }
     
-    private CookingBuilding _targetBuilding;
+    private BuildingBase _targetBuilding;
     public override bool Init()
     {
         if (!base.Init()) return false;
@@ -48,7 +48,7 @@ public class UI_BuildingPopup : UI_Popup
     
 
 
-    public void SetTarget(CookingBuilding building)
+    public void SetTarget(BuildingBase building)
     {
         _targetBuilding = building;
     }
