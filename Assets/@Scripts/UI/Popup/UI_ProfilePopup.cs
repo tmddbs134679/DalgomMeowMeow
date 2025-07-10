@@ -113,7 +113,6 @@ public class UI_ProfilePopup : UI_Popup
 
 
         _character = character;
-        GetText((int)Texts.CharacterNameText).text = _character.Data.Name;
 
 
         foreach (EEquipmentType type in displayOrder)

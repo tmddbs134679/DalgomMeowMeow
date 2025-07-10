@@ -1,27 +1,47 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UI_ForestPopup : UI_Popup
 {
     enum GameObjects
     {
-        // Content
+        Content,
+        IconBackground
     }
 
     enum Buttons
     {
         BattleButton,
-        Background
+        Background,
+        IconBackground
     }
-    enum Texts { ForestTitleText, }
+    enum Texts 
+    {
+        ForestTitleText,
+        Atk,
+        Health,
+    }
 
     enum Images
     {
+        CharacterIcon,
+        AtkIcon,
+        HealthIcon,
+        SkillIcon,
+        Select,
+        Select1,
+        Select2,
         FirstEnemy,
         SecondEnemy,
         ThirdEnemy,
     }
+
+    Character _character;
+    
 
     private StageSO stagedata;
 
@@ -30,16 +50,16 @@ public class UI_ForestPopup : UI_Popup
     {
         if (!base.Init()) return false;
 
-        //BindObject(typeof(GameObjects));
-
+        BindObject(typeof(GameObjects));
         BindText(typeof(Texts));
         BindButton(typeof(Buttons));
         BindImage(typeof(Images));
 
         GetButton((int)Buttons.BattleButton).gameObject.BindEvent(OnClickBattleButton);
         GetButton((int)Buttons.Background).gameObject.BindEvent(OnClickBackgroundButton);
-
-        GetStageData();
+        GetButton((int)Buttons.IconBackground).gameObject.BindEvent(OnClicCharacterIamage);
+        GetCharacterInfo();
+        //GetStageData();
 
         return true;
     }
@@ -73,4 +93,41 @@ public class UI_ForestPopup : UI_Popup
                 break;
         }
     }
+
+
+    public void GetCharacterInfo()
+    {
+        List<int> characterList = new List<int>();
+
+        characterList.Add(1);
+        characterList.Add(2);
+        characterList.Add(3);
+        characterList.Add(3);
+        characterList.Add(3);
+        characterList.Add(3);
+        characterList.Add(3);
+        characterList.Add(3);
+        characterList.Add(3);
+        characterList.Add(3);
+        characterList.Add(3);
+
+        for (int i = 0; i < characterList.Count; i++)
+        {
+            int character = characterList[i];
+
+            GameObject slot = Instantiate(GetObject((int)GameObjects.IconBackground), GetObject((int)GameObjects.Content).transform);
+            slot.SetActive(true);
+            Image image = Util.FindChild<Image>(slot, "CharacterIcon", false);
+            image.sprite = Managers.Resource.Load<Sprite>("A10003");
+        }
+    }
+
+    public void OnClicCharacterIamage()
+    {
+
+    }
+
+
+
+
 }
