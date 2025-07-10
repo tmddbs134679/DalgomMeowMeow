@@ -102,6 +102,16 @@ public class UIManager
         return Util.GetOrAddComponent<T>(go);
     }
 
+    public T GetPopupUI<T>() where T : UI_Popup
+    {
+        foreach (UI_Popup popup in _popupStack)
+        {
+            if (popup is T tPopup)
+                return tPopup;
+        }
+        return null;
+    }
+
     public void ClosePopupUI(UI_Popup popup)
     {
         if (_popupStack.Count == 0)

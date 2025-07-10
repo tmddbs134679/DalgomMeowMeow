@@ -77,6 +77,7 @@ public class UI_Base : MonoBehaviour
         switch (type)
         {
             case Define.EUIEvent.Click:
+                evt.OnClickHandler = null;
                 evt.OnClickHandler -= action;
                 evt.OnClickHandler += action;
                 break;
