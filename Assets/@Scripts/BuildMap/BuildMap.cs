@@ -20,7 +20,7 @@ public class BuildMap : MonoBehaviour
         foreach (BuildData data in arrayBuildPos.baseBuilding)
         {
             GameObject go = Instantiate(data.testBaseBuilding.buildOBJ, new Vector3(data.posX, 1f, data.posZ), Quaternion.identity, transform);
-            go.name = data.testBaseBuilding.buildOBJ.name;
+             go.name = data.testBaseBuilding.BuildingType.ToString();
             
             if (go.GetComponent<BuildingBase>() != null)
             {
@@ -57,7 +57,7 @@ public class BuildMap : MonoBehaviour
             {
                 // 건설 후 추가 생성
                 GameObject go = Instantiate(data.testBaseBuilding.buildOBJ, new Vector3(data.posX, 1f, data.posZ), Quaternion.identity, transform);
-            go.name = data.testBaseBuilding.buildOBJ.name;
+                go.name = data.testBaseBuilding.BuildingType.ToString();
                 go.GetComponent<DraggableObject>().buildMap = gameObject.GetComponent<BuildMap>();
                 if (go.TryGetComponent(out ForestRegion region))
                 {
@@ -136,10 +136,6 @@ public class BuildMap : MonoBehaviour
             Debug.Log($"#############{a.Key} : {a.Value}개");
         }
 
-                foreach (var a in _spawnedBuilds)
-        {
-            Debug.Log($"@@@@@@@@@@@@@{a.Key} : {a.Value}개");
-        }
 
     }
 }

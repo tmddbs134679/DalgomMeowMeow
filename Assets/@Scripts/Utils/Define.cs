@@ -107,14 +107,14 @@ public class Define
     public enum BuildingType
     {
         Cooking,
-        Fishing,
-        Resting,
         Farm,
-        Shop,
-        STORAGE,
         Playing,
+        Resting,
+        Fishing,
+        Storage,
         SlotMachine,
         Road,
+        Shop,
     
     }
 

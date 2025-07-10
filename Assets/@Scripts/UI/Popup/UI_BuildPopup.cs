@@ -83,7 +83,14 @@ public class UI_BuildPopup : UI_Popup
 
     private void SelectBuildingType(int type)
     {
-        GetObject(((int)GameObjects.BuildScrollObject)).SetActive(false);
+        BuildingPlacer.Instance.buildMap.ShowBuildInfo();
+        if (type == (int)Define.BuildingType.SlotMachine)
+        {
+           if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(Define.BuildingType.SlotMachine.ToString(), out int count) && count >= 1)
+    return;
+        }
+
+        GetObject((int)GameObjects.BuildScrollObject).SetActive(false);
         BuildingPlacer.Instance.SelectBuildingType(type);
         Managers.UI.MakeSubItem<UI_BuildAction>(this.transform);
     }
