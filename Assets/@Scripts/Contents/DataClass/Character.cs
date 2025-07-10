@@ -20,7 +20,7 @@ public struct Vector3Data
     public Vector3 ToVector3() => new Vector3(x, y, z);
 }
 
-public class Character
+public class  Character
 {
     public Data.CreatureData Data;
 
@@ -34,6 +34,7 @@ public class Character
     public Vector3Data Pos { get; set; } = new Vector3Data();
     public float MaxStamina { get; set; } 
     public float CurrentStamina { get; set; } 
+    public float Atk { get; set; } = 10f; // 공격력
     public float Hp { get; set; }
     public float MoveSpeed { get; set; }
     public float WalkSpeed { get; set; } = 1.5f;
@@ -53,6 +54,7 @@ public class Character
         MaxExp = Data?.MaxExp ?? 15f; // 최대 경험치    
         CurrentExp = Data?.CurrentExp ?? 0; // 현재 경험치
         MaxStamina = Data?.MaxStamina ?? 100f; // 최대 스태미나
+        Atk = Data?.Atk ?? 10f; // 공격력
         CurrentStamina = MaxStamina; // 현재 스태미나
         MoveSpeed =  Data?.MoveSpeed ?? 3f;
         WalkSpeed = Data?.WalkSpeed ?? 1.5f;

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -7,45 +8,53 @@ using UnityEngine.UI;
 
 public class UI_ForestPopup : UI_Popup
 {
+    #region Enum
     enum GameObjects
     {
         Content,
-        IconBackground
+        ContentGroup,
     }
 
     enum Buttons
     {
+        Select1,
+        Select2,
+        Select3,
         BattleButton,
         Background,
-        IconBackground
     }
     enum Texts 
     {
         ForestTitleText,
-        Atk,
-        Health,
     }
 
     enum Images
     {
-        CharacterIcon,
-        AtkIcon,
-        HealthIcon,
-        SkillIcon,
-        Select,
         Select1,
         Select2,
+        Select3,
         FirstEnemy,
         SecondEnemy,
         ThirdEnemy,
     }
+    #endregion
 
-    Character _character;
-    
 
     private StageSO stagedata;
+    private Character[] _selectedCharacters = new Character[3];
 
+    //List<Character> _selectedCharacters = new List<Character>();
 
+    private void Awake()
+    {
+        Init();
+    }
+
+    private void OnEnable()
+    {
+        PopupOpenAnimation(GetObject((int)GameObjects.ContentGroup));
+        RefreshSelectedSlots();
+    }
     public override bool Init()
     {
         if (!base.Init()) return false;
@@ -57,9 +66,10 @@ public class UI_ForestPopup : UI_Popup
 
         GetButton((int)Buttons.BattleButton).gameObject.BindEvent(OnClickBattleButton);
         GetButton((int)Buttons.Background).gameObject.BindEvent(OnClickBackgroundButton);
-        GetButton((int)Buttons.IconBackground).gameObject.BindEvent(OnClicCharacterIamage);
+        
+
         GetCharacterInfo();
-        //GetStageData();
+        GetStageData();
 
         return true;
     }
@@ -97,37 +107,64 @@ public class UI_ForestPopup : UI_Popup
 
     public void GetCharacterInfo()
     {
-        List<int> characterList = new List<int>();
-
-        characterList.Add(1);
-        characterList.Add(2);
-        characterList.Add(3);
-        characterList.Add(3);
-        characterList.Add(3);
-        characterList.Add(3);
-        characterList.Add(3);
-        characterList.Add(3);
-        characterList.Add(3);
-        characterList.Add(3);
-        characterList.Add(3);
-
-        for (int i = 0; i < characterList.Count; i++)
+        List<Character> characters = Managers.Game.Characters;
+        foreach (Character ch in characters)
         {
-            int character = characterList[i];
-
-            GameObject slot = Instantiate(GetObject((int)GameObjects.IconBackground), GetObject((int)GameObjects.Content).transform);
-            slot.SetActive(true);
-            Image image = Util.FindChild<Image>(slot, "CharacterIcon", false);
-            image.sprite = Managers.Resource.Load<Sprite>("A10003");
+            UI_BattleCharacterSlot slot = Managers.UI.MakeSubItem<UI_BattleCharacterSlot>(GetObject((int)GameObjects.Content).transform);
+            slot.SetInfo(ch);
         }
     }
 
-    public void OnClicCharacterIamage()
+    public void SelectCharacter(Character character)
     {
+        for (int i = 0; i < 3; i++)
+        {
+            if (_selectedCharacters[i] == character)
+                return;
+        }
 
+        for (int i = 0; i < 3; i++)
+        {
+            if (_selectedCharacters[i] == null)
+            {
+                _selectedCharacters[i] = character;
+                break;
+            }
+        }
+        RefreshSelectedSlots();
     }
 
+    public void OnClickDelectSelectCharacter(int index)
+    {
+        _selectedCharacters[index] = null;
+        RefreshSelectedSlots();
+    }
 
+    private void RefreshSelectedSlots()
+    {
+        // 1) 슬롯 초기화
+        for (int i = 0; i < 3; i++)
+        {
+            GetImage((int)Images.Select1 + i).sprite = null;
+            GetButton((int)Buttons.Select1 + i).gameObject.BindEvent(() => { });
+        }
+
+        // 2) 리스트 순서대로 다시 채우기
+        for (int i = 0; i < 3; i++)
+        {
+            Character character = _selectedCharacters[i];
+            var capturedCharacter = i;
+
+            if (character == null) continue;
+
+            Image slot = GetImage((int)Images.Select1 + i);
+            slot.sprite = Managers.Resource.Load<Sprite>(character.Data.IconLabel);
+
+            GetButton((int)Buttons.Select1 + i).gameObject.BindEvent(() =>
+                OnClickDelectSelectCharacter(capturedCharacter)
+            );
+        }
+    }
 
 
 }
