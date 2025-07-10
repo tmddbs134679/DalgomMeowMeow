@@ -138,4 +138,14 @@ public class UIManager
     {
 
     }
+
+    public UI_Toast ShowToast(string msg)
+    {
+        string name = typeof(UI_Toast).Name;
+        GameObject go = Managers.Resource.Instantiate($"{name}", pooling: true);
+        UI_Toast popup = Util.GetOrAddComponent<UI_Toast>(go);
+        popup.SetInfo(msg);
+        go.transform.SetParent(Root.transform);
+        return popup;
+    }
 }

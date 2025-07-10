@@ -38,9 +38,8 @@ public class FoodManager
 
                 OnFoodSold?.Invoke(soldFood);
 
-                soldFood.FoodData.Price = Mathf.FloorToInt(soldFood.FoodData.Price * 0.5f);
-                Managers.Game.Gold += soldFood.FoodData.Price;
-               
+                int discountPrice = Mathf.FloorToInt(soldFood.FoodData.Price * 0.5f);
+                Managers.Game.Gold += discountPrice;
             }
         }
     }
