@@ -57,6 +57,7 @@ namespace Data
         public string Description;
         public string SpriteName;
         public float Price;
+        public int Count;
     }
 
     [Serializable]

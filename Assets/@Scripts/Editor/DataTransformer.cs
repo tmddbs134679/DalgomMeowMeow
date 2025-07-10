@@ -115,6 +115,7 @@ public class DataTransformer : EditorWindow
             data.Description = ConvertValue<string>(row[i++]);
             data.SpriteName = ConvertValue<string>(row[i++]);
             data.Price = ConvertValue<int>(row[i++]);
+            data.Count = ConvertValue<int>(row[i++]);   
             loader.foods.Add(data);
         }
 

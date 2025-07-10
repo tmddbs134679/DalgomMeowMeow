@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Data;
 using System;
+using System.Linq;
 
 public class FoodManager
 {
@@ -57,9 +58,14 @@ public class FoodManager
     }
 
 
-    public void MakeFood()
+    public void MakeFood(int foodCount)
     {
-        Food food = new Food("F0001");
+       FoodData data = Managers.Data.FoodDic.Values
+                 .Where(fd => fd.Count <= foodCount)
+                 .OrderByDescending(fd => fd.Count)
+                 .FirstOrDefault();
+
+        Food food = new Food(data);
         Enqueue(food);
     }
 

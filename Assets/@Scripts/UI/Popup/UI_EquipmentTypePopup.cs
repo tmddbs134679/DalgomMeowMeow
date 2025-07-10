@@ -167,7 +167,7 @@ public class UI_EquipmentTypePopup : UI_Popup
         // 버튼 상태 갱신
         UpdateEquipButtonState();
 
-        GetText((int)Texts.CharacterNameText).text = _character.Data.Name;
+        GetText((int)Texts.CharacterNameText).text = _character.Name;
 
     }
 

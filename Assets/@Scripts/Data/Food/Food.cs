@@ -7,10 +7,9 @@ public class Food
     public string key = "";
 
     public Data.FoodData FoodData;
-    public Food(string key)
+    public Food(FoodData data)
     {
-        this.key = key;
-        FoodData = Managers.Data.FoodDic[key];  
+        FoodData = data; 
 
     }
 }

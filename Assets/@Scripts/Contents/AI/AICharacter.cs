@@ -99,7 +99,9 @@ public class AICharacter : BaseObject
     {
         camera = Camera.main;
         head = transform.Find("root/pelvis/spine_01/spine_02/spine_03/neck_01");
-        nav.enabled = true;
+
+        if(nav != null)
+            nav.enabled = true;
     }
 
     private void Update()
@@ -372,6 +374,14 @@ public class AICharacter : BaseObject
 
     }
 
+
+    public void ReplicaSetting(Character character)
+    {
+        // Managers.Game.EquipCharacterVisual(this, character);
+        Data = character;
+
+        Managers.Game.ApplyEquipmentPreview(this, character);
+    }
 
     #endregion
 }

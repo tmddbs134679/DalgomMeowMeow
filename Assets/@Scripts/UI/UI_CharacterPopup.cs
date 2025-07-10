@@ -32,8 +32,14 @@ public class UI_CharacterPopup : UI_Popup
     private void OnEnable()
     {
         PopupOpenAnimation(GetObject((int)GameObjects.ContentObject));
+       // Managers.UI.OnCharacterChange 
 
         Refresh();
+    }
+
+    private void OnDestroy()
+    {
+        
     }
 
     public override bool Init()
