@@ -45,6 +45,17 @@ public class UI_CharacterInfo : UI_Base
     {
         Init();
     }
+
+    private void OnEnable()
+    {
+        Managers.UI.OnCharacterChange += UpdateCharacterText;
+    }
+    private void OnDestroy()
+    {
+        Managers.UI.OnCharacterChange -= UpdateCharacterText;
+    }
+
+
     public override bool Init()
     {
         if (base.Init() == false)
@@ -104,5 +115,13 @@ public class UI_CharacterInfo : UI_Base
                     break;
             }
         }
+    }
+
+    private void UpdateCharacterText(Character character)
+    {
+        if (_character == null)
+            return;
+
+        GetText((int)Texts.CharacterName).text = _character.Data.Name;
     }
 }

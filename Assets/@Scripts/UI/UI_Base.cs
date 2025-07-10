@@ -46,6 +46,8 @@ public class UI_Base : MonoBehaviour
     protected void BindObject(Type type) { Bind<GameObject>(type); }
     protected void BindImage(Type type) { Bind<Image>(type); }
     protected void BindText(Type type) { Bind<TMP_Text>(type); }
+
+    protected void BindInputField(Type type) { Bind<TMP_InputField>(type); }
     protected void BindButton(Type type) { Bind<Button>(type); }
     protected void BindToggle(Type type) { Bind<Toggle>(type); }
 
@@ -66,6 +68,7 @@ public class UI_Base : MonoBehaviour
     protected RawImage GetRawImage(int idx) { return Get<RawImage>(idx); }
     protected Toggle GetToggle(int idx) { return Get<Toggle>(idx); }
 
+    protected TMP_InputField GetInputField(int idx) { return Get<TMP_InputField>(idx); }
 
     public static void BindEvent(GameObject go, Action action = null, Action<BaseEventData> dragAction = null, Define.EUIEvent type = Define.EUIEvent.Click)
     {

@@ -67,9 +67,14 @@ public class Character
             return;
         }
 
+        
+        if (string.IsNullOrEmpty(this.Data.Name))
+        {
+            this.Data = data;
+            DataId = Data.DataId;
+        }
 
-        this.Data = data;
-        DataId = Data.DataId;
+
     }
 
 

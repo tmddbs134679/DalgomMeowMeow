@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
+using UnityEngine.UI;
 using static Define;
 using static UnityEditor.Progress;
 
@@ -25,13 +26,14 @@ public class UI_ProfilePopup : UI_Popup
 
     enum Texts
     {
-        CharacterNameText
+        CharacterNameText,
     }
 
-    enum Images
+    enum InputFields
     {
-        Image
+        InputFieldText,
     }
+
     #endregion
 
     Character _character;
@@ -62,17 +64,44 @@ public class UI_ProfilePopup : UI_Popup
         BindObject(typeof(GameObjects));
         BindButton(typeof(Buttons));
         BindText(typeof(Texts));
-        
+        BindInputField(typeof(InputFields));
+
+
         GetButton((int)Buttons.ExitButton).gameObject.BindEvent(OnClickExitButton);
         GetButton((int)Buttons.PrevCharacterButton).gameObject.BindEvent(() => OnClickChangeButton(1));
         GetButton((int)Buttons.NextCharacterButton).gameObject.BindEvent(() => OnClickChangeButton(-1));
+        GetInputField((int)InputFields.InputFieldText).onEndEdit.AddListener(OnInputFiled);
 
-        //GetRawImage((int)Images.Image).
+
+        GetText((int)Texts.CharacterNameText).gameObject.BindEvent(OnClickName);
+        GetInputField((int)InputFields.InputFieldText).gameObject.SetActive(false);
         _character = Managers.Game.Characters[0];
 
         //Refresh();
 
         return true;
+    }
+
+    private void OnInputFiled(string name)
+    {
+        _character.Data.Name = name;
+        GetInputField((int)InputFields.InputFieldText).gameObject.SetActive(false);
+        GetText((int)Texts.CharacterNameText).gameObject.SetActive(true);
+        GetText((int)Texts.CharacterNameText).text = _character.Data.Name;
+
+        Managers.UI.OnCharacterChange?.Invoke(_character);
+    } 
+    
+    private void OnClickName()
+    {
+        GetText((int)Texts.CharacterNameText).gameObject.SetActive(false);
+
+        GetInputField((int)InputFields.InputFieldText).gameObject.SetActive(true);
+        GetInputField((int)InputFields.InputFieldText).text = "";
+        GetInputField((int)InputFields.InputFieldText).ActivateInputField();
+        string newName = GetInputField((int)InputFields.InputFieldText).text.Trim();
+        if (string.IsNullOrEmpty(newName)) return;
+
     }
 
     private void OnClickChangeButton(int dir)
