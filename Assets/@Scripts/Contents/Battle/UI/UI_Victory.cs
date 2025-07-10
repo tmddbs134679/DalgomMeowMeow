@@ -1,9 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEngine;
-using static Define;
-
 public class UI_Victory : UI_Popup   //어드레서블에 프리펩 넣기
 {
     #region Enum
