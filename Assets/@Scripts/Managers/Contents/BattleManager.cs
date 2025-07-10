@@ -50,9 +50,9 @@ public class BattleManager : MonoBehaviour
             _teamController._members.ForEach(m => m.CharacterObject.transform.localScale = new Vector3(1, 1, 1));
             _teamCameraController.Victory();
 
+            Reward(); //보상 지급
             if (StageDataManager.Instance.CurrentStageNumber + 1< StageDataManager.Instance.stages.Count)
                 StageDataManager.Instance.StageClear(); //스테이지 넘버 증가
-            Reward(); //보상 지급
             ForestBattleContext.IsVictory = true; //숲에 승리
         }
 
