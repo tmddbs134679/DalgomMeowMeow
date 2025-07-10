@@ -146,17 +146,17 @@ public class BuildingPlacer : MonoBehaviour
         if (_isGold && _isBuild)
         {
         string buildType = ((Define.BuildingType)tempTypeNum).ToString();
-        if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(buildType, out int count))
+        if (buildMap.valueCounts.TryGetValue(buildType, out int count))
         {
-            BuildingPlacer.Instance.BuyMoney = (int)(BuildingPlacer.Instance.buildingSO[tempTypeNum].BuyMoney * Mathf.Pow(1.2f, count));
+            BuyMoney = (int)(buildingSO[tempTypeNum].BuyMoney * Mathf.Pow(1.2f, count));
         }
         else
         {
-            BuildingPlacer.Instance.BuyMoney = BuildingPlacer.Instance.buildingSO[tempTypeNum].BuyMoney;
+            BuyMoney = buildingSO[tempTypeNum].BuyMoney;
         }
             Managers.Game.Gold -= buyMoney;
 
-        int hash = System.Guid.NewGuid().GetHashCode();
+        int hash = Guid.NewGuid().GetHashCode();
             _buildData = new BuildData
             {
                 posX = _PreviewOBJ.transform.position.x,
@@ -168,7 +168,7 @@ public class BuildingPlacer : MonoBehaviour
             arrayBuildPos.GetBuildData(_buildData);//설치할 오브젝트
 
             _PreviewOBJ.GetComponent<DraggableObject>().SetTileIsBuild();//새롭게 설치할 오브젝트의 타일
-
+            _PreviewOBJ.GetComponent<DraggableObject>().CheckTilesUnderBuilding();
             gridMap.LoadMap(); //맵갱신
             buildMap.LoadBuild(); //오브젝트 갱신
             surface.BuildNavMesh(); //네브매쉬 깔기
