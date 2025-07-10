@@ -31,7 +31,7 @@ public class UI_InfoBuild : UI_Popup
         EquipmentImage,
     }
     #endregion
-  private CookingBuilding _targetBuilding;
+  private BuildingBase _targetBuilding;
     private void Awake()
     {
         Init();
@@ -62,7 +62,7 @@ public class UI_InfoBuild : UI_Popup
         Managers.UI.ClosePopupUI(this);
     }
 
-    public void SetTarget(CookingBuilding building)
+    public void SetTarget(BuildingBase building)
     {
         _targetBuilding = building;
     }

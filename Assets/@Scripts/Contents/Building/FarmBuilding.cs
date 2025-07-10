@@ -51,10 +51,10 @@ public class FarmBuilding : BuildingBase
     }
     public override void OnClick()
     {
-        if (StoredCount > 0)
-        {
-            Collect();
-        }
+        if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+            return;
+        UI_BuildContent popup = Managers.UI.ShowPopupUI<UI_BuildContent>();
+        popup.SetTarget(gameObject);
     }
     
     private bool HasRequiredMaterials()

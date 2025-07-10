@@ -97,4 +97,30 @@ public abstract class BuildingBase : BaseObject
     {
         _buildMap = buildMap;
     }
+    
+    public virtual bool CanUpgrade()
+    {
+        return Managers.Data.BuildingLevelDic.ContainsKey((BuildingData.Id.ToString(), CurrentLevel + 1));
+    }
+
+    public virtual bool Upgrade()
+    {
+        if (!CanUpgrade()) return false;
+
+        var next = Managers.Data.BuildingLevelDic[(BuildingData.Id.ToString(), CurrentLevel + 1)];
+        if (Managers.Game.Gold <= next.UpgradeCost)
+            return false;
+
+        Managers.Game.Gold -= next.UpgradeCost;
+        CurrentLevel++;
+        _buildMap.UpdateBuildLevel(UniqueId, CurrentLevel);
+        ApplyLevel();
+        return true;
+    }
+    protected virtual void ApplyLevel()
+    {
+        Managers.Debug.Log($"[CookingBuilding] 업그레이드 완료 → Lv.{CurrentLevel}",Define.EDebugType.Building);
+        //Debug.Log($"[CookingBuilding] 업그레이드 완료 → Lv.{CurrentLevel}, 생산 요리: {LevelData.ProducedFood.Name}");
+        // 외형 변경, 사운드 등도 여기에
+    }
 }
