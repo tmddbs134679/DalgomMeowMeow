@@ -49,8 +49,8 @@ public class BuildingPlacer : MonoBehaviour
 
     public static event Action<BaseBuildingSO> OnBuildingAccepted;
 
-    public string buildType;
 
+    public int tempTypeNum;
     public int BuyMoney { get => buyMoney; set => buyMoney = value; }
     private void Awake()
     {
@@ -69,7 +69,7 @@ public class BuildingPlacer : MonoBehaviour
         isAI = true;
         isSelect = true;
         buildMap.ColliderAllOff();
-
+        tempTypeNum = type;
         Camera cam = Camera.main;
         Vector3 screenCenter = new Vector3(Screen.width / 2f, Screen.height / 2f, cam.nearClipPlane);
         Ray ray = Camera.main.ScreenPointToRay(screenCenter);
@@ -77,7 +77,7 @@ public class BuildingPlacer : MonoBehaviour
         if (Physics.Raycast(ray, out var groundHit, 1000f, groundLayer))
         {
             _saveBuildingSO = buildingSO[type];
-                buyMoney = buildingSO[type].BuyMoney;
+               // buyMoney = buildingSO[type].BuyMoney;
 
             _PreviewOBJ = Instantiate(buildingSO[type].previewOBJ,
                 new Vector3(groundHit.point.x, groundHit.point.y + _heightOffset, groundHit.point.z),
@@ -142,12 +142,21 @@ public class BuildingPlacer : MonoBehaviour
         isSelect = false;
         _isGold = CheckBuildGold();
         CanPlaceBuilding();
+        
         if (_isGold && _isBuild)
         {
-
+        string buildType = ((Define.BuildingType)tempTypeNum).ToString();
+        if (buildMap.valueCounts.TryGetValue(buildType, out int count))
+        {
+            BuyMoney = (int)(buildingSO[tempTypeNum].BuyMoney * Mathf.Pow(1.2f, count));
+        }
+        else
+        {
+            BuyMoney = buildingSO[tempTypeNum].BuyMoney;
+        }
             Managers.Game.Gold -= buyMoney;
 
-        int hash = System.Guid.NewGuid().GetHashCode();
+        int hash = Guid.NewGuid().GetHashCode();
             _buildData = new BuildData
             {
                 posX = _PreviewOBJ.transform.position.x,
@@ -159,7 +168,7 @@ public class BuildingPlacer : MonoBehaviour
             arrayBuildPos.GetBuildData(_buildData);//설치할 오브젝트
 
             _PreviewOBJ.GetComponent<DraggableObject>().SetTileIsBuild();//새롭게 설치할 오브젝트의 타일
-
+            _PreviewOBJ.GetComponent<DraggableObject>().CheckTilesUnderBuilding();
             gridMap.LoadMap(); //맵갱신
             buildMap.LoadBuild(); //오브젝트 갱신
             surface.BuildNavMesh(); //네브매쉬 깔기

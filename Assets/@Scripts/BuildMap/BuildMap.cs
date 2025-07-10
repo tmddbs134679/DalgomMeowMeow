@@ -138,19 +138,6 @@ public class BuildMap : MonoBehaviour
     }
 
 
-    public void ShowBuildInfo()
-    {
-        valueCounts = _spawnedBuilds.Values
-                          .GroupBy(v => v.name)
-                          .ToDictionary(g => g.Key, g => g.Count());
-
-        foreach (var a in valueCounts)
-        {
-            Debug.Log($"#############{a.Key} : {a.Value}개");
-        }
-
-
-    }
     
     public void UpdateBuildLevel(int uniqueId, int newLevel)
     {

@@ -77,6 +77,7 @@ public class UI_Base : MonoBehaviour
         switch (type)
         {
             case Define.EUIEvent.Click:
+                evt.OnClickHandler = null;
                 evt.OnClickHandler -= action;
                 evt.OnClickHandler += action;
                 break;
@@ -113,5 +114,23 @@ public class UI_Base : MonoBehaviour
         contentObject.transform.DOScale(1f, 0.1f).SetEase(Ease.InOutBack).SetUpdate(true);
     }
 
+    public void PopupFadeInAnimation(GameObject contentObject)
+    {
+       
+        CanvasGroup canvasGroup = contentObject.GetComponent<CanvasGroup>();
+        if (canvasGroup == null)
+        {
+            canvasGroup = contentObject.AddComponent<CanvasGroup>(); 
+        }
 
+        
+        canvasGroup.alpha = 0;  
+        contentObject.transform.localScale = new Vector3(0.8f, 0.8f, 1); 
+
+       
+        Sequence sequence = DOTween.Sequence();
+        sequence.Append(contentObject.transform.DOScale(1f, 0.1f).SetEase(Ease.InOutBack));  // 크기 변화
+        sequence.Join(canvasGroup.DOFade(1f, 0.5f).SetEase(Ease.InOutSine));  // 투명도 변화
+        sequence.SetUpdate(true);
+    }
 }

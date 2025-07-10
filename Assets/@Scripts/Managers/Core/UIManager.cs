@@ -102,6 +102,16 @@ public class UIManager
         return Util.GetOrAddComponent<T>(go);
     }
 
+    public T GetPopupUI<T>() where T : UI_Popup
+    {
+        foreach (UI_Popup popup in _popupStack)
+        {
+            if (popup is T tPopup)
+                return tPopup;
+        }
+        return null;
+    }
+
     public void ClosePopupUI(UI_Popup popup)
     {
         if (_popupStack.Count == 0)
@@ -137,5 +147,15 @@ public class UIManager
     public void Clear()
     {
 
+    }
+
+    public UI_Toast ShowToast(string msg)
+    {
+        string name = typeof(UI_Toast).Name;
+        GameObject go = Managers.Resource.Instantiate($"{name}", pooling: true);
+        UI_Toast popup = Util.GetOrAddComponent<UI_Toast>(go);
+        popup.SetInfo(msg);
+        go.transform.SetParent(Root.transform);
+        return popup;
     }
 }

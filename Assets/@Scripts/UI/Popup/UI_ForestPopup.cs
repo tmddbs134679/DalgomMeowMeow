@@ -1,44 +1,77 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UI_ForestPopup : UI_Popup
 {
+    #region Enum
     enum GameObjects
     {
-        // Content
+        Content,
+        ContentGroup,
     }
 
     enum Buttons
     {
+        Select1,
+        Select2,
+        Select3,
         BattleButton,
-        Background
+        Background,
     }
-    enum Texts { ForestTitleText, }
+    enum Texts 
+    {
+        ForestTitleText,
+    }
 
     enum Images
     {
+        Select1,
+        Select2,
+        Select3,
         FirstEnemy,
         SecondEnemy,
         ThirdEnemy,
     }
+    #endregion
+
+
+    Character _character;
+    
 
     private StageSO stagedata;
+    private Character[] _selectedCharacters = new Character[3];
 
+    //List<Character> _selectedCharacters = new List<Character>();
 
+    private void Awake()
+    {
+        Init();
+    }
+
+    private void OnEnable()
+    {
+        PopupOpenAnimation(GetObject((int)GameObjects.ContentGroup));
+        RefreshSelectedSlots();
+    }
     public override bool Init()
     {
         if (!base.Init()) return false;
 
-        //BindObject(typeof(GameObjects));
-
+        BindObject(typeof(GameObjects));
         BindText(typeof(Texts));
         BindButton(typeof(Buttons));
         BindImage(typeof(Images));
 
         GetButton((int)Buttons.BattleButton).gameObject.BindEvent(OnClickBattleButton);
         GetButton((int)Buttons.Background).gameObject.BindEvent(OnClickBackgroundButton);
+        
 
+        GetCharacterInfo();
         GetStageData();
 
         return true;
@@ -73,4 +106,68 @@ public class UI_ForestPopup : UI_Popup
                 break;
         }
     }
+
+
+    public void GetCharacterInfo()
+    {
+        List<Character> characters = Managers.Game.Characters;
+        foreach (Character ch in characters)
+        {
+            UI_BattleCharacterSlot slot = Managers.UI.MakeSubItem<UI_BattleCharacterSlot>(GetObject((int)GameObjects.Content).transform);
+            slot.SetInfo(ch);
+        }
+    }
+
+    public void SelectCharacter(Character character)
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            if (_selectedCharacters[i] == character)
+                return;
+        }
+
+        for (int i = 0; i < 3; i++)
+        {
+            if (_selectedCharacters[i] == null)
+            {
+                _selectedCharacters[i] = character;
+                break;
+            }
+        }
+        RefreshSelectedSlots();
+    }
+
+    public void OnClickDelectSelectCharacter(int index)
+    {
+        _selectedCharacters[index] = null;
+        RefreshSelectedSlots();
+    }
+
+    private void RefreshSelectedSlots()
+    {
+        // 1) 슬롯 초기화
+        for (int i = 0; i < 3; i++)
+        {
+            GetImage((int)Images.Select1 + i).sprite = null;
+            GetButton((int)Buttons.Select1 + i).gameObject.BindEvent(() => { });
+        }
+
+        // 2) 리스트 순서대로 다시 채우기
+        for (int i = 0; i < 3; i++)
+        {
+            Character character = _selectedCharacters[i];
+            var capturedCharacter = i;
+
+            if (character == null) continue;
+
+            Image slot = GetImage((int)Images.Select1 + i);
+            slot.sprite = Managers.Resource.Load<Sprite>(character.Data.IconLabel);
+
+            GetButton((int)Buttons.Select1 + i).gameObject.BindEvent(() =>
+                OnClickDelectSelectCharacter(capturedCharacter)
+            );
+        }
+    }
+
+
 }

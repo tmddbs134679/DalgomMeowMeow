@@ -18,8 +18,6 @@ public class DraggableObject : MonoBehaviour, IDraggable
 
     private float _offsetx;
     private float _offsety;
-private Vector3 _dragOffset;
-
 
     public GameObject TempOBJ;
 
@@ -28,8 +26,7 @@ private Vector3 _dragOffset;
     void Start()
     {
         _isBuildColor = GetComponent<IsBuildColor>();
-        isBuild = CheckTilesUnderBuilding();
-                  if (_isBuildColor != null) _isBuildColor.SetIsBUildColor(isBuild);        
+CheckTilesUnderBuilding();  
     }
     //드래그 스타트
     public void OnDragStart(Vector3 hitPos)
@@ -37,7 +34,7 @@ private Vector3 _dragOffset;
         BuildingPlacer.Instance.tempDraggleOBJ = this;
         _offsetx = (gameObject.transform.localScale.x % 2 == 0) ? (gridSize / 2f) : 0f;
         _offsety = (gameObject.transform.localScale.z % 2 == 0) ? (gridSize / 2f) : 0f;
-        isBuild = CheckTilesUnderBuilding();
+CheckTilesUnderBuilding();
 
     }
 
@@ -48,8 +45,7 @@ private Vector3 _dragOffset;
         {
             Vector3 snappedPos = GetSnappedPosition(groundPos);
             transform.position = snappedPos;
-            isBuild = CheckTilesUnderBuilding();
-                       if (_isBuildColor != null) _isBuildColor.SetIsBUildColor(isBuild);
+CheckTilesUnderBuilding();
 
             Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.main, transform.position);
             if (_uI_BuildAction != null)
@@ -65,6 +61,7 @@ private Vector3 _dragOffset;
         //버그수정중
         if (isLongPress)
         {
+            CheckTilesUnderBuilding();  
           buildMap.ColliderAllOff();
                    // BuildingPlacer.Instance.tempDraggleOBJ = this;
             BuildingPlacer.Instance.isLongPressAcceptBuild = true;
@@ -105,8 +102,9 @@ private Vector3 _dragOffset;
     [SerializeField] private LayerMask tileLayer;
 
     //건물밑 타일 판별후 정보전달
-    bool CheckTilesUnderBuilding()
+    public void CheckTilesUnderBuilding()
     {
+
         Vector3 center = transform.position + Vector3.down * 0.5f;
         Vector3 halfExtents = new Vector3(buildSize.x / 2.5f, 0.1f, buildSize.y / 2.5f);
 
@@ -121,7 +119,8 @@ private Vector3 _dragOffset;
                 if (tile.isLoadBuild) allcheck++;
             }
         }
-        return allcheck == hitColliders.Length;
+        isBuild = allcheck == hitColliders.Length?true:false;
+        if (_isBuildColor != null) _isBuildColor.SetIsBUildColor(isBuild);
     }
 
 //타일에 isLoadBuild값 전달후 SetTile()호출해 arrayMapPos맵데이터 갱신

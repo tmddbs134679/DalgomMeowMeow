@@ -19,7 +19,6 @@ public class UI_GameScene : UI_Scene
 
     enum Buttons
     {
-        MailButton,
         NoticeButton,
         SettingButton,
         QuestButton,
@@ -40,7 +39,7 @@ public class UI_GameScene : UI_Scene
 
     UI_QuickMenu _quickMenuPopupUI;
     UI_CheckOutPopup _checkOutPopupUI;
-
+    UI_ShopPopup _shopPopupUI;
     public override bool Init()
     {
         if (base.Init() == false)
@@ -52,9 +51,11 @@ public class UI_GameScene : UI_Scene
 
         _quickMenuPopupUI =  Managers.UI.ShowPopupUI<UI_QuickMenu>();
         _checkOutPopupUI = Managers.UI.ShowPopupUI<UI_CheckOutPopup>();
+        _shopPopupUI = Managers.UI.ShowPopupUI<UI_ShopPopup>();
 
         _quickMenuPopupUI.gameObject.SetActive(false);
         _checkOutPopupUI.gameObject.SetActive(false);
+        _shopPopupUI.gameObject.SetActive(false);
 
         GetObject((int)GameObjects.StorageObject).GetComponent<HorizontalLayoutGroup>().spacing = UI_GROUP_SPACING;
         GetButton((int)Buttons.BattleButton).gameObject.BindEvent(OnClickBattleButton);
@@ -69,6 +70,8 @@ public class UI_GameScene : UI_Scene
 
         GetButton((int)Buttons.QuestButton).gameObject.BindEvent(OnClickQuestButton);
 
+        GetButton((int)Buttons.ShopButton).gameObject.BindEvent(OnClickShopButton);
+        GetButton((int)Buttons.ShopButton).GetOrAddComponent<UI_ButtonAnimation>();
 
 
         #region Action 추가
@@ -82,6 +85,11 @@ public class UI_GameScene : UI_Scene
         Refresh();
 
         return true;
+    }
+
+    private void OnClickShopButton()
+    {
+        _shopPopupUI.gameObject.SetActive(true);
     }
 
     private void OnClickCheckOutButton()
