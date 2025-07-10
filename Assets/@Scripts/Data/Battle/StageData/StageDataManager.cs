@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,7 +9,6 @@ public class StageDataManager : MonoBehaviour
     public List<StageSO> stages;
 
     public int CurrentStageNumber;
-
     public int PendingGoldReward { get; private set; }
     public int PendingExpReward { get; private set; }
 
