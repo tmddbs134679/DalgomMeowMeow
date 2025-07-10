@@ -123,11 +123,12 @@ public class UI_BuildPopup : UI_Popup
 
                 GetText(i).text = (BuildingPlacer.Instance.buildingSO[i].BuyMoney * Mathf.Pow(1.2f, count)).ToString();
                 GetText(ToIndex((Texts)(100 + i))).text = count.ToString();
+                
             }
             else
             {
                 GetText(i).text = BuildingPlacer.Instance.buildingSO[i].BuyMoney.ToString();
-                GetText(ToIndex((Texts)(100 + i))).text ="0";
+                GetText(ToIndex((Texts)(100 + i))).text = "0";
             }
         }
     }
