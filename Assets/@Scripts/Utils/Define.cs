@@ -141,4 +141,24 @@ public class Define
         Gold,
         Ticket,
     }
+
+    public enum EEquipmentGrade
+    {
+        None,
+        Common,
+        Uncommon,
+        Rare,
+        Epic,
+    }
+
+
+    public static readonly float[] COMMON_GACHA_GRADE = new float[]
+{
+        0,
+        0.62f,   // Common 확률
+        0.18f,   // Uncommon 확률
+        0.15f,   // Rare 확률
+        0.05f,  // Epic 확률
+};
+
 }

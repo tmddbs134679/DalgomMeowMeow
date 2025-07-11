@@ -247,4 +247,29 @@ namespace Data
     #endregion
 
 
+    #region EquipmentGacha
+
+    public class EquipmentGachaData
+    {
+        public string EquipmentID;
+        public float GachaRate;
+        public EEquipmentGrade Grade;
+    }
+
+    [Serializable]
+    public class EquipmentGachaDataLoader : ILoader<string, EquipmentGachaData>
+    {
+        public List<EquipmentGachaData> EquipmentGachaTable = new List<EquipmentGachaData>();
+
+        public Dictionary<string, EquipmentGachaData> MakeDict()
+        {
+            Dictionary<string, EquipmentGachaData> dict = new Dictionary<string, EquipmentGachaData>();
+            foreach (EquipmentGachaData gacha in EquipmentGachaTable)
+                dict.Add(gacha.EquipmentID, gacha);
+            return dict;
+        }
+    }
+    #endregion
+
+
 }
