@@ -144,6 +144,7 @@ public class BuildingPlacer : MonoBehaviour
         _isGold = CheckBuildGold();
         CanPlaceBuilding();
 
+
         if (_isGold && _isBuild)
         {
             string buildType = ((Define.BuildingType)tempTypeNum).ToString();
@@ -193,7 +194,7 @@ public class BuildingPlacer : MonoBehaviour
             };
             arrayBuildPos.GetBuildData(_buildData);//설치할 오브젝트
             arrayBuildPos.RemoveBuildData(_CurBuildData);//기존에 있던 오브젝트 제거
-            buildMap.Remove(new Vector2(_CurBuildData.posX, _CurBuildData.posZ));
+            buildMap.Remove(GridKey(_CurBuildData.posX, _CurBuildData.posZ));
             _PreviewOBJ.GetComponent<DraggableObject>().SetTileIsBuild();//새롭게 설치할 오브젝트의 타일
             ClearTile();//기존에 있던 오브젝트의 타일 제거
             _PreviewOBJ.GetComponent<DraggableObject>().isLongPress = true;
@@ -215,7 +216,7 @@ public class BuildingPlacer : MonoBehaviour
     {
         isAI = false;
         isSelect = false;
-        if (isLongPressAcceptBuild&&OriginTempOBJ!=null)
+        if (isLongPressAcceptBuild && OriginTempOBJ != null)
         {
             OriginTempOBJ.SetActive(true);
             OriginTempOBJ.GetComponent<DraggableObject>().isLongPress = true;
@@ -233,7 +234,7 @@ public class BuildingPlacer : MonoBehaviour
     public void RemoveBuild()
     {
         arrayBuildPos.RemoveBuildData(_CurBuildData);//기존에 있던 오브젝트 제거
-        buildMap.Remove(new Vector2(_CurBuildData.posX, _CurBuildData.posZ));
+        buildMap.Remove(GridKey(_CurBuildData.posX, _CurBuildData.posZ));
         ClearTile();//기존에 있던 오브젝트의 타일 제거
         Destroy(OriginTempOBJ);
         gridMap.LoadMap(); //맵갱신
@@ -259,13 +260,13 @@ public class BuildingPlacer : MonoBehaviour
 
     public void DeleteStage(GameObject stage)
     {
-        BuildData data= new BuildData
-            {
-                posX = stage.transform.position.x,
-                posZ = stage.transform.position.z,
-            };
+        BuildData data = new BuildData
+        {
+            posX = stage.transform.position.x,
+            posZ = stage.transform.position.z,
+        };
         arrayBuildPos.RemoveBuildData(data);//기존에 있던 오브젝트 제거
-        buildMap.Remove(new Vector2(data.posX,data.posZ));
+        buildMap.Remove(GridKey(data.posX, data.posZ));
         stage.GetComponent<DraggableObject>().CurrentTileAndOBJ();
         ClearTile();//기존에 있던 오브젝트의 타일 제거
         Destroy(stage);
@@ -273,4 +274,13 @@ public class BuildingPlacer : MonoBehaviour
         buildMap.LoadBuild(); //오브젝트 갱신
         surface.BuildNavMesh(); //네브매쉬 깔기
     }
+    
+        Vector2Int GridKey(float x, float z)
+{
+    float gridSize = 0.5f;
+    return new Vector2Int(
+        Mathf.RoundToInt(x / gridSize),
+        Mathf.RoundToInt(z / gridSize)
+    );
+}
 }

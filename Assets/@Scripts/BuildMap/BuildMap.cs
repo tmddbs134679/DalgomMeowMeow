@@ -13,8 +13,9 @@ public class BuildMap : MonoBehaviour
     public ArrayBuildPos arrayBuildPos;
 
     public NavMeshSurface surface;
-    private Dictionary<Vector2, GameObject> _spawnedBuilds = new Dictionary<Vector2, GameObject>();
+    private Dictionary<Vector2Int, GameObject> _spawnedBuilds = new Dictionary<Vector2Int, GameObject>();
     public Dictionary<String, int> valueCounts = new Dictionary<string, int>();
+    public Dictionary<String, int> filtervalueCounts = new Dictionary<string, int>();
     private Dictionary<int, BuildData> _buildDataMap = new Dictionary<int, BuildData>();
     void Start()
     {
@@ -22,8 +23,8 @@ public class BuildMap : MonoBehaviour
         {
             _buildDataMap[data.UniqueId] = data;
             GameObject go = Instantiate(data.testBaseBuilding.buildOBJ, new Vector3(data.posX, 1f, data.posZ), Quaternion.identity, transform);
-             go.name = data.testBaseBuilding.BuildingType.ToString();
-            
+            go.name = data.testBaseBuilding.BuildingType.ToString();
+
             if (go.GetComponent<BuildingBase>() != null)
             {
                 var buildingBase = go.GetComponent<BuildingBase>();
@@ -37,10 +38,17 @@ public class BuildMap : MonoBehaviour
             {
                 region.Id = data.UnlockId;
             }
-            _spawnedBuilds.Add(new Vector2(data.posX, data.posZ), go);
+            _spawnedBuilds.Add(GridKey(data.posX, data.posZ), go);
         }
-        
+
         valueCounts = _spawnedBuilds.Values
+                          .GroupBy(v => v.name)
+                          .ToDictionary(g => g.Key, g => g.Count());
+
+        var excludeNames = new List<string> { "Road" };
+
+        filtervalueCounts = _spawnedBuilds.Values
+        .Where(v => !excludeNames.Contains(v.name))
                           .GroupBy(v => v.name)
                           .ToDictionary(g => g.Key, g => g.Count());
 
@@ -51,26 +59,25 @@ public class BuildMap : MonoBehaviour
     {
         foreach (BuildData data in arrayBuildPos.baseBuilding)
         {
-            Vector2 key = new Vector2(data.posX, data.posZ);
+            Vector2Int key = GridKey(data.posX, data.posZ);
 
-            if (_spawnedBuilds.ContainsKey(key))
+            if (_spawnedBuilds.TryGetValue(key, out var build))
             {
-                // 갱신
-                _spawnedBuilds[key].transform.position = new Vector3(data.posX, 1f, data.posZ);
+                build.transform.position = new Vector3(data.posX, 1f, data.posZ);
             }
             else
             {
                 // 건설 후 추가 생성
                 GameObject go = Instantiate(data.testBaseBuilding.buildOBJ, new Vector3(data.posX, 1f, data.posZ), Quaternion.identity, transform);
-             go.name = data.testBaseBuilding.BuildingType.ToString();
-            _buildDataMap[data.UniqueId] = data;
-            if (go.GetComponent<BuildingBase>() != null)
-            {
-                var buildingBase = go.GetComponent<BuildingBase>();
-                buildingBase.SetUniqueId(data.UniqueId);
-                buildingBase.SetLevel(data.LV);
-                buildingBase.SetBuildMap(this);
-            }
+                go.name = data.testBaseBuilding.BuildingType.ToString();
+                _buildDataMap[data.UniqueId] = data;
+                if (go.GetComponent<BuildingBase>() != null)
+                {
+                    var buildingBase = go.GetComponent<BuildingBase>();
+                    buildingBase.SetUniqueId(data.UniqueId);
+                    buildingBase.SetLevel(data.LV);
+                    buildingBase.SetBuildMap(this);
+                }
                 go.GetComponent<DraggableObject>().buildMap = gameObject.GetComponent<BuildMap>();
                 if (go.TryGetComponent(out ForestRegion region))
                 {
@@ -83,10 +90,15 @@ public class BuildMap : MonoBehaviour
                     valueCounts[go.name]++;
                 else
                     valueCounts[go.name] = 1;
+
+                if (filtervalueCounts.ContainsKey(go.name))
+                    filtervalueCounts[go.name]++;
+                else
+                    filtervalueCounts[go.name] = 1;
             }
         }
     }
-    public void Remove(Vector2 key)
+    public void Remove(Vector2Int key)
     {
         _spawnedBuilds.Remove(key);
         if (_spawnedBuilds.TryGetValue(key, out GameObject go))
@@ -99,6 +111,15 @@ public class BuildMap : MonoBehaviour
             }
             else
                 Managers.Debug.Log($"Remove null 발생", Define.EDebugType.Building);
+
+            if (filtervalueCounts.ContainsKey(go.name))
+            {
+                filtervalueCounts[go.name]--;
+                if (filtervalueCounts[go.name] <= 0)
+                    filtervalueCounts.Remove(go.name);
+            }
+            else
+                Managers.Debug.Log($"Remove null 발생", Define.EDebugType.Building);
         }
     }
 
@@ -106,7 +127,7 @@ public class BuildMap : MonoBehaviour
     {
         foreach (BuildData data in arrayBuildPos.baseBuilding)
         {
-            Vector2 key = new Vector2(data.posX, data.posZ);
+            Vector2Int key = GridKey(data.posX, data.posZ);
 
             if (_spawnedBuilds.TryGetValue(key, out GameObject obj) && obj != null)
             {
@@ -125,7 +146,7 @@ public class BuildMap : MonoBehaviour
     {
         foreach (BuildData data in arrayBuildPos.baseBuilding)
         {
-            Vector2 key = new Vector2(data.posX, data.posZ);
+            Vector2Int key = GridKey(data.posX, data.posZ);
             if (_spawnedBuilds.TryGetValue(key, out GameObject obj) && obj != null)
             {
                 Collider col = obj.GetComponent<Collider>();
@@ -138,7 +159,7 @@ public class BuildMap : MonoBehaviour
     }
 
 
-    
+
     public void UpdateBuildLevel(int uniqueId, int newLevel)
     {
         if (_buildDataMap.TryGetValue(uniqueId, out var data))
@@ -150,4 +171,13 @@ public class BuildMap : MonoBehaviour
             Debug.LogWarning($"[BuildMap] 레벨 업데이트 실패: ID {uniqueId}를 찾을 수 없습니다.");
         }
     }
+
+    Vector2Int GridKey(float x, float z)
+{
+    float gridSize = 0.5f;
+    return new Vector2Int(
+        Mathf.RoundToInt(x / gridSize),
+        Mathf.RoundToInt(z / gridSize)
+    );
+}
 }
