@@ -100,8 +100,6 @@ public class AICharacter : BaseObject
         camera = Camera.main;
         head = transform.Find("root/pelvis/spine_01/spine_02/spine_03/neck_01");
 
-        if(nav != null)
-            nav.enabled = true;
     }
 
     private void Update()
@@ -109,8 +107,14 @@ public class AICharacter : BaseObject
         if (IsReplica) return;
 
         if (_controller == null) return;
-        
-        _controller?.OnUpdate(Time.deltaTime);
+
+        if (!nav.enabled)
+        {
+            nav.enabled = true;
+            return;
+        }
+        else Controller.OnUpdate(Time.deltaTime);
+
         if (BuildingPlacer.Instance.isAI) OnClick();
         Level = Data.Level;
         currentStamina = Data.CurrentStamina;
@@ -152,7 +156,6 @@ public class AICharacter : BaseObject
 
         // TODO : FSM 등 상태 적용
         ControllerRegister();
-        
     }
     #endregion
 

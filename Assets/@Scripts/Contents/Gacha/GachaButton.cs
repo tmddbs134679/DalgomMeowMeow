@@ -6,15 +6,9 @@ public class GachaButton : MonoBehaviour
 {
     public void OnClick_Gacha()
     {
-        Vector3 spawnPos = GetRandomSpawnPosition();
-        Managers.Game.SpawnRandomGachaCharacter(spawnPos);
+        
+        Managers.Game.SpawnRandomGachaCharacter(new Vector3(38f, 0.616f,27f ));
 
     }
-
-    private Vector3 GetRandomSpawnPosition()
-    {
-        float x = 38f;
-        float z = 27f;
-        return new Vector3(x, 0.616f, z);
-    }
+   
 }

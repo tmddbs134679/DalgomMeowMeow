@@ -17,13 +17,6 @@ public class AIManager
 
     public void Init()
     {
-        //await LoadEmotionMaterials();
-        
-       
-        foreach (var character in AllCharacters)
-        {
-            ValidateNavMeshPosition(character);
-        }
 
     }
 
@@ -49,33 +42,14 @@ public class AIManager
         character.nav.Warp(hit.position); // NavMeshAgent에 위치 강제 적용
     }
 
-    private void ValidateNavMeshPosition(AICharacter character)
+    public void ValidateNavMeshPosition(AICharacter character)
     {
         if (!character.nav.isOnNavMesh || character.nav.pathStatus == NavMeshPathStatus.PathInvalid)
         {
-            Debug.LogWarning($"[{character.name}] NavMesh에서 이탈! 복구 시도");
+            Managers.Debug.Log("[AIManager] NavMesh 위치가 유효하지 않음. 재위치 조정 중...", Define.EDebugType.AI);
             RelocateToNearestNavMesh(character);
         }
     }
 
-    private async Task LoadEmotionMaterials()
-    {
-        // Addressables 로드: 여러 개면 Label 또는 Asset Group으로 관리 권장
-        var handle = Addressables.LoadAssetsAsync<Material>(
-            "CharacterEmotion",  // Address 또는 Label
-            null);               // 개별 로드 콜백(없으면 null)
-
-        await handle.Task;
-
-        if (handle.Status == AsyncOperationStatus.Succeeded)
-        {
-            EmotionMaterials = handle.Result.ToArray();
-            Debug.Log($"[AIManager] CharacterEmotion 로드 완료: {EmotionMaterials.Length}개");
-        }
-        else
-        {
-            Debug.LogError("[AIManager] CharacterEmotion 로드 실패!");
-        }
-    }
 
 }
