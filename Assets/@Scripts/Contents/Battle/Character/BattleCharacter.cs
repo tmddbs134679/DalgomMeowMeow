@@ -105,7 +105,6 @@ public class BattleCharacter : BaseObject
         _skillLibrary = GetComponentInParent<SkillLibrary>();
         ObjectType = Define.EObjectType.Enemy; // 객체 타입 설정
         Agent = GetComponent<NavMeshAgent>();
-        _heal = GetComponentInChildren<ParticleSystem>();
         _effectManager = GetComponentInChildren<EffectManager>();
     }
 

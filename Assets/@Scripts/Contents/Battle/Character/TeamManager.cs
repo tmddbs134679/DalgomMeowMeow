@@ -31,7 +31,7 @@ public class TeamManager : MonoBehaviour
             _battleCharacters[k].AttackDamage = StageDataManager.Instance.PlayerCharacter[k].Atk;
             _battleCharacters[k].MaxHP = StageDataManager.Instance.PlayerCharacter[k].Hp;
             _battleCharacters[k].MoveSpeed = StageDataManager.Instance.PlayerCharacter[k].MoveSpeed;
-            //_battleCharacters[k].SkillID = StageDataManager.Instance.PlayerCharacter[k].Data.SkillIcon.Replace(".sprite", "");
+            _battleCharacters[k].SkillID = StageDataManager.Instance.PlayerCharacter[k].Data.SkillIcon.Replace(".sprite", "");
         }
     }
 
