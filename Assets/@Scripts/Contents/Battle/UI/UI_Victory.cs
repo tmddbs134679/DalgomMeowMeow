@@ -31,8 +31,8 @@ public class UI_Victory : UI_Popup   //어드레서블에 프리펩 넣기
 
         GetButton((int)Buttons.TitleButton).gameObject.BindEvent(OnClickTitle);
 
-        string gold = StageDataManager.Instance.SetStage().GoldReward.ToString();
-        string exp = StageDataManager.Instance.SetStage().ExpReward.ToString();
+        string gold = StageDataManager.Instance.PendingGoldReward.ToString();
+        string exp = StageDataManager.Instance.PendingExpReward.ToString();
         GetText((int)Texts.Gold).text = $"Gold +{gold}";
         GetText((int)Texts.Exp).text = $"Exp +{exp}";
 

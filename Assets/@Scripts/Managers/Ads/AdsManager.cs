@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Advertisements;
 
@@ -15,6 +13,7 @@ public class AdsManager : IUnityAdsInitializationListener, IUnityAdsLoadListener
 
     public void Init()  //반드시 먼저 실행시켜야됨
     {
+        
 #if UNITY_ANDROID
         _gameId = androidGameId;
 #elif UNITY_IOS
