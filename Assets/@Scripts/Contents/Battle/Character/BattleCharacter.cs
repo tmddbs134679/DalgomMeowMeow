@@ -14,8 +14,9 @@ public class BattleCharacter : BaseObject
     [SerializeField] private float _flashDuration = 0.05f;
     [SerializeField] protected SkinnedMeshRenderer[] _characterRenderer; // 캐릭터 렌더러
     [SerializeField] protected Vector3 _originalPosition; // 원래 위치 저장
-    
-    
+    public EffectManager _effectManager; // 이펙트 매니저
+
+
 
     public NavMeshAgent Agent { get; private set; } // NavMeshAgent 컴포넌트
     public Animator Animator; // 애니메이터 컴포넌트
@@ -105,6 +106,7 @@ public class BattleCharacter : BaseObject
         ObjectType = Define.EObjectType.Enemy; // 객체 타입 설정
         Agent = GetComponent<NavMeshAgent>();
         _heal = GetComponentInChildren<ParticleSystem>();
+        _effectManager = GetComponentInChildren<EffectManager>();
     }
 
     protected virtual void Start()

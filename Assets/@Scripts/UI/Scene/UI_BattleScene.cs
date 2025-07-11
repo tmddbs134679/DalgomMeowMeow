@@ -89,3 +89,4 @@ public class UI_BattleScene : UI_Scene
         this.gameObject.SetActive(false); // UI_BattleScene 비활성화
     }
 }
+Managers.Game.
