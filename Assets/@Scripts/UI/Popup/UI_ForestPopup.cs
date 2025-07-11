@@ -177,8 +177,8 @@ public class UI_ForestPopup : UI_Popup
 
             GetImage((int)Images.Select1 + i).sprite = Managers.Resource.Load<Sprite>(character.Data.IconLabel);
             GetImage((int)Images.SkillIcon1 + i).sprite = Managers.Resource.Load<Sprite>(character.Data.SkillID.ToString());
-            GetText((int)Texts.SkillText1 + i).text = Managers.Data.SkillDataDic[character.Data.SkillID].Name;
-            GetText((int)Texts.SkillName1 + i).text = Managers.Data.SkillDataDic[character.Data.SkillID].Description;
+            GetText((int)Texts.SkillText1 + i).text = Managers.Data.SkillDataDic[character.Data.SkillID].Description;
+            GetText((int)Texts.SkillName1 + i).text = Managers.Data.SkillDataDic[character.Data.SkillID].Name;
 
 
             GetButton((int)Buttons.Select1 + i).gameObject.BindEvent(() =>
