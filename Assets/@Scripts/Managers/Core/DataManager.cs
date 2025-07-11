@@ -20,7 +20,7 @@ public class DataManager
     public Dictionary<(string, int), Data.BuildingLevelData> BuildingLevelDic { get; private set; } = new Dictionary<(string, int), Data.BuildingLevelData>();
     public Dictionary<int, CheckOutData> CheckOutDataDic { get; private set; } = new Dictionary<int, Data.CheckOutData>();
     public Dictionary<int, Data.MaterialData> MaterialDic { get; private set; } = new Dictionary<int, Data.MaterialData>();
-
+    public Dictionary<string, SkillData> SkillDataDic { get; private set; } = new Dictionary<string, SkillData>();
     public Dictionary<string, EquipmentGachaData> GachaTableDataDic { get; private set; } = new Dictionary<string, EquipmentGachaData>();
 
     public void Init()
