@@ -151,6 +151,13 @@ public class Define
         Epic,
     }
 
+    public enum EExchangeType
+    {
+        None,
+        Gold,
+        Ticket,
+        Dia
+    }
 
     public static readonly float[] COMMON_GACHA_GRADE = new float[]
 {

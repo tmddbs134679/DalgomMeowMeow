@@ -33,6 +33,7 @@ public class UI_GameScene : UI_Scene
     {
         PlayerGoldText,
         CreatureCountText,
+        DiaText,
     }
     #endregion
 
@@ -187,6 +188,7 @@ public class UI_GameScene : UI_Scene
     {
         GetText((int)Texts.PlayerGoldText).text = Managers.Game.Gold.ToString();
         GetText((int)Texts.CreatureCountText).text = Managers.Game.Characters.Count.ToString();
+        GetText((int)Texts.DiaText).text = Managers.Game.Dia.ToString();
     }
 
     void AddFoodSlot(Food food)
