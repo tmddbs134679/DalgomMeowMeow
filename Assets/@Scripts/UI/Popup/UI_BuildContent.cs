@@ -6,7 +6,8 @@ public class UI_BuildContent : UI_Popup
 {
     enum GameObjects
     {
-MoveOBJ,
+        MoveUIPanel,
+sfgwegeg,
     }
 
     enum Buttons
@@ -19,6 +20,7 @@ MoveOBJ,
     enum Images { }
 
     private BuildingBase _cookingBuilding;
+    private GameObject _tempObj;
     public override bool Init()
     {
         if (!base.Init()) return false;
@@ -32,6 +34,9 @@ MoveOBJ,
         GetButton((int)Buttons.BackgroundCloseButton).gameObject.BindEvent(OnClickBackgroundButton);
         GetButton((int)Buttons.InfoButton).gameObject.BindEvent(OnClickInfoButton);
         GetButton((int)Buttons.PopUpButton).gameObject.BindEvent(OnClickPopupButton);
+
+    Vector3 screenPos = Camera.main.WorldToScreenPoint(_tempObj.transform.position);
+    GetObject((int)GameObjects.MoveUIPanel).GetComponent<RectTransform>().position = screenPos;
         return true;
     }
 
@@ -53,8 +58,8 @@ MoveOBJ,
     }
     public void SetTarget(GameObject go)
     {
-     //   GetObject((int)Buttons.BackgroundCloseButton).gameObject.transform.position = go.transform.position;
-       _cookingBuilding= go.GetComponent<BuildingBase>();
+        _tempObj = go;
+        _cookingBuilding = go.GetComponent<BuildingBase>();
     }
 
 }

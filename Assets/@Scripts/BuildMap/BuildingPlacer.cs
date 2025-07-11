@@ -67,7 +67,7 @@ public class BuildingPlacer : MonoBehaviour
     {
 
         isAI = true;
-        isSelect = true;
+        isSelect = false;
         buildMap.ColliderAllOff();
         tempTypeNum = type;
         Camera cam = Camera.main;
@@ -122,7 +122,7 @@ public class BuildingPlacer : MonoBehaviour
     bool CheckBuildGold()
     {
 
-        return Managers.Game.Gold - buyMoney >= 0;
+        return Managers.Game.Gold - buyMoney > 0;
     }
 
     /// <summary>

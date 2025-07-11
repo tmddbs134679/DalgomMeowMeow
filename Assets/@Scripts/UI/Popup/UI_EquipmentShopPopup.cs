@@ -62,27 +62,36 @@ public class UI_EquipmentShopPopup : UI_Popup
 
     private void OnClickOneTimeGachaButon()
     {
-        //일단 골드로
 
-        if(Managers.Game.Gold > 1000)
+        if(Managers.Game.Ticket > 1)
         {
-            Managers.Game.Gold -= 10000;
-
+            Managers.Game.RemoveTicket(1);
             DoGacha();
-
+        }
+        else
+        {
+            Managers.UI.ShowToast("티켓이 부족합니다 !");
         }
     }
 
+    private void OnClickFiveTimeGachaButon()
+    {
+        if (Managers.Game.Ticket > 5)
+        {
+            Managers.Game.RemoveTicket(5);
+            DoGacha(5);
+        }
+        else
+        {
+            Managers.UI.ShowToast("티켓이 부족합니다 !");
+        }
+    }
     private void DoGacha(int count = 1)
     {
         List<Equipment> equipment = new List<Equipment>();
         equipment = Managers.Game.DoEquipmentGacha(count);
     }
 
-    private void OnClickFiveTimeGachaButon()
-    {
-       
-    }
 
  
 }

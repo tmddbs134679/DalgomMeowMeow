@@ -37,10 +37,6 @@ public class SkillLibrary : MonoBehaviour
         }
         if (_skillMap.TryGetValue(skillNum, out var coroutineFunc))
         {
-            if (_runningCoroutines.TryGetValue(skillNum, out var running) && running != null)  //실행된게 있으면 멈추기
-            {
-                StopCoroutine(running);
-            }
             targetCharacter.Animator.SetInteger(targetCharacter.SkillHash, skillNum); // 스킬 애니메이션 출력
             Coroutine co = StartCoroutine(coroutineFunc(targetCharacter));  //코루틴 실행
             _runningCoroutines[skillNum] = co;  //실행중인 코루틴 넣기
@@ -90,7 +86,7 @@ public class SkillLibrary : MonoBehaviour
         {
             battleCharacter.UsingSkill = true;
             battleCharacter.SkillCooldown = 5f; // 스킬 쿨타임 설정
-            yield return StartCoroutine(EffectManager.Instance.Punch(battleCharacter.TargetLocation.position));
+            yield return StartCoroutine(battleCharacter._effectManager.Punch(battleCharacter.TargetLocation.position));
             battleCharacter.Animator.SetTrigger(battleCharacter.SkillTrigger); // 스킬 애니메이션 트리거 활성화
             Collider[] hits = Physics.OverlapSphere(battleCharacter.TargetLocation.position, 2.5f, LayerMask.GetMask("Enemy")); // 적 캐릭터 레이어 마스크 사용
             foreach (var hit in hits)
@@ -115,7 +111,7 @@ public class SkillLibrary : MonoBehaviour
         battleCharacter.AttackDelay /= 2f; // 공격 딜레이를 절반으로 줄임
         battleCharacter.Animator.speed = 2f; // 애니메이션 속도를 두 배로 증가시킴
         battleCharacter.UsingSkill = false;
-        yield return StartCoroutine(EffectManager.Instance.FireHand(battleCharacter.LeftHandPivot, battleCharacter.RightHandPivot)); // FireHand 효과 실행
+        yield return StartCoroutine(battleCharacter._effectManager.FireHand(battleCharacter.LeftHandPivot, battleCharacter.RightHandPivot)); // FireHand 효과 실행
         battleCharacter.UsingSkill = true;
         battleCharacter.AttackDelay *= 2f; // 공격 딜레이를 원래대로 되돌림
         battleCharacter.Animator.speed = 1f; // 애니메이션 속도를 원래대로 되돌림
@@ -197,7 +193,7 @@ public class SkillLibrary : MonoBehaviour
         battleCharacter.Animator.SetTrigger(battleCharacter.SkillTrigger); // 스킬 애니메이션 트리거 활성화
         battleCharacter.Invincible = true; // 죽지 않도록 설정
         battleCharacter.UsingSkill = false;
-        yield return StartCoroutine(EffectManager.Instance.Invincibility(battleCharacter.transform)); // 3초 동안 무적 상태 유지
+        yield return StartCoroutine(battleCharacter._effectManager.Invincibility(battleCharacter.transform)); // 3초 동안 무적 상태 유지
         battleCharacter.UsingSkill = true;
         battleCharacter.Invincible = false; // 무적 상태 해제
         battleCharacter.UsingSkill = false; // 스킬 사용 종료
@@ -209,7 +205,7 @@ public class SkillLibrary : MonoBehaviour
     private IEnumerator TeamInvincible(BattleCharacter battleCharacter)
     {
         battleCharacter.UsingSkill = true;
-        battleCharacter.SkillCooldown = 20f; // 스킬 쿨타임 설정
+        battleCharacter.SkillCooldown = 25f; // 스킬 쿨타임 설정
         battleCharacter.Animator.SetTrigger(battleCharacter.SkillTrigger);
         yield return new WaitForSeconds(1f); // 스킬 애니메이션 딜레이
         Collider[] hits = Physics.OverlapSphere(battleCharacter.transform.position, 5f, LayerMask.GetMask("Player"));
@@ -218,7 +214,7 @@ public class SkillLibrary : MonoBehaviour
             if (hit.TryGetComponent<BattleCharacter>(out var teamCharacter))
             {
                 teamCharacter.Invincible = true;
-                StartCoroutine(EffectManager.Instance.Invincibility(teamCharacter.transform)); // 팀원에게 무적 효과 적용
+                StartCoroutine(battleCharacter._effectManager.Invincibility(teamCharacter.transform)); // 팀원에게 무적 효과 적용
             }
         }
         battleCharacter.UsingSkill = false;
@@ -245,7 +241,7 @@ public class SkillLibrary : MonoBehaviour
             battleCharacter.UsingSkill = true;
             battleCharacter.SkillCooldown = 20f; // 스킬 쿨타임 설정
             battleCharacter.Animator.SetTrigger(battleCharacter.SkillTrigger); // 스킬 애니메이션 트리거 활성화
-            StartCoroutine(EffectManager.Instance.Rain(battleCharacter.TargetLocation.position));
+            StartCoroutine(battleCharacter._effectManager.Rain(battleCharacter.TargetLocation.position));
             yield return StartCoroutine(RainDamage(battleCharacter, battleCharacter.TargetLocation.position)); // RainDamage 코루틴 실행
             battleCharacter.UsingSkill = false;
         }

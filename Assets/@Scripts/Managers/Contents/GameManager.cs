@@ -20,6 +20,7 @@ public class GameData
 {
     public float Gold = 0;
     public int Dia = 0;
+    public int Ticket = 0;
 
     //public List <캐릭터들>
 
@@ -27,7 +28,7 @@ public class GameData
     public List<Character> CharacterList = new List<Character>();
     public List<Equipment> OwnedEquipments = new List<Equipment>();
 
-    
+
     public bool[] AttendanceReceived = new bool[30];
 
 }
@@ -72,6 +73,17 @@ public class GameManager
         set
         {
             _gameData.Dia = value;
+            SaveGame();
+            OnResourcesChagned?.Invoke();
+        }
+    }
+
+    public int Ticket
+    {
+        get { return _gameData.Ticket; }
+        set
+        {
+            _gameData.Ticket = value;
             SaveGame();
             OnResourcesChagned?.Invoke();
         }
@@ -239,7 +251,7 @@ public class GameManager
             _gameData = data;
             CharacterMap = _gameData.CharacterList.ToDictionary(c => c.UniqueId, c => c);
         }
-          
+
 
         IsLoaded = true;
         return true;
@@ -386,7 +398,7 @@ public class GameManager
             if (equipment == null)
                 continue;
 
-           AttachEquipmentToCharacter(replica, equipment);
+            AttachEquipmentToCharacter(replica, equipment);
         }
     }
 
@@ -478,21 +490,19 @@ public class GameManager
         foreach (var data in validList)
             totalProb += data.Probability;
 
-        float rand = UnityEngine.Random.Range(0f, totalProb);
-        float sum = 0f;
-
+        float rand = UnityEngine.Random.value;
+        float sum = 0;
         foreach (var data in validList)
         {
             sum += data.Probability;
             if (rand <= sum)
             {
-                Managers.Debug.Log($"[Gacha] 당첨! {data.DataId}",Define.EDebugType.UI);
-                Managers.Debug.Log($"[Gacha] 확률: {data.Probability}, 총합: {totalProb}",Define.EDebugType.UI);
+                Managers.Debug.Log($"[Gacha] 당첨! {data.DataId}", Define.EDebugType.UI);
+                Managers.Debug.Log($"[Gacha] 확률: {data.Probability}, 총합: {totalProb}", Define.EDebugType.UI);
                 return data.DataId;
             }
         }
-
-        return validList[0].DataId;
+        return null;
     }
 
 
@@ -506,8 +516,8 @@ public class GameManager
         }
 
         Character newChar = new Character();
-        newChar.SetInfo(creatureData);
         newChar.Init(creatureId, spawnPos);
+        newChar.SetInfo(creatureData);
 
         AICharacter aiChar = Managers.Object.Spawn<AICharacter>(spawnPos, creatureId, isReplica: false);
 
@@ -515,9 +525,8 @@ public class GameManager
         {
             return null;
         }
-
+        aiChar.Init();
         aiChar.SetInfo(newChar);
-        Init();
 
         return aiChar;
     }
@@ -545,7 +554,7 @@ public class GameManager
     }
 
 
-    public static EEquipmentGrade GetRandomGrade(float[] prob)
+    public EEquipmentGrade GetRandomGrade(float[] prob)
     {
         float randomValue = UnityEngine.Random.value;
         if (randomValue < prob[(int)EEquipmentGrade.Common])
@@ -566,6 +575,13 @@ public class GameManager
         }
 
         return EEquipmentGrade.Common;
+    }
+
+
+    public void RemoveTicket(int count)
+    {
+        Ticket -= count;
+        SaveGame();
     }
 
 

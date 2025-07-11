@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
+using UnityEngine.UI;
 
 public class GameScene : BaseScene
 {
@@ -21,10 +23,9 @@ public class GameScene : BaseScene
 
             Managers.Game.CharactersInScene[ch.UniqueId] = ai;
             Managers.Game.SetInitEquipment(Managers.Game.CharactersInScene[ch.UniqueId]);
+            Managers.AI.ValidateNavMeshPosition(ai);
             Managers.AI.Register(ai);
         }
-
-        Managers.AI.Init();
 
     }
 
