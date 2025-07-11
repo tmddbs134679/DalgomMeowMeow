@@ -104,6 +104,7 @@ public class TutorialManager : MonoBehaviour
     {
         highlighter.Hide();
         dimOverlay?.gameObject.SetActive(false);
+        UI?.gameObject.SetActive(false);
         IsRunning = false;
     }
 
