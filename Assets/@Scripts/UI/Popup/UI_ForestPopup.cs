@@ -162,8 +162,9 @@ public class UI_ForestPopup : UI_Popup
         {
             GetImage((int)Images.Select1 + i).sprite = null;
             GetImage((int)Images.SkillIcon1 + i).sprite = null;
-            GetButton((int)Buttons.Select1 + i).gameObject.BindEvent(() => { });
             GetText((int)Texts.SkillText1 + i).text = string.Empty; 
+            GetText((int)Texts.SkillName1 + i).text = string.Empty;
+            GetButton((int)Buttons.Select1 + i).gameObject.BindEvent(() => { });
         }
 
         // 2) 선택된 캐릭터 정보 업데이트

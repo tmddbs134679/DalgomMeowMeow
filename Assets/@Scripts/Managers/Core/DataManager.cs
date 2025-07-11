@@ -34,6 +34,7 @@ public class DataManager
         CheckOutDataDic = LoadJson<Data.CheckOutDataLoader, int, Data.CheckOutData>("CheckOutData").MakeDict();
         MaterialDic = LoadJson<Data.MaterialDataLoader, int, Data.MaterialData>("MaterialData").MakeDict();
         GachaTableDataDic = LoadJson<Data.EquipmentGachaDataLoader, string, Data.EquipmentGachaData>("EquipmentGachaData").MakeDict();
+        SkillDataDic = LoadJson<Data.SkillDataDataLoader, string, Data.SkillData>("SkillData").MakeDict();
     }
 
 
