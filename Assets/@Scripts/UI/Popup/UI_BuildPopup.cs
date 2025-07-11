@@ -106,16 +106,16 @@ public class UI_BuildPopup : UI_Popup
 
 
 
-//설치 건물 선택
+    //설치 건물 선택
     private void SelectBuildingType(int type)
     {
         //건물 갯수 제한 코드 구간
-                if (type == (int)Define.BuildingType.SlotMachine)
+        if (type == (int)Define.BuildingType.SlotMachine)
         {
             if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(Define.BuildingType.SlotMachine.ToString(), out int count2) && count2 >= 1)
                 return;
         }
-                if (type == (int)Define.BuildingType.Shop)
+        if (type == (int)Define.BuildingType.Shop)
         {
             if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(Define.BuildingType.Shop.ToString(), out int count2) && count2 >= 1)
                 return;
@@ -132,7 +132,7 @@ public class UI_BuildPopup : UI_Popup
         Managers.UI.MakeSubItem<UI_BuildAction>(this.transform);
     }
 
-//buildUI창 건설비용과 건물갯수 갱신
+    //buildUI창 건설비용과 건물갯수 갱신
     private void Setting()
     {
         foreach (var a in BuildingPlacer.Instance.buildMap.valueCounts)
@@ -147,6 +147,14 @@ public class UI_BuildPopup : UI_Popup
         for (int i = 0; i < textcount - 1; i++)
         {
             buildType = ((Define.BuildingType)i).ToString();
+
+            if (buildType == "Road") // 도로일 땐 else 처리,임시땜빵,나중에는 모든게 엑셀 데이터를 받아와서 계산해야함
+            {
+               
+                GetText(i).text = BuildingPlacer.Instance.buildingSO[i].BuyMoney.ToString();
+                GetText(ToIndex((Texts)(100 + i))).text = "0";
+                continue;
+            }
             if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(buildType, out int count))
             {
                 GetText(i).text = (BuildingPlacer.Instance.buildingSO[i].BuyMoney * Mathf.Pow(1.2f, count)).ToString();

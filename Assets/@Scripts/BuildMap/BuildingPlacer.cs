@@ -148,7 +148,12 @@ public class BuildingPlacer : MonoBehaviour
         if (_isGold && _isBuild)
         {
             string buildType = ((Define.BuildingType)tempTypeNum).ToString();
-            if (buildMap.valueCounts.TryGetValue(buildType, out int count))
+
+            if (buildType == "Road") // 도로일 땐 else 처리,임시땜빵,나중에는 모든게 엑셀 데이터를 받아와서 계산해야함
+            {
+                BuyMoney = buildingSO[tempTypeNum].BuyMoney;
+            }
+            else if (buildMap.valueCounts.TryGetValue(buildType, out int count))
             {
                 BuyMoney = (int)(buildingSO[tempTypeNum].BuyMoney * Mathf.Pow(1.2f, count));
             }
@@ -274,13 +279,13 @@ public class BuildingPlacer : MonoBehaviour
         buildMap.LoadBuild(); //오브젝트 갱신
         surface.BuildNavMesh(); //네브매쉬 깔기
     }
-    
-        Vector2Int GridKey(float x, float z)
-{
-    float gridSize = 0.5f;
-    return new Vector2Int(
-        Mathf.RoundToInt(x / gridSize),
-        Mathf.RoundToInt(z / gridSize)
-    );
-}
+
+    Vector2Int GridKey(float x, float z)
+    {
+        float gridSize = 0.5f;
+        return new Vector2Int(
+            Mathf.RoundToInt(x / gridSize),
+            Mathf.RoundToInt(z / gridSize)
+        );
+    }
 }
