@@ -27,10 +27,14 @@ public class UI_ExchangeShopPopup : UI_Popup
 
     UI_PurchasePopup _purchasePopup;
 
+
     private void OnEnable()
     {
         PopupOpenAnimation(gameObject);
         PopupFadeInAnimation(GetText((int)Texts.TitleText).gameObject);
+        PopupFadeInAnimation(GetObject((int)GameObjects.ExchangeGoldObject).gameObject);
+        PopupFadeInAnimation(GetObject((int)GameObjects.ExchangeDiaObject).gameObject);
+        PopupFadeInAnimation(GetObject((int)GameObjects.ExchangeTicketObject).gameObject);
     }
 
     private void Awake()
@@ -60,6 +64,36 @@ public class UI_ExchangeShopPopup : UI_Popup
 
     private void OnClickExchange(Define.EExchangeType type)
     {
+
+        if (type == Define.EExchangeType.None)
+            return;
+
+        switch (type)
+        {
+            case Define.EExchangeType.Gold:
+                if(Managers.Game.Dia < 100)
+                {
+                    Managers.UI.ShowToast("다이아가 부족합니다!");
+                    return;
+                }
+                break;
+            case Define.EExchangeType.Ticket:
+                if (Managers.Game.Dia < 100)
+                {
+                    Managers.UI.ShowToast("다이아가 부족합니다!");
+                    return;
+                }
+                break;
+            case Define.EExchangeType.Dia:
+                if (Managers.Game.Gold < 1000)
+                {
+                    Managers.UI.ShowToast("골드가 부족합니다!");
+                    return;
+                }
+                break;
+        }
+
+        //재화가 있을경우 진행
         _purchasePopup.gameObject.SetActive(true);
         _purchasePopup.SetInfo(type);
     }

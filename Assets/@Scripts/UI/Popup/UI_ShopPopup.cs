@@ -40,10 +40,22 @@ public class UI_ShopPopup : UI_Popup
 
     private void OnEnable()
     {
-        PopupOpenAnimation(GetObject((int)GameObjects.ContentObject));
+        Managers.Game.OnResourcesChagned -= Refresh;
+        Managers.Game.OnResourcesChagned += Refresh;
 
+        PopupOpenAnimation(GetObject((int)GameObjects.ContentObject));
         _characterShopPopup.gameObject.SetActive(true);
         _equipmentShopPopup.gameObject.SetActive(false);
+    }
+
+    private void OnDisable()
+    {
+        Managers.Game.OnResourcesChagned -= Refresh;
+    }
+
+    private void OnDestroy()
+    {
+        Managers.Game.OnResourcesChagned -= Refresh;
     }
     private void Awake()
     {

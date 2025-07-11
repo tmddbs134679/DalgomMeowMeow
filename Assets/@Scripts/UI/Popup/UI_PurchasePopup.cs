@@ -29,7 +29,7 @@ public class UI_PurchasePopup : UI_Popup
     }
     #endregion
 
-
+    Define.EExchangeType _type;
 
     private void OnEnable()
     {
@@ -59,6 +59,23 @@ public class UI_PurchasePopup : UI_Popup
 
     private void OnClickPurchaseButton()
     {
+
+        switch (_type)
+        {
+            case Define.EExchangeType.Gold:
+                Managers.Game.Gold += 1000;
+                Managers.Game.Dia -= 100;
+                break;
+            case Define.EExchangeType.Ticket:
+                Managers.Game.Ticket += 1;
+                Managers.Game.Dia -= 100;
+                break;
+            case Define.EExchangeType.Dia:
+                Managers.Game.Dia += 70;
+                Managers.Game.Gold -= 1000;
+                break;
+        }
+
         gameObject.SetActive(false);
     }
 
@@ -69,6 +86,8 @@ public class UI_PurchasePopup : UI_Popup
 
     public void SetInfo(Define.EExchangeType type) 
     {
+        _type = type;
+
         switch (type)
         {
             case Define.EExchangeType.Gold:
