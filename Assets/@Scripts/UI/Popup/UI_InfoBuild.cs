@@ -31,7 +31,7 @@ public class UI_InfoBuild : UI_Popup
         EquipmentImage,
     }
     #endregion
-  private BuildingBase _targetBuilding;
+    private BuildingBase _targetBuilding;
     private void Awake()
     {
         Init();

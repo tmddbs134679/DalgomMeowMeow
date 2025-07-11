@@ -53,8 +53,9 @@ sfgwegeg,
 
     private void OnClickPopupButton()
     {
-      UI_BuildingPopup popup =  Managers.UI.ShowPopupUI<UI_BuildingPopup>();
-                popup.SetTarget(_cookingBuilding);
+        UI_BuildingPopup popup = Managers.UI.ShowPopupUI<UI_BuildingPopup>();
+        popup.SetTarget(_cookingBuilding);
+        popup.SetPivot(_tempObj);
     }
     public void SetTarget(GameObject go)
     {
