@@ -120,6 +120,17 @@ MonoBehaviour:
   - Title: "\uAC74\uC124 \uBC84\uD2BC \uB204\uB974\uAE30"
     Description: "\uAC74\uC124 \uBC84\uD2BC\uC744 \uB204\uB974\uC138\uC694."
     HighlightTarget: {fileID: 0}
+    HighlightTargetKey: BuildButton
+    OnStart:
+      m_PersistentCalls:
+        m_Calls: []
+    OnComplete:
+      m_PersistentCalls:
+        m_Calls: []
+  - Title: "\uB3C4\uB85C \uAC74\uC124 \uBC84\uD2BC \uB204\uB974\uAE30"
+    Description: "\uB3C4\uB85C \uBC84\uD2BC\uC744 \uB204\uB974\uC138\uC694"
+    HighlightTarget: {fileID: 0}
+    HighlightTargetKey: RoadButton
     OnStart:
       m_PersistentCalls:
         m_Calls: []
@@ -129,6 +140,7 @@ MonoBehaviour:
   - Title: "\uB3C4\uB85C\uAC74\uC124"
     Description: "\uB3C4\uB85C\uB97C \uAC74\uC124 \uD558\uC138\uC694."
     HighlightTarget: {fileID: 0}
+    HighlightTargetKey: 
     OnStart:
       m_PersistentCalls:
         m_Calls: []
@@ -138,6 +150,7 @@ MonoBehaviour:
   - Title: "\uC694\uB9AC\uAC74\uBB3C\uAC74\uC124"
     Description: "\uC694\uB9AC\uAC74\uBB3C\uC744 \uAC74\uC124 \uD558\uC138\uC694."
     HighlightTarget: {fileID: 0}
+    HighlightTargetKey: 
     OnStart:
       m_PersistentCalls:
         m_Calls: []
@@ -147,6 +160,7 @@ MonoBehaviour:
   - Title: "\uCD94\uAC00\uC608"
     Description: "\uCD94\uAC00\uC608\uC815."
     HighlightTarget: {fileID: 0}
+    HighlightTargetKey: 
     OnStart:
       m_PersistentCalls:
         m_Calls: []
@@ -155,3 +169,4 @@ MonoBehaviour:
         m_Calls: []
   UI: {fileID: 0}
   highlighter: {fileID: 0}
+  dimOverlay: {fileID: 0}

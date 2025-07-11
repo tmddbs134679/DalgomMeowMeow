@@ -11,6 +11,7 @@ public class TutorialStep
     public string Title;
     public string Description;
     public GameObject HighlightTarget;
+    public string HighlightTargetKey;
     public UnityEvent OnStart;
     public UnityEvent OnComplete;
 }
@@ -23,6 +24,7 @@ public class TutorialManager : MonoBehaviour
     
     private int currentStep = 0;
     public bool IsRunning { get; private set; }
+    private Dictionary<string, GameObject> _registeredTargets = new();
 
     public static TutorialManager Instance;
 
@@ -62,24 +64,28 @@ public class TutorialManager : MonoBehaviour
 
     private void ActivateStep(TutorialStep step)
     {
+        StartCoroutine(CoActivateStep(step));
+    }
 
+    private IEnumerator CoActivateStep(TutorialStep step)
+    {
         step.OnStart?.Invoke();
-            
-        // ⬇️ 설명 텍스트 보여주기
-        UI.Init(); 
-        UI.Show(step.Title, step.Description); 
-        
-        if (step.Title == "건설 버튼 누르기" && step.HighlightTarget == null)
+
+        UI.Init();
+        UI.Show(step.Title, step.Description);
+
+        GameObject highlightTarget = step.HighlightTarget;
+
+        // 등록될 때까지 대기
+        if (highlightTarget == null && !string.IsNullOrEmpty(step.HighlightTargetKey))
         {
-            GameObject buildBtn = GameObject.Find("BuildButton");
-            if (buildBtn != null)
-                step.HighlightTarget = buildBtn;
+            yield return new WaitUntil(() => _registeredTargets.ContainsKey(step.HighlightTargetKey));
+            highlightTarget = _registeredTargets[step.HighlightTargetKey];
         }
 
-        // 🔸 강조 타겟 설정
-        if (step.HighlightTarget != null)
+        if (highlightTarget != null)
         {
-            highlighter.Follow(step.HighlightTarget.GetComponent<RectTransform>());
+            highlighter.Follow(highlightTarget.GetComponent<RectTransform>());
             highlighter.gameObject.SetActive(true);
             dimOverlay?.gameObject.SetActive(true);
         }
@@ -99,5 +105,11 @@ public class TutorialManager : MonoBehaviour
 
     public bool IsStepActive(string title) =>
         IsRunning && Steps[currentStep].Title == title;
+    
+    public void RegisterTarget(string key, GameObject go)
+    {
+        if (!_registeredTargets.ContainsKey(key))
+            _registeredTargets[key] = go;
+    }
 
 }

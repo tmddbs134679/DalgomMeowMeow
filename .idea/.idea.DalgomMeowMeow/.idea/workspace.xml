@@ -6,11 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="f48e1cac-c49d-4f22-9686-b0c375630046" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DalgomMeowMeow/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DalgomMeowMeow/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Resources/UI/Popup/UI_Tutorial.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Resources/UI/Popup/UI_Tutorial.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Prefabs/Tutorial/Tutorial.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Prefabs/Tutorial/Tutorial.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Resources/UI/Popup/UI_BuildGroup/UI_BuildPopup.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Resources/UI/Popup/UI_BuildGroup/UI_BuildPopup.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Resources/UI/UI_GameScene.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Resources/UI/UI_GameScene.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/@Scenes/GameScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scenes/GameScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Contents/Tutorial/FogofWar.shader" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Contents/Tutorial/FogofWar.shader" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Contents/Tutorial/StencilHoleMask.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Contents/Tutorial/StencilHoleMask.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Managers/Contents/TutorialManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Managers/Contents/TutorialManager.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,6 +26,7 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Contents/Building/SlotMachineBuilding.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Contents/Quest/Quest.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Contents/Tutorial/TutorialRegisterTarget.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Data/Quest/QuestDataSO.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Data/Quest/QuestSaveTester.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Data/Quest/RewardData.cs" root0="FORCE_HIGHLIGHTING" />
@@ -57,6 +58,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/17d9ce77f27a4bd2afb5ba32c9bea97646ac00/ec/f9f96a25/ThrowHelper.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/17d9ce77f27a4bd2afb5ba32c9bea97646ac00/ff/708fd2b5/Enum.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/1a33381171f2411d8ffae255a64550dd3600/6a/15f72aa7/JsonUtility.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3789ee403a53437cbb6b5d9ab6311f51573620/e4/91da590a/Dictionary`2.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5a41d6b7189842eca409fd0b1c3e3dcf17bf78/bf/056add9c/Action.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5e6ebaa7d75c4d5399dc81ecead6b43f952600/24/b7fa3503/EditorApplication.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5e6ebaa7d75c4d5399dc81ecead6b43f952600/93/269da1a3/PopupWindowWithoutFocus.cs" root0="FORCE_HIGHLIGHTING" />
@@ -64,6 +66,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/d26551307ee24906965335845380d4a12d400/c1/9dbf8cf1/GUIUtility.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/d26551307ee24906965335845380d4a12d400/ca/0c4ea7ef/Event.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f7237cf7abef49bfbb552d7eb076e422174200/0b/e59a2113/Object.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f7237cf7abef49bfbb552d7eb076e422174200/33/c347f092/SetupCoroutine.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f7237cf7abef49bfbb552d7eb076e422174200/58/8d6d7d7f/Transform.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f7237cf7abef49bfbb552d7eb076e422174200/65/bc15d820/UnitySynchronizationContext.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f7237cf7abef49bfbb552d7eb076e422174200/aa/17520007/Debug.cs" root0="FORCE_HIGHLIGHTING" />
