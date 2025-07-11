@@ -13,13 +13,14 @@ public class AdsManager : IUnityAdsInitializationListener, IUnityAdsLoadListener
 
     public void Init()  //반드시 먼저 실행시켜야됨
     {
-        
+        /*
 #if UNITY_ANDROID
         _gameId = androidGameId;
 #elif UNITY_IOS
         _gameId = "ios게임아이디";
 #endif
         Advertisement.Initialize(_gameId, testMode, this);  //추후에 testMode를 false로 변경하여 실제 광고로 전환 가능
+        */
     }
     // 초기화 콜백
     public void OnInitializationComplete()
