@@ -63,7 +63,7 @@ public class UI_EquipmentShopPopup : UI_Popup
     private void OnClickOneTimeGachaButon()
     {
 
-        if(Managers.Game.Ticket > 1)
+        if(Managers.Game.Ticket >= 1)
         {
             Managers.Game.RemoveTicket(1);
             DoGacha();
@@ -76,7 +76,7 @@ public class UI_EquipmentShopPopup : UI_Popup
 
     private void OnClickFiveTimeGachaButon()
     {
-        if (Managers.Game.Ticket > 5)
+        if (Managers.Game.Ticket >= 5)
         {
             Managers.Game.RemoveTicket(5);
             DoGacha(5);

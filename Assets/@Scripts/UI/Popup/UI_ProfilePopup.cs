@@ -14,7 +14,9 @@ public class UI_ProfilePopup : UI_Popup
     enum GameObjects
     {
         ContentObject,
+        EquippedObject,
         EquippedGroupObject,
+        InformationObject
     }
 
     enum Buttons
@@ -27,11 +29,26 @@ public class UI_ProfilePopup : UI_Popup
     enum Texts
     {
         CharacterNameText,
+        HPText,
+        AtkText,
+        SpeedText,
+        SkillText
+    }
+
+    enum Images
+    {
+        SkillImage
     }
 
     enum InputFields
     {
         InputFieldText,
+    }
+
+    enum Toggles
+    {
+        EquipToggle,
+        InfoToggle
     }
 
     #endregion
@@ -54,6 +71,11 @@ public class UI_ProfilePopup : UI_Popup
     private void OnEnable()
     {
         PopupOpenAnimation(GetObject((int)GameObjects.ContentObject));
+
+        GetObject((int)GameObjects.InformationObject).gameObject.SetActive(false);
+        GetObject((int)GameObjects.EquippedObject).gameObject.SetActive(true);
+
+        GetToggle((int)Toggles.EquipToggle).isOn = true;
     }
 
     public override bool Init()
@@ -64,6 +86,8 @@ public class UI_ProfilePopup : UI_Popup
         BindObject(typeof(GameObjects));
         BindButton(typeof(Buttons));
         BindText(typeof(Texts));
+        BindImage(typeof(Images));
+        BindToggle(typeof(Toggles));
         BindInputField(typeof(InputFields));
 
 
@@ -72,14 +96,30 @@ public class UI_ProfilePopup : UI_Popup
         GetButton((int)Buttons.NextCharacterButton).gameObject.BindEvent(() => OnClickChangeButton(-1));
         GetInputField((int)InputFields.InputFieldText).onEndEdit.AddListener(OnInputFiled);
 
+        GetToggle((int)Toggles.EquipToggle).gameObject.BindEvent(OnEquipToggleButton);
+        GetToggle((int)Toggles.InfoToggle).gameObject.BindEvent(OnInfoToggleButton);
 
-        GetText((int)Texts.CharacterNameText).gameObject.BindEvent(OnClickName);
+ 
+
+       GetText((int)Texts.CharacterNameText).gameObject.BindEvent(OnClickName);
         GetInputField((int)InputFields.InputFieldText).gameObject.SetActive(false);
         _character = Managers.Game.Characters[0];
 
         //Refresh();
 
         return true;
+    }
+
+    private void OnInfoToggleButton()
+    {
+        GetObject((int)GameObjects.InformationObject).gameObject.SetActive(true);
+        GetObject((int)GameObjects.EquippedObject).gameObject.SetActive(false);
+    }
+
+    private void OnEquipToggleButton()
+    {
+        GetObject((int)GameObjects.InformationObject).gameObject.SetActive(false);
+        GetObject((int)GameObjects.EquippedObject).gameObject.SetActive(true);
     }
 
     private void OnInputFiled(string name)
@@ -162,6 +202,14 @@ public class UI_ProfilePopup : UI_Popup
             else
                 item.SetInfo();
         }
+
+
+
+        GetText((int)Texts.HPText).text = _character.Hp.ToString();
+        GetText((int)Texts.AtkText).text = _character.Atk.ToString();
+        GetText((int)Texts.SpeedText).text = _character.MoveSpeed.ToString();
+        GetText((int)Texts.SkillText).text = Managers.Data.SkillDataDic[_character.Data.SkillID].Description;
+        GetImage((int)Images.SkillImage).sprite = Managers.Resource.Load<Sprite>(character.Data.SkillID.ToString());
 
         Refresh();
     }
