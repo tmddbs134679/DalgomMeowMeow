@@ -19,6 +19,7 @@ using Random = System.Random;
 public class GameData
 {
     public float Gold = 0;
+    public int Dia = 0;
 
     //public List <캐릭터들>
 
@@ -64,6 +65,18 @@ public class GameManager
             OnResourcesChagned?.Invoke();
         }
     }
+
+    public int Dia
+    {
+        get { return _gameData.Dia; }
+        set
+        {
+            _gameData.Dia = value;
+            SaveGame();
+            OnResourcesChagned?.Invoke();
+        }
+    }
+
     public List<Character> Characters
     {
         get { return _gameData.CharacterList; }
