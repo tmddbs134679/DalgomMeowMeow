@@ -7,7 +7,6 @@ using UnityEngine.AI;
 public class BattleCharacter : BaseObject
 {
 
-    [SerializeField] private CharacterStatSo _data; // 캐릭터 스탯 데이터
     [SerializeField] private SkillLibrary _skillLibrary; // 스킬 라이브러리
     [SerializeField] private ParticleSystem _heal;
     [SerializeField] private Color _damageColor = Color.red;
@@ -17,8 +16,6 @@ public class BattleCharacter : BaseObject
     [SerializeField] protected Vector3 _originalPosition; // 원래 위치 저장
     
     
-
-
 
     public NavMeshAgent Agent { get; private set; } // NavMeshAgent 컴포넌트
     public Animator Animator; // 애니메이터 컴포넌트
@@ -32,13 +29,16 @@ public class BattleCharacter : BaseObject
     public GameObject damageTextPrefab; // 피격 시 데미지 텍스트 프리팹
 
     #region Stats
-    public float AttackDamage = 10f; // 공격력
+    public float AttackDamage; // 공격력
+    public string SkillID;
+    public float MaxHP;
+    public float MoveSpeed; // 이동 속도
+
+
     public float AttackDelay = 1f; // 공격 딜레이 (초 단위)
-    public float MaxHP = 100f;
-    public float MoveSpeed = 3.5f; // 이동 속도
     public float AttackRange = 1.5f;
     public bool Invincible = false; // 무적 상태 여부
-    public string SkillID;
+    
     public int Skillnum;
     public float SkillCooldown; // 스킬 쿨타임 (초 단위)
     #endregion
@@ -104,12 +104,12 @@ public class BattleCharacter : BaseObject
         _skillLibrary = GetComponentInParent<SkillLibrary>();
         ObjectType = Define.EObjectType.Enemy; // 객체 타입 설정
         Agent = GetComponent<NavMeshAgent>();
-        Health = MaxHP;
         _heal = GetComponentInChildren<ParticleSystem>();
     }
 
     protected virtual void Start()
     {
+        Health = MaxHP;
         _originalPosition = transform.localPosition;
         Agent.speed = MoveSpeed; // NavMeshAgent의 이동 속도 설정
         Agent.stoppingDistance = AttackRange; // 공격 범위 내에서 멈추도록 설정

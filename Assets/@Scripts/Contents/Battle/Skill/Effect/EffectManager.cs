@@ -26,6 +26,7 @@ public class EffectManager : MonoBehaviour
     #region PunchEffect
     public IEnumerator Punch(Vector3 pos)
     {
+        yield return new WaitForSecondsRealtime(1.5f); // 0.5초 대기
         PunchEffectPrefab.transform.position = pos + Vector3.up*5;
         PunchEffectPrefab.SetActive(true);
         yield return StartCoroutine(MoveDown(PunchEffectPrefab));

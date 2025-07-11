@@ -4,9 +4,6 @@ using UnityEngine.UI;
 
 public class SkillSetting : MonoBehaviour
 {
-    public SkillIconDB iconDB;
-    private Dictionary<string, Sprite> _iconDict;
-
     public Image skill_1; // 스킬 이미지
     public Image skill_1_CoolDown; // 스킬 쿨타임 이미지
     public BattleCharacter character_1;
@@ -18,17 +15,6 @@ public class SkillSetting : MonoBehaviour
     public Image skill_3; // 스킬 이미지
     public Image skill_3_CoolDown; // 스킬 쿨타임 이미지
     public BattleCharacter character_3;
-
-
-    private void Awake()
-    {
-        _iconDict = new Dictionary<string, Sprite>();
-        foreach (var data in iconDB.iconList)
-        {
-            if (!_iconDict.ContainsKey(data.id))
-                _iconDict.Add(data.id, data.icon);
-        }
-    }
 
     private void Start()
     {
@@ -43,14 +29,9 @@ public class SkillSetting : MonoBehaviour
 
     public void SetSkillIcon(string id, Image img, Image cooldownImg)
     {
-        if (_iconDict.TryGetValue(id, out var icon))
-        {
-            img.sprite = icon;
-            cooldownImg.sprite = icon;
-            cooldownImg.color = new Color(0, 0, 0, 0.5f); // 쿨타임 이미지 투명도 설정
-            cooldownImg.gameObject.SetActive(false); // 쿨타임 이미지 비활성화
-        }
-        else
-            Debug.LogWarning($"❌ 아이콘 없음: {id}");
+        img.sprite = Managers.Resource.Load<Sprite>(id);
+        cooldownImg.sprite = Managers.Resource.Load<Sprite>(id);
+        cooldownImg.color = new Color(0, 0, 0, 0.5f); // 쿨타임 이미지 투명도 설정
+        cooldownImg.gameObject.SetActive(false); // 쿨타임 이미지 비활성화
     }
 }

@@ -1,4 +1,4 @@
-﻿using Data;
+using Data;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -9,6 +9,7 @@ public class TeamManager : MonoBehaviour
     [SerializeField] private SkinnedMeshRenderer[] sourceRenderers;
     [SerializeField] private Material[] sourceMaterials;
     [SerializeField] private CreatureData[] _creatureData; // 캐릭터 데이터
+    [SerializeField] private BattleCharacter[] _battleCharacters; // 전투 캐릭터 배열
 
     public string[] CatDataKey;     // 선택된 고양이 어드레서블 키(프리펩 이름)ID
     public Material[] materials;
@@ -19,13 +20,23 @@ public class TeamManager : MonoBehaviour
 
     private void Awake()
     {
+        _battleCharacters = GetComponentsInChildren<BattleCharacter>();
         _characterRenderer = GetComponentsInChildren<SkinnedMeshRenderer>();
         _creatureData = new CreatureData[3];
+        for (int k = 0; k < _creatureData.Length; k++)
+            CatDataKey[k] = StageDataManager.Instance.PlayerCharacter[k].DataId;
+
+        for (int k = 0; k < _battleCharacters.Length; k++)
+        {
+            _battleCharacters[k].AttackDamage = StageDataManager.Instance.PlayerCharacter[k].Atk;
+            _battleCharacters[k].MaxHP = StageDataManager.Instance.PlayerCharacter[k].Hp;
+            _battleCharacters[k].MoveSpeed = StageDataManager.Instance.PlayerCharacter[k].MoveSpeed;
+            _battleCharacters[k].SkillID = StageDataManager.Instance.PlayerCharacter[k].Data.SkillIcon.Replace(".sprite", "");
+        }
     }
 
     private void Start()
     {
-        
         for (int i = 0; i < _characterRenderer.Length; i++)
         {
             _creatureData[i] = Managers.Data.CreatureDic[CatDataKey[i]];    //id별 데이터 등록
@@ -35,6 +46,8 @@ public class TeamManager : MonoBehaviour
         {
             LoadPrefab(i, _creatureData[i].PrefabLabel);//임시로 달아준 값 데이터 넘겨받을것
         }
+
+        
     }
 
     public void LoadPrefab(int k, string catPrefabKey)

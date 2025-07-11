@@ -20,7 +20,7 @@ public class PlayerCharacter : BattleCharacter
         base.Start();
         _battleManager = GetComponentInParent<BattleManager>();
         _originalPosition = transform.localPosition;
-        string numberPart = SkillID.Substring(1); // 시작하면 숫자 파싱
+        string numberPart = SkillID.Replace("K","").Replace(".sprite",""); // 시작하면 숫자 파싱
         Skillnum = int.Parse(numberPart);
 
     }
