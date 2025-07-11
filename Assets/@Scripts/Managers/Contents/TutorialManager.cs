@@ -32,11 +32,23 @@ public class TutorialManager : MonoBehaviour
 
     private void Start()
     {
-        UI = Managers.UI.ShowPopupUI<UI_Tutorial>();
         
+        if (PlayerPrefs.GetInt("Tutorial_Completed", 0) == 1)
+            return;
+        
+        UI = Managers.UI.ShowPopupUI<UI_Tutorial>();
         highlighter = UI.GetComponentInChildren<Highlighter>(true);
         dimOverlay = UI.transform.Find("DimOverlay")?.GetComponent<Image>(); // 찾는 방식 주의
         StartTutorial();
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            ResetTutorialProgress();
+            Debug.Log("튜토리얼 진행 상태 초기화됨");
+        }
     }
 
     public void StartTutorial()
@@ -106,6 +118,9 @@ public class TutorialManager : MonoBehaviour
         dimOverlay?.gameObject.SetActive(false);
         UI?.gameObject.SetActive(false);
         IsRunning = false;
+        
+        PlayerPrefs.SetInt("Tutorial_Completed", 1);
+        PlayerPrefs.Save();
     }
 
     public bool IsStepActive(string title) =>
@@ -131,5 +146,19 @@ public class TutorialManager : MonoBehaviour
             _registeredTargets[key] = go;
         }
     }
+    public void ResetTutorialProgress()
+    {
+        PlayerPrefs.DeleteKey("Tutorial_Completed");
+        PlayerPrefs.Save();
+    }
+    
+    public void SkipTutorial()
+    {
+        foreach (var step in Steps)
+        {
+            step.OnComplete?.Invoke();
+        }
 
+        EndTutorial();
+    }
 }

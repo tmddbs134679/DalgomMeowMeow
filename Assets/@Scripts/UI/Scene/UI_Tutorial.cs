@@ -13,6 +13,7 @@ public class UI_Tutorial : UI_Popup
 
 
     enum Texts { DescriptionText }
+    enum Buttons { SkipButton,  }
     
     
     public override bool Init()
@@ -20,8 +21,10 @@ public class UI_Tutorial : UI_Popup
         if (!base.Init()) return false;
 
         BindObject(typeof(GameObjects));
-        
         BindText(typeof(Texts));
+        BindButton(typeof(Buttons));
+        
+        GetButton((int)Buttons.SkipButton).gameObject.BindEvent(OnClickSkip);
         
         SetInfo();
         return true;
@@ -30,6 +33,12 @@ public class UI_Tutorial : UI_Popup
     private void SetInfo()
     {
         GetText((int)Texts.DescriptionText).text = "description";
+        
+    }
+
+    private void OnClickSkip()
+    {
+        TutorialManager.Instance?.SkipTutorial();
     }
 
     public void Show(string title, string description)
