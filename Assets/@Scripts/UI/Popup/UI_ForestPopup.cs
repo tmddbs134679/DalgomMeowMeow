@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -173,14 +174,11 @@ public class UI_ForestPopup : UI_Popup
 
             if (character == null) continue;
 
-            Image IconLabel = GetImage((int)Images.Select1 + i);
-            Image skillIcon = GetImage((int)Images.SkillIcon1 + i);
-            //Text skillText = GetText((int)Texts.SkillText1 + i);  //아마 수정해야할듯
-            //Text skillName = GetText((int)Texts.SkillName1 + i);
-            IconLabel.sprite = Managers.Resource.Load<Sprite>(character.Data.IconLabel);
-            skillIcon.sprite = Managers.Resource.Load<Sprite>(character.Data.SkillIcon.ToString());
-            //skillText.text = Managers.Resource.Load<TextAsset>(character.Data.SkillText.ToString()).text;    // 요것도
-            //skillName.text = Managers.Resource.Load<TextAsset>(character.Data.SkillName.ToString()).text;
+            GetImage((int)Images.Select1 + i).sprite = Managers.Resource.Load<Sprite>(character.Data.IconLabel);
+            GetImage((int)Images.SkillIcon1 + i).sprite = Managers.Resource.Load<Sprite>(character.Data.SkillID.ToString());
+            GetText((int)Texts.SkillText1 + i).text = Managers.Data.SkillDataDic[character.Data.SkillID].Name;
+            GetText((int)Texts.SkillName1 + i).text = Managers.Data.SkillDataDic[character.Data.SkillID].Description;
+
 
             GetButton((int)Buttons.Select1 + i).gameObject.BindEvent(() =>
                 OnClickDelectSelectCharacter(capturedCharacter)
