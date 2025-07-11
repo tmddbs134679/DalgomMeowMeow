@@ -88,6 +88,8 @@ public class TutorialManager : MonoBehaviour
             highlighter.Follow(highlightTarget.GetComponent<RectTransform>());
             highlighter.gameObject.SetActive(true);
             dimOverlay?.gameObject.SetActive(true);
+            dimOverlay?.transform.SetAsLastSibling();
+            highlighter.transform.SetAsLastSibling();
         }
         else
         {
@@ -108,8 +110,23 @@ public class TutorialManager : MonoBehaviour
     
     public void RegisterTarget(string key, GameObject go)
     {
-        if (!_registeredTargets.ContainsKey(key))
+        if (string.IsNullOrEmpty(key) || go == null) return;
+
+        if (_registeredTargets.ContainsKey(key))
+        {
+            if (_registeredTargets[key] == null)
+            {
+                _registeredTargets[key] = go; // 파괴된 오브젝트 대체
+            }
+            else
+            {
+                Debug.LogWarning($"[Tutorial] 이미 등록된 key: {key} / object: {_registeredTargets[key].name}");
+            }
+        }
+        else
+        {
             _registeredTargets[key] = go;
+        }
     }
 
 }

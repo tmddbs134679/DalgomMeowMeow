@@ -528,6 +528,8 @@ GameObject:
   - component: {fileID: 7289413762581758579}
   - component: {fileID: 1435392101501729105}
   - component: {fileID: 106473853716601926}
+  - component: {fileID: 8978873361152860862}
+  - component: {fileID: 3810045171287670938}
   m_Layer: 5
   m_Name: CancelButton
   m_TagString: Untagged
@@ -637,6 +639,32 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &8978873361152860862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6888438338549957823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa0ab7986e6129943926702e55b1d12d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RegisterKey: 
+--- !u!114 &3810045171287670938
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6888438338549957823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb411d2f7c8f42447965740513ffa9d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  roadButton: {fileID: 0}
 --- !u!1 &7332437450512237692
 GameObject:
   m_ObjectHideFlags: 0

@@ -3,20 +3,20 @@ using UnityEngine.UI;
 
 public class CookButtonTrigger : MonoBehaviour
 {
-    [SerializeField] private Button roadButton;
+    [SerializeField] private Button cookButton;
 
     private void Awake()
     {
-        if (roadButton == null)
-            roadButton = GetComponent<Button>();
+        if (cookButton == null)
+            cookButton = GetComponent<Button>();
 
-        if (roadButton == null)
+        if (cookButton == null)
         {
             Debug.LogError("cookButton not found!");
             return;
         }
 
-        roadButton.onClick.AddListener(OnClick);
+        cookButton.onClick.AddListener(OnClick);
     }
 
     private void OnClick()
