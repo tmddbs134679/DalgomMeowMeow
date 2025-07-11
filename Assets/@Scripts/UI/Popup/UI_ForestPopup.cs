@@ -26,6 +26,12 @@ public class UI_ForestPopup : UI_Popup
     enum Texts 
     {
         ForestTitleText,
+        SkillText1,
+        SkillText2,
+        SkillText3,
+        SkillName1,
+        SkillName2,
+        SkillName3,
     }
 
     enum Images
@@ -33,6 +39,9 @@ public class UI_ForestPopup : UI_Popup
         Select1,
         Select2,
         Select3,
+        SkillIcon1,
+        SkillIcon2,
+        SkillIcon3,
         FirstEnemy,
         SecondEnemy,
         ThirdEnemy,
@@ -108,7 +117,7 @@ public class UI_ForestPopup : UI_Popup
                 break;
         }
     }
-
+    #region 캐릭터 정보 가져오기 및 삭제
 
     public void GetCharacterInfo()
     {
@@ -151,10 +160,12 @@ public class UI_ForestPopup : UI_Popup
         for (int i = 0; i < 3; i++)
         {
             GetImage((int)Images.Select1 + i).sprite = null;
+            GetImage((int)Images.SkillIcon1 + i).sprite = null;
             GetButton((int)Buttons.Select1 + i).gameObject.BindEvent(() => { });
+            GetText((int)Texts.SkillText1 + i).text = string.Empty; 
         }
 
-        // 2) 리스트 순서대로 다시 채우기
+        // 2) 선택된 캐릭터 정보 업데이트
         for (int i = 0; i < 3; i++)
         {
             Character character = _selectedCharacters[i];
@@ -162,14 +173,24 @@ public class UI_ForestPopup : UI_Popup
 
             if (character == null) continue;
 
-            Image slot = GetImage((int)Images.Select1 + i);
-            slot.sprite = Managers.Resource.Load<Sprite>(character.Data.IconLabel);
+            Image IconLabel = GetImage((int)Images.Select1 + i);
+            Image skillIcon = GetImage((int)Images.SkillIcon1 + i);
+            //Text skillText = GetText((int)Texts.SkillText1 + i);  //아마 수정해야할듯
+            //Text skillName = GetText((int)Texts.SkillName1 + i);
+            IconLabel.sprite = Managers.Resource.Load<Sprite>(character.Data.IconLabel);
+            skillIcon.sprite = Managers.Resource.Load<Sprite>(character.Data.SkillIcon.ToString());
+            //skillText.text = Managers.Resource.Load<TextAsset>(character.Data.SkillText.ToString()).text;    // 요것도
+            //skillName.text = Managers.Resource.Load<TextAsset>(character.Data.SkillName.ToString()).text;
 
             GetButton((int)Buttons.Select1 + i).gameObject.BindEvent(() =>
                 OnClickDelectSelectCharacter(capturedCharacter)
             );
+
         }
     }
+
+    #endregion 
+
 
 
 }

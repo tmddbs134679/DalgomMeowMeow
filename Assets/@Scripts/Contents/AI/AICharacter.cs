@@ -152,7 +152,6 @@ public class AICharacter : BaseObject
 
         // TODO : FSM 등 상태 적용
         ControllerRegister();
-        
     }
     #endregion
 
