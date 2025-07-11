@@ -18,8 +18,6 @@ public class ForestRegion : BaseObject
     {
         LoadUnlockState();
         
-        if (IsUnlocked)
-            gameObject.SetActive(false);
         //UpdateVisual();
     }
 
@@ -31,7 +29,7 @@ public class ForestRegion : BaseObject
         IsUnlocked = true;
         SaveUnlockState();
         //UpdateVisual();
-        gameObject.SetActive(false);
+        BuildingPlacer.Instance.DeleteStage(gameObject);
     }
 
     private void UpdateVisual()

@@ -266,8 +266,9 @@ public class BuildingPlacer : MonoBehaviour
             };
         arrayBuildPos.RemoveBuildData(data);//기존에 있던 오브젝트 제거
         buildMap.Remove(new Vector2(data.posX,data.posZ));
+        stage.GetComponent<DraggableObject>().CurrentTileAndOBJ();
         ClearTile();//기존에 있던 오브젝트의 타일 제거
-        Destroy(OriginTempOBJ);
+        Destroy(stage);
         gridMap.LoadMap(); //맵갱신
         buildMap.LoadBuild(); //오브젝트 갱신
         surface.BuildNavMesh(); //네브매쉬 깔기
