@@ -33,6 +33,7 @@ public class TutorialManager : MonoBehaviour
     private void Start()
     {
         UI = Managers.UI.ShowPopupUI<UI_Tutorial>();
+        
         highlighter = UI.GetComponentInChildren<Highlighter>(true);
         dimOverlay = UI.transform.Find("DimOverlay")?.GetComponent<Image>(); // 찾는 방식 주의
         StartTutorial();
@@ -88,6 +89,7 @@ public class TutorialManager : MonoBehaviour
             highlighter.Follow(highlightTarget.GetComponent<RectTransform>());
             highlighter.gameObject.SetActive(true);
             dimOverlay?.gameObject.SetActive(true);
+            UI.gameObject.GetComponent<Canvas>().sortingOrder = 100;
             dimOverlay?.transform.SetAsLastSibling();
             highlighter.transform.SetAsLastSibling();
         }
