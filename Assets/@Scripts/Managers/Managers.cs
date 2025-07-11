@@ -30,16 +30,16 @@ public class Managers : MonoBehaviour
     AIManager _ai = new AIManager();
     //Edit
     DebugManager _debug = new DebugManager();
+    AdsManager _ads = new AdsManager();
 
     public static DataManager Data { get { return Instance?._data; } }
     public static ResourceManager Resource { get { return Instance?._resource; } }
     public static MySceneManager Scene { get { return Instance?._scene; } }
     public static UIManager UI { get { return Instance?._ui; } }
     public static AIManager AI { get { return Instance?._ai; } }
-
+    public static AdsManager Ads { get { return Instance?._ads; } }
     public static DebugManager Debug { get { return Instance?._debug; } }
     public static ObjectManager Object { get { return Instance?._object; } }
-
     public static PoolManager Pool { get { return Instance?._pool; } }
 
     [SerializeField] private DebugSettings debugSettingsSO;
@@ -61,7 +61,8 @@ public class Managers : MonoBehaviour
             DontDestroyOnLoad(go);
             s_instance = go.GetComponent<Managers>();
             s_instance._time = go.AddComponent<TimeManager>();
-          
+
+            Ads.Init();
         }
     }
 

@@ -12,6 +12,7 @@ public class StageDataManager : MonoBehaviour
     public int PendingGoldReward { get; private set; }
     public int PendingExpReward { get; private set; }
 
+    public Character[] PlayerCharacter; // 플레이어 캐릭터
     private void Awake()
     {
         if (Instance == null)

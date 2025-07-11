@@ -155,7 +155,7 @@ public class DataTransformer : EditorWindow
             cd.AtkRate = ConvertValue<float>(row[i++]);
             cd.MoveSpeedRate = ConvertValue<float>(row[i++]);
             cd.IconLabel = ConvertValue<string>(row[i++]);
-            cd.SkillTypeList = ConvertList<string>(row[i++]);
+            cd.SkillIcon = ConvertValue<string>(row[i++]);
             cd.WalkSpeed = ConvertValue<float>(row[i++]);
             loader.creatures.Add(cd);
         }

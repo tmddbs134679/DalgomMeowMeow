@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Advertisements;
 
-public class AdvertisementManager : IUnityAdsInitializationListener, IUnityAdsLoadListener, IUnityAdsShowListener
+public class AdsManager : IUnityAdsInitializationListener, IUnityAdsLoadListener, IUnityAdsShowListener
 {
     [SerializeField] private string androidGameId = "1234567"; // 실제 ID로 교체
     [SerializeField] private string interstitialAdUnitId = "Interstitial_Android";
@@ -13,7 +13,7 @@ public class AdvertisementManager : IUnityAdsInitializationListener, IUnityAdsLo
 
     private string _gameId;
 
-    public void Adinitialize()  //반드시 먼저 실행시켜야됨
+    public void Init()  //반드시 먼저 실행시켜야됨
     {
 #if UNITY_ANDROID
         _gameId = androidGameId;

@@ -26,7 +26,7 @@ namespace Data
         public float AtkRate;
         public float MoveSpeedRate;
         public string IconLabel;
-        public List<string> SkillTypeList;
+        public string SkillIcon;
         public float WalkSpeed;
 
     }

@@ -4,8 +4,6 @@ public class BattleManager : MonoBehaviour
 {
     [SerializeField] private TeamCameraController _teamCameraController;
     [SerializeField] private TeamController _teamController;
-    [SerializeField] private GameObject _titleBtn;
-    private BattleStageManager _currentstage;
     public int EnemyCount;
     public int PlayerCount;
     public bool Victory = false;
@@ -17,7 +15,6 @@ public class BattleManager : MonoBehaviour
         _enemyLayer = LayerMask.NameToLayer("Enemy");
         _playerLayer = LayerMask.NameToLayer("Player");
         _teamCameraController = GetComponentInChildren<TeamCameraController>();
-        _currentstage = GetComponentInParent<BattleStageManager>();
         _teamController = GetComponentInChildren<TeamController>();
 
         BattleCharacter[] allCharacters = GetComponentsInChildren<BattleCharacter>();
