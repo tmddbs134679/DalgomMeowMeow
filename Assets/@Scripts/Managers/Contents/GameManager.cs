@@ -20,6 +20,7 @@ public class GameData
 {
     public float Gold = 0;
     public int Dia = 0;
+    public int Ticket = 0;
 
     //public List <캐릭터들>
 
@@ -72,6 +73,17 @@ public class GameManager
         set
         {
             _gameData.Dia = value;
+            SaveGame();
+            OnResourcesChagned?.Invoke();
+        }
+    }
+
+    public int Ticket
+    {
+        get { return _gameData.Ticket; }
+        set
+        {
+            _gameData.Ticket = value;
             SaveGame();
             OnResourcesChagned?.Invoke();
         }
@@ -545,7 +557,7 @@ public class GameManager
     }
 
 
-    public static EEquipmentGrade GetRandomGrade(float[] prob)
+    public EEquipmentGrade GetRandomGrade(float[] prob)
     {
         float randomValue = UnityEngine.Random.value;
         if (randomValue < prob[(int)EEquipmentGrade.Common])
@@ -566,6 +578,13 @@ public class GameManager
         }
 
         return EEquipmentGrade.Common;
+    }
+
+
+    public void RemoveTicket(int count)
+    {
+        Ticket -= count;
+        SaveGame();
     }
 
 
