@@ -23,7 +23,6 @@ public class TeamController : MonoBehaviour
 
         if (_members.Count == 0)
         {
-            GameOver();
             return;  // 더 이상 진행하지 않고 함수 종료
         }
 
@@ -126,11 +125,5 @@ public class TeamController : MonoBehaviour
         {
             ReturnToFormation();
         }
-    }
-
-
-    public void GameOver()
-    {
-        Debug.Log("You Lose!");
     }
 }

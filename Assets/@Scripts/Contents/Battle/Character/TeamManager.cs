@@ -26,6 +26,7 @@ public class TeamManager : MonoBehaviour
         for (int k = 0; k < _creatureData.Length; k++)
             CatDataKey[k] = StageDataManager.Instance.PlayerCharacter[k].DataId;
 
+
         for (int k = 0; k < _battleCharacters.Length; k++)
         {
             _battleCharacters[k].AttackDamage = StageDataManager.Instance.PlayerCharacter[k].Atk;

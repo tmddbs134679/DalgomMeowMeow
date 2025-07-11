@@ -3,24 +3,11 @@ using UnityEngine;
 
 public class EffectManager : MonoBehaviour
 {
-    public static EffectManager Instance;
 
     public GameObject FireHandPrefab;
     public GameObject YellowShieldPrefab;
     public GameObject RainAreaPrefab;
     public GameObject PunchEffectPrefab;
-
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
 
 
     #region PunchEffect

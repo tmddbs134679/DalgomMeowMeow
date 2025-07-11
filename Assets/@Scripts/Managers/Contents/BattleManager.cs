@@ -7,6 +7,7 @@ public class BattleManager : MonoBehaviour
     public int EnemyCount;
     public int PlayerCount;
     public bool Victory = false;
+    public bool Lose = false;
     private int _enemyLayer;
     private int _playerLayer;
 
@@ -53,9 +54,11 @@ public class BattleManager : MonoBehaviour
             ForestBattleContext.IsVictory = true; //숲에 승리
         }
 
-        if(PlayerCount == 0)
+        if(PlayerCount == 0 && !Lose)
         {
-            //게임오버 로직
+            Lose = true;
+            Time.timeScale = 0f; //게임 일시정지
+            Managers.UI.ShowPopupUI<UI_Lose>();
         }
     }
     public void BackToGame()
