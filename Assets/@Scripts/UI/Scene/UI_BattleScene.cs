@@ -56,18 +56,21 @@ public class UI_BattleScene : UI_Scene
 
     public void OnClickSkill_1Button()
     {
+        if(_playerCharacter_1.IsDead) return;
         StartCoroutine(SkillCutScene()); // 스킬 컷씬 실행
         _playerCharacter_1.ActiveSkill(); // 플레이어 캐릭터 1의 첫 번째 스킬 활성화
         _skill_1.SkillActive(_playerCharacter_1.SkillCooldown); // 스킬 버튼 쿨타임 활성화
     }
     public void OnClickSkill_2Button()
     {
+        if (_playerCharacter_2.IsDead) return;
         StartCoroutine(SkillCutScene()); // 스킬 컷씬 실행
         _playerCharacter_2.ActiveSkill(); // 플레이어 캐릭터 2의 두 번째 스킬 활성화
         _skill_2.SkillActive(_playerCharacter_2.SkillCooldown); // 스킬 버튼 쿨타임 활성화
     }
     public void OnClickSkill_3Button()
     {
+        if (_playerCharacter_3.IsDead) return;
         StartCoroutine(SkillCutScene()); // 스킬 컷씬 실행
         _playerCharacter_3.ActiveSkill(); // 플레이어 캐릭터 3의 세 번째 스킬 활성화
         StartCoroutine(SkillCutScene()); // 스킬 컷씬 실행
