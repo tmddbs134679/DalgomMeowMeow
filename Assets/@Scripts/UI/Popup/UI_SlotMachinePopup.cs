@@ -46,6 +46,7 @@ public class UI_SlotMachinePopup : UI_Popup
         if (_isSpinning) yield break;
         _isSpinning = true;
 
+        Managers.Game.Gold -= 100;
         _finishedCount = 0;
         for (int i = 0; i < 3; i++)
         {
@@ -121,9 +122,15 @@ public class UI_SlotMachinePopup : UI_Popup
             if (match != null)
             {
                 if (match.RewardGold > 0)
+                {
                     rewardText = $" {a} x3 → +{match.RewardGold} Gold";
+                    Managers.Game.Gold += match.RewardGold;
+                }
                 else
+                {
                     rewardText = $" {a} x3 → {match.RewardGold} Gold";
+                     Managers.Game.Gold += match.RewardGold;
+                }
             }
         }
 
