@@ -257,14 +257,19 @@ public class BuildingPlacer : MonoBehaviour
         }
     }
 
-    public void DeleteStage()
+    public void DeleteStage(GameObject stage)
     {
-        BuildData temp = new BuildData
-        {
-            posX = _PreviewOBJ.transform.position.x,
-            posZ = _PreviewOBJ.transform.position.z,
-        };
-
-        
+        BuildData data= new BuildData
+            {
+                posX = stage.transform.position.x,
+                posZ = stage.transform.position.z,
+            };
+        arrayBuildPos.RemoveBuildData(data);//기존에 있던 오브젝트 제거
+        buildMap.Remove(new Vector2(data.posX,data.posZ));
+        ClearTile();//기존에 있던 오브젝트의 타일 제거
+        Destroy(OriginTempOBJ);
+        gridMap.LoadMap(); //맵갱신
+        buildMap.LoadBuild(); //오브젝트 갱신
+        surface.BuildNavMesh(); //네브매쉬 깔기
     }
 }
