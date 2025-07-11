@@ -272,4 +272,30 @@ namespace Data
     #endregion
 
 
+    #region EquipmentGacha
+
+    public class SkillData
+    {
+        public string DataId;
+        public string Name;
+        public string Description;
+        public float CoolTime;
+    }
+
+    [Serializable]
+    public class SkillDataDataLoader : ILoader<string, SkillData>
+    {
+        public List<SkillData> skills = new List<SkillData>();
+
+        public Dictionary<string, SkillData> MakeDict()
+        {
+            Dictionary<string, SkillData> dict = new Dictionary<string, SkillData>();
+            foreach (SkillData skill in skills)
+                dict.Add(skill.DataId, skill);
+            return dict;
+        }
+    }
+    #endregion
+
+
 }
