@@ -26,8 +26,7 @@ public class UI_GameScene : UI_Scene
         QuickButton,
         ShopButton,
         BuildButton,
-        EditPosButton,
-        BattleButton,
+        EditPosButton
     }
 
     enum Texts
@@ -58,8 +57,7 @@ public class UI_GameScene : UI_Scene
         _shopPopupUI.gameObject.SetActive(false);
 
         GetObject((int)GameObjects.StorageObject).GetComponent<HorizontalLayoutGroup>().spacing = UI_GROUP_SPACING;
-        GetButton((int)Buttons.BattleButton).gameObject.BindEvent(OnClickBattleButton);
-        GetButton((int)Buttons.BattleButton).GetOrAddComponent<UI_ButtonAnimation>();
+ 
         GetButton((int)Buttons.QuickButton).gameObject.BindEvent(OnClickQuickButton);
         GetButton((int)Buttons.QuickButton).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
         GetButton((int)Buttons.BuildButton).gameObject.BindEvent(OnClickBuildButton);
@@ -225,10 +223,7 @@ public class UI_GameScene : UI_Scene
     }
 
     #region Battle
-    private void OnClickBattleButton()
-    {
-        Managers.Scene.LoadScene(EScene.Test_Battle);
-    }
+
 
     #endregion
 

@@ -49,8 +49,6 @@ public class UI_BuildAction : UI_Popup
     }
     private void AcceptBuild()
     {
-
-
         if (BuildingPlacer.Instance.isLongPressAcceptBuild)
         {
             BuildingPlacer.Instance.AcceptLongPressBuild();
@@ -70,7 +68,11 @@ public class UI_BuildAction : UI_Popup
 
     private void RemoveBuild()
     {
-       if (BuildingPlacer.Instance.isLongPressAcceptBuild) BuildingPlacer.Instance.RemoveBuild();
+        if (BuildingPlacer.Instance.isLongPressAcceptBuild)
+        {
+                    BuildingPlacer.Instance.OnBuildingCancel?.Invoke();//UI끄기 이벤트
+            BuildingPlacer.Instance.RemoveBuild();
+        }
     }
     private void Update()
     {

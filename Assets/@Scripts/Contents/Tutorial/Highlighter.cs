@@ -2,12 +2,20 @@ using UnityEngine;
 
 public class Highlighter : MonoBehaviour
 {
-    public RectTransform HighlighterReact;
+    public RectTransform HighlighterRect; 
     private RectTransform target;
+    public RectTransform HoleMaskRect;    
+
+    public void Highlight(RectTransform target)
+    {
+        this.target = target;
+        UpdatePosition();
+        gameObject.SetActive(true);
+    }
 
     public void Follow(RectTransform targetTransform)
     {
-        target = targetTransform;
+        this.target = targetTransform;
         UpdatePosition();
         gameObject.SetActive(true);
     }
@@ -20,12 +28,22 @@ public class Highlighter : MonoBehaviour
 
     void UpdatePosition()
     {
-        HighlighterReact.position = target.position;
-        HighlighterReact.sizeDelta = target.sizeDelta + new Vector2(20, 20);
+        if (HoleMaskRect != null)
+        {
+            HoleMaskRect.position = target.position;
+            HoleMaskRect.sizeDelta = target.sizeDelta + new Vector2(20, 20);
+        }
+
+        if (HighlighterRect != null)
+        {
+            HighlighterRect.position = target.position;
+            HighlighterRect.sizeDelta = target.sizeDelta + new Vector2(20, 20);
+        }
     }
 
     public void Hide()
     {
         gameObject.SetActive(false);
+        target = null;
     }
 }
