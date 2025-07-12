@@ -102,8 +102,6 @@ public class TutorialManager : MonoBehaviour
             highlighter.gameObject.SetActive(true);
             dimOverlay?.gameObject.SetActive(true);
             UI.gameObject.GetComponent<Canvas>().sortingOrder = 100;
-            dimOverlay?.transform.SetAsLastSibling();
-            highlighter.transform.SetAsLastSibling();
         }
         else
         {

@@ -26,6 +26,7 @@ public class UI_Tutorial : UI_Popup
         
         GetButton((int)Buttons.SkipButton).gameObject.BindEvent(OnClickSkip);
         
+        
         SetInfo();
         return true;
     }
