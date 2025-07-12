@@ -295,5 +295,32 @@ namespace Data
     }
     #endregion
 
+    #region QuestData
 
+    public class QuestData
+    {
+        public string QuestId;
+        public string Title;
+        public EQuestType QuestType;
+        public EQuestConditionType QuestConditionType;
+        public ETargetType TargetType;
+        public int GoalCount;
+        public int Reward;
+        public string PreviousQuest;
+    }
+
+    [Serializable]
+    public class QuestDataLoader : ILoader<string, QuestData>
+    {
+        public List<QuestData> quests = new List<QuestData>();
+    
+        public Dictionary<string, QuestData> MakeDict()
+        {
+            Dictionary<string, QuestData> dict = new Dictionary<string, QuestData>();
+            foreach (QuestData quest in quests)
+                dict.Add(quest.QuestId, quest);
+            return dict;
+        }
+    }
+    #endregion
 }

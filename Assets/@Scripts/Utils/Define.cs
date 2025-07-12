@@ -158,6 +158,27 @@ public class Define
         Ticket,
         Dia
     }
+    
+    public enum EQuestType
+    {
+        None,
+        Daily,
+        Achivement
+    }
+    
+    public enum EQuestConditionType
+    {
+        None,
+        Collect,
+        Kill
+    }
+    public enum ETargetType
+    {
+        None,
+        Soup,
+        Build,
+        Farm
+    }
 
     public static readonly float[] COMMON_GACHA_GRADE = new float[]
 {

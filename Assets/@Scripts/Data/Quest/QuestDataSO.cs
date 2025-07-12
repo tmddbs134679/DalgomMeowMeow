@@ -2,7 +2,7 @@ using UnityEngine;
 
 public enum QuestType { Achievement, Daily }
 public enum QuestConditionType { Collect, Kill, Talk, AssignAnimal }
-public enum TargetType { Cat, Slime, Soup, Farm }
+public enum TargetType { Cat, Shark, Soup, Farm, Build }
 
 [CreateAssetMenu(fileName = "Quest", menuName = "Quest/QuestData")]
 public class QuestDataSO : ScriptableObject
