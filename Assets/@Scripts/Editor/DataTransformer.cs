@@ -27,6 +27,7 @@ public class DataTransformer : EditorWindow
         ParseMaterialData("Material");
         ParseEquipmentGacha("EquipmentGacha");
         ParseSkillData("Skill");
+        BuidingLevelData("BuildingLevel");
     }
 
     private static void ParseMaterialData(string filename)
@@ -333,7 +334,37 @@ public class DataTransformer : EditorWindow
         AssetDatabase.Refresh();
     }
 
-
+    private static void BuidingLevelData(string filename)
+    {
+        BuildingLevelDataLoader loader = new BuildingLevelDataLoader();
+    
+        #region ParseBuildingLevelData
+        string[] lines = File.ReadAllText($"{Application.dataPath}/@Resources/Data/Excel/{filename}Data.csv").Split("\n");
+    
+        for (int y = 1; y < lines.Length; y++)
+        {
+            string[] row = lines[y].Replace("\r", "").Split(',');
+            if (row.Length == 0)
+                continue;
+            if (string.IsNullOrEmpty(row[0]))
+                continue;
+    
+            int i = 0;
+    
+            BuildingLevelData buildingLevel = new BuildingLevelData();
+            buildingLevel.BuildingId = ConvertValue<string>(row[i++]);
+            buildingLevel.Level = ConvertValue<int>(row[i++]);
+            buildingLevel.UpgradeCost = ConvertValue<int>(row[i++]);
+            buildingLevel.ProducedFoodId = ConvertValue<string>(row[i++]);
+    
+            loader.levels.Add(buildingLevel);
+        }
+        #endregion
+    
+        string jsonStr = JsonConvert.SerializeObject(loader, Formatting.Indented);
+        File.WriteAllText($"{Application.dataPath}/@Resources/Data/JsonData/{filename}Data.json", jsonStr);
+        AssetDatabase.Refresh();
+    }
 
     public static T ConvertValue<T>(string value)
     {
