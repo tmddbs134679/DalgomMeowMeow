@@ -39,7 +39,7 @@ public class ArrayBuildPos : ScriptableObject
         }
     }
 
-   // public void SaveBuildLv
+    // public void SaveBuildLv
     public void ChangeBuildData(BuildData Curbuild, BuildData Fixbuild)
     {
         Curbuild.posX = Fixbuild.posX;
@@ -69,8 +69,8 @@ public class ArrayBuildPos : ScriptableObject
                 posZ = data.posZ,
                 buildingName = data.testBaseBuilding.name, // 오브젝트 자체의 이름만 저장
                 UnlockId = data.UnlockId,
-                UniqueId =data.UniqueId,
-                LV=data.LV,
+                UniqueId = data.UniqueId,
+                LV = data.LV,
             });
         }
 
@@ -85,6 +85,47 @@ public class ArrayBuildPos : ScriptableObject
     public void LoadMapData()
     {
         string path = $"{Application.dataPath}/@Resources/Map/MapData.json";
+
+        if (!File.Exists(path))
+        {
+            Debug.LogError("건물 데이터 파일이 없습니다!");
+            return;
+        }
+
+        string json = File.ReadAllText(path);
+        MapSaveData saveData = JsonConvert.DeserializeObject<MapSaveData>(json);
+
+        List<BuildData> buildDataList = new List<BuildData>();
+
+        foreach (var data in saveData.buildings)
+        {
+            string sopath = $"Assets/@Scripts/BuildMap/ScriptableOBJ/BuildSO/{data.buildingName}.asset";
+            if (!File.Exists(sopath))
+            {
+                Debug.LogError("건물 So 파일이 없습니다!");
+                return;
+            }
+            BaseBuildingSO so = AssetDatabase.LoadAssetAtPath<BaseBuildingSO>(sopath);
+            buildDataList.Add(new BuildData
+            {
+                posX = data.posX,
+                posZ = data.posZ,
+                testBaseBuilding = so,
+                UnlockId = data.UnlockId,
+                UniqueId = data.UniqueId,
+                LV = data.LV,
+            });
+        }
+        baseBuilding = buildDataList;
+        Debug.Log("건물 데이터 불러오기 완료!");
+    }
+#endif
+
+#if UNITY_EDITOR
+    //파일에서 건물데이터 불러오기
+    public void LoadProtoTypeMapData()
+    {
+        string path = $"{Application.dataPath}/@Resources/Map/BaseMapData.json";
 
         if (!File.Exists(path))
         {

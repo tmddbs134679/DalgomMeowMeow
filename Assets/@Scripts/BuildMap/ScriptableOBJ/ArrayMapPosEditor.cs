@@ -18,7 +18,7 @@ public class ArrayMapPosEditor : Editor
             map.InitializeMap(); // 원하는 너비/높이로 설정
         }
 
-                if (GUILayout.Button("데이터 저장"))
+        if (GUILayout.Button("데이터 저장"))
         {
             map.SaveMapTileData();
         }
@@ -26,6 +26,11 @@ public class ArrayMapPosEditor : Editor
         if (GUILayout.Button("데이터 불러오기"))
         {
             map.LoadMapTileData();
+        }
+        
+        if (GUILayout.Button("기초데이터 불러오기"))
+        {
+            map.LoadProtoTypeMapTileData();
         }
     }
 }

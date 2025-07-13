@@ -20,6 +20,12 @@ public class UI_BuildingPopup : UI_Popup
 
     private BuildingBase _targetBuilding;
     public GameObject target;
+    
+
+    float pivotX;
+float pivotY;
+    public Vector2 pivotScreenPos;
+
     public override bool Init()
     {
         if (!base.Init()) return false;
@@ -34,8 +40,42 @@ public class UI_BuildingPopup : UI_Popup
         GetButton((int)Buttons.UpgreadeButton).gameObject.BindEvent(UpgreadeButton);
 
         SetInfo();
-        Camera.main.transform.LookAt(target.transform);
-       // GetObject((int)GameObjects.Pivot).transform
+
+
+        //         Vector3 camForward = Camera.main.transform.forward;
+        //     Vector3 camRight = Camera.main.transform.right;
+        //     Vector3 camUp = Camera.main.transform.up;
+
+        //         float distanceToTarget = Vector3.Dot(target.transform.position - Camera.main.transform.position, camForward);
+
+        //    pivotX = (GetObject((int)GameObjects.Pivot).transform.position.x / 2400f)+0.5f;  // = 0.2842
+        // pivotY = (GetObject((int)GameObjects.Pivot).transform.position.y / 1080f)+0.5f;  // = 0.4565
+        //         pivotScreenPos = new Vector2(pivotX,pivotY);
+
+
+
+        //         Vector3 pivotOffset =
+        //             camRight * (pivotScreenPos.x - 0.5f) * 20f +
+        //             camUp * (pivotScreenPos.y - 0.5f) * 20f;
+
+        //         Vector3 newCamPos = target.transform.position - camForward * distanceToTarget + pivotOffset;
+
+        //         newCamPos.y = Camera.main.transform.position.y;
+
+        //         Camera.main.transform.position = newCamPos;
+        //         Camera.main.transform.rotation = Quaternion.Euler(45, 45, 0);
+   Vector3 camForward = Camera.main.transform.forward;
+
+    // 카메라와 타겟 사이 거리
+    float distanceToTarget = Vector3.Dot(target.transform.position - Camera.main.transform.position, camForward);
+
+    // 타겟 위치에서 카메라 방향으로 역산
+    Vector3 newCamPos = target.transform.position - camForward * distanceToTarget;
+
+    // 카메라 위치 이동
+    Camera.main.transform.position = new Vector3(newCamPos.x+6.05f, Camera.main.transform.position.y, newCamPos.z-3.38f);
+
+
         return true;
     }
 

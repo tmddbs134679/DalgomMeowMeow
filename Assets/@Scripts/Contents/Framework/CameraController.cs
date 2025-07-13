@@ -106,7 +106,7 @@ public class CameraController : MonoBehaviour
 
         if (zoomAmount != 0)
         {
-            Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize - zoomAmount, 2f, 10f);
+            Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize - zoomAmount,6f, 10f);
         }
 
 

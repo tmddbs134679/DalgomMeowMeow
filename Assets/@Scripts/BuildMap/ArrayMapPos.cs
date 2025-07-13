@@ -94,7 +94,28 @@ public class ArrayMapPos : ScriptableObject
     }
 #endif
 
+#if UNITY_EDITOR
+    public void LoadProtoTypeMapTileData()
+    {
+        string path = $"{Application.dataPath}/@Resources/Map/BaseMapTileData.json";
 
+        if (!File.Exists(path))
+        {
+            Debug.LogError("맵 타일 데이터 파일이 없습니다!");
+            return;
+        }
+
+        string json = File.ReadAllText(path);
+        MapTileSaveData saveData = JsonConvert.DeserializeObject<MapTileSaveData>(json);
+
+        this.width = saveData.width;
+        this.height = saveData.height;
+        this.rows = saveData.rows;
+
+        Debug.Log("맵 타일 데이터 로드 완료!");
+        EditorUtility.SetDirty(this);
+    }
+#endif
 
 }
 
