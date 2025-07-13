@@ -557,6 +557,11 @@ public class GameManager
         return equipments;
     }
 
+    public List<Character> DoCharacterGacha(int count)
+    {
+        return null;
+
+    }
 
     public EEquipmentGrade GetRandomGrade(float[] prob)
     {

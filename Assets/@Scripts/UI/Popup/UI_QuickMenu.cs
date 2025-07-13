@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,7 +10,9 @@ public class UI_QuickMenu : UI_Popup
     #region Enum
     enum GameObjects
     {
-        ContentObject
+        ContentObject,
+        CharacterNotifyObject,
+        EquipmentNotifyObject
     }
 
     enum Buttons
@@ -35,6 +38,7 @@ public class UI_QuickMenu : UI_Popup
     private void OnEnable()
     {
         PopupOpenAnimation(GetObject((int)GameObjects.ContentObject));
+        CheckNotify();
     }
 
     public override bool Init()
@@ -64,23 +68,29 @@ public class UI_QuickMenu : UI_Popup
 
     private void OnClickCharacterEquipmentButton()
     {
-        //Managers.UI.ShowPopupUI<UI_EquipPopup>();
         _EquipPopupUI.gameObject.SetActive(true);
         gameObject.SetActive(false);
     }
 
     private void OnClickCharacterInfoButton()
     {
-        //Managers.UI.ShowPopupUI<UI_CharacterPopup>();
         _characterPopupUI.gameObject.SetActive(true);
         gameObject.SetActive(false);
     }
 
     private void OnClickBackgroundButton()
     {
-        //Managers.UI.ClosePopupUI(this);
         gameObject.SetActive(false);
     }
 
+    private void CheckNotify()
+    {
+        //장비
+        if (Managers.Game.OwnedEquipments.Any(e => !e.IsConfirmed))
+            GetObject((int)GameObjects.EquipmentNotifyObject).SetActive(true);
+        else
+            GetObject((int)GameObjects.EquipmentNotifyObject).SetActive(false);
 
+
+    }
 }
