@@ -1,12 +1,8 @@
-using System.Collections;
+
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using UnityEditor.AddressableAssets.GUI;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 using UnityEngine.AI;
-using UnityEngine.ResourceManagement.AsyncOperations;
+
 
 public class AIManager 
 {

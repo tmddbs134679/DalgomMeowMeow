@@ -164,27 +164,28 @@ public class GameManager
         newChar.SetInfo(Managers.Data.CreatureDic["A10002"]);
         _characters[newChar.UniqueId] = newChar;
 
-        var newCharTest = new Character();
-        newCharTest.Init("A10002", new Vector3(39f, 0, 27f)); // 위치 초기값
-        newCharTest.SetInfo(Managers.Data.CreatureDic["A10002"]);
-        _characters[newCharTest.UniqueId] = newCharTest;
+        //var newCharTest = new Character();
+        //newCharTest.Init("A10002", new Vector3(39f, 0, 27f)); // 위치 초기값
+        //newCharTest.SetInfo(Managers.Data.CreatureDic["A10002"]);
+        //_characters[newCharTest.UniqueId] = newCharTest;
 
-        var newChar1 = new Character();
-        newChar1.Init("A10006", new Vector3(38f, 0, 27f)); // 위치 초기값
-        newChar1.SetInfo(Managers.Data.CreatureDic["A10006"]);
-        _characters[newChar1.UniqueId] = newChar1;
+        //var newChar1 = new Character();
+        //newChar1.Init("A10006", new Vector3(38f, 0, 27f)); // 위치 초기값
+        //newChar1.SetInfo(Managers.Data.CreatureDic["A10006"]);
+        //_characters[newChar1.UniqueId] = newChar1;
 
-        var newChar2 = new Character();
-        newChar2.Init("A10003", new Vector3(38f, 0, 27)); // 위치 초기값
-        newChar2.SetInfo(Managers.Data.CreatureDic["A10003"]);
-        _characters[newChar2.UniqueId] = newChar2;
+        //var newChar2 = new Character();
+        //newChar2.Init("A10003", new Vector3(38f, 0, 27)); // 위치 초기값
+        //newChar2.SetInfo(Managers.Data.CreatureDic["A10003"]);
+        //_characters[newChar2.UniqueId] = newChar2;
 
-        var newChar3 = new Character();
-        newChar3.Init("A10001", new Vector3(38f, 0, 27)); // 위치 초기값
-        newChar3.SetInfo(Managers.Data.CreatureDic["A10001"]);
-        _characters[newChar3.UniqueId] = newChar3;
+        //var newChar3 = new Character();
+        //newChar3.Init("A10001", new Vector3(38f, 0, 27)); // 위치 초기값
+        //newChar3.SetInfo(Managers.Data.CreatureDic["A10001"]);
+        //_characters[newChar3.UniqueId] = newChar3;
 
 
+        Gold += 10000;
 
         //// 초기 장비 생성
         //Equipment eq1 = new Equipment("E0001");
@@ -323,6 +324,7 @@ public class GameManager
 
         equipment.EquippedByCharacterId = targetCharacter.UniqueId;
         equipment.IsEquipped = true;
+        equipment.IsConfirmed = true;
 
         if (CharactersInScene.TryGetValue(uniqueId, out var ai))
             AttachEquipmentToCharacter(ai, equipment);
@@ -461,6 +463,8 @@ public class GameManager
             return null;
 
         Equipment equip = new Equipment(key);
+        equip.IsConfirmed = false;
+
         OwnedEquipments.Add(equip);
         EquipInfoChanged?.Invoke();
 

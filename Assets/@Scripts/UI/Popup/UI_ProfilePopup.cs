@@ -1,11 +1,10 @@
-using System;
-using System.Collections;
+
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
+
 using UnityEngine.UI;
 using static Define;
-using static UnityEditor.Progress;
+
 
 public class UI_ProfilePopup : UI_Popup
 {
