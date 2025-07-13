@@ -163,7 +163,7 @@ public class Define
     {
         None,
         Daily,
-        Achivement
+        Achievement
     }
     
     public enum EQuestConditionType

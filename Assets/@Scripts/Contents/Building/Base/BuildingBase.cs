@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Data;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -107,7 +108,7 @@ public abstract class BuildingBase : BaseObject
     {
         if (!CanUpgrade()) return false;
 
-        var next = Managers.Data.BuildingLevelDic[(BuildingData.Id.ToString(), CurrentLevel + 1)];
+        BuildingLevelData next = Managers.Data.BuildingLevelDic[(BuildingData.Id.ToString(), CurrentLevel + 1)];
         if (Managers.Game.Gold <= next.UpgradeCost)
             return false;
 

@@ -306,7 +306,7 @@ namespace Data
         public ETargetType TargetType;
         public int GoalCount;
         public int Reward;
-        public string PreviousQuest;
+        public string PreviousQuestID;
     }
 
     [Serializable]

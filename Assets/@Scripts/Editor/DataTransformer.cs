@@ -304,37 +304,37 @@ public class DataTransformer : EditorWindow
         AssetDatabase.Refresh();
     }
 
-    // private static void ParseSkillData(string filename)
-    // {
-    //     SkillDataDataLoader loader = new SkillDataDataLoader();
-    //
-    //     #region ParseSkillData
-    //     string[] lines = File.ReadAllText($"{Application.dataPath}/@Resources/Data/Excel/{filename}Data.csv").Split("\n");
-    //
-    //     for (int y = 1; y < lines.Length; y++)
-    //     {
-    //         string[] row = lines[y].Replace("\r", "").Split(',');
-    //         if (row.Length == 0)
-    //             continue;
-    //         if (string.IsNullOrEmpty(row[0]))
-    //             continue;
-    //
-    //         int i = 0;
-    //
-    //         SkillData skill = new SkillData();
-    //         skill.DataId = ConvertValue<string>(row[i++]);
-    //         skill.Name = ConvertValue<string>(row[i++]);
-    //         skill.Description = ConvertValue<string>(row[i++]);
-    //         skill.CoolTime = ConvertValue<float>(row[i++]);
-    //
-    //         loader.skills.Add(skill);
-    //     }
-    //     #endregion
-    //
-    //     string jsonStr = JsonConvert.SerializeObject(loader, Formatting.Indented);
-    //     File.WriteAllText($"{Application.dataPath}/@Resources/Data/JsonData/{filename}Data.json", jsonStr);
-    //     AssetDatabase.Refresh();
-    // }
+    private static void ParseSkillData(string filename)
+    {
+        SkillDataDataLoader loader = new SkillDataDataLoader();
+    
+        #region ParseSkillData
+        string[] lines = File.ReadAllText($"{Application.dataPath}/@Resources/Data/Excel/{filename}Data.csv").Split("\n");
+    
+        for (int y = 1; y < lines.Length; y++)
+        {
+            string[] row = lines[y].Replace("\r", "").Split(',');
+            if (row.Length == 0)
+                continue;
+            if (string.IsNullOrEmpty(row[0]))
+                continue;
+    
+            int i = 0;
+    
+            SkillData skill = new SkillData();
+            skill.DataId = ConvertValue<string>(row[i++]);
+            skill.Name = ConvertValue<string>(row[i++]);
+            skill.Description = ConvertValue<string>(row[i++]);
+            skill.CoolTime = ConvertValue<float>(row[i++]);
+    
+            loader.skills.Add(skill);
+        }
+        #endregion
+    
+        string jsonStr = JsonConvert.SerializeObject(loader, Formatting.Indented);
+        File.WriteAllText($"{Application.dataPath}/@Resources/Data/JsonData/{filename}Data.json", jsonStr);
+        AssetDatabase.Refresh();
+    }
 
     private static void ParseBuidingLevelData(string filename)
     {
@@ -393,7 +393,7 @@ public class DataTransformer : EditorWindow
             quest.TargetType = ConvertValue<ETargetType>(row[i++]);
             quest.GoalCount = ConvertValue<int>(row[i++]);
             quest.Reward = ConvertValue<int>(row[i++]);
-            quest.PreviousQuest = ConvertValue<string>(row[i++]);
+            quest.PreviousQuestID = ConvertValue<string>(row[i++]);
     
             loader.quests.Add(quest);
         }
