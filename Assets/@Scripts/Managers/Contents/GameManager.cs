@@ -158,8 +158,8 @@ public class GameManager
         #region 초기 생성 Test
         // 최초 생성
         var newChar = new Character();
-        newChar.Init("A10002", new Vector3(39f, 0, 27f)); // 위치 초기값
-        newChar.SetInfo(Managers.Data.CreatureDic["A10002"]);
+        newChar.Init("A10001", new Vector3(39f, 0, 27f)); // 위치 초기값
+        newChar.SetInfo(Managers.Data.CreatureDic["A10001"]);
         _characters[newChar.UniqueId] = newChar;
 
         //var newCharTest = new Character();
@@ -519,10 +519,10 @@ public class GameManager
         }
 
         Character newChar = new Character();
-        newChar.Init(creatureId, (new Vector3(38, 0, 26)));
+        newChar.Init(creatureId, new Vector3(39f, 0, 27f));
         newChar.SetInfo(creatureData);
 
-        AICharacter aiChar = Managers.Object.Spawn<AICharacter>(new Vector3(38, 0, 26), creatureId, isReplica: false);
+        AICharacter aiChar = Managers.Object.Spawn<AICharacter>(new Vector3(39f, 0, 27f), creatureId, isReplica: false);
 
         if (aiChar == null)
         {
@@ -530,6 +530,7 @@ public class GameManager
         }
         aiChar.Init();
         aiChar.SetInfo(newChar);
+        Managers.AI.Register(aiChar);
         _characters[newChar.UniqueId] = newChar;
 
         return aiChar;

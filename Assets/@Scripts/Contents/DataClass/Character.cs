@@ -54,6 +54,7 @@ public class  Character
         Pos = new Vector3Data(position);
         Level = Data?.Level ?? 1;
         Hp = Data?.MaxHp ?? 100f; // 최대 체력
+        CurrentState = Data?.CurrentState ?? EAIState.None; // 현재 상태
         MaxExp = Data?.MaxExp ?? 15f; // 최대 경험치    
         CurrentExp = Data?.CurrentExp ?? 0; // 현재 경험치
         MaxStamina = Data?.MaxStamina ?? 100f; // 최대 스태미나

@@ -17,6 +17,7 @@ namespace Data
         public float MaxExp;
         public float CurrentExp;
         public EAIState CurrentState;
+        public BuildingBase LoadBuilding;
         public float MaxHp;
         public float Atk;
         public float MaxStamina;
