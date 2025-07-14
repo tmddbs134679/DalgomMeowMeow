@@ -73,7 +73,7 @@ public class UI_CharacterShopPopup : UI_Popup
     }
     private void OnClickFiveTimeGachaButton()
     {
-        if (Managers.Game.Ticket >= 1)
+        if (Managers.Game.Ticket >= 5)
         {
             Managers.Game.RemoveTicket(5);
             DoGacha(5);
