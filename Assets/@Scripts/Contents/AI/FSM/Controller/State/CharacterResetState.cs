@@ -22,7 +22,8 @@ namespace Scripts.Contents.AI.FSM.State
         public override void OnUpdate(float deltaTime)
         {
             base.OnUpdate(deltaTime);
-            if (character.loadState != Define.EAIState.MoveTo && character.loadState != Define.EAIState.None)
+            if (character.loadState != Define.EAIState.MoveTo &&
+                character.loadState != Define.EAIState.None)
             {
                 character.Controller.OnActionPerformed(character.loadState);
                 return;

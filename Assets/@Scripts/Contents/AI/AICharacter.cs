@@ -17,6 +17,7 @@ public class AICharacter : BaseObject
 
     public EAIState loadState;
     public BuildingBase loadBuilding;
+
     [HideInInspector]
     public NavMeshAgent nav;
 
@@ -153,6 +154,7 @@ public class AICharacter : BaseObject
         MaxExp = Data.MaxExp;
         currentStamina = Data.CurrentStamina;
         loadState = Data.CurrentState;
+        loadBuilding = Data.LoadBuilding;
 
         // TODO : FSM 등 상태 적용
         ControllerRegister();
