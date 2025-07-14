@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class UI_QuestSlot : UI_Base
 {
-    enum Texts { QuestTitleText, ProgressText }
+    enum Texts { QuestTitleText, ProgressText,RewardButtonText }
     enum Images { ProgressBarFill }
     enum Buttons { RewardButton }
 
@@ -35,6 +35,7 @@ public class UI_QuestSlot : UI_Base
         
         GetText((int)Texts.QuestTitleText).text = quest.QuestData.Title;
         GetText((int)Texts.ProgressText).text = $"{quest.Progress}/{quest.QuestData.GoalCount}";
+        GetText((int)Texts.RewardButtonText).text = $"완료보상\n{quest.QuestData.Reward}";
         GetImage((int)Images.ProgressBarFill).fillAmount = percent;
         
 
