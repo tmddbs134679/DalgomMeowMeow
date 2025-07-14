@@ -30,8 +30,7 @@ public class ArrayBuildPos : ScriptableObject
         float targetX = buildData.posX;
         float targetZ = buildData.posZ;
         BuildData dataToRemove = baseBuilding.Find(data =>
-            math.abs(data.posX - targetX) < 0.01f &&
-            math.abs(data.posZ - targetZ) < 0.01f);
+        data.UniqueId==buildData.UniqueId);
 
         if (dataToRemove != null)
         {
@@ -39,13 +38,19 @@ public class ArrayBuildPos : ScriptableObject
         }
     }
 
-    // public void SaveBuildLv
-    public void ChangeBuildData(BuildData Curbuild, BuildData Fixbuild)
+    public void RemoveStageData(BuildData buildData)
     {
-        Curbuild.posX = Fixbuild.posX;
-        Curbuild.posZ = Fixbuild.posZ;
-        Curbuild.testBaseBuilding = Fixbuild.testBaseBuilding;
+        float targetX = buildData.posX;
+        float targetZ = buildData.posZ;
+        BuildData dataToRemove = baseBuilding.Find(data =>
+        data.UnlockId==buildData.UnlockId);
+
+        if (dataToRemove != null)
+        {
+            baseBuilding.Remove(dataToRemove);
+        }
     }
+
 #if UNITY_EDITOR
     public void InitializeBuild()
     {

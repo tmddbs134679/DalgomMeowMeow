@@ -4,11 +4,11 @@ using UnityEngine;
 using UnityEngine.AI;
 
 
-public class AIManager 
+public class AIManager
 {
     public static AIManager Instance;
 
-    public List<AICharacter> AllCharacters  = new List<AICharacter>();
+    public List<AICharacter> AllCharacters = new List<AICharacter>();
     public Material[] EmotionMaterials;
 
     public void Init()
@@ -47,5 +47,14 @@ public class AIManager
         }
     }
 
+    public void AllRelocateToNearestNavMesh()
+    {
+        Debug.Log(AllCharacters);
+        foreach (AICharacter character in AllCharacters)
+        {
+            RelocateToNearestNavMesh(character);
+        }
+            
+    }
 
 }

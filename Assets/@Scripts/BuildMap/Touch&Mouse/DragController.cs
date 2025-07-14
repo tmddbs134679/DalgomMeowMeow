@@ -124,6 +124,8 @@ public class DragController : MonoBehaviour
     private void OnLongPress()
     {
         if (currentTarget != null)
+        {
             currentTarget.OnLongPress();
+        }
     }
 }

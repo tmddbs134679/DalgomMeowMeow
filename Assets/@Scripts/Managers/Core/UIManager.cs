@@ -15,6 +15,7 @@ public class UIManager
     public UI_Scene SceneUI { get { return _sceneUI; } }
 
     public Action<Character> OnCharacterChange;
+    public Action OnLongPress;
     public GameObject Root
     {
         get

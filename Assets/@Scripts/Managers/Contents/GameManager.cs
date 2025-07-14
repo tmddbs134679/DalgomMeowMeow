@@ -162,15 +162,15 @@ public class GameManager
         newChar.SetInfo(Managers.Data.CreatureDic["A10002"]);
         _characters[newChar.UniqueId] = newChar;
 
-        //var newCharTest = new Character();
-        //newCharTest.Init("A10002", new Vector3(39f, 0, 27f)); // 위치 초기값
-        //newCharTest.SetInfo(Managers.Data.CreatureDic["A10002"]);
-        //_characters[newCharTest.UniqueId] = newCharTest;
+        var newCharTest = new Character();
+        newCharTest.Init("A10002", new Vector3(39f, 0, 27f)); // 위치 초기값
+        newCharTest.SetInfo(Managers.Data.CreatureDic["A10002"]);
+        _characters[newCharTest.UniqueId] = newCharTest;
 
-        //var newChar1 = new Character();
-        //newChar1.Init("A10006", new Vector3(38f, 0, 27f)); // 위치 초기값
-        //newChar1.SetInfo(Managers.Data.CreatureDic["A10006"]);
-        //_characters[newChar1.UniqueId] = newChar1;
+        var newChar1 = new Character();
+        newChar1.Init("A10006", new Vector3(38f, 0, 27f)); // 위치 초기값
+        newChar1.SetInfo(Managers.Data.CreatureDic["A10006"]);
+        _characters[newChar1.UniqueId] = newChar1;
 
         //var newChar2 = new Character();
         //newChar2.Init("A10003", new Vector3(38f, 0, 27)); // 위치 초기값

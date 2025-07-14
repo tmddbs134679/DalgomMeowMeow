@@ -14,7 +14,7 @@ public class GameScene : BaseScene
 
         SceneType = Define.EScene.GameScene;
 
-        Managers.UI.ShowSceneUI<UI_GameScene>();    
+        Managers.UI.ShowSceneUI<UI_GameScene>();
         foreach (var ch in Managers.Game.Characters)
         {
             AICharacter ai = Managers.Object.Spawn<AICharacter>(ch.Pos.ToVector3(), ch.DataId);

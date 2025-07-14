@@ -52,6 +52,9 @@ public class BuildingPlacer : MonoBehaviour
 
     public int tempTypeNum;
     public int BuyMoney { get => buyMoney; set => buyMoney = value; }
+
+    public int uniqueId;
+    public int LV;
     private void Awake()
     {
         if (Instance == null)
@@ -96,6 +99,8 @@ public class BuildingPlacer : MonoBehaviour
     public void SetRefOBJ(GameObject OriginOBJ)
     {
         _saveBuildingSO = OriginOBJ.GetComponent<BuildingBase>()?.BuildingData;
+        uniqueId = OriginOBJ.GetComponent<BuildingBase>().UniqueId;
+        LV = OriginOBJ.GetComponent<BuildingBase>().CurrentLevel;
         _PreviewOBJ = Instantiate(OriginOBJ.GetComponent<BuildingBase>()?.BuildingData.previewOBJ,
                 new Vector3(OriginOBJ.transform.position.x, OriginOBJ.transform.position.y + _heightOffset, OriginOBJ.transform.position.z),
                 Quaternion.identity);
@@ -110,6 +115,7 @@ public class BuildingPlacer : MonoBehaviour
         {
             posX = _PreviewOBJ.transform.position.x,
             posZ = _PreviewOBJ.transform.position.z,
+            UniqueId = uniqueId,
         };
 
     }
@@ -195,7 +201,9 @@ public class BuildingPlacer : MonoBehaviour
             {
                 posX = _PreviewOBJ.transform.position.x,
                 posZ = _PreviewOBJ.transform.position.z,
-                testBaseBuilding = _saveBuildingSO
+                testBaseBuilding = _saveBuildingSO,
+                UniqueId = uniqueId,
+                LV = LV,
             };
             arrayBuildPos.GetBuildData(_buildData);//설치할 오브젝트
             arrayBuildPos.RemoveBuildData(_CurBuildData);//기존에 있던 오브젝트 제거
@@ -211,6 +219,14 @@ public class BuildingPlacer : MonoBehaviour
             surface.BuildNavMesh(); //네브매쉬 깔기
             isLongPressAcceptBuild = false;
             buildMap.ColliderAllOn();
+
+            Managers.AI.AllRelocateToNearestNavMesh();
+
+            // foreach (var ai in AIManager.Instance.AllCharacters)
+            // {
+
+            //     Managers.AI.ValidateNavMeshPosition(ai);
+            // }
         }
     }
 
@@ -265,12 +281,14 @@ public class BuildingPlacer : MonoBehaviour
 
     public void DeleteStage(GameObject stage)
     {
+
         BuildData data = new BuildData
         {
             posX = stage.transform.position.x,
             posZ = stage.transform.position.z,
+            UnlockId = stage.GetComponent<ForestRegion>().Id,
         };
-        arrayBuildPos.RemoveBuildData(data);//기존에 있던 오브젝트 제거
+        arrayBuildPos.RemoveStageData(data);//기존에 있던 오브젝트 제거
         buildMap.Remove(GridKey(data.posX, data.posZ));
         stage.GetComponent<DraggableObject>().CurrentTileAndOBJ();
         ClearTile();//기존에 있던 오브젝트의 타일 제거
