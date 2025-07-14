@@ -35,7 +35,9 @@ namespace Scripts.Contents.AI.FSM.State
             if (elapsedTime > 2 && !isArrived)
             {
                 character.UseStamina(2f);
-                elapsedTime = 0f; // Reset elapsed time after using stamina
+                targetPosition = character.Controller.FindNearestBuilding(state);
+                character.Controller.Move(targetPosition);
+                elapsedTime = 0f; 
                 return;
             }
 

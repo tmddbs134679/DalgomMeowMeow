@@ -27,6 +27,11 @@ namespace Scripts.Contents.AI.FSM.State
             base.OnUpdate(deltaTime);
             if (elapsedTime >= character.currentBuilding.BuildingData.Interval)
             {
+                if(character.Controller.FindNearestBuilding(Define.EAIState.Deliver) == null)
+                {
+                    character.characterAction.Idle();
+                    return;
+                }
                 character.characterAction.Deliver();
                 return;
             }
