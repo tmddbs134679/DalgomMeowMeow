@@ -20,7 +20,7 @@ public class MySceneManager
                 SceneManager.LoadScene(GetSceneName(type));
                 Managers.Clear();
                 break;
-            case EScene.Test_Battle:
+            case EScene.BattleScene:
                 SceneManager.LoadScene(GetSceneName(type));
                 Managers.Clear();
                 break;
