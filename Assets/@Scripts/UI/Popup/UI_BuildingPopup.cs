@@ -6,8 +6,7 @@ public class UI_BuildingPopup : UI_Popup
 {
     enum GameObjects
     {
-        Content,
-        Pivot
+        Pivot,
     }
 
     enum Buttons
@@ -20,11 +19,8 @@ public class UI_BuildingPopup : UI_Popup
 
     private BuildingBase _targetBuilding;
     public GameObject target;
-    
 
-    float pivotX;
-float pivotY;
-    public Vector2 pivotScreenPos;
+
 
     public override bool Init()
     {
@@ -64,17 +60,7 @@ float pivotY;
 
         //         Camera.main.transform.position = newCamPos;
         //         Camera.main.transform.rotation = Quaternion.Euler(45, 45, 0);
-   Vector3 camForward = Camera.main.transform.forward;
-
-    // 카메라와 타겟 사이 거리
-    float distanceToTarget = Vector3.Dot(target.transform.position - Camera.main.transform.position, camForward);
-
-    // 타겟 위치에서 카메라 방향으로 역산
-    Vector3 newCamPos = target.transform.position - camForward * distanceToTarget;
-
-    // 카메라 위치 이동
-    Camera.main.transform.position = new Vector3(newCamPos.x+6.05f, Camera.main.transform.position.y, newCamPos.z-3.38f);
-
+        FocusCameraOnPivot();
 
         return true;
     }
@@ -115,11 +101,25 @@ float pivotY;
         }
         GetText((int)Texts.CurrentLevelText).text = _targetBuilding.CurrentLevel.ToString();
     }
-    
-    
-    
+
+
+
     public void SetPivot(GameObject go)
     {
         target = go;
+    }
+
+    private void FocusCameraOnPivot()
+    {
+                Vector3 camForward = Camera.main.transform.forward;
+
+        // 카메라와 타겟 사이 거리
+        float distanceToTarget = Vector3.Dot(target.transform.position - Camera.main.transform.position, camForward);
+
+        // 타겟 위치에서 카메라 방향으로 역산
+        Vector3 newCamPos = target.transform.position - camForward * distanceToTarget;
+
+        // 카메라 위치 이동
+        Camera.main.transform.position = new Vector3(newCamPos.x + 6.05f, Camera.main.transform.position.y, newCamPos.z - 3.38f);
     }
 }

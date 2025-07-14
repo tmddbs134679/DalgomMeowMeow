@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class FarmBuilding : BuildingBase
-{ 
+{
     [SerializeField] private Renderer buildingRenderer;
     public GameObject collectIcon;
     public event Action IsHarvest;
@@ -17,7 +17,7 @@ public class FarmBuilding : BuildingBase
     }
     public override void Produce()
     {
-        
+
         //재료 재고 확인  
         if (!HasRequiredMaterials())
         {
@@ -26,12 +26,12 @@ public class FarmBuilding : BuildingBase
         }
         //재료소진
         ConsumeMaterials();
-        
-        
+
+
         StoredCount++; //  생산 누적
-        
+
         IsHarvest?.Invoke();//수확 가능
-        
+
 
         CurrentState = BuildingState.ReadyToCollect;
         // collectIcon.SetActive(true);
@@ -55,14 +55,15 @@ public class FarmBuilding : BuildingBase
             return;
         UI_BuildContent popup = Managers.UI.ShowPopupUI<UI_BuildContent>();
         popup.SetTarget(gameObject);
+        popup.SettingOnOff(Define.EBuildPopUpType.PopUpButton);
     }
-    
+
     private bool HasRequiredMaterials()
     {
         //인벤토리에 재료 확인
         return true;
     }
-    
+
     private void ConsumeMaterials()
     {
         //재료 소비

@@ -6,7 +6,7 @@ public class UI_SlotMachinePopup : UI_Popup
 {
     enum GameObjects
     {
-        Content
+        Pivot,
     }
 
     enum Buttons
@@ -15,22 +15,25 @@ public class UI_SlotMachinePopup : UI_Popup
         Background
     }
     enum Texts { Slot1, Slot2, Slot3, Result }
-    
+
     private SlotMachineBuilding _targetBuilding;
     private bool _isSpinning = false;
     private int _finishedCount = 0;
-    
+    public GameObject target;
+
     public override bool Init()
     {
         if (!base.Init()) return false;
 
         BindObject(typeof(GameObjects));
-        
+
         BindText(typeof(Texts));
         BindButton(typeof(Buttons));
 
         GetButton((int)Buttons.SlotButton).gameObject.BindEvent(() => StartCoroutine(OnClickSlotButton()));
         GetButton((int)Buttons.Background).gameObject.BindEvent(OnClickBackgroundButton);
+
+        FocusCameraOnPivot();
 
         return true;
     }
@@ -84,7 +87,7 @@ public class UI_SlotMachinePopup : UI_Popup
         // GetText((int)Texts.Result).text = rewardText;
 
     }
-    
+
     private IEnumerator RollSingleSlot(int index)
     {
         float duration = Random.Range(0.5f, 1.5f);
@@ -92,7 +95,7 @@ public class UI_SlotMachinePopup : UI_Popup
 
         while (elapsed < duration)
         {
-            string symbol =  _targetBuilding.GetRandomResult().Symbol;
+            string symbol = _targetBuilding.GetRandomResult().Symbol;
             _targetBuilding.CurrentResult[index] = symbol;
 
             // 슬롯 텍스트 즉시 반영
@@ -129,7 +132,7 @@ public class UI_SlotMachinePopup : UI_Popup
                 else
                 {
                     rewardText = $" {a} x3 → {match.RewardGold} Gold";
-                     Managers.Game.Gold += match.RewardGold;
+                    Managers.Game.Gold += match.RewardGold;
                 }
             }
         }
@@ -140,5 +143,22 @@ public class UI_SlotMachinePopup : UI_Popup
     {
         _targetBuilding = building;
     }
-    
+
+    public void SetPivot(GameObject go)
+    {
+        target = go;
+    }
+        private void FocusCameraOnPivot()
+    {
+                Vector3 camForward = Camera.main.transform.forward;
+
+        // 카메라와 타겟 사이 거리
+        float distanceToTarget = Vector3.Dot(target.transform.position - Camera.main.transform.position, camForward);
+
+        // 타겟 위치에서 카메라 방향으로 역산
+        Vector3 newCamPos = target.transform.position - camForward * distanceToTarget;
+
+        // 카메라 위치 이동
+        Camera.main.transform.position = new Vector3(newCamPos.x + 6.05f, Camera.main.transform.position.y, newCamPos.z - 3.38f);
+    }
 }
