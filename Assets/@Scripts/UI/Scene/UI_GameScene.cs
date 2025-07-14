@@ -248,8 +248,8 @@ public class UI_GameScene : UI_Scene
 
     public void CheckNotify()
     {
-        //장비
-        if (Managers.Game.OwnedEquipments.Any(e => !e.IsConfirmed))
+        //장비, 캐릭터 업데이트된게 있으면 True
+        if (Managers.Game.OwnedEquipments.Any(e => !e.IsConfirmed) || Managers.Game._characters.Any(c => !c.Value.IsConfirmed))
             GetObject((int)GameObjects.QuickNotifyObject).SetActive(true);
         else
             GetObject((int)GameObjects.QuickNotifyObject).SetActive(false);

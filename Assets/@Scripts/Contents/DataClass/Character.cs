@@ -41,7 +41,7 @@ public class  Character
     public float Hp { get; set; }
     public float MoveSpeed { get; set; }
     public float WalkSpeed { get; set; } = 1.5f;
-
+    public bool IsConfirmed { get; set; }
     public List<string> EquippedItemIds { get; set; } = new();
 
     public Dictionary<EEquipmentType, Equipment> EquippedItems = new();

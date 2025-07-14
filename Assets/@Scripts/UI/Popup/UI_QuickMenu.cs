@@ -85,12 +85,16 @@ public class UI_QuickMenu : UI_Popup
 
     private void CheckNotify()
     {
-        //장비
+        //장비 
         if (Managers.Game.OwnedEquipments.Any(e => !e.IsConfirmed))
             GetObject((int)GameObjects.EquipmentNotifyObject).SetActive(true);
         else
             GetObject((int)GameObjects.EquipmentNotifyObject).SetActive(false);
 
-
+        //캐릭터 
+        if (Managers.Game.Characters.Any(c => !c.IsConfirmed))
+            GetObject((int)GameObjects.CharacterNotifyObject).SetActive(true);
+        else
+            GetObject((int)GameObjects.CharacterNotifyObject).SetActive(false);
     }
 }
