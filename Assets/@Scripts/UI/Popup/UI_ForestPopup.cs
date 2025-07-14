@@ -93,7 +93,7 @@ public class UI_ForestPopup : UI_Popup
     private void OnClickBattleButton()
     {
         StageDataManager.Instance.PlayerCharacter = _selectedCharacters;
-        Managers.Scene.LoadScene(Define.EScene.Test_Battle);
+        Managers.Scene.LoadScene(Define.EScene.BattleScene);
     }
 
     private void GetStageData()

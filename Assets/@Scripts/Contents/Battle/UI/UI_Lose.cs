@@ -32,7 +32,7 @@ public class UI_Lose : UI_Popup
     {
         Managers.UI.ClosePopupUI(this);
         Time.timeScale = 1f;
-        Managers.Scene.LoadScene(Define.EScene.Test_Battle);
+        Managers.Scene.LoadScene(Define.EScene.BattleScene);
     }
 
     public void OnClickTitle()

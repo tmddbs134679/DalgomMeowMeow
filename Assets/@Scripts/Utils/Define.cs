@@ -87,7 +87,7 @@ public class Define
         LobbyScene,
         GameScene,
         FrameworkTestScene,
-        Test_Battle,
+        BattleScene,
         TutorialScene
     }
 
