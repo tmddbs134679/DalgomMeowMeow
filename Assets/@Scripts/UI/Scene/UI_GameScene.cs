@@ -137,13 +137,14 @@ public class UI_GameScene : UI_Scene
     void Refresh()
     {
         GetText((int)Texts.PlayerGoldText).text = Managers.Game.Gold.ToString();
-        GetText((int)Texts.CreatureCountText).text = Managers.Game.Characters.Count.ToString();
+        GetText((int)Texts.CreatureCountText).text = Managers.Game._characters.Count.ToString();
         GetText((int)Texts.DiaText).text = Managers.Game.Dia.ToString();
 
         CheckNotify();
     }
 
     #region Food
+
     public void ResetCookItem(Food food)
     {
         UI_FoodItem item = Managers.UI.MakeSubItem<UI_FoodItem>(GetObject((int)GameObjects.StorageObject).transform);
