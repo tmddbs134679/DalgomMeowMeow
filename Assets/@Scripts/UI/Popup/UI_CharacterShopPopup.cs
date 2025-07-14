@@ -86,8 +86,8 @@ public class UI_CharacterShopPopup : UI_Popup
 
     private void DoGacha(int count = 1)
     {
-        List<Character> character = new List<Character>();
-        character = Managers.Game.DoCharacterGacha(count);
+       // List<Character> character = new List<Character>();
+        Managers.Game.DoCharacterGacha(count);
     }
 
 

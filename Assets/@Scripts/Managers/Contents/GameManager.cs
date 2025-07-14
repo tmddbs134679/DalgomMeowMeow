@@ -155,9 +155,7 @@ public class GameManager
             return;
         }
 
-
-
-
+        #region 초기 생성 Test
         // 최초 생성
         var newChar = new Character();
         newChar.Init("A10002", new Vector3(39f, 0, 27f)); // 위치 초기값
@@ -183,9 +181,6 @@ public class GameManager
         //newChar3.Init("A10001", new Vector3(38f, 0, 27)); // 위치 초기값
         //newChar3.SetInfo(Managers.Data.CreatureDic["A10001"]);
         //_characters[newChar3.UniqueId] = newChar3;
-
-
-        Gold += 10000;
 
         //// 초기 장비 생성
         //Equipment eq1 = new Equipment("E0001");
@@ -221,6 +216,10 @@ public class GameManager
         //OwnedEquipments.Add(eq14);
         //OwnedEquipments.Add(eq15);
         //OwnedEquipments.Add(eq16);
+
+        #endregion
+
+        Gold += 10000;
 
         SaveGame();
         IsLoaded = true;
@@ -510,7 +509,7 @@ public class GameManager
     }
 
 
-    public AICharacter SpawnRandomGachaCharacter(Vector3 spawnPos)
+    public AICharacter SpawnRandomGachaCharacter()
     {
         string creatureId = DrawRandomCreature();
 
@@ -520,10 +519,10 @@ public class GameManager
         }
 
         Character newChar = new Character();
-        newChar.Init(creatureId, spawnPos);
+        newChar.Init(creatureId, Vector3.zero);
         newChar.SetInfo(creatureData);
 
-        AICharacter aiChar = Managers.Object.Spawn<AICharacter>(spawnPos, creatureId, isReplica: false);
+        AICharacter aiChar = Managers.Object.Spawn<AICharacter>(Vector3.zero, creatureId, isReplica: false);
 
         if (aiChar == null)
         {
@@ -531,6 +530,7 @@ public class GameManager
         }
         aiChar.Init();
         aiChar.SetInfo(newChar);
+
 
         return aiChar;
     }
@@ -545,20 +545,33 @@ public class GameManager
         var gachaEntries = Managers.Data.GachaTableDataDic.Values.
             Where(item => item.Grade == grade).ToList();
 
-        int index = UnityEngine.Random.Range(0, gachaEntries.Count);
-        string key = gachaEntries[index].EquipmentID;
 
-        if (Managers.Data.EquipmentDic.ContainsKey(key))
+        for(int i = 1; i <= count; i++)
         {
-            equipments.Add(AddEquipment(key));
-        }
+            int index = UnityEngine.Random.Range(0, gachaEntries.Count);
+            string key = gachaEntries[index].EquipmentID;
 
+            if (Managers.Data.EquipmentDic.ContainsKey(key))
+            {
+                equipments.Add(AddEquipment(key));
+            }
+        }
+  
 
         return equipments;
     }
 
     public List<Character> DoCharacterGacha(int count)
     {
+        for(int i = 1; i <= count; i++)
+        {
+            SpawnRandomGachaCharacter();
+        }
+
+        OnCharacterChanged?.Invoke();
+        SaveGame();
+
+    
         return null;
 
     }
