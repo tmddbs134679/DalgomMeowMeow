@@ -46,8 +46,8 @@ public class UI_Gacha : UI_Popup
     }
     private void OnClickGachaButton()
     {
-        Vector3 spawnPos = GetRandomSpawnPosition();
-        Managers.Game.SpawnRandomGachaCharacter(spawnPos);
+        //Vector3 spawnPos = GetRandomSpawnPosition();
+        //Managers.Game.SpawnRandomGachaCharacter(spawnPos);
 
     }
 

@@ -7,7 +7,7 @@ public class GachaButton : MonoBehaviour
     public void OnClick_Gacha()
     {
         
-        Managers.Game.SpawnRandomGachaCharacter(new Vector3(38f, 0.616f,27f ));
+       // Managers.Game.SpawnRandomGachaCharacter(new Vector3(38f, 0.616f,27f ));
 
     }
    
