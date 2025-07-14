@@ -60,8 +60,6 @@ public class TutorialManager : MonoBehaviour
 
     public void CompleteStep()
     {
-        Debug.Log($"{currentStep}Step Complete");
-        Managers.Debug.Log($"{currentStep}Step Complete",Define.EDebugType.Building);
         Steps[currentStep].OnComplete?.Invoke();
 
         currentStep++;
@@ -98,6 +96,7 @@ public class TutorialManager : MonoBehaviour
 
         if (highlightTarget != null)
         {
+            //FocusUI(highlightTarget);
             highlighter.Follow(highlightTarget.GetComponent<RectTransform>());
             highlighter.gameObject.SetActive(true);
             dimOverlay?.gameObject.SetActive(true);
@@ -158,5 +157,16 @@ public class TutorialManager : MonoBehaviour
         }
 
         EndTutorial();
+    }
+    public void FocusUI(GameObject go)
+    {
+        if (go == null) return;
+
+        Canvas targetCanvas = go.GetComponentInParent<Canvas>();
+        if (targetCanvas != null)
+        {
+            targetCanvas.sortingOrder = 200; // 튜토리얼 UI보다 위로 올림
+            Debug.Log($"[Tutorial] Canvas '{targetCanvas.name}' sortingOrder = 200");
+        }
     }
 }

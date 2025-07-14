@@ -26,7 +26,7 @@ public class DataTransformer : EditorWindow
         ParseCheckOutData("CheckOut");
         ParseMaterialData("Material");
         ParseEquipmentGacha("EquipmentGacha");
-        //ParseSkillData("Skill");
+        ParseSkillData("Skill");
         ParseBuidingLevelData("BuildingLevel");
         ParseQuestData("Quest");
         
