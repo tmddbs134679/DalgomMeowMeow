@@ -285,6 +285,7 @@ public class BattleCharacter : BaseObject
         Agent.isStopped = true;
 
         Animator.SetInteger(AnimationHash, 0); // 죽음 애니메이션 출력
+
     }
 
     public void SetOff()

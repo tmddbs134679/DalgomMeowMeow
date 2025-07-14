@@ -33,17 +33,18 @@ public class Stop_MiniGameManager : MonoBehaviour
             {
                 IsLookBack = false;
                 //앞에봄
+                GameStart(); //3으로 시작
             }
         }
     }
 
-    public void RandomTiming()
+    public int RandomTiming()
     {
-        int k = Random.Range(1, 6);
-        
+        int k = Random.Range(1, 6);     //1~5까지 랜덤
+        return k;
     }
 
-    public void GameStart(int k)
+    public void GameStart()
     {
 
     }
