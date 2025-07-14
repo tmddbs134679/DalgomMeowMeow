@@ -12,6 +12,10 @@ GameObject:
   - component: {fileID: 461224095354236763}
   - component: {fileID: 6142365039464825083}
   - component: {fileID: 1862639142888227}
+  - component: {fileID: 8502903736129702496}
+  - component: {fileID: 8889786749938852252}
+  - component: {fileID: 2636831832402792932}
+  - component: {fileID: 5709076795637005448}
   m_Layer: 0
   m_Name: trigger
   m_TagString: Untagged
@@ -71,6 +75,56 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buildButton: {fileID: 0}
+--- !u!114 &8502903736129702496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1733691765119865347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c465eab7f9cdc94f94a1871a0c26eee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cookButton: {fileID: 0}
+--- !u!114 &8889786749938852252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1733691765119865347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30143c1e085dbdb49950114f07fbbc48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cookButton: {fileID: 0}
+--- !u!114 &2636831832402792932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1733691765119865347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 421dfce96b92ef248889363feac450ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5709076795637005448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1733691765119865347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da111ef2cb052a441810167022a33526, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2822908468648774363
 GameObject:
   m_ObjectHideFlags: 0
@@ -198,7 +252,7 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
   - Title: "\uAC74\uC124 \uBC84\uD2BC \uB204\uB974\uAE30"
-    Description: "\uAC74\uC124 \uBC84\uD2BC\uC744 \uB204\uB974\uC138\uC694."
+    Description: "\uCE68\uB300\uC5D0\uC11C\uB294 \uC2A4\uD0DC\uB2C8\uB9C8\uB97C \uD68C\uBCF5\uD569\uB2C8\uB2E4"
     HighlightTarget: {fileID: 0}
     HighlightTargetKey: BuildButton
     OnStart:
@@ -207,20 +261,70 @@ MonoBehaviour:
     OnComplete:
       m_PersistentCalls:
         m_Calls: []
-  - Title: "\uB3C4\uB85C \uAC74\uC124 \uBC84\uD2BC \uB204\uB974\uAE30"
-    Description: "\uB3C4\uB85C \uBC84\uD2BC\uC744 \uB204\uB974\uC138\uC694"
+  - Title: "\uCE68\uB300 \uBC84\uD2BC"
+    Description: "\uCE68\uB300\uB97C \uAC74\uC124\uD558\uC138\uC694"
     HighlightTarget: {fileID: 0}
-    HighlightTargetKey: RoadButton
+    HighlightTargetKey: RestButton
     OnStart:
       m_PersistentCalls:
         m_Calls: []
     OnComplete:
       m_PersistentCalls:
         m_Calls: []
-  - Title: "\uCD94\uAC00\uC608"
-    Description: "\uCD94\uAC00\uC608\uC815."
+  - Title: "\uCE68\uB300\uAC74\uC124"
+    Description: "\uCE68\uB300\uB97C \uAC74\uC124\uD558\uC138\uC694"
     HighlightTarget: {fileID: 0}
     HighlightTargetKey: 
+    OnStart:
+      m_PersistentCalls:
+        m_Calls: []
+    OnComplete:
+      m_PersistentCalls:
+        m_Calls: []
+  - Title: "\uBE4C\uB4DC\uCE94\uC2AC"
+    Description: "\uCE68\uB300\uAC00 \uC644\uC131\uB418\uC5C8\uC2B5\uB2C8\uB2E4"
+    HighlightTarget: {fileID: 0}
+    HighlightTargetKey: CancleButton
+    OnStart:
+      m_PersistentCalls:
+        m_Calls: []
+    OnComplete:
+      m_PersistentCalls:
+        m_Calls: []
+  - Title: "\uAC74\uC124 \uBC84\uD2BC \uB204\uB974\uAE30"
+    Description: "\uB18D\uC7A5\uC5D0\uC11C\uB294 \uCC44\uC18C\uB97C \uC0DD\uC0B0\uD569\uB2C8\uB2E4"
+    HighlightTarget: {fileID: 0}
+    HighlightTargetKey: BuildButton
+    OnStart:
+      m_PersistentCalls:
+        m_Calls: []
+    OnComplete:
+      m_PersistentCalls:
+        m_Calls: []
+  - Title: "\uB18D\uC7A5 \uBC84\uD2BC"
+    Description: "\uB18D\uC7A5\uC744 \uAC74\uC124\uD558\uC138\uC694"
+    HighlightTarget: {fileID: 0}
+    HighlightTargetKey: 
+    OnStart:
+      m_PersistentCalls:
+        m_Calls: []
+    OnComplete:
+      m_PersistentCalls:
+        m_Calls: []
+  - Title: "\uB18D\uC7A5\uAC74\uC124"
+    Description: "\uB18D\uC7A5\uC744 \uAC74\uC124\uD558\uC138\uC694"
+    HighlightTarget: {fileID: 0}
+    HighlightTargetKey: 
+    OnStart:
+      m_PersistentCalls:
+        m_Calls: []
+    OnComplete:
+      m_PersistentCalls:
+        m_Calls: []
+  - Title: "\uBE4C\uB4DC\uCE94\uC2AC"
+    Description: "\uB18D\uC7A5\uC774 \uC644\uC131\uB418\uC5C8\uC2B5\uB2C8\uB2E4"
+    HighlightTarget: {fileID: 0}
+    HighlightTargetKey: CancleButton
     OnStart:
       m_PersistentCalls:
         m_Calls: []

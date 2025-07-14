@@ -1,6 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.SearchService;
+
 using UnityEngine;
 using static Define;
 public abstract class BaseObject : MonoBehaviour

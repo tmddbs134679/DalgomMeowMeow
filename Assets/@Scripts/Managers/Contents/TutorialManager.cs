@@ -32,11 +32,23 @@ public class TutorialManager : MonoBehaviour
 
     private void Start()
     {
-        UI = Managers.UI.ShowPopupUI<UI_Tutorial>();
         
+        if (PlayerPrefs.GetInt("Tutorial_Completed", 0) == 1)
+            return;
+        
+        UI = Managers.UI.ShowPopupUI<UI_Tutorial>();
         highlighter = UI.GetComponentInChildren<Highlighter>(true);
         dimOverlay = UI.transform.Find("DimOverlay")?.GetComponent<Image>(); // 찾는 방식 주의
         StartTutorial();
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            ResetTutorialProgress();
+            Debug.Log("튜토리얼 진행 상태 초기화됨");
+        }
     }
 
     public void StartTutorial()
@@ -48,8 +60,6 @@ public class TutorialManager : MonoBehaviour
 
     public void CompleteStep()
     {
-        Debug.Log($"{currentStep}Step Complete");
-        Managers.Debug.Log($"{currentStep}Step Complete",Define.EDebugType.Building);
         Steps[currentStep].OnComplete?.Invoke();
 
         currentStep++;
@@ -86,12 +96,11 @@ public class TutorialManager : MonoBehaviour
 
         if (highlightTarget != null)
         {
+            //FocusUI(highlightTarget);
             highlighter.Follow(highlightTarget.GetComponent<RectTransform>());
             highlighter.gameObject.SetActive(true);
             dimOverlay?.gameObject.SetActive(true);
             UI.gameObject.GetComponent<Canvas>().sortingOrder = 100;
-            dimOverlay?.transform.SetAsLastSibling();
-            highlighter.transform.SetAsLastSibling();
         }
         else
         {
@@ -104,7 +113,11 @@ public class TutorialManager : MonoBehaviour
     {
         highlighter.Hide();
         dimOverlay?.gameObject.SetActive(false);
+        UI?.gameObject.SetActive(false);
         IsRunning = false;
+        
+        PlayerPrefs.SetInt("Tutorial_Completed", 1);
+        PlayerPrefs.Save();
     }
 
     public bool IsStepActive(string title) =>
@@ -130,5 +143,30 @@ public class TutorialManager : MonoBehaviour
             _registeredTargets[key] = go;
         }
     }
+    public void ResetTutorialProgress()
+    {
+        PlayerPrefs.DeleteKey("Tutorial_Completed");
+        PlayerPrefs.Save();
+    }
+    
+    public void SkipTutorial()
+    {
+        foreach (var step in Steps)
+        {
+            step.OnComplete?.Invoke();
+        }
 
+        EndTutorial();
+    }
+    public void FocusUI(GameObject go)
+    {
+        if (go == null) return;
+
+        Canvas targetCanvas = go.GetComponentInParent<Canvas>();
+        if (targetCanvas != null)
+        {
+            targetCanvas.sortingOrder = 200; // 튜토리얼 UI보다 위로 올림
+            Debug.Log($"[Tutorial] Canvas '{targetCanvas.name}' sortingOrder = 200");
+        }
+    }
 }

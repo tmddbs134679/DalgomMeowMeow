@@ -115,7 +115,7 @@ public class Define
         SlotMachine,
         Road,
         Shop,
-    
+        UnLockStage,
     }
 
     public enum EEquipmentType
@@ -157,6 +157,27 @@ public class Define
         Gold,
         Ticket,
         Dia
+    }
+    
+    public enum EQuestType
+    {
+        None,
+        Daily,
+        Achievement
+    }
+    
+    public enum EQuestConditionType
+    {
+        None,
+        Collect,
+        Kill
+    }
+    public enum ETargetType
+    {
+        None,
+        Soup,
+        Build,
+        Farm
     }
 
     public static readonly float[] COMMON_GACHA_GRADE = new float[]

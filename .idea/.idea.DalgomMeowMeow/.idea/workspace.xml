@@ -6,7 +6,14 @@
   <component name="ChangeListManager">
     <list default="true" id="f48e1cac-c49d-4f22-9686-b0c375630046" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DalgomMeowMeow/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DalgomMeowMeow/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Prefabs/Tutorial/Tutorial.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Prefabs/Tutorial/Tutorial.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Resources/Data/Excel/QuestData.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Resources/Data/Excel/QuestData.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Resources/Data/JsonData/QuestData.json" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Resources/Data/JsonData/QuestData.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Resources/UI/Popup/UI_BuildGroup/UI_BuildPopup.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Resources/UI/Popup/UI_BuildGroup/UI_BuildPopup.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Resources/UI/Popup/UI_Tutorial.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Resources/UI/Popup/UI_Tutorial.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/@Scenes/GameScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scenes/GameScene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Contents/Tutorial/StencilRaycastBlocker.shader" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Contents/Tutorial/StencilRaycastBlocker.shader" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Editor/DataTransformer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Editor/DataTransformer.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Managers/Contents/TutorialManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Managers/Contents/TutorialManager.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -25,12 +32,14 @@
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Contents/Quest/Quest.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Contents/Tutorial/BuildCancleButtonTrigger.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Contents/Tutorial/CookButtonTrigger.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Contents/Tutorial/RestButtonTrigger.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Contents/Tutorial/RoadButtonTrigger.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Contents/Tutorial/TutorialRegisterTarget.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Data/Quest/QuestDataSO.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Data/Quest/QuestSaveTester.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Data/Quest/RewardData.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Data/Quest/SaveQuestSystem.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Editor/DataTransformer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Managers/Contents/QuestManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/UI/Popup/UI_BuildingPopup.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/UI/Popup/UI_ForestPopup.cs" root0="FORCE_HIGHLIGHTING" />
@@ -43,6 +52,7 @@
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/ExecuteEvents.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/InputModules/StandaloneInputModule.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/UIBehaviour.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/17d9ce77f27a4bd2afb5ba32c9bea97646ac00/0c/70ab4c34/File.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/17d9ce77f27a4bd2afb5ba32c9bea97646ac00/21/5d579ce8/Delegate.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/17d9ce77f27a4bd2afb5ba32c9bea97646ac00/27/780fc6e5/RuntimeType.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/17d9ce77f27a4bd2afb5ba32c9bea97646ac00/33/054dba08/Type.cs" root0="FORCE_HIGHLIGHTING" />
@@ -83,21 +93,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;Unity 에디터에 연결.Unity 에디터에 연결.executor&quot;: &quot;Debug&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;Dev__Hyun__Building&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "Unity 에디터에 연결.Unity 에디터에 연결.executor": "Debug",
+    "git-widget-placeholder": "Dev__Hyun__Building",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.sourceCode.C#",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected="Unity 에디터에 연결.Unity 에디터에 연결">
     <configuration name="유닛 테스트(배치 모드)" type="RunUnityExe" factoryName="Unity Executable">
       <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\2022.3.17f1\Editor\Unity.exe" />
@@ -121,10 +132,10 @@
       <option name="PTY_MODE" value="Auto" />
       <method v="2" />
     </configuration>
-    <configuration name="Unity 에디터에 연결" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="8156">
+    <configuration name="Unity 에디터에 연결" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="8260">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="8156" />
+      <option name="pid" value="8260" />
       <option name="projectPathOnTarget" />
       <option name="runtimes">
         <list>
@@ -176,6 +187,10 @@
       <workItem from="1751931901562" duration="30836000" />
       <workItem from="1752017543331" duration="33004000" />
       <workItem from="1752192778703" duration="4545000" />
+      <workItem from="1752291849978" duration="5625000" />
+      <workItem from="1752320515263" duration="11066000" />
+      <workItem from="1752379932996" duration="2171000" />
+      <workItem from="1752413011858" duration="18143000" />
     </task>
     <servers />
   </component>
@@ -209,13 +224,13 @@
         </breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/@Scripts/Managers/Contents/BattleManager.cs</url>
-          <line>57</line>
+          <line>58</line>
           <properties documentPath="C:\UnityProjects\git\waefwa\DalgomMeowMeow\Assets\@Scripts\Managers\Contents\BattleManager.cs" containingFunctionPresentation="메서드 'Update'">
             <startOffsets>
-              <option value="1760" />
+              <option value="1851" />
             </startOffsets>
             <endOffsets>
-              <option value="1797" />
+              <option value="1863" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="15" />

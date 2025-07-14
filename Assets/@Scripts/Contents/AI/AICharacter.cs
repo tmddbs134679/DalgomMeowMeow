@@ -120,7 +120,7 @@ public class AICharacter : BaseObject
         currentStamina = Data.CurrentStamina;
         currentExp = Data.CurrentExp;
         MaxExp = Data.MaxExp;
-        LongPressClick();
+        if (!BuildingPlacer.Instance.isAI)LongPressClick();
     }
 
 

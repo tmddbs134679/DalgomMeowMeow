@@ -155,71 +155,71 @@ public class GameManager
             return;
         }
 
-
-
-
+        #region 초기 생성 Test
         // 최초 생성
         var newChar = new Character();
         newChar.Init("A10002", new Vector3(39f, 0, 27f)); // 위치 초기값
         newChar.SetInfo(Managers.Data.CreatureDic["A10002"]);
         _characters[newChar.UniqueId] = newChar;
 
-        var newCharTest = new Character();
-        newCharTest.Init("A10002", new Vector3(39f, 0, 27f)); // 위치 초기값
-        newCharTest.SetInfo(Managers.Data.CreatureDic["A10002"]);
-        _characters[newCharTest.UniqueId] = newCharTest;
+        //var newCharTest = new Character();
+        //newCharTest.Init("A10002", new Vector3(39f, 0, 27f)); // 위치 초기값
+        //newCharTest.SetInfo(Managers.Data.CreatureDic["A10002"]);
+        //_characters[newCharTest.UniqueId] = newCharTest;
 
-        var newChar1 = new Character();
-        newChar1.Init("A10006", new Vector3(38f, 0, 27f)); // 위치 초기값
-        newChar1.SetInfo(Managers.Data.CreatureDic["A10006"]);
-        _characters[newChar1.UniqueId] = newChar1;
+        //var newChar1 = new Character();
+        //newChar1.Init("A10006", new Vector3(38f, 0, 27f)); // 위치 초기값
+        //newChar1.SetInfo(Managers.Data.CreatureDic["A10006"]);
+        //_characters[newChar1.UniqueId] = newChar1;
 
-        var newChar2 = new Character();
-        newChar2.Init("A10003", new Vector3(38f, 0, 27)); // 위치 초기값
-        newChar2.SetInfo(Managers.Data.CreatureDic["A10003"]);
-        _characters[newChar2.UniqueId] = newChar2;
+        //var newChar2 = new Character();
+        //newChar2.Init("A10003", new Vector3(38f, 0, 27)); // 위치 초기값
+        //newChar2.SetInfo(Managers.Data.CreatureDic["A10003"]);
+        //_characters[newChar2.UniqueId] = newChar2;
 
-        var newChar3 = new Character();
-        newChar3.Init("A10001", new Vector3(38f, 0, 27)); // 위치 초기값
-        newChar3.SetInfo(Managers.Data.CreatureDic["A10001"]);
-        _characters[newChar3.UniqueId] = newChar3;
+        //var newChar3 = new Character();
+        //newChar3.Init("A10001", new Vector3(38f, 0, 27)); // 위치 초기값
+        //newChar3.SetInfo(Managers.Data.CreatureDic["A10001"]);
+        //_characters[newChar3.UniqueId] = newChar3;
 
+        //// 초기 장비 생성
+        //Equipment eq1 = new Equipment("E0001");
+        //Equipment eq2 = new Equipment("E0002");
+        //Equipment eq3 = new Equipment("E0003");
+        //Equipment eq4 = new Equipment("E0004");
+        //Equipment eq5 = new Equipment("E0005");
+        //Equipment eq6 = new Equipment("E0006");
+        //Equipment eq7 = new Equipment("E0007");
+        //Equipment eq8 = new Equipment("E0101");
+        //Equipment eq9 = new Equipment("E0102");
+        //Equipment eq10 = new Equipment("E0201");
+        //Equipment eq11 = new Equipment("E0202");
+        //Equipment eq12 = new Equipment("E0203");
+        //Equipment eq13 = new Equipment("E0205");
+        //Equipment eq14 = new Equipment("E0207");
+        //Equipment eq15 = new Equipment("E0001");
+        //Equipment eq16 = new Equipment("E0001");
 
+        //OwnedEquipments.Add(eq1);
+        //OwnedEquipments.Add(eq2);
+        //OwnedEquipments.Add(eq3);
+        //OwnedEquipments.Add(eq4);
+        //OwnedEquipments.Add(eq5);
+        //OwnedEquipments.Add(eq6);
+        //OwnedEquipments.Add(eq7);
+        //OwnedEquipments.Add(eq8);
+        //OwnedEquipments.Add(eq9);
+        //OwnedEquipments.Add(eq10);
+        //OwnedEquipments.Add(eq11);
+        //OwnedEquipments.Add(eq12);
+        //OwnedEquipments.Add(eq13);
+        //OwnedEquipments.Add(eq14);
+        //OwnedEquipments.Add(eq15);
+        //OwnedEquipments.Add(eq16);
 
-        // 초기 장비 생성
-        Equipment eq1 = new Equipment("E0001");
-        Equipment eq2 = new Equipment("E0002");
-        Equipment eq3 = new Equipment("E0003");
-        Equipment eq4 = new Equipment("E0004");
-        Equipment eq5 = new Equipment("E0005");
-        Equipment eq6 = new Equipment("E0006");
-        Equipment eq7 = new Equipment("E0007");
-        Equipment eq8 = new Equipment("E0101");
-        Equipment eq9 = new Equipment("E0102");
-        Equipment eq10 = new Equipment("E0201");
-        Equipment eq11 = new Equipment("E0202");
-        Equipment eq12 = new Equipment("E0203");
-        Equipment eq13 = new Equipment("E0205");
-        Equipment eq14 = new Equipment("E0207");
-        Equipment eq15 = new Equipment("E0001");
-        Equipment eq16 = new Equipment("E0001");
+        #endregion
 
-        OwnedEquipments.Add(eq1);
-        OwnedEquipments.Add(eq2);
-        OwnedEquipments.Add(eq3);
-        OwnedEquipments.Add(eq4);
-        OwnedEquipments.Add(eq5);
-        OwnedEquipments.Add(eq6);
-        OwnedEquipments.Add(eq7);
-        OwnedEquipments.Add(eq8);
-        OwnedEquipments.Add(eq9);
-        OwnedEquipments.Add(eq10);
-        OwnedEquipments.Add(eq11);
-        OwnedEquipments.Add(eq12);
-        OwnedEquipments.Add(eq13);
-        OwnedEquipments.Add(eq14);
-        OwnedEquipments.Add(eq15);
-        OwnedEquipments.Add(eq16);
+        Gold += 10000;
 
         SaveGame();
         IsLoaded = true;
@@ -323,6 +323,7 @@ public class GameManager
 
         equipment.EquippedByCharacterId = targetCharacter.UniqueId;
         equipment.IsEquipped = true;
+        equipment.IsConfirmed = true;
 
         if (CharactersInScene.TryGetValue(uniqueId, out var ai))
             AttachEquipmentToCharacter(ai, equipment);
@@ -461,6 +462,8 @@ public class GameManager
             return null;
 
         Equipment equip = new Equipment(key);
+        equip.IsConfirmed = false;
+
         OwnedEquipments.Add(equip);
         EquipInfoChanged?.Invoke();
 
@@ -506,7 +509,7 @@ public class GameManager
     }
 
 
-    public AICharacter SpawnRandomGachaCharacter(Vector3 spawnPos)
+    public AICharacter SpawnRandomGachaCharacter()
     {
         string creatureId = DrawRandomCreature();
 
@@ -516,10 +519,10 @@ public class GameManager
         }
 
         Character newChar = new Character();
-        newChar.Init(creatureId, spawnPos);
+        newChar.Init(creatureId, Vector3.zero);
         newChar.SetInfo(creatureData);
 
-        AICharacter aiChar = Managers.Object.Spawn<AICharacter>(spawnPos, creatureId, isReplica: false);
+        AICharacter aiChar = Managers.Object.Spawn<AICharacter>(Vector3.zero, creatureId, isReplica: false);
 
         if (aiChar == null)
         {
@@ -527,6 +530,7 @@ public class GameManager
         }
         aiChar.Init();
         aiChar.SetInfo(newChar);
+
 
         return aiChar;
     }
@@ -541,18 +545,36 @@ public class GameManager
         var gachaEntries = Managers.Data.GachaTableDataDic.Values.
             Where(item => item.Grade == grade).ToList();
 
-        int index = UnityEngine.Random.Range(0, gachaEntries.Count);
-        string key = gachaEntries[index].EquipmentID;
 
-        if (Managers.Data.EquipmentDic.ContainsKey(key))
+        for(int i = 1; i <= count; i++)
         {
-            equipments.Add(AddEquipment(key));
-        }
+            int index = UnityEngine.Random.Range(0, gachaEntries.Count);
+            string key = gachaEntries[index].EquipmentID;
 
+            if (Managers.Data.EquipmentDic.ContainsKey(key))
+            {
+                equipments.Add(AddEquipment(key));
+            }
+        }
+  
 
         return equipments;
     }
 
+    public List<Character> DoCharacterGacha(int count)
+    {
+        for(int i = 1; i <= count; i++)
+        {
+            SpawnRandomGachaCharacter();
+        }
+
+        OnCharacterChanged?.Invoke();
+        SaveGame();
+
+    
+        return null;
+
+    }
 
     public EEquipmentGrade GetRandomGrade(float[] prob)
     {

@@ -9,7 +9,7 @@ public class UI_EquipSlot : UI_Base
     #region Enum
     enum GameObjects
     {
- 
+        NewTextObject
     }
 
     enum Buttons
@@ -60,6 +60,10 @@ public class UI_EquipSlot : UI_Base
 
         _equipment = equipment;
 
+
+        GetObject((int)GameObjects.NewTextObject).SetActive(!_equipment.IsConfirmed);
+
+
         Sprite spr = Managers.Resource.Load<Sprite>(_equipment.EquipmentData.SpriteName);
         GetImage((int)Images.EquipImage).sprite = spr;
 
@@ -88,6 +92,12 @@ public class UI_EquipSlot : UI_Base
     {
         UI_EquipmentInfoPopup popup = Managers.UI.ShowPopupUI<UI_EquipmentInfoPopup>();
         popup.SetInfo(_equipment);
+
+        _equipment.IsConfirmed = true;
+
+        GetObject((int)GameObjects.NewTextObject).SetActive(!_equipment.IsConfirmed);
+
+        Managers.Game.SaveGame();
     }
 
 }

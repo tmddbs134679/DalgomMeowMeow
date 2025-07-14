@@ -16,6 +16,7 @@ public class Equipment
 
     bool _isEquipped = false;
     public bool IsOwned { get; set; } = false;
+    public bool IsConfirmed { get; set; } = false;
     public string EquippedByCharacterId { get; set; } = null;
 
     public bool IsEquipped

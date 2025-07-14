@@ -32,7 +32,6 @@ public class UI_EquipPopup : UI_Popup
     }
     #endregion
 
-
     EEquipmentType _currentType;
     private void Awake()
     {
@@ -124,8 +123,14 @@ public class UI_EquipPopup : UI_Popup
     }
     private void OnClickExitButton()
     {
-       gameObject.SetActive(false);
+
+        //Nofity Check
+        (Managers.UI.SceneUI as UI_GameScene).CheckNotify();
+
+        gameObject.SetActive(false);
         _currentType = Define.EEquipmentType.None;
+
+
     }
 
 
@@ -133,5 +138,7 @@ public class UI_EquipPopup : UI_Popup
     {
         GetObject((int)GameObjects.EquipGroupObject).DestroyChilds();
         OnClickTypeToggle(_currentType);
+
+
     }
 }

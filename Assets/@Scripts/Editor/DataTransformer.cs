@@ -27,6 +27,9 @@ public class DataTransformer : EditorWindow
         ParseMaterialData("Material");
         ParseEquipmentGacha("EquipmentGacha");
         ParseSkillData("Skill");
+        ParseBuidingLevelData("BuildingLevel");
+        ParseQuestData("Quest");
+        
     }
 
     private static void ParseMaterialData(string filename)
@@ -304,10 +307,10 @@ public class DataTransformer : EditorWindow
     private static void ParseSkillData(string filename)
     {
         SkillDataDataLoader loader = new SkillDataDataLoader();
-
+    
         #region ParseSkillData
         string[] lines = File.ReadAllText($"{Application.dataPath}/@Resources/Data/Excel/{filename}Data.csv").Split("\n");
-
+    
         for (int y = 1; y < lines.Length; y++)
         {
             string[] row = lines[y].Replace("\r", "").Split(',');
@@ -315,25 +318,91 @@ public class DataTransformer : EditorWindow
                 continue;
             if (string.IsNullOrEmpty(row[0]))
                 continue;
-
+    
             int i = 0;
-
+    
             SkillData skill = new SkillData();
             skill.DataId = ConvertValue<string>(row[i++]);
             skill.Name = ConvertValue<string>(row[i++]);
             skill.Description = ConvertValue<string>(row[i++]);
             skill.CoolTime = ConvertValue<float>(row[i++]);
-
+    
             loader.skills.Add(skill);
         }
         #endregion
-
+    
         string jsonStr = JsonConvert.SerializeObject(loader, Formatting.Indented);
         File.WriteAllText($"{Application.dataPath}/@Resources/Data/JsonData/{filename}Data.json", jsonStr);
         AssetDatabase.Refresh();
     }
 
-
+    private static void ParseBuidingLevelData(string filename)
+    {
+        BuildingLevelDataLoader loader = new BuildingLevelDataLoader();
+    
+        #region ParseBuildingLevelData
+        string[] lines = File.ReadAllText($"{Application.dataPath}/@Resources/Data/Excel/{filename}Data.csv").Split("\n");
+    
+        for (int y = 1; y < lines.Length; y++)
+        {
+            string[] row = lines[y].Replace("\r", "").Split(',');
+            if (row.Length == 0)
+                continue;
+            if (string.IsNullOrEmpty(row[0]))
+                continue;
+    
+            int i = 0;
+    
+            BuildingLevelData buildingLevel = new BuildingLevelData();
+            buildingLevel.BuildingId = ConvertValue<string>(row[i++]);
+            buildingLevel.Level = ConvertValue<int>(row[i++]);
+            buildingLevel.UpgradeCost = ConvertValue<int>(row[i++]);
+            buildingLevel.ProducedFoodId = ConvertValue<string>(row[i++]);
+    
+            loader.levels.Add(buildingLevel);
+        }
+        #endregion
+    
+        string jsonStr = JsonConvert.SerializeObject(loader, Formatting.Indented);
+        File.WriteAllText($"{Application.dataPath}/@Resources/Data/JsonData/{filename}Data.json", jsonStr);
+        AssetDatabase.Refresh();
+    }
+    
+    private static void ParseQuestData(string filename)
+    {
+        QuestDataLoader loader = new QuestDataLoader();
+    
+        #region ParseQuestData
+        string[] lines = File.ReadAllText($"{Application.dataPath}/@Resources/Data/Excel/{filename}Data.csv").Split("\n");
+    
+        for (int y = 1; y < lines.Length; y++)
+        {
+            string[] row = lines[y].Replace("\r", "").Split(',');
+            if (row.Length == 0)
+                continue;
+            if (string.IsNullOrEmpty(row[0]))
+                continue;
+    
+            int i = 0;
+    
+            QuestData quest = new QuestData();
+            quest.QuestId = ConvertValue<string>(row[i++]);
+            quest.Title = ConvertValue<string>(row[i++]);
+            quest.QuestType = ConvertValue<EQuestType>(row[i++]);
+            quest.QuestConditionType = ConvertValue<EQuestConditionType>(row[i++]);
+            quest.TargetType = ConvertValue<ETargetType>(row[i++]);
+            quest.GoalCount = ConvertValue<int>(row[i++]);
+            quest.Reward = ConvertValue<int>(row[i++]);
+            quest.PreviousQuestID = ConvertValue<string>(row[i++]);
+    
+            loader.quests.Add(quest);
+        }
+        #endregion
+    
+        string jsonStr = JsonConvert.SerializeObject(loader, Formatting.Indented);
+        File.WriteAllText($"{Application.dataPath}/@Resources/Data/JsonData/{filename}Data.json", jsonStr);
+        AssetDatabase.Refresh();
+    }
 
     public static T ConvertValue<T>(string value)
     {

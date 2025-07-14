@@ -75,7 +75,7 @@ public class CookingBuilding : BuildingBase
         
         deliveredVegetableCount = 0; // 생산 후 초기화
         //(Managers.UI.SceneUI as UI_GameScene).ResetCookItem();
-        QuestManager.Instance.OnEvent(QuestConditionType.Collect, TargetType.Soup);
+        QuestManager.Instance.OnEvent(Define.EQuestConditionType.Collect, Define.ETargetType.Soup);
 
 
         // QuestManager.Instance.GiveReward("Soup_10");

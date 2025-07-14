@@ -27,6 +27,10 @@ public class ArrayBuildPosEditor : Editor
         {
             Build.LoadMapData();
         }
-        
+
+        if (GUILayout.Button("기초 맵 불러오기"))
+        {
+            Build.LoadProtoTypeMapData();
+        }
     }
 }

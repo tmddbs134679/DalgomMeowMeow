@@ -2,6 +2,7 @@ using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,7 +15,8 @@ public class UI_GameScene : UI_Scene
     #region Enum
     enum GameObjects
     {
-        StorageObject
+        StorageObject,
+        QuickNotifyObject
     }
 
     enum Buttons
@@ -130,6 +132,18 @@ public class UI_GameScene : UI_Scene
         }
     }
 
+
+
+    void Refresh()
+    {
+        GetText((int)Texts.PlayerGoldText).text = Managers.Game.Gold.ToString();
+        GetText((int)Texts.CreatureCountText).text = Managers.Game.Characters.Count.ToString();
+        GetText((int)Texts.DiaText).text = Managers.Game.Dia.ToString();
+
+        CheckNotify();
+    }
+
+    #region Food
     public void ResetCookItem(Food food)
     {
         UI_FoodItem item = Managers.UI.MakeSubItem<UI_FoodItem>(GetObject((int)GameObjects.StorageObject).transform);
@@ -143,7 +157,7 @@ public class UI_GameScene : UI_Scene
 
         Vector3 removedPos = slot.transform.localPosition;
 
-        Managers.Resource.Destroy(slot.gameObject); 
+        Managers.Resource.Destroy(slot.gameObject);
 
         StartCoroutine(AnimateForwardShift(removedPos));
     }
@@ -183,14 +197,6 @@ public class UI_GameScene : UI_Scene
         return (obj.transform.GetChild(0) as RectTransform).rect.width;
     }
 
-
-    void Refresh()
-    {
-        GetText((int)Texts.PlayerGoldText).text = Managers.Game.Gold.ToString();
-        GetText((int)Texts.CreatureCountText).text = Managers.Game.Characters.Count.ToString();
-        GetText((int)Texts.DiaText).text = Managers.Game.Dia.ToString();
-    }
-
     void AddFoodSlot(Food food)
     {
         var layout = GetObject((int)GameObjects.StorageObject).GetComponent<HorizontalLayoutGroup>();
@@ -224,6 +230,8 @@ public class UI_GameScene : UI_Scene
         }
     }
 
+    #endregion
+
     #region Battle
 
 
@@ -236,4 +244,13 @@ public class UI_GameScene : UI_Scene
     }
     #endregion
 
+
+    public void CheckNotify()
+    {
+        //장비
+        if (Managers.Game.OwnedEquipments.Any(e => !e.IsConfirmed))
+            GetObject((int)GameObjects.QuickNotifyObject).SetActive(true);
+        else
+            GetObject((int)GameObjects.QuickNotifyObject).SetActive(false);
+    }
 }
