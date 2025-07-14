@@ -39,7 +39,7 @@ public class GameManager
     public GameData _gameData = new GameData();
 
 
-    private Dictionary<string, Character> _characters = new Dictionary<string, Character>();
+    public Dictionary<string, Character> _characters = new Dictionary<string, Character>();
 
     public Dictionary<string, Character> CharacterMap = new();
     // 씬에 존재하는 실제 캐릭터 오브젝트
@@ -519,10 +519,10 @@ public class GameManager
         }
 
         Character newChar = new Character();
-        newChar.Init(creatureId, Vector3.zero);
+        newChar.Init(creatureId, (new Vector3(38, 0, 26)));
         newChar.SetInfo(creatureData);
 
-        AICharacter aiChar = Managers.Object.Spawn<AICharacter>(Vector3.zero, creatureId, isReplica: false);
+        AICharacter aiChar = Managers.Object.Spawn<AICharacter>(new Vector3(38, 0, 26), creatureId, isReplica: false);
 
         if (aiChar == null)
         {
@@ -530,7 +530,7 @@ public class GameManager
         }
         aiChar.Init();
         aiChar.SetInfo(newChar);
-
+        _characters[newChar.UniqueId] = newChar;
 
         return aiChar;
     }
