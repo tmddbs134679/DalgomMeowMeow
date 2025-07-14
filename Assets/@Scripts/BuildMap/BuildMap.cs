@@ -13,7 +13,7 @@ public class BuildMap : MonoBehaviour
     public ArrayBuildPos arrayBuildPos;
 
     public NavMeshSurface surface;
-    private Dictionary<Vector2Int, GameObject> _spawnedBuilds = new Dictionary<Vector2Int, GameObject>();
+    private Dictionary<int, GameObject> _spawnedBuilds = new Dictionary<int, GameObject>();
     public Dictionary<String, int> valueCounts = new Dictionary<string, int>();
     public Dictionary<String, int> filtervalueCounts = new Dictionary<string, int>();
     private Dictionary<int, BuildData> _buildDataMap = new Dictionary<int, BuildData>();
@@ -38,17 +38,10 @@ public class BuildMap : MonoBehaviour
             {
                 region.Id = data.UnlockId;
             }
-            _spawnedBuilds.Add(GridKey(data.posX, data.posZ), go);
+            _spawnedBuilds.Add(data.UniqueId, go);
         }
 
         valueCounts = _spawnedBuilds.Values
-                          .GroupBy(v => v.name)
-                          .ToDictionary(g => g.Key, g => g.Count());
-
-        var excludeNames = new List<string> { "Road" };
-
-        filtervalueCounts = _spawnedBuilds.Values
-        .Where(v => !excludeNames.Contains(v.name))
                           .GroupBy(v => v.name)
                           .ToDictionary(g => g.Key, g => g.Count());
 
@@ -59,7 +52,7 @@ public class BuildMap : MonoBehaviour
     {
         foreach (BuildData data in arrayBuildPos.baseBuilding)
         {
-            Vector2Int key = GridKey(data.posX, data.posZ);
+            int key = data.UniqueId;
 
             if (_spawnedBuilds.TryGetValue(key, out var build))
             {
@@ -90,17 +83,12 @@ public class BuildMap : MonoBehaviour
                     valueCounts[go.name]++;
                 else
                     valueCounts[go.name] = 1;
-
-                if (filtervalueCounts.ContainsKey(go.name))
-                    filtervalueCounts[go.name]++;
-                else
-                    filtervalueCounts[go.name] = 1;
             }
         }
     }
-    public void Remove(Vector2Int key)
+    public void Remove(int key)
     {
-        _spawnedBuilds.Remove(key);
+
         if (_spawnedBuilds.TryGetValue(key, out GameObject go))
         {
             if (valueCounts.ContainsKey(go.name))
@@ -111,23 +99,15 @@ public class BuildMap : MonoBehaviour
             }
             else
                 Managers.Debug.Log($"Remove null 발생", Define.EDebugType.Building);
-
-            if (filtervalueCounts.ContainsKey(go.name))
-            {
-                filtervalueCounts[go.name]--;
-                if (filtervalueCounts[go.name] <= 0)
-                    filtervalueCounts.Remove(go.name);
-            }
-            else
-                Managers.Debug.Log($"Remove null 발생", Define.EDebugType.Building);
         }
+                _spawnedBuilds.Remove(key);
     }
 
     public void ColliderAllOn()
     {
         foreach (BuildData data in arrayBuildPos.baseBuilding)
         {
-            Vector2Int key = GridKey(data.posX, data.posZ);
+            int key = data.UniqueId;
 
             if (_spawnedBuilds.TryGetValue(key, out GameObject obj) && obj != null)
             {
@@ -146,7 +126,7 @@ public class BuildMap : MonoBehaviour
     {
         foreach (BuildData data in arrayBuildPos.baseBuilding)
         {
-            Vector2Int key = GridKey(data.posX, data.posZ);
+            int key = data.UniqueId;
             if (_spawnedBuilds.TryGetValue(key, out GameObject obj) && obj != null)
             {
                 Collider col = obj.GetComponent<Collider>();
