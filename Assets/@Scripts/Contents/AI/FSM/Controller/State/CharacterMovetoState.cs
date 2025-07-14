@@ -35,6 +35,10 @@ namespace Scripts.Contents.AI.FSM.State
         {
             base.OnUpdate(deltaTime);
             // 일정 거리 이내면 도착한 것으로 판단
+            if (character.currentBuilding == null)
+            {
+                character.characterAction.Idle();
+            }
             if (Vector3.Distance(character.transform.position, targetPosition) < 0.5f)
             {
                 isArrived = true;
