@@ -70,8 +70,10 @@ public class DraggableObject : MonoBehaviour, IDraggable
             isDrag = true;
             Managers.Debug.Log($"{this}+롱프레스 감지!", Define.EDebugType.Drag);
 
-            Managers.UI.OnLongPress.Invoke();
-
+            if (Managers.UI.OnLongPress != null)
+            {
+                Managers.UI.OnLongPress.Invoke();
+            }
             Managers.UI.ShowPopupUI<UI_SaveMoveBuild>();
             StartCoroutine(WaitAndSetup());
             //건물설치함수 불러오기

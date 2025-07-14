@@ -65,7 +65,13 @@ public class AIController : BaseController<AICharacter>
           registedState.TryGetValue(Define.EAIState.Deliver, out BaseState<AICharacter> deliverBase) &&
             deliverBase is CharacterDeliverState deliveryTo)
         {
-            deliveryTo.SetDestination(targetPos - new Vector3(1.5f,0, 1.5f));
+            if (targetPos == null)
+            {
+                ChangeState(Define.EAIState.Idle);
+                return;
+            }
+
+            deliveryTo.SetDestination(targetPos - new Vector3(1.5f, 0, 1.5f));
             ChangeState(Define.EAIState.Deliver);
             return;
         }
@@ -95,19 +101,19 @@ public class AIController : BaseController<AICharacter>
 
     #region 건물 탐색
 
-    private Vector3 FindNearestBuilding(Define.EAIState action)
+    public Vector3 FindNearestBuilding(Define.EAIState action)
     {
         var type = GetBuildingType(action);
 
         if (action == Define.EAIState.Deliver)
         {
-            var nearbuilding = FineOnlyBuilding(type);
+            var nearbuilding = FineOnlyBuilding(Define.BuildingType.Cooking);
 
             return nearbuilding.transform.position;
         }
 
         var building = FindAvailableBuilding(type);
-        
+
 
         character.currentBuilding = building;
 
@@ -122,8 +128,12 @@ public class AIController : BaseController<AICharacter>
 
     public BuildingBase FineOnlyBuilding(Define.BuildingType type)
     {
+
         return BuildingManager.Instance._buildings
-            .FirstOrDefault(b => b.BuildingData.BuildingType == type);
+      .Where(b => b != null && b.gameObject != null)
+      .Where(b => b.BuildingData.BuildingType == type)
+      .OrderBy(b => Vector3.Distance(b.transform.position, character.transform.position))
+      .FirstOrDefault();
     }
 
     public BuildingBase FindAvailableBuilding(Define.BuildingType type)
@@ -160,7 +170,7 @@ public class AIController : BaseController<AICharacter>
     public void NavRotateFalse()
     {
         character.nav.updateRotation = false;
-        
+
         if (currentState is CharacterRestState)
         {
             character.transform.eulerAngles = new Vector3(0f, -180f, 0f);
@@ -227,9 +237,9 @@ public class AIController : BaseController<AICharacter>
         character.nav.SetDestination(destination);
     }
 
-    private Vector3 GetRandomNavPosition(Vector3 origin, Vector3 range )
+    private Vector3 GetRandomNavPosition(Vector3 origin, Vector3 range)
     {
-        for(int i = 0; i < 100; i++) // 최대 30번 시도
+        for (int i = 0; i < 100; i++) // 최대 30번 시도
         {
             var randomPoint = origin + new Vector3(
                 Random.Range(-range.x, range.x),
@@ -274,7 +284,7 @@ public class AIController : BaseController<AICharacter>
         {
             if (other == character) continue; // 자기 자신 제외
             if (!other._isHelloReady) continue;
-            if(other.isClicked) continue;
+            if (other.isClicked) continue;
             if (other.isFollowing) continue;// 클릭된 캐릭터 제외
 
 
