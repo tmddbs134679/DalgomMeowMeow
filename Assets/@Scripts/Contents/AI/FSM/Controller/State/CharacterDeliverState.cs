@@ -35,13 +35,13 @@ namespace Scripts.Contents.AI.FSM.State
             if (elapsedTime > 2 && !isArrived)
             {
                 character.UseStamina(2f);
-                targetPosition = character.Controller.FindNearestBuilding(state);
-                character.Controller.Move(targetPosition);
+                targetPosition = character.Controller.FindNearestBuilding(state) - new Vector3(1.5f, 0, 1.5f);
+                character.Controller.Move(targetPosition );
                 elapsedTime = 0f; 
                 return;
             }
 
-            if (elapsedTime > 1.2f && isArrived)
+            if (elapsedTime > 1.3f && isArrived)
             {
                 character.characterAction.Idle();
                 return;
@@ -51,7 +51,7 @@ namespace Scripts.Contents.AI.FSM.State
                 !isArrived)
             {
                 isArrived = true;
-                character.animator.SetInteger("animation", 50);
+                character.SetAnimation(50); // 배달 완료 애니메이션 설정
                 character.OnAnimalDelivered();
                 elapsedTime = 0f; // Reset elapsed time after delivery
                 return;
