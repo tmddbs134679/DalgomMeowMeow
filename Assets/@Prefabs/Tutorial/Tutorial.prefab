@@ -12,8 +12,6 @@ GameObject:
   - component: {fileID: 461224095354236763}
   - component: {fileID: 6142365039464825083}
   - component: {fileID: 1862639142888227}
-  - component: {fileID: 8502903736129702496}
-  - component: {fileID: 8889786749938852252}
   - component: {fileID: 2636831832402792932}
   - component: {fileID: 5709076795637005448}
   m_Layer: 0
@@ -75,32 +73,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buildButton: {fileID: 0}
---- !u!114 &8502903736129702496
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1733691765119865347}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c465eab7f9cdc94f94a1871a0c26eee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cookButton: {fileID: 0}
---- !u!114 &8889786749938852252
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1733691765119865347}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30143c1e085dbdb49950114f07fbbc48, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cookButton: {fileID: 0}
 --- !u!114 &2636831832402792932
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -304,7 +276,7 @@ MonoBehaviour:
   - Title: "\uB18D\uC7A5 \uBC84\uD2BC"
     Description: "\uB18D\uC7A5\uC744 \uAC74\uC124\uD558\uC138\uC694"
     HighlightTarget: {fileID: 0}
-    HighlightTargetKey: 
+    HighlightTargetKey: FarmButton
     OnStart:
       m_PersistentCalls:
         m_Calls: []
@@ -322,7 +294,7 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
   - Title: "\uBE4C\uB4DC\uCE94\uC2AC"
-    Description: "\uB18D\uC7A5\uC774 \uC644\uC131\uB418\uC5C8\uC2B5\uB2C8\uB2E4"
+    Description: "\uD29C\uD1A0\uB9AC\uC5BC \uC644\uB8CC"
     HighlightTarget: {fileID: 0}
     HighlightTargetKey: CancleButton
     OnStart:
