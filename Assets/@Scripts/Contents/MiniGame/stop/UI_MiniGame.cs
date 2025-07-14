@@ -41,6 +41,7 @@ public class UI_MiniGame : UI_Popup
             //실패
             return;
         }
+        GetObject((int)GameObjects.Player).transform.position += Vector3.right;
     }
 
 }
