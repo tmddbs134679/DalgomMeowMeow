@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,9 +8,8 @@ public class QuestManager : MonoBehaviour
     public static QuestManager Instance;
     
     private Dictionary<string, Quest> _quests = new();
-    private Dictionary<(QuestConditionType, TargetType), List<Quest>> _questIndex = new();
+    private Dictionary<(Define.EQuestConditionType, Define.ETargetType), List<Quest>> _questIndex = new();
 
-    public List<QuestDataSO> questDataList;
     public event Action OnQuestUpdated;
 
     void Awake()
@@ -20,21 +20,34 @@ public class QuestManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
         else Destroy(gameObject);
-        foreach (var data in questDataList)
+
+        
+        
+    }
+
+    private IEnumerator Start()
+    {
+        yield return new WaitUntil(() => Managers.Data.QuestDataDic.Count > 0);
+
+        InitQuest();
+    }
+
+    public void InitQuest()
+    {
+        foreach (var kvp in Managers.Data.QuestDataDic)
         {
+            var data = kvp.Value;
             var quest = new Quest(data);
             _quests[data.QuestId] = quest;
 
-            var key = (data.Condition, data.TargetType);
-
+            var key = (data.QuestConditionType, data.TargetType);
             if (!_questIndex.ContainsKey(key))
                 _questIndex[key] = new List<Quest>();
-
             _questIndex[key].Add(quest);
         }
     }
 
-    public void OnEvent(QuestConditionType condition, TargetType target)
+    public void OnEvent(Define.EQuestConditionType condition, Define.ETargetType target)
     {
         var key = (condition, target);
         if (!_questIndex.TryGetValue(key, out var questList)) return;
@@ -66,7 +79,7 @@ public class QuestManager : MonoBehaviour
         foreach (var quest in _quests.Values)
         {
             if (quest.State == QuestProgressState.NotStarted &&
-                quest.QuestData.PreviousQuestId == completedQuestId)
+                quest.QuestData.PreviousQuestID == completedQuestId)
             {
                 quest.State = QuestProgressState.InProgress;
                 quest.SetProgress(carriedProgress); //  누적 진행도 반영
@@ -103,7 +116,7 @@ public class QuestManager : MonoBehaviour
             List<Quest> list = new();
             foreach (var quest in _quests.Values)
             {
-                if (quest.QuestData.Type == QuestType.Daily)
+                if (quest.QuestData.QuestType == Define.EQuestType.Daily)
                     list.Add(quest);
             }
             return list;
@@ -117,7 +130,7 @@ public class QuestManager : MonoBehaviour
             List<Quest> list = new();
             foreach (var quest in _quests.Values)
             {
-                if (quest.QuestData.Type == QuestType.Achievement)
+                if (quest.QuestData.QuestType == Define.EQuestType.Achievement)
                     list.Add(quest);
             }
             return list;

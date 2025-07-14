@@ -48,13 +48,13 @@ public class UI_QuestSlot : UI_Base
         {
             QuestManager.Instance.GiveReward(_quest.QuestData.QuestId);
             
-            if (_quest.QuestData.Type == QuestType.Daily)
+            if (_quest.QuestData.QuestType == Define.EQuestType.Daily)
             {
                 // Daily 퀘스트는 클릭 시 맨 아래로 이동
                 transform.SetAsLastSibling();
             }
             // 업적일 경우 UI 갱신 (다음 퀘스트 등장)
-            if (_quest.QuestData.Type == QuestType.Achievement)
+            if (_quest.QuestData.QuestType == Define.EQuestType.Achievement)
             {
                 UI_QuestPopup popup = GetComponentInParent<UI_QuestPopup>();
                 popup?.CreateAchievementSlots();

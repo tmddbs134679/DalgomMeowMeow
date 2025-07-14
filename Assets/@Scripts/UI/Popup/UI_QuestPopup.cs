@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class UI_QuestPopup : UI_Popup
 {
-    QuestType _currentTab = QuestType.Daily;
+    Define.EQuestType _currentTab = Define.EQuestType.Daily;
     private List<UI_QuestSlot> _questSlots = new();
 
     enum GameObjects
@@ -47,21 +47,21 @@ public class UI_QuestPopup : UI_Popup
 
     private void RefreshUI()
     {
-        if (_currentTab == QuestType.Daily)
+        if (_currentTab ==  Define.EQuestType.Daily)
             CreateQuestSlots();
-        else if (_currentTab == QuestType.Achievement)
+        else if (_currentTab ==  Define.EQuestType.Achievement)
             CreateAchievementSlots();
     }
 
     private void DailyButton()
     {
-        _currentTab = QuestType.Daily;
+        _currentTab =  Define.EQuestType.Daily;
         CreateQuestSlots();
     }
 
     private void AchievementButton()
     {
-        _currentTab = QuestType.Achievement;
+        _currentTab =  Define.EQuestType.Achievement;
         CreateAchievementSlots();
     }
 

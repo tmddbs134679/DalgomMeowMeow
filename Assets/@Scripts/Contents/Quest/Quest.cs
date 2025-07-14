@@ -1,3 +1,4 @@
+using Data;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +7,8 @@ public enum QuestProgressState { NotStarted, InProgress, Completed, Rewarded }
 
 public class Quest
 {
-    public QuestDataSO QuestData;
+    // public QuestDataSO QuestData;
+    public QuestData QuestData;
     public int Progress;
     public QuestProgressState State;
 
@@ -29,11 +31,11 @@ public class Quest
         this.State = data.State;
     }
     
-    public Quest(QuestDataSO data)
+    public Quest(QuestData data)
     {
         QuestData = data;
         Progress = 0;
-        State = string.IsNullOrEmpty(data.PreviousQuestId) ? QuestProgressState.InProgress : QuestProgressState.NotStarted;
+        State = string.IsNullOrEmpty(data.PreviousQuestID) ? QuestProgressState.InProgress : QuestProgressState.NotStarted;
     }
 
     public void AddProgress(int amount = 1)
@@ -54,7 +56,7 @@ public class Quest
         {
             State = QuestProgressState.Rewarded;
             Managers.Debug.Log($"[보상 지급] {QuestData.Reward}", Define.EDebugType.Building);
-            Managers.Game.Gold += QuestData.Reward.Gold;
+            Managers.Game.Gold += QuestData.Reward;
             
             // 다음 퀘스트 열기
             QuestManager.Instance.TryActivateNext(QuestData.QuestId);

@@ -2099,6 +2099,8 @@ GameObject:
   - component: {fileID: 1323309502041315913}
   - component: {fileID: 768202586475268204}
   - component: {fileID: 5978380437909188944}
+  - component: {fileID: 517536467934671571}
+  - component: {fileID: 6954019296849814734}
   m_Layer: 5
   m_Name: RestButton
   m_TagString: Untagged
@@ -2210,6 +2212,32 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &517536467934671571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3161896365746939431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30143c1e085dbdb49950114f07fbbc48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cookButton: {fileID: 0}
+--- !u!114 &6954019296849814734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3161896365746939431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa0ab7986e6129943926702e55b1d12d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RegisterKey: 
 --- !u!1 &3281254632601044653
 GameObject:
   m_ObjectHideFlags: 0
@@ -2490,6 +2518,8 @@ GameObject:
   - component: {fileID: 5577198168083971894}
   - component: {fileID: 5930397412346767812}
   - component: {fileID: 6901927893010281753}
+  - component: {fileID: 714917959451890055}
+  - component: {fileID: 5030178837350302748}
   m_Layer: 5
   m_Name: FarmButton
   m_TagString: Untagged
@@ -2601,6 +2631,31 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &714917959451890055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3793290974962738512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7ad0e19d561c9144bb7da28cefbb04e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5030178837350302748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3793290974962738512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c465eab7f9cdc94f94a1871a0c26eee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cookButton: {fileID: 0}
 --- !u!1 &4088523696190900583
 GameObject:
   m_ObjectHideFlags: 0
@@ -6646,4 +6701,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9884e37ccbc8c2a4cba30983e97f62c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roadButton: {fileID: 0}
+  cookButton: {fileID: 0}
