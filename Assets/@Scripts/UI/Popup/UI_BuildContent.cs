@@ -37,6 +37,9 @@ public class UI_BuildContent : UI_Popup
 
         Vector3 screenPos = Camera.main.WorldToScreenPoint(_tempObj.transform.position);
         GetObject((int)GameObjects.MoveUIPanel).GetComponent<RectTransform>().position = screenPos;
+  
+
+
         return true;
     }
 
