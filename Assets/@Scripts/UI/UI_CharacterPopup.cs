@@ -59,8 +59,9 @@ public class UI_CharacterPopup : UI_Popup
 
     private void OnClickExitButton()
     {
+        (Managers.UI.SceneUI as UI_GameScene).CheckNotify();
+
         gameObject.SetActive(false);
-      
     }
 
     private void Refresh()

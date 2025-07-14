@@ -11,7 +11,7 @@ public class UI_CharacterInfo : UI_Base
     #region Enum
     enum GameObjects
     {
-       
+        NewTextObject
     }
 
     enum Buttons
@@ -67,6 +67,8 @@ public class UI_CharacterInfo : UI_Base
         BindImage(typeof(Images));
 
         gameObject.BindEvent(OnClickObjectButton);
+
+        GetObject((int)GameObjects.NewTextObject).gameObject.SetActive(false);
         return true;
     }
 
@@ -74,6 +76,12 @@ public class UI_CharacterInfo : UI_Base
     {
         UI_ProfilePopup profile = Managers.UI.ShowPopupUI<UI_ProfilePopup>();
         profile.SetInfo(_character);
+
+        _character.IsConfirmed = true;
+
+        GetObject((int)GameObjects.NewTextObject).SetActive(!_character.IsConfirmed);
+
+        Managers.Game.SaveGame();
     }
 
     public void SetInfo(Character character)
@@ -83,6 +91,9 @@ public class UI_CharacterInfo : UI_Base
         // 캐릭터 이름 & 이미지
         GetImage((int)Images.CharacterImage).sprite = Managers.Resource.Load<Sprite>(_character.Data.IconLabel);
         GetText((int)Texts.CharacterName).text = _character.Name;
+
+        // Notify 체크
+        CheckNotify();
 
         // 장비 이미지 초기화
         foreach (EEquipmentType type in displayOrder)
@@ -123,5 +134,12 @@ public class UI_CharacterInfo : UI_Base
             return;
 
         GetText((int)Texts.CharacterName).text = _character.Name;
+    }
+
+
+    private void CheckNotify()
+    {
+        if(!_character.IsConfirmed)
+            GetObject((int)GameObjects.NewTextObject).gameObject.SetActive(true);
     }
 }
