@@ -144,8 +144,6 @@ namespace Data
     {
         public string BuildingId;
         public int Level;
-        public float ProductionTime;
-        public int Capacity;
         public int UpgradeCost;
         public string ProducedFoodId;
 
