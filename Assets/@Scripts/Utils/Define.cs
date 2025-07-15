@@ -158,14 +158,14 @@ public class Define
         Ticket,
         Dia
     }
-    
+
     public enum EQuestType
     {
         None,
         Daily,
         Achievement
     }
-    
+
     public enum EQuestConditionType
     {
         None,
@@ -189,4 +189,11 @@ public class Define
         0.05f,  // Epic 확률
 };
 
+
+    public enum EBuildPopUpType
+    {
+        None,
+        PopUpButton,
+        SlotButton,
+    }
 }

@@ -67,12 +67,12 @@ public class CookingBuilding : BuildingBase
 
 
         StoredCount++; //  생산 누적
-        
-        Managers.Debug.Log($"요리 완성! 누적 수량: {StoredCount}",Define.EDebugType.Building);
-    
-       Managers.Food.MakeFood(deliveredVegetableCount);
-     
-        
+
+        Managers.Debug.Log($"요리 완성! 누적 수량: {StoredCount}", Define.EDebugType.Building);
+
+        Managers.Food.MakeFood(deliveredVegetableCount);
+
+
         deliveredVegetableCount = 0; // 생산 후 초기화
         //(Managers.UI.SceneUI as UI_GameScene).ResetCookItem();
         QuestManager.Instance.OnEvent(Define.EQuestConditionType.Collect, Define.ETargetType.Soup);
@@ -88,6 +88,7 @@ public class CookingBuilding : BuildingBase
             return;
         UI_BuildContent popup = Managers.UI.ShowPopupUI<UI_BuildContent>();
         popup.SetTarget(gameObject);
+        popup.SettingOnOff(Define.EBuildPopUpType.PopUpButton);
     }
 
     public void Collect()
