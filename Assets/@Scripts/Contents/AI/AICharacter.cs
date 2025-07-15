@@ -15,7 +15,9 @@ public class AICharacter : BaseObject
     public AIController Controller { get { return _controller; } }
     private AIController _controller;
 
+    [HideInInspector]
     public EAIState loadState;
+    [HideInInspector]
     public BuildingBase loadBuilding;
 
     [HideInInspector]
@@ -71,10 +73,6 @@ public class AICharacter : BaseObject
     [SerializeField]
     private GameObject infoButton;
 
-    public float Level;
-    public float currentExp;
-    public float currentStamina;
-    public float MaxExp;
     public event Action<AICharacter> AnimalLeaved;
     public event Action<AICharacter> AnimalArrived;
     public event Action<AICharacter> AnimalDelivered;
