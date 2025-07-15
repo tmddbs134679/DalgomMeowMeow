@@ -5,6 +5,9 @@ public class PlayerCharacter : BattleCharacter
 {
     private BattleManager _battleManager;
 
+    public Material CharacterMaterial;
+    public float OutlineWidth; 
+
     protected override void Awake()
     {
         base.Awake();
@@ -14,6 +17,8 @@ public class PlayerCharacter : BattleCharacter
         SkillTrigger = Animator.StringToHash("Skill"); // 스킬 애니메이션 이름 해시 초기화
         _characterRenderer = GetComponentsInChildren<SkinnedMeshRenderer>();
         CharacterObject = transform.GetChild(0);
+
+        
     }
     protected override void Start()
     {
@@ -22,7 +27,13 @@ public class PlayerCharacter : BattleCharacter
         _originalPosition = transform.localPosition;
         string numberPart = SkillID.Replace("K","").Replace(".sprite",""); // 시작하면 숫자 파싱
         Skillnum = int.Parse(numberPart);
+    }
 
+    public void SetOutline()
+    {
+        CharacterMaterial = CharacterObject.GetComponentInChildren<SkinnedMeshRenderer>().material; // 캐릭터 머티리얼 초기화
+        OutlineWidth = CharacterMaterial.GetFloat("_Outline_Width"); // 아웃라인 너비 초기화
+        CharacterMaterial.SetFloat("_Outline_Width", 0f);
     }
 
     public void ReturnToStartPosition()

@@ -15,7 +15,9 @@ public class Stop_MiniGameManager : MonoBehaviour
         Fastest = 5,
     }
     public bool IsLookBack = false;
+    public bool Isblink = false; //깜빡임 여부
     public float LookBackTime = 4f;
+    
 
 
     private Image Image;
@@ -46,13 +48,37 @@ public class Stop_MiniGameManager : MonoBehaviour
 
     public void GameStart()
     {
+        StartCoroutine(GameStartCoroutine(RandomTiming()));
 
+    }
+
+    IEnumerator GameStartCoroutine(float time)
+    {
+        while (time > 0)
+        {
+            time -= Time.deltaTime;
+            if (time < 1 && Isblink == false)
+            {
+                Isblink = true;
+                StartCoroutine(Blink());
+            }
+            yield return null;
+        }
+        LookBack();
+    }
+
+    IEnumerator Blink()
+    {
+        //깜빡임
+        yield return new WaitForSeconds(0.5f);
     }
 
 
 
     public void LookBack()
     {
+        //뒤돌아보기
+        Isblink = false;
         IsLookBack = true;
         LookBackTime = 4f;
     }
