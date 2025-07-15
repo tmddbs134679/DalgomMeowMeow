@@ -115,10 +115,6 @@ public class AICharacter : BaseObject
         else Controller.OnUpdate(Time.deltaTime);
 
         if (BuildingPlacer.Instance.isAI) OnClick();
-        Level = Data.Level;
-        currentStamina = Data.CurrentStamina;
-        currentExp = Data.CurrentExp;
-        MaxExp = Data.MaxExp;
         if (!BuildingPlacer.Instance.isAI)LongPressClick();
     }
 
@@ -147,10 +143,6 @@ public class AICharacter : BaseObject
         // 위치값
         transform.position = Data.Pos.ToVector3();
         CurrentState = Data.CurrentState;
-        Level = Data.Level;
-        currentExp = Data.CurrentExp;
-        MaxExp = Data.MaxExp;
-        currentStamina = Data.CurrentStamina;
         loadState = Data.CurrentState;
         loadBuilding = Data.LoadBuilding;
 
