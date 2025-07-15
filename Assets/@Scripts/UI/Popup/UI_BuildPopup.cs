@@ -109,6 +109,9 @@ public class UI_BuildPopup : UI_Popup
     //설치 건물 선택
     private void SelectBuildingType(int type)
     {
+        var button = GetButton((int)type);
+        if (button != null && !button.interactable)
+            return;
         //건물 갯수 제한 코드 구간
         if (type == (int)Define.BuildingType.SlotMachine)
         {
