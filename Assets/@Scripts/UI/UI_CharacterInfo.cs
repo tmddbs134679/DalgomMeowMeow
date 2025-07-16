@@ -1,8 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.TextCore.Text;
+using UnityEngine.UI;
 using static Define;
 
 public class UI_CharacterInfo : UI_Base
@@ -35,6 +38,9 @@ public class UI_CharacterInfo : UI_Base
 
 
     Character _character;
+    ScrollRect _scrollRect;
+    bool _isDrag = false;
+
     List<EEquipmentType> displayOrder = new()
     {
         EEquipmentType.Hat,
@@ -66,6 +72,11 @@ public class UI_CharacterInfo : UI_Base
         BindText(typeof(Texts));
         BindImage(typeof(Images));
 
+        gameObject.BindEvent(null, OnDrag, Define.EUIEvent.Drag);
+        gameObject.BindEvent(null, OnBeginDrag, Define.EUIEvent.BeginDrag);
+        gameObject.BindEvent(null, OnEndDrag, Define.EUIEvent.EndDrag);
+
+
         gameObject.BindEvent(OnClickObjectButton);
 
         GetObject((int)GameObjects.NewTextObject).gameObject.SetActive(false);
@@ -84,9 +95,10 @@ public class UI_CharacterInfo : UI_Base
         Managers.Game.SaveGame();
     }
 
-    public void SetInfo(Character character)
+    public void SetInfo(Character character, ScrollRect scrollrect)
     {
         _character = character;
+        _scrollRect = scrollrect;
 
         // 캐릭터 이름 & 이미지
         GetImage((int)Images.CharacterImage).sprite = Managers.Resource.Load<Sprite>(_character.Data.IconLabel);
@@ -142,4 +154,26 @@ public class UI_CharacterInfo : UI_Base
         if(!_character.IsConfirmed)
             GetObject((int)GameObjects.NewTextObject).gameObject.SetActive(true);
     }
+
+    public void OnDrag(BaseEventData baseEventData)
+    {
+        _isDrag = true;
+        PointerEventData pointerEventData = baseEventData as PointerEventData;
+        _scrollRect.OnDrag(pointerEventData);
+    }
+
+    public void OnBeginDrag(BaseEventData baseEventData)
+    {
+        _isDrag = true;
+        PointerEventData pointerEventData = baseEventData as PointerEventData;
+        _scrollRect.OnBeginDrag(pointerEventData);
+    }
+
+    public void OnEndDrag(BaseEventData baseEventData)
+    {
+        _isDrag = false;
+        PointerEventData pointerEventData = baseEventData as PointerEventData;
+        _scrollRect.OnEndDrag(pointerEventData);
+    }
+
 }

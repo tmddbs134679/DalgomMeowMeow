@@ -285,9 +285,9 @@ MonoBehaviour:
   emo: {fileID: 11400000, guid: 3ead5fd8cb98a9e408e75a11b129fb05, type: 2}
   sprites: []
   sprite: {fileID: 0}
-  hatBone: {fileID: 0}
-  bagBone: {fileID: 0}
-  accessoryBone: {fileID: 0}
+  hatBone: {fileID: 1452595595622576487}
+  bagBone: {fileID: 4989933161525742692}
+  accessoryBone: {fileID: 5837682712895234193}
   isClicked: 0
   camera: {fileID: 0}
   tempSpeed: 0
@@ -1266,6 +1266,7 @@ Transform:
   - {fileID: 5483794186616035327}
   - {fileID: 8079603147840602878}
   - {fileID: 1452595595622576487}
+  - {fileID: 5837682712895234193}
   - {fileID: 1421851564328738607}
   - {fileID: 851565477590480056}
   m_Father: {fileID: 4778987528296690964}
@@ -1587,6 +1588,37 @@ Transform:
   m_Children:
   - {fileID: 6074484580169591681}
   m_Father: {fileID: 6551003170253596751}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4077793014127194202
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5837682712895234193}
+  m_Layer: 26
+  m_Name: Accessory_equipment
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5837682712895234193
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4077793014127194202}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.5, y: 0.5, z: 0.5, w: 0.5}
+  m_LocalPosition: {x: -0.000000023831111, y: -1.41579725e-11, z: 3.1386756e-16}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6863461184614677171}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4172474359216030312
 GameObject:

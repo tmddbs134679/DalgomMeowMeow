@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UI_CharacterPopup : UI_Popup
 {
@@ -11,6 +12,7 @@ public class UI_CharacterPopup : UI_Popup
     {
         ContentObject,
         CharacterInfoScrollContentObject,
+        CharacterInfoScrollGroup
     }
 
     enum Buttons
@@ -24,7 +26,7 @@ public class UI_CharacterPopup : UI_Popup
     }
     #endregion
 
-
+    ScrollRect _scrollrect;
     private void Awake()
     {
         Init();
@@ -51,6 +53,8 @@ public class UI_CharacterPopup : UI_Popup
         BindButton(typeof(Buttons));
         BindText(typeof(Texts));
 
+        _scrollrect = GetObject((int)GameObjects.CharacterInfoScrollGroup).GetComponent<ScrollRect>();
+
         GetButton((int)Buttons.ExitButton).gameObject.BindEvent(OnClickExitButton);
         GetButton((int)Buttons.ExitButton).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
         Refresh();
@@ -72,7 +76,7 @@ public class UI_CharacterPopup : UI_Popup
         foreach (Character ch in characters)
         {
             UI_CharacterInfo slot = Managers.UI.MakeSubItem<UI_CharacterInfo>(GetObject((int)GameObjects.CharacterInfoScrollContentObject).transform);
-            slot.SetInfo(ch);
+            slot.SetInfo(ch, _scrollrect);
         }
     }
     
