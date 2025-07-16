@@ -113,7 +113,7 @@ public class Define
     public enum BuildingType
     {
         Cooking,
-        Farm,
+        CabbageFarm,
         Playing,
         Resting,
         Fishing,
@@ -121,6 +121,10 @@ public class Define
         SlotMachine,
         Road,
         Shop,
+        CarrotFarm,
+        PumpkinFarm,
+        PotatoFarm,
+        OnionFarm,
         UnLockStage,
     }
 

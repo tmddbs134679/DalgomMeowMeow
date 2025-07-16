@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 867387851631776429}
   - component: {fileID: 219752967041393178}
   m_Layer: 7
-  m_Name: FarmBuilding
+  m_Name: CarrotFarmBuilding
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -100,7 +100,7 @@ MonoBehaviour:
   _buildMap: {fileID: 0}
   buildingRenderer: {fileID: 0}
   collectIcon: {fileID: 0}
-  CropType: 5
+  CropType: 1
 --- !u!1 &2351000191562360942
 GameObject:
   m_ObjectHideFlags: 0
@@ -674,6 +674,26 @@ PrefabInstance:
     - target: {fileID: 2132271288349938952, guid: 845afabbaa02308478a4eb1f485a4715, type: 3}
       propertyPath: m_CastShadows
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2999712017655634251, guid: 845afabbaa02308478a4eb1f485a4715, type: 3}
+      propertyPath: m_text
+      value: "\uB2F9\uADFC"
+      objectReference: {fileID: 0}
+    - target: {fileID: 2999712017655634251, guid: 845afabbaa02308478a4eb1f485a4715, type: 3}
+      propertyPath: m_fontColor.b
+      value: 0.15566039
+      objectReference: {fileID: 0}
+    - target: {fileID: 2999712017655634251, guid: 845afabbaa02308478a4eb1f485a4715, type: 3}
+      propertyPath: m_fontColor.g
+      value: 0.4912137
+      objectReference: {fileID: 0}
+    - target: {fileID: 2999712017655634251, guid: 845afabbaa02308478a4eb1f485a4715, type: 3}
+      propertyPath: m_fontColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2999712017655634251, guid: 845afabbaa02308478a4eb1f485a4715, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4280843775
       objectReference: {fileID: 0}
     - target: {fileID: 4284621951395530659, guid: 845afabbaa02308478a4eb1f485a4715, type: 3}
       propertyPath: m_CastShadows

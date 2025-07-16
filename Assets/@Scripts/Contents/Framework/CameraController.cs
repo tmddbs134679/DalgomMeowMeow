@@ -34,7 +34,7 @@ public class CameraController : MonoBehaviour
             _startedOnUI = IsPointerOverUI(); //  UI 위에서 눌렀는지 기록
             if (_startedOnUI) return;
 
-ClickObject(Input.mousePosition);
+ClickObject(Input.mousePosition); //고양이일때만
             _dragOrigin = Input.mousePosition;
             _touchStartPos = _dragOrigin;
             isDragging = false;
@@ -57,7 +57,7 @@ ClickObject(Input.mousePosition);
         }
         else if (Input.GetMouseButtonUp(0))
         {
-            if(!isDragging) ClickObject(Input.mousePosition);
+            if(!isDragging) ClickObject(Input.mousePosition); //건물일때만
             if (_startedOnUI)
             {
                 _startedOnUI = false; // 다시 초기화
@@ -144,7 +144,7 @@ ClickObject(Input.mousePosition);
             var clickable = hit.collider.GetComponent<BaseObject>();
 
 
-
+//고양이일때와 건물일때 구별
             if (clickable != null)
                 clickable.OnClick();
         }

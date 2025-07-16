@@ -156,7 +156,7 @@ public class AIController : BaseController<AICharacter>
         return action switch
         {
             Define.EAIState.Cook => Define.BuildingType.Cooking,
-            Define.EAIState.Farm => Define.BuildingType.Farm,
+            Define.EAIState.Farm => Define.BuildingType.CabbageFarm,
             Define.EAIState.Rest => Define.BuildingType.Resting,
             Define.EAIState.Play => Define.BuildingType.Playing,
             Define.EAIState.Deliver => Define.BuildingType.Cooking,

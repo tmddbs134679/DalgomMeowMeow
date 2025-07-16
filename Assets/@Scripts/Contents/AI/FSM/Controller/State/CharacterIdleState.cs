@@ -53,7 +53,7 @@ namespace Scripts.Contents.AI.FSM.State
             }
 
             if (character.Data.CurrentStamina >= 25f && 
-                character.Controller.FindAvailableBuilding(Define.BuildingType.Farm))
+                character.Controller.FindAvailableBuilding(Define.BuildingType.CabbageFarm))
             {
                 character.characterAction.Farm(); 
                 return;
