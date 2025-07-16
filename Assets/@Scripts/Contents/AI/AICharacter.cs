@@ -15,6 +15,43 @@ public class AICharacter : BaseObject
     public AIController Controller { get { return _controller; } }
     private AIController _controller;
 
+    public List<string> EquippedItemIds { get; set; } = new();
+    public Character Data { get; set; }
+
+    [Header("AI 캐릭터 현재 상태")]
+    public Define.EAIState CurrentState;
+
+    [Header("AI 캐릭터 배정된 건물")]
+    public BuildingBase currentBuilding;
+
+    [Header("캐릭터 스탯")]
+    public float Stamina;
+    public float MaxStamina;
+    public float Atk;
+    public float Hp;
+    public float MoveSpeed;
+
+    #region Bone
+    [SerializeField] private Transform hatBone;
+    [SerializeField] private Transform bagBone;
+    [SerializeField] private Transform accessoryBone;
+    [SerializeField] public Dictionary<EEquipmentType, Transform> equipmentBones = new Dictionary<EEquipmentType, Transform>();
+
+    #endregion
+
+    #region Hide
+    [HideInInspector]
+    public int CurrentAnimation { get; set; }
+
+    [HideInInspector]
+    public bool isClicked = false;
+    private Transform head;
+    [HideInInspector]
+    public Camera camera;
+    [HideInInspector]
+    public float tempSpeed;
+    [HideInInspector]
+    public bool isFollowing;
     [HideInInspector]
     public EAIState loadState;
     [HideInInspector]
@@ -22,8 +59,6 @@ public class AICharacter : BaseObject
 
     [HideInInspector]
     public NavMeshAgent nav;
-
-    public BuildingBase currentBuilding;
 
     [HideInInspector]
     public Animator animator;
@@ -37,56 +72,38 @@ public class AICharacter : BaseObject
     [HideInInspector]
     public CharacterAction characterAction;
 
-    public List<string> EquippedItemIds { get; set; } = new();
     [HideInInspector]
     public bool _isHelloReady = true;
 
-    [Header("AI 캐릭터 현재 상태")]
-    public Define.EAIState CurrentState;
+    
 
-    [Header("캐릭터 이미지들")]
+    [HideInInspector]
     public CharacterEmoSet emo;
+    [HideInInspector]
     public Sprite[] sprites;
 
     [HideInInspector]
     public Sprite sprite;
 
-    public Character Data { get; set; }
-
-    #region Bone
-    [SerializeField] private Transform hatBone;
-    [SerializeField] private Transform bagBone;
-    [SerializeField] private Transform accessoryBone;
-    [SerializeField] public Dictionary<EEquipmentType, Transform> equipmentBones = new Dictionary<EEquipmentType, Transform>();
+    //UI 상에 보일 캐릭터들
+    [HideInInspector]
+    public bool IsReplica = false;
 
     #endregion
-    [HideInInspector]
-    public int CurrentAnimation { get; set; }
 
-    [HideInInspector]
-    public bool isClicked = false;
-    private Transform head;
-    [HideInInspector]
-    public Camera camera;
-    [HideInInspector]
-    public float tempSpeed;
-    [SerializeField]
-    private GameObject infoButton;
 
-    public  Action<AICharacter> AnimalLeaved;
+    #region Action
+    public Action<AICharacter> AnimalLeaved;
     public  Action<AICharacter> AnimalArrived;
     public  Action<AICharacter> AnimalDelivered;
     public Action<int> CharacterGainExp;
     public Action<float> Levelup;
+    #endregion
+
+    private GameObject infoButton;
     private float clickStartTime = 0f;
     private float longPressThreshold = 0.2f;
-    [SerializeField]
     private LayerMask groundLayer;
-    [HideInInspector]
-    public bool isFollowing;
-
-    //UI 상에 보일 캐릭터들
-    public bool IsReplica = false;
 
     private void Awake()
     {
@@ -117,6 +134,12 @@ public class AICharacter : BaseObject
 
         if (BuildingPlacer.Instance.isAI) OnClick();
         if (!BuildingPlacer.Instance.isAI)LongPressClick();
+
+        MaxStamina = Data.CurrentStamina;
+        Atk = Data.Atk;
+        Hp = Data.Hp;
+        MoveSpeed = Data.MoveSpeed;
+
     }
 
 

@@ -25,6 +25,8 @@ public class DataManager
     public Dictionary<string, Data.QuestData> QuestDataDic { get; private set; } = new Dictionary<string, QuestData>();
     public Dictionary<string, Data.UnlockContentsData> UnlockContentDic { get; private set; } = new Dictionary<string, UnlockContentsData>();
 
+    public Dictionary<string, GachaStatData> GachaStatDataDic { get; private set; } = new Dictionary<string, GachaStatData>();
+
     public void Init()
     {
         CreatureDic = LoadJson<Data.CreatureDataLoader, string, Data.CreatureData>("CreatureData").MakeDict();
@@ -39,6 +41,7 @@ public class DataManager
         SkillDataDic = LoadJson<Data.SkillDataDataLoader, string, Data.SkillData>("SkillData").MakeDict();
         QuestDataDic = LoadJson<QuestDataLoader,string,Data.QuestData>("QuestData").MakeDict();
         UnlockContentDic = LoadJson<UnlockContentsDataLoader, string, Data.UnlockContentsData>("UnlckCondition").MakeDict();
+        GachaStatDataDic = LoadJson<Data.GachaStatDataLoader, string, Data.GachaStatData>("GachaStatData").MakeDict();
     }
 
 

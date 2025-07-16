@@ -195,6 +195,40 @@ namespace Data
     }
     #endregion
 
+    #region GachaStatData
+    [Serializable]
+    public class GachaStatData  
+    {
+        public string DataId;
+        public float HpMin;
+        public float HpMax;
+        public float AtkMin;
+        public float AtkMax;
+        public float MoveSpeedMin;
+        public float MoveSpeedMax;
+        public float StaminaMin;
+        public float StaminaMax;
+
+    }
+
+    [Serializable]
+    public class GachaStatDataLoader : ILoader<string, GachaStatData>
+    {
+        public List<GachaStatData> GachaStats = new();
+
+        public Dictionary<string, GachaStatData> MakeDict()
+        {
+            Dictionary<string, GachaStatData> dict = new();
+            foreach (var stats in GachaStats)
+            {
+                dict[stats.DataId] = stats;
+            }
+            return dict;
+        }
+    }
+
+    #endregion
+
     #region CheckOut
 
     public class CheckOutData

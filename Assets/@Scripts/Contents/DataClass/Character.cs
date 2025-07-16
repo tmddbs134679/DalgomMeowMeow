@@ -28,8 +28,8 @@ public class  Character
     public string UniqueId { get; set; }              //고유 식별
 
     public string Name { get; set; }    
-    public string DataId { get; set; }  //정적 데이터 키
-    public float Level { get; set; } = 1; //레벨
+    public string DataId { get; set; }  
+    public float Level { get; set; }
     public float MaxExp { get; set; }
     public float CurrentExp { get; set; } 
     public EAIState CurrentState { get; set; } 
@@ -37,10 +37,10 @@ public class  Character
     public Vector3Data Pos { get; set; } = new Vector3Data();
     public float MaxStamina { get; set; } 
     public float CurrentStamina { get; set; } 
-    public float Atk { get; set; } = 10f; // 공격력
+    public float Atk { get; set; } 
     public float Hp { get; set; }
     public float MoveSpeed { get; set; }
-    public float WalkSpeed { get; set; } = 1.5f;
+    public float WalkSpeed { get; set; } 
     public bool IsConfirmed { get; set; }
     public List<string> EquippedItemIds { get; set; } = new();
 
@@ -53,17 +53,19 @@ public class  Character
         DataId = dataid;
         Pos = new Vector3Data(position);
         Level = Data?.Level ?? 1;
-        Hp = Data?.MaxHp ?? 100f; // 최대 체력
-        CurrentState = Data?.CurrentState ?? EAIState.None; // 현재 상태
-        MaxExp = Data?.MaxExp ?? 15f; // 최대 경험치    
-        CurrentExp = Data?.CurrentExp ?? 0; // 현재 경험치
-        MaxStamina = Data?.MaxStamina ?? 100f; // 최대 스태미나
-        Atk = Data?.Atk ?? 10f; // 공격력
-        CurrentStamina = MaxStamina; // 현재 스태미나
+        Hp = Data?.MaxHp ?? 100f; 
+        CurrentState = Data?.CurrentState ?? EAIState.None; 
+        MaxExp = Data?.MaxExp ?? 15f;    
+        CurrentExp = Data?.CurrentExp ?? 0; 
+        MaxStamina = Data?.MaxStamina ?? 100f; 
+        Atk = Data?.Atk ?? 10f;
+        CurrentStamina = MaxStamina;
         MoveSpeed =  Data?.MoveSpeed ?? 3f;
         WalkSpeed = Data?.WalkSpeed ?? 1.5f;
         EquippedItemIds = new();
     }
+
+   
 
     public void SetInfo(CreatureData data)
     {
