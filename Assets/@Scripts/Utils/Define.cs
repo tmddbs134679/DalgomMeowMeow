@@ -22,6 +22,11 @@ public class Define
 {
     #region UI 
     public static readonly int UI_GROUP_SPACING = 100;
+
+    public static readonly int GOLD_TO_DIA_PRICE = 1000;
+    public static readonly int DIA_TO_GOLD_PRICE = 100;
+    public static readonly int DIA_TO_TICKET_PRICE = 100;
+
     #endregion
 
     public static readonly int FOOD_MAX_VALUE = 12;
@@ -196,5 +201,16 @@ public class Define
         None,
         PopUpButton,
         SlotButton,
+    }
+
+
+    public enum ESound
+    {
+        None,
+        Bgm,
+        SubBgm,
+        Effect,
+        Max,
+
     }
 }

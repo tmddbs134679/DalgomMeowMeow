@@ -47,6 +47,8 @@ public class UI_Base : MonoBehaviour
     protected void BindImage(Type type) { Bind<Image>(type); }
     protected void BindText(Type type) { Bind<TMP_Text>(type); }
 
+    protected void BindSlider(Type type) { Bind <Slider>(type); }
+
     protected void BindInputField(Type type) { Bind<TMP_InputField>(type); }
     protected void BindButton(Type type) { Bind<Button>(type); }
     protected void BindToggle(Type type) { Bind<Toggle>(type); }
@@ -67,6 +69,7 @@ public class UI_Base : MonoBehaviour
     protected Image GetImage(int idx) { return Get<Image>(idx); }
     protected RawImage GetRawImage(int idx) { return Get<RawImage>(idx); }
     protected Toggle GetToggle(int idx) { return Get<Toggle>(idx); }
+    protected Slider GetSlider(int idx) { return Get<Slider>(idx); }
 
     protected TMP_InputField GetInputField(int idx) { return Get<TMP_InputField>(idx); }
 

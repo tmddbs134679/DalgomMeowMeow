@@ -9,6 +9,7 @@ public class UI_ExchangeShopPopup : UI_Popup
     #region Enum
     enum GameObjects
     {
+        ExchangeAdsObject,
         ExchangeGoldObject,
         ExchangeDiaObject,
         ExchangeTicketObject,
@@ -21,7 +22,8 @@ public class UI_ExchangeShopPopup : UI_Popup
 
     enum Texts
     {
-        TitleText
+        TitleText,
+        AdsText
     }
     #endregion
 
@@ -32,6 +34,7 @@ public class UI_ExchangeShopPopup : UI_Popup
     {
         PopupOpenAnimation(gameObject);
         PopupFadeInAnimation(GetText((int)Texts.TitleText).gameObject);
+        PopupFadeInAnimation(GetObject((int)GameObjects.ExchangeAdsObject).gameObject);
         PopupFadeInAnimation(GetObject((int)GameObjects.ExchangeGoldObject).gameObject);
         PopupFadeInAnimation(GetObject((int)GameObjects.ExchangeDiaObject).gameObject);
         PopupFadeInAnimation(GetObject((int)GameObjects.ExchangeTicketObject).gameObject);
@@ -54,12 +57,28 @@ public class UI_ExchangeShopPopup : UI_Popup
         _purchasePopup = Managers.UI.ShowPopupUI<UI_PurchasePopup>();
         _purchasePopup.gameObject.SetActive(false);
 
+        GetObject((int)GameObjects.ExchangeAdsObject).BindEvent(OnClickAdsButton);
         GetObject((int)GameObjects.ExchangeGoldObject).BindEvent(() => OnClickExchange(Define.EExchangeType.Gold));
         GetObject((int)GameObjects.ExchangeTicketObject).BindEvent(() => OnClickExchange(Define.EExchangeType.Ticket));
         GetObject((int)GameObjects.ExchangeDiaObject).BindEvent(() => OnClickExchange(Define.EExchangeType.Dia));
 
 
         return true;
+    }
+
+    private void OnClickAdsButton()
+    {
+        if(Managers.Game.AdvancedGachaOpenCount >= 1)
+        {
+            //Managers.Game.AdvancedGachaOpenCount--;
+            //Managers.Game.Gold += 1000;
+            GetText((int)Texts.AdsText).text = Managers.Game.AdvancedGachaOpenCount.ToString();
+            Managers.Ads.ShowAd();
+        }
+        else
+        {
+            Managers.UI.ShowToast("일일 광고 횟수 초과!");
+        }
     }
 
     private void OnClickExchange(Define.EExchangeType type)

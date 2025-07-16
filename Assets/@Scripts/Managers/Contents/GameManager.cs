@@ -28,8 +28,12 @@ public class GameData
     public List<Character> CharacterList = new List<Character>();
     public List<Equipment> OwnedEquipments = new List<Equipment>();
 
+    public bool BGMOn = true;
+    public bool EffectSoundOn = true;
 
     public bool[] AttendanceReceived = new bool[30];
+    public int AdvancedGachaOpenCount = 0;
+
 
 }
 
@@ -116,6 +120,16 @@ public class GameManager
         set { _gameData.AttendanceReceived = value; }
 
     }
+
+    public int AdvancedGachaOpenCount
+    {
+        get { return _gameData.AdvancedGachaOpenCount; }
+        set
+        {
+            _gameData.AdvancedGachaOpenCount = value;
+        }
+    }
+
     #endregion
 
 
@@ -160,16 +174,19 @@ public class GameManager
         var newChar = new Character();
         newChar.Init("A10001", new Vector3(39f, 0, 27f)); // 위치 초기값
         newChar.SetInfo(Managers.Data.CreatureDic["A10001"]);
+        newChar.IsConfirmed = true;
         _characters[newChar.UniqueId] = newChar;
 
         var newCharTest = new Character();
         newCharTest.Init("A10002", new Vector3(39f, 0, 27f)); // 위치 초기값
         newCharTest.SetInfo(Managers.Data.CreatureDic["A10002"]);
+        newCharTest.IsConfirmed = true;
         _characters[newCharTest.UniqueId] = newCharTest;
 
         var newChar1 = new Character();
         newChar1.Init("A10006", new Vector3(38f, 0, 27f)); // 위치 초기값
         newChar1.SetInfo(Managers.Data.CreatureDic["A10006"]);
+        newChar1.IsConfirmed = true;
         _characters[newChar1.UniqueId] = newChar1;
 
         //var newChar2 = new Character();
@@ -610,7 +627,38 @@ public class GameManager
 
     #endregion
 
+    #region Option
+    public bool BGMOn
+    {
+        get { return _gameData.BGMOn; }
+        set
+        {
+            if (_gameData.BGMOn == value)
+                return;
+            _gameData.BGMOn = value;
+            if (_gameData.BGMOn == false)
+            {
+                Managers.Sound.Stop(ESound.Bgm);
+            }
+            else
+            {
+                string name = "Bgm_Lobby";
+                if (Managers.Scene.CurrentScene.SceneType == Define.EScene.GameScene)
+                    name = "Bgm_Game";
 
+                Managers.Sound.Play(Define.ESound.Bgm, name);
+            }
+        }
+    }
+
+    public bool EffectSoundOn
+    {
+        get { return _gameData.EffectSoundOn; }
+        set { _gameData.EffectSoundOn = value; }
+    }
+
+
+    #endregion
 
 
 }
