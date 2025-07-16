@@ -213,13 +213,14 @@ public class Define
         Max,
 
     }
-    
+
     public enum ECropType
-{
-    None,
-    Carrot,
-    Pumpkin,
-    Potato,
-    Onion,
+    {
+        None,
+        Carrot,
+        Pumpkin,
+        Potato,
+        Onion,
+        Cabbage,
 }
 }
