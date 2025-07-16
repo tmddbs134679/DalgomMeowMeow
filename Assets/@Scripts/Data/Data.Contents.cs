@@ -328,22 +328,36 @@ namespace Data
 
     #region UnlockContensData
 
-    public class UnlockContentData
+    
+    public enum UnlockConditionType
     {
-        public string ContentId; // 예: "Building_Smithy"
-        //public List<UnlockCondition> Conditions;
+        Quest,
+        Gold
     }
 
     [Serializable]
-    public class UnlockContentsDataLoader : ILoader<string, UnlockContentData>
+    public class UnlockCondition
     {
-        public List<UnlockContentData> UnlockContents = new List<UnlockContentData>();
+        public UnlockConditionType Type;
+        public string QuestId;      // Type == Quest
+        public int RequiredGold;    // Type == Gold
+    }
+    public class UnlockContentsData
+    {
+        public string ContentId; // 예: "Building_Smithy"
+        public List<UnlockCondition> Conditions;
+    }
+
+    [Serializable]
+    public class UnlockContentsDataLoader : ILoader<string, UnlockContentsData>
+    {
+        public List<UnlockContentsData> UnlockContents = new List<UnlockContentsData>();
     
-        public Dictionary<string, UnlockContentData> MakeDict()
+        public Dictionary<string, UnlockContentsData> MakeDict()
         {
-            Dictionary<string, UnlockContentData> dict = new Dictionary<string, UnlockContentData>();
-            foreach (UnlockContentData quest in UnlockContents)
-                dict.Add(quest.ContentId, quest);
+            Dictionary<string, UnlockContentsData> dict = new Dictionary<string, UnlockContentsData>();
+            foreach (UnlockContentsData contents in UnlockContents)
+                dict.Add(contents.ContentId, contents);
             return dict;
         }
     }

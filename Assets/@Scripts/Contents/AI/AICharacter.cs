@@ -187,11 +187,12 @@ public class AICharacter : BaseObject
         AnimalDelivered?.Invoke(this);
     }
 
-    public void DistinguishCrops()
+    public ECropType DistinguishCrops()
     {
         FarmBuilding farm = currentBuilding as FarmBuilding;
         Define.ECropType type = farm.GetCropType();
         farm.Harvest();
+        return type;
     }
     #endregion
 

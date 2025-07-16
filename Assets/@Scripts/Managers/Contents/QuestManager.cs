@@ -46,6 +46,7 @@ public class QuestManager : MonoBehaviour
             _questIndex[key].Add(quest);
         }
     }
+    
 
     public void OnEvent(Define.EQuestConditionType condition, Define.ETargetType target)
     {
@@ -139,14 +140,76 @@ public class QuestManager : MonoBehaviour
     
     private void CheckUnlockConditions(string completedQuestId)
     {
-
+        foreach (var kvp in Managers.Data.UnlockContentDic)
+        {
+            foreach (var condition in kvp.Value.Conditions)
+            {
+                if (condition.Type == Data.UnlockConditionType.Quest &&
+                    condition.QuestId == completedQuestId)
+                {
+                    TryUnlockContent(kvp.Key);
+                    break;
+                }
+            }
+        }
     }
     
     public void TryUnlockByGold(string unlockId, int requiredGold)
     {
         if (Managers.Game.Gold >= requiredGold)
         {
-
+            TryUnlockContent(unlockId);
         }
+        else
+        {
+            Debug.Log("[해금 실패] 골드 부족");
+        }
+    }
+    
+    public void TryUnlockContent(string contentId)
+    {
+        if (!Managers.Data.UnlockContentDic.TryGetValue(contentId, out var data)) return;
+
+        bool allMet = true;
+        foreach (var condition in data.Conditions)
+        {
+            switch (condition.Type)
+            {
+                case Data.UnlockConditionType.Quest:
+                    if (!QuestManager.Instance.IsQuestCompleted(condition.QuestId))
+                        allMet = false;
+                    break;
+                case Data.UnlockConditionType.Gold:
+                    if (Managers.Game.Gold < condition.RequiredGold)
+                        allMet = false;
+                    break;
+            }
+
+            if (!allMet) break;
+        }
+
+        if (allMet)
+        {
+            Unlock(contentId);
+        }
+    }
+    public bool IsQuestCompleted(string questId)
+    {
+        return _quests.TryGetValue(questId, out var quest) &&
+               quest.State == QuestProgressState.Completed;
+    }
+    
+    private void Unlock(string contentId)
+    {
+        Debug.Log($"[해금 완료] 콘텐츠: {contentId}");
+        // TODO: 콘텐츠 타입별로 처리 (ex: 건물, 지역, 캐릭터 등)
+        // ex: Managers.Building.Unlock(contentId);
+
+        if (contentId.StartsWith("Building_"))
+        {
+            
+        }
+        // 저장할 경우 리스트에 추가
+        // Managers.Game.UnlockedContent.Add(contentId);
     }
 }
