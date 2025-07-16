@@ -2,6 +2,7 @@ using Data;
 using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.AI;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class TeamManager : MonoBehaviour
@@ -32,16 +33,15 @@ public class TeamManager : MonoBehaviour
             _battleCharacters[k].MoveSpeed = StageDataManager.Instance.PlayerCharacter[k].MoveSpeed;
             _battleCharacters[k].SkillID = StageDataManager.Instance.PlayerCharacter[k].Data.SkillID.Replace(".sprite", "");
         }
-    }
 
-    private void Start()
-    {
         for (int i = 0; i < 3; i++)
         {
             _creatureData[i] = Managers.Data.CreatureDic[CatDataKey[i]];    //id별 데이터 등록
             LoadPrefab(i, _creatureData[i].PrefabLabel);//임시로 달아준 값 데이터 넘겨받을것
         }
+
     }
+    
 
     public void LoadPrefab(int index, string prefabKey)
     {
@@ -51,47 +51,39 @@ public class TeamManager : MonoBehaviour
             {
                 GameObject prefab = handle.Result;
 
-                // 필요한 자식 가져오기
-                Transform chibi = prefab.transform.GetChild(0); // "Chibi_Cat"
-                Transform root = prefab.transform.GetChild(1);  // "root"
+                GameObject modelInstance = Instantiate(prefab, _battleCharacters[index].transform, false);  //생성
+                modelInstance.name = prefab.name.Replace("(Clone)", "");
 
-                if (chibi == null || root == null)
+
+                var agent = modelInstance.GetComponent<NavMeshAgent>();//컴포넌트 제거
+                if (agent != null) agent.enabled = false;
+
+                var collider = modelInstance.GetComponent<Collider>();//컴포넌트 제거
+                if (collider != null) collider.enabled = false;
+
+                var ai = modelInstance.GetComponent<MonoBehaviour>(); //컴포넌트 제거
+                if (ai != null) ai.enabled = false;
+
+
+                _battleCharacters[index].CharacterObject = modelInstance.transform;//값 세팅
+                _battleCharacters[index].PivotSet();
+
+                modelInstance.AddComponent<AnimationEvent>();
+
+                var animator = modelInstance.GetComponent<Animator>();
+                if (animator != null)
                 {
-                    Debug.LogError("❌ 필요한 자식 오브젝트를 찾지 못함");
-                    return;
-                }
+                    if (modelInstance.name.Contains("Cat"))
+                        animator.runtimeAnimatorController = _catAnim;
+                    else
+                        animator.runtimeAnimatorController = _bearAnim;
 
-                Transform parent = _battleCharacters[index].transform.GetChild(0);
-                if (parent == null)
-                {
-                    Debug.LogError("❌ 부모 오브젝트 'Chibi_Cat_01'을 찾을 수 없습니다.");
-                    return;
-                }
-
-                GameObject chibiInstance = Instantiate(chibi.gameObject, parent);
-                chibiInstance.transform.localPosition = Vector3.zero;
-                chibiInstance.transform.localRotation = Quaternion.identity;
-                chibiInstance.name = chibiInstance.name.Replace("(Clone)", "");
-
-                GameObject rootInstance = Instantiate(root.gameObject, parent);
-                rootInstance.transform.localPosition = Vector3.zero;
-                rootInstance.transform.localRotation = Quaternion.identity;
-                chibiInstance.name = chibiInstance.name.Replace("(Clone)", "");
-
-                if ( chibiInstance.name.Contains("Cat"))
-                {
-                    //고양이 애니메이션
-                    parent.GetComponent<Animator>().runtimeAnimatorController = _catAnim;
-                }
-                else
-                {
-                    //곰 애니메이션
-                    parent.GetComponent<Animator>().runtimeAnimatorController = _bearAnim;
+                    _battleCharacters[index].SetAnimation();
                 }
             }
             else
             {
-                Debug.LogError($"❌ 프리팹 로드 실패: {prefabKey}");
+                Managers.Debug.LogError($"❌ 프리팹 로드 실패: {prefabKey}",Define.EDebugType.None);
             }
         };
     }
