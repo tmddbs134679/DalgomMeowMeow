@@ -72,7 +72,8 @@ public class UI_PurchasePopup : UI_Popup
 
         GetSlider((int)Sliders.Slider).onValueChanged.AddListener(UpdateSlider);
 
-
+       
+ 
         return true;
     }
 
@@ -144,11 +145,12 @@ public class UI_PurchasePopup : UI_Popup
                 _price = Define.GOLD_TO_DIA_PRICE;
                 break;
         }
-        
 
+        GetSlider((int)Sliders.Slider).value = 1;
+        UpdateSlider();
     }
 
-    void UpdateSlider(float count)
+    void UpdateSlider(float count = 1)
     {
         GetText((int)Texts.SliderValueText).text = count.ToString();
         GetText((int)Texts.PriceText).text = (_price * count).ToString();
