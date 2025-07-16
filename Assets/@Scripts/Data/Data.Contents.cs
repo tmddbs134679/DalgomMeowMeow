@@ -324,4 +324,29 @@ namespace Data
         }
     }
     #endregion
+
+
+    #region UnlockContensData
+
+    public class UnlockContentData
+    {
+        public string ContentId; // 예: "Building_Smithy"
+        //public List<UnlockCondition> Conditions;
+    }
+
+    [Serializable]
+    public class UnlockContentsDataLoader : ILoader<string, UnlockContentData>
+    {
+        public List<UnlockContentData> UnlockContents = new List<UnlockContentData>();
+    
+        public Dictionary<string, UnlockContentData> MakeDict()
+        {
+            Dictionary<string, UnlockContentData> dict = new Dictionary<string, UnlockContentData>();
+            foreach (UnlockContentData quest in UnlockContents)
+                dict.Add(quest.ContentId, quest);
+            return dict;
+        }
+    }
+
+    #endregion
 }

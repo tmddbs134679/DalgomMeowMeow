@@ -6,12 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="f48e1cac-c49d-4f22-9686-b0c375630046" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DalgomMeowMeow/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DalgomMeowMeow/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Resources/UI/Popup/UI_Quest/UI_QuestPopup.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Resources/UI/Popup/UI_Quest/UI_QuestPopup.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scenes/GameScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scenes/GameScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/BuildMap/ScriptableOBJ/ArraySO/ArrayMapPos.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/BuildMap/ScriptableOBJ/ArraySO/ArrayMapPos.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Managers/Contents/TutorialManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Managers/Contents/TutorialManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/Popup/UI_BuildPopup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/Popup/UI_BuildPopup.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Prefabs/Build/Build/FarmBuilding.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Prefabs/Build/Build/FarmBuilding.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Contents/Building/FarmBuilding.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Contents/Building/FarmBuilding.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Data/Data.Contents.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Data/Data.Contents.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Managers/Contents/QuestManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Managers/Contents/QuestManager.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,6 +23,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Contents/Building/PotBuilding.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Contents/Building/SlotMachineBuilding.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Contents/Quest/Quest.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Contents/Tutorial/BuildCancleButtonTrigger.cs" root0="FORCE_HIGHLIGHTING" />
@@ -36,7 +35,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Data/Quest/QuestSaveTester.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Data/Quest/RewardData.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Data/Quest/SaveQuestSystem.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Editor/DataTransformer.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Editor/DataTransformer.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Managers/Contents/QuestManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/UI/Popup/UI_BuildingPopup.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/UI/Popup/UI_ForestPopup.cs" root0="FORCE_HIGHLIGHTING" />
@@ -79,6 +78,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f7237cf7abef49bfbb552d7eb076e422174200/65/bc15d820/UnitySynchronizationContext.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f7237cf7abef49bfbb552d7eb076e422174200/aa/17520007/Debug.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f7237cf7abef49bfbb552d7eb076e422174200/e2/39311f10/GameObject.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f7237cf7abef49bfbb552d7eb076e422174200/f7/69004061/MonoBehaviour.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f7237cf7abef49bfbb552d7eb076e422174200/ff/7c71c989/Random.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/d44b17e136d09081da1e8fd0e8c83fde60e11818b9f2442d7ed8cb733fae895e/System.Collections.Generic.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/f3981d658666ec9cc1e6958fe22f8614bfe02ccb6625b056c3ece3729c9262/JsonConvert.cs" root0="SKIP_HIGHLIGHTING" />
@@ -187,7 +187,8 @@
       <workItem from="1752320515263" duration="11066000" />
       <workItem from="1752379932996" duration="2171000" />
       <workItem from="1752413011858" duration="18143000" />
-      <workItem from="1752538200615" duration="11419000" />
+      <workItem from="1752538200615" duration="15292000" />
+      <workItem from="1752626485969" duration="12554000" />
     </task>
     <servers />
   </component>
