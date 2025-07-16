@@ -140,6 +140,7 @@ public class Define
         AI,
         UI,
         Drag,
+        AD
     }
 
     public enum EMaterialType
