@@ -59,6 +59,13 @@ namespace Scripts.Contents.AI.FSM.State
                 return;
             }
 
+            if(character.Data.CurrentStamina >= 100f &&
+              character.Controller.FindAvailableBuilding(Define.BuildingType.Fishing))
+            {
+                character.characterAction.Fishing();
+                return;
+            }
+
 
 
             character.Controller.PatrolMove(10f);

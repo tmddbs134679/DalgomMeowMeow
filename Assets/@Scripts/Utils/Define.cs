@@ -65,6 +65,7 @@ public class Define
         Collect,
         Build,
         Hello,
+        Fishing,
         None,
 
     }
@@ -143,6 +144,7 @@ public class Define
         AI,
         UI,
         Drag,
+        AD
     }
 
     public enum EMaterialType

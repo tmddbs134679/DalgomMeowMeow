@@ -160,6 +160,7 @@ public class AIController : BaseController<AICharacter>
             Define.EAIState.Rest => Define.BuildingType.Resting,
             Define.EAIState.Play => Define.BuildingType.Playing,
             Define.EAIState.Deliver => Define.BuildingType.Cooking,
+            Define.EAIState.Fishing => Define.BuildingType.Fishing,
 
         };
     }

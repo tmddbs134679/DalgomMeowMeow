@@ -1,41 +1,32 @@
-using TMPro;
-using Unity.PlasticSCM.Editor.WebApi;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 
 namespace Scripts.Contents.AI.FSM.State
 {
-    public class CharacterFarmingState : AIState
+    public class CharacterFishingState : AIState
     {
         public override void Init(AICharacter owner)
         {
             base.Init(owner);
-            state = Define.EAIState.Farm;
+            state = Define.EAIState.Fishing;
         }
 
         public override void OnEnter()
         {
             base.OnEnter();
-            character.UseStamina(25);
+            character.UseStamina(100);
             character.currentBuilding.ConnectToAnimal(character);
             character.OnAnimalArrived(); // 도착 처리 메소드 호출
-            character.SetAnimation(29);
-            character.Controller.NavRotateFalse();
+            character.SetAnimation(49);
+            character.Controller.NavRotateFalse(); // 회전 비활성화
         }
 
         public override void OnUpdate(float deltaTime)
         {
             base.OnUpdate(deltaTime);
-            if (elapsedTime >= character.currentBuilding.BuildingData.Interval)
+            if (elapsedTime > character.currentBuilding.BuildingData.Interval)
             {
-                character.DistinguishCrops();
-
-                if(character.Controller.FindNearestBuilding(Define.EAIState.Deliver) == null)
-                {
-                    character.characterAction.Idle();
-                    return;
-                }
-                character.characterAction.Deliver();
+                character.characterAction.Idle();
                 return;
             }
 
@@ -46,8 +37,8 @@ namespace Scripts.Contents.AI.FSM.State
             base.OnExit();
             if (character.currentBuilding != null)
             {
-                character.currentBuilding.DisconnectAnimal();
                 character.OnAnimalLeaved();
+                character.currentBuilding.DisconnectAnimal();
                 character.currentBuilding = null;
             }
 

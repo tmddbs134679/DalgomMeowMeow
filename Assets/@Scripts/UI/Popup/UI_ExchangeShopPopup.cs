@@ -70,10 +70,16 @@ public class UI_ExchangeShopPopup : UI_Popup
     {
         if(Managers.Game.AdvancedGachaOpenCount >= 1)
         {
-            //Managers.Game.AdvancedGachaOpenCount--;
-            //Managers.Game.Gold += 1000;
-            GetText((int)Texts.AdsText).text = Managers.Game.AdvancedGachaOpenCount.ToString();
-            Managers.Ads.ShowAd();
+     
+
+            Managers.Ads.ShowRewardedAd(() =>
+            {
+                Managers.Game.AdvancedGachaOpenCount--;
+                Managers.Game.Gold += 1000;
+                GetText((int)Texts.AdsText).text = Managers.Game.AdvancedGachaOpenCount.ToString();
+                Managers.UI.ShowToast("보상 획득");
+            });
+
         }
         else
         {
