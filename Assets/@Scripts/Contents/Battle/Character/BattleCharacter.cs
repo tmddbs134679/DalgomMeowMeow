@@ -117,9 +117,7 @@ public class BattleCharacter : BaseObject
         Agent.speed = MoveSpeed; // NavMeshAgent의 이동 속도 설정
         Agent.stoppingDistance = AttackRange; // 공격 범위 내에서 멈추도록 설정
 
-        LeftHandPivot = transform.Find("Hand_l_equipment");
-        RightHandPivot = transform.Find("Hand_R_equipment");
-        HeadPivot = transform.Find("Head_equipment");
+        
             
         
     }
@@ -343,5 +341,20 @@ public class BattleCharacter : BaseObject
     public override void OnClick()
     {
         throw new NotImplementedException();
+    }
+
+    public void SetAnimation()
+    {
+        Animator = GetComponentInChildren<Animator>();
+        AnimationHash = Animator.StringToHash("animation"); // 애니메이션 해시 초기화
+        SkillHash = Animator.StringToHash("Skills"); // 스킬 애니메이션 해시 초기화
+        SkillTrigger = Animator.StringToHash("Skill"); // 스킬 애니메이션 이름 해시 초기화
+    }
+
+    public void PivotSet()
+    {
+        LeftHandPivot = transform.Find("Hand_l_equipment");
+        RightHandPivot = transform.Find("Hand_R_equipment");
+        HeadPivot = transform.Find("Head_equipment");
     }
 }

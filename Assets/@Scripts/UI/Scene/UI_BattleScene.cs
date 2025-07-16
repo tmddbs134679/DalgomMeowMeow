@@ -11,6 +11,7 @@ public class UI_BattleScene : UI_Scene
     [SerializeField] private ButtonCoolDown _skill_2;
     [SerializeField] private ButtonCoolDown _skill_3;
 
+    private UI_PausePopup _pausePopup;
     private GameObject _skillScene;
     #region Enum
 
@@ -46,7 +47,17 @@ public class UI_BattleScene : UI_Scene
 
         return true;
     }
-    UI_PausePopup _pausePopup;
+
+    private void Update()
+    {
+        if (_playerCharacter_1.IsDead)
+            _skill_1.ButtonLock();
+        if (_playerCharacter_2.IsDead)
+            _skill_2.ButtonLock();
+        if (_playerCharacter_3.IsDead)
+            _skill_3.ButtonLock();
+    }
+
     public void OnClickPauseButton()
     {
         Time.timeScale = 0f; // 게임 일시 정지
