@@ -99,16 +99,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac99a8473202cef4eb50b8d59c8062ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BuildActiontUI: {fileID: 0}
+  _uI_BuildAction: {fileID: 0}
   buildMap: {fileID: 0}
-  buildingplacer: {fileID: 0}
-  gridSize: 1
-  heightOffset: 0.5
   isBuild: 0
   isDrag: 0
   isLongPress: 1
+  gridSize: 1
+  heightOffset: 0.5
   TempOBJ: {fileID: 0}
-  TempCollider: []
   buildSize: {x: 2, y: 1}
   tileLayer:
     serializedVersion: 2
@@ -149,11 +147,11 @@ MonoBehaviour:
   BuildingData: {fileID: 11400000, guid: e24abc2ef0164a1438c9087dcaee280a, type: 2}
   CurrentState: 0
   assignedAnimal: {fileID: 0}
-  SerialID: 0
+  _buildMap: {fileID: 0}
   buildingRenderer: {fileID: 0}
-  defaultColor: {r: 1, g: 1, b: 1, a: 1}
-  readyColor: {r: 0, g: 1, b: 0, a: 1}
   collectIcon: {fileID: 0}
+  JackpotProbability: 0.1
+  NormalProbability: 0.7
 --- !u!1 &8884258017388189250
 GameObject:
   m_ObjectHideFlags: 0

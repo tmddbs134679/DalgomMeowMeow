@@ -6,7 +6,7 @@ public class CameraController : MonoBehaviour
     public float _dragSpeed = 2f;
     public Vector2 minLimit = new Vector2(-10, -10);
     public Vector2 maxLimit = new Vector2(10, 10);
-    public float _clickThreshold = 10f; // Ŭ�� ���� �Ÿ�
+    public float _clickThreshold = 10f; // 	클릭 or 미세한 움직임 판단범위
 
     [SerializeField] private DragController dragController;
     [SerializeField] private BuildingPlacer buildingplacer;

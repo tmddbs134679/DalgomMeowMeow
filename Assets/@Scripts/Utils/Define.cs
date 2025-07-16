@@ -109,7 +109,7 @@ public class Define
         ROAD
     }
 
-//BuildSo의 넘버링과 순서가 동일해야함
+    //BuildSo의 넘버링과 순서가 동일해야함
     public enum BuildingType
     {
         Cooking,
@@ -213,4 +213,13 @@ public class Define
         Max,
 
     }
+    
+    public enum ECropType
+{
+    None,
+    Carrot,
+    Pumpkin,
+    Potato,
+    Onion,
+}
 }
