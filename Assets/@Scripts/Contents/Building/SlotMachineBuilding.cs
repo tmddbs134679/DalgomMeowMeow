@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class SlotResult
 {
-    public string Symbol;       
+    public string Symbol;
     public int RewardGold;
     public int Weight;
 }
@@ -23,12 +23,12 @@ public class SlotMachineBuilding : BaseObject
 {
     private List<SlotResult> _results => SlotMachineTestData.TestResults;
 
-    private string[] _currentResult = new string[3]; 
+    private string[] _currentResult = new string[3];
     public string[] CurrentResult => _currentResult;
 
-    
+
     private int _slotCount = 3;
-    
+
     private int _finishedCount = 0;
 
     public IEnumerator StartAllSlots()
@@ -46,8 +46,8 @@ public class SlotMachineBuilding : BaseObject
 
         CheckReward();
     }
-    
-    
+
+
     private IEnumerator RollSingleSlot(int index)
     {
         float randomSpinTime = Random.Range(0.5f, 1.5f); // 슬롯당 랜덤 회전 시간
@@ -114,7 +114,7 @@ public class SlotMachineBuilding : BaseObject
         {
             Managers.Debug.Log("😢 꽝!", Define.EDebugType.Building);
         }
-        
+
         // if (_currentResult[0] == "고양이" && _currentResult[1] == "고양이" && _currentResult[2] == "고양이")
         // {
         //     SlotResult match = _results.Find(r => r.Symbol == "고양이");
@@ -152,11 +152,13 @@ public class SlotMachineBuilding : BaseObject
 
         return (_currentResult, reward);
     }
-    
+
     public override void OnClick()
     {
-
-        UI_SlotMachinePopup popup = Managers.UI.ShowPopupUI<UI_SlotMachinePopup>();
-        popup.SetTarget(this);
+        if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+            return;
+        UI_BuildContent popup = Managers.UI.ShowPopupUI<UI_BuildContent>();
+        popup.SetTarget(gameObject);
+        popup.SettingOnOff(Define.EBuildPopUpType.SlotButton);
     }
 }

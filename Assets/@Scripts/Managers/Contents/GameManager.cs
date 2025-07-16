@@ -519,10 +519,10 @@ public class GameManager
         }
 
         Character newChar = new Character();
-        newChar.Init(creatureId, new Vector3(39f, 0, 27f));
+        newChar.Init(creatureId, new Vector3(39f, 1, 27f));
         newChar.SetInfo(creatureData);
 
-        AICharacter aiChar = Managers.Object.Spawn<AICharacter>(new Vector3(39f, 0, 27f), creatureId, isReplica: false);
+        AICharacter aiChar = Managers.Object.Spawn<AICharacter>(new Vector3(39f, 1, 27f), creatureId, isReplica: false);
 
         if (aiChar == null)
         {

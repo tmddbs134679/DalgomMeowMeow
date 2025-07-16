@@ -55,7 +55,7 @@ public class UI_FoodItem : UI_Base
 
     void OnClickFoodItemButton()
     {
-        Debug.Log(name);
+       // Debug.Log(name);
         //누르면 GameManager의 돈으로 바꿈.
         Managers.Game.Gold += _food.FoodData.Price;
         Managers.Food.Cancel(_food);

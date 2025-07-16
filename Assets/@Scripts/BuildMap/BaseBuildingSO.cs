@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 
@@ -22,6 +23,7 @@ public class BaseBuildingSO : ScriptableObject
     [SerializeField] private float _interval;
     [SerializeField] private int _unlockCost;
     [SerializeField] private int _buyMoney;
+    [SerializeField] private string _description;
 
     public GameObject buildOBJ { get => _buildOBJ; set => _buildOBJ = value; }
     public GameObject previewOBJ { get => _previweOBJ; set => _previweOBJ = value; }
@@ -34,5 +36,7 @@ public class BaseBuildingSO : ScriptableObject
     public Define.BuildingType BuildingType { get => _buildingType; set => _buildingType = value; }
     public float Interval { get => _interval; set => _interval = value; }
     public int UnlockCost { get => _unlockCost; set => _unlockCost = value; }
-    public int BuyMoney{get => _buyMoney; set => _buyMoney = value; }
+    public int BuyMoney { get => _buyMoney; set => _buyMoney = value; }
+    
+        public string  Description{get => _description; set => _description = value; }
 }

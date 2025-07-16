@@ -15,7 +15,9 @@ public class AICharacter : BaseObject
     public AIController Controller { get { return _controller; } }
     private AIController _controller;
 
+    [HideInInspector]
     public EAIState loadState;
+    [HideInInspector]
     public BuildingBase loadBuilding;
 
     [HideInInspector]
@@ -71,10 +73,6 @@ public class AICharacter : BaseObject
     [SerializeField]
     private GameObject infoButton;
 
-    public float Level;
-    public float currentExp;
-    public float currentStamina;
-    public float MaxExp;
     public event Action<AICharacter> AnimalLeaved;
     public event Action<AICharacter> AnimalArrived;
     public event Action<AICharacter> AnimalDelivered;
@@ -117,10 +115,6 @@ public class AICharacter : BaseObject
         else Controller.OnUpdate(Time.deltaTime);
 
         if (BuildingPlacer.Instance.isAI) OnClick();
-        Level = Data.Level;
-        currentStamina = Data.CurrentStamina;
-        currentExp = Data.CurrentExp;
-        MaxExp = Data.MaxExp;
         if (!BuildingPlacer.Instance.isAI)LongPressClick();
     }
 
@@ -149,10 +143,6 @@ public class AICharacter : BaseObject
         // 위치값
         transform.position = Data.Pos.ToVector3();
         CurrentState = Data.CurrentState;
-        Level = Data.Level;
-        currentExp = Data.CurrentExp;
-        MaxExp = Data.MaxExp;
-        currentStamina = Data.CurrentStamina;
         loadState = Data.CurrentState;
         loadBuilding = Data.LoadBuilding;
 

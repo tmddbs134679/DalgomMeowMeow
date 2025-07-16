@@ -13,6 +13,6 @@ public class ShopBuilding : BuildingBase
     {
         if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
             return;
-        UI_Gacha popup = Managers.UI.ShowPopupUI<UI_Gacha>();
+         Managers.UI.ShowPopupUI<UI_ShopPopup>();
     }
 }
