@@ -4,7 +4,7 @@ using UnityEngine.Advertisements;
 
 public class AdsManager : IUnityAdsInitializationListener, IUnityAdsLoadListener, IUnityAdsShowListener
 {
-    [SerializeField] private string androidGameId = "ca-app-pub-3940256099942544/5354046379"; // 실제 ID로 교체
+    //[SerializeField] private string androidGameId = "ca-app-pub-3940256099942544/5354046379"; // 실제 ID로 교체
     [SerializeField] private string interstitialAdUnitId = "Interstitial_Android";
     [SerializeField] private bool testMode = true;
     [SerializeField] private string rewardedAdUnitId = "Rewarded_Android";
@@ -30,7 +30,7 @@ public class AdsManager : IUnityAdsInitializationListener, IUnityAdsLoadListener
     // 초기화 콜백
     public void OnInitializationComplete()
     {
-        Debug.Log("광고 초기화 완료");
+        Managers.Debug.Log("광고 초기화 완료",Define.EDebugType.AD);
         Advertisement.Load(interstitialAdUnitId, this); // 광고 미리 로드
     }
 
@@ -40,7 +40,7 @@ public class AdsManager : IUnityAdsInitializationListener, IUnityAdsLoadListener
         if (placementId == interstitialAdUnitId)
         {
             _isAdLoaded = true;
-            Debug.Log("광고 로딩 완료!");
+            Managers.Debug.Log("광고 로딩 완료!", Define.EDebugType.AD);
         }
     }
 
@@ -54,7 +54,7 @@ public class AdsManager : IUnityAdsInitializationListener, IUnityAdsLoadListener
         }
         else
         {
-            Debug.Log("광고 아직 로딩 안됨, 로딩 후 재시도 필요");
+            Managers.Debug.Log("광고 아직 로딩 안됨, 로딩 후 재시도 필요", Define.EDebugType.AD);
             Advertisement.Load(interstitialAdUnitId, this);
         }
     }
@@ -67,14 +67,14 @@ public class AdsManager : IUnityAdsInitializationListener, IUnityAdsLoadListener
         {
             if (showCompletionState == UnityAdsShowCompletionState.COMPLETED)
             {
-                Debug.Log("보상형 광고 시청 완료 - 보상 지급");
+                Managers.Debug.Log("보상형 광고 시청 완료 - 보상 지급", Define.EDebugType.AD);
                 _onRewardedCallback?.Invoke(); // 보상 콜백 실행
                 Advertisement.Load(rewardedAdUnitId, this); // 다음 광고 로드
                 _isAdLoaded = true;
             }
             else
             {
-                Debug.Log("광고 스킵됨 - 보상 지급 안됨");
+                Managers.Debug.Log("광고 스킵됨 - 보상 지급 안됨", Define.EDebugType.AD);
             }
 
             _onRewardedCallback = null; // 콜백 해제
@@ -86,13 +86,13 @@ public class AdsManager : IUnityAdsInitializationListener, IUnityAdsLoadListener
 
     public void OnInitializationFailed(UnityAdsInitializationError error, string message)
     {
-        Debug.LogError($"광고 초기화 실패: {error.ToString()} - {message}");
+        Managers.Debug.LogError($"광고 초기화 실패: {error.ToString()} - {message}", Define.EDebugType.AD);
     }
     
 
     public void OnUnityAdsFailedToLoad(string placementId, UnityAdsLoadError error, string message)
     {
-        Debug.LogError($"광고 로드 실패: {placementId} - {error.ToString()} - {message}");
+        Managers.Debug.LogError($"광고 로드 실패: {placementId} - {error.ToString()} - {message}", Define.EDebugType.AD);
     }
 
     // 광고 실행 콜백
@@ -100,7 +100,7 @@ public class AdsManager : IUnityAdsInitializationListener, IUnityAdsLoadListener
 
     public void OnUnityAdsShowFailure(string placementId, UnityAdsShowError error, string message)
     {
-        Debug.LogError($"광고 재생 실패: {placementId} - {error.ToString()} - {message}");
+        Managers.Debug.LogError($"광고 재생 실패: {placementId} - {error.ToString()} - {message}", Define.EDebugType.AD);
     }
 
     public void OnUnityAdsShowStart(string placementId) { } //광고 시작 시 호출
