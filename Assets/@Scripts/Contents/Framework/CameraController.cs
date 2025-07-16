@@ -31,7 +31,6 @@ public class CameraController : MonoBehaviour
 #if UNITY_EDITOR
         if (Input.GetMouseButtonDown(0))
         {
-            ClickObject(Input.mousePosition);
             _startedOnUI = IsPointerOverUI(); //  UI 위에서 눌렀는지 기록
             if (_startedOnUI) return;
 
@@ -57,6 +56,7 @@ public class CameraController : MonoBehaviour
         }
         else if (Input.GetMouseButtonUp(0))
         {
+            if(!isDragging) ClickObject(Input.mousePosition);
             if (_startedOnUI)
             {
                 _startedOnUI = false; // 다시 초기화

@@ -50,11 +50,14 @@ public class DraggableObject : MonoBehaviour, IDraggable
             Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.main, transform.position);
             if (_uI_BuildAction != null)
                 _uI_BuildAction.transform.position = screenPos;
+
+           // Managers.UI.ClosePopupUI(UI_BuildContent);
         }
     }
 
     //드래그 드롭
     public void OnDragEnd() { }
+
 
     public void OnLongPress()
     {

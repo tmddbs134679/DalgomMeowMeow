@@ -104,6 +104,7 @@ public class Define
         ROAD
     }
 
+//BuildSo의 넘버링과 순서가 동일해야함
     public enum BuildingType
     {
         Cooking,

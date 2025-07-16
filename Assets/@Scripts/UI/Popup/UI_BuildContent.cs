@@ -78,8 +78,17 @@ public class UI_BuildContent : UI_Popup
     {
         Managers.UI.ClosePopupUI(this);
         UI_SlotMachinePopup popup = Managers.UI.ShowPopupUI<UI_SlotMachinePopup>();
-                popup.SetPivot(_tempObj);
-        //   popup.SetTarget(_buildingBase);
+        popup.SetPivot(_tempObj);
+
+        if (_buildingBase is SlotMachineBuilding slot)
+        {
+            popup.SetTarget(slot);
+        }
+        else
+        {
+            Debug.LogError("baseBuilding은 SlotMachineBuilding이 아님!");
+        }
+
     }
     public void SetTarget(GameObject go)
     {
@@ -99,7 +108,7 @@ public class UI_BuildContent : UI_Popup
 
     private void SelectButton()
     {
-                switch (_type)
+        switch (_type)
         {
             case Define.EBuildPopUpType.PopUpButton:
                 GetButton((int)Buttons.PopUpButton).gameObject.SetActive(true);

@@ -8,4 +8,5 @@ public interface IDraggable
     void OnDrag(Vector3 hitPos);
     void OnDragEnd();
     void OnLongPress();
+
 }

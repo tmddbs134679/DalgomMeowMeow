@@ -59,7 +59,7 @@ public class UI_BuildPopup : UI_Popup
     }
     #endregion
 
-    Character _character;
+    private Character _character;
     private void Awake()
     {
         Init();
@@ -73,16 +73,16 @@ public class UI_BuildPopup : UI_Popup
         BindButton(typeof(Buttons));
         BindText(typeof(Texts));
 
-        GetButton((int)Buttons.CookButton).gameObject.BindEvent(() => SelectBuildingType(0));
-        GetButton((int)Buttons.FarmButton).gameObject.BindEvent(() => SelectBuildingType(1));
-        GetButton((int)Buttons.PlayGroundButton).gameObject.BindEvent(() => SelectBuildingType(2));
-        GetButton((int)Buttons.RestButton).gameObject.BindEvent(() => SelectBuildingType(3));
-        GetButton((int)Buttons.FishingButton).gameObject.BindEvent(() => SelectBuildingType(4));
-        GetButton((int)Buttons.StorageButton).gameObject.BindEvent(() => SelectBuildingType(5));
-        GetButton((int)Buttons.SlotMachineButton).gameObject.BindEvent(() => SelectBuildingType(6));
-        GetButton((int)Buttons.RoadButton).gameObject.BindEvent(() => SelectBuildingType(7));
-        GetButton((int)Buttons.ShopButton).gameObject.BindEvent(() => SelectBuildingType(8));
-        GetButton((int)Buttons.UnlockAreaButton).gameObject.BindEvent(() => SelectBuildingType(9));
+        GetButton((int)Buttons.CookButton).gameObject.BindEvent(() => SelectBuildingType(Define.BuildingType.Cooking));
+        GetButton((int)Buttons.FarmButton).gameObject.BindEvent(() => SelectBuildingType(Define.BuildingType.Farm));
+        GetButton((int)Buttons.PlayGroundButton).gameObject.BindEvent(() => SelectBuildingType(Define.BuildingType.Playing));
+        GetButton((int)Buttons.RestButton).gameObject.BindEvent(() => SelectBuildingType(Define.BuildingType.Resting));
+        GetButton((int)Buttons.FishingButton).gameObject.BindEvent(() => SelectBuildingType(Define.BuildingType.Fishing));
+        GetButton((int)Buttons.StorageButton).gameObject.BindEvent(() => SelectBuildingType(Define.BuildingType.Storage));
+        GetButton((int)Buttons.SlotMachineButton).gameObject.BindEvent(() => SelectBuildingType(Define.BuildingType.SlotMachine));
+        GetButton((int)Buttons.RoadButton).gameObject.BindEvent(() => SelectBuildingType(Define.BuildingType.Road));
+        GetButton((int)Buttons.ShopButton).gameObject.BindEvent(() => SelectBuildingType(Define.BuildingType.Shop));
+        GetButton((int)Buttons.UnlockAreaButton).gameObject.BindEvent(() => SelectBuildingType(Define.BuildingType.UnLockStage));
         GetButton((int)Buttons.CancelButton).gameObject.BindEvent(CancelBuildUI);
         Managers.Game.OnResourcesChagned += Refresh;
         BuildingPlacer.Instance.OnBuildingCancel += CancelBuildUI;
@@ -107,29 +107,33 @@ public class UI_BuildPopup : UI_Popup
 
 
     //설치 건물 선택
-    private void SelectBuildingType(int type)
+    private void SelectBuildingType(Define.BuildingType type)
     {
-        //건물 갯수 제한 코드 구간
-        if (type == (int)Define.BuildingType.SlotMachine)
-        {
-            if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(Define.BuildingType.SlotMachine.ToString(), out int count2) && count2 >= 1)
-                return;
-        }
-        if (type == (int)Define.BuildingType.Shop)
-        {
-            if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(Define.BuildingType.Shop.ToString(), out int count2) && count2 >= 1)
-                return;
-        }
 
+        LimitBuildCount(type);
+        if (!BuildingPlacer.Instance.islimitBuildCount) return;
         Setting();//데이터 갱신
 
 
-        //   GetText(type).text = "돈";//Gold
-        //  GetText(type + 100).text = "갯수";//Count;
-
         GetObject((int)GameObjects.BuildScrollObject).SetActive(false);
         BuildingPlacer.Instance.SelectBuildingType(type);
-        Managers.UI.MakeSubItem<UI_BuildAction>(this.transform);
+        UI_BuildAction popup = Managers.UI.MakeSubItem<UI_BuildAction>(this.transform);
+       // popup.islimitBuildCount = islimitBuildCount;
+    }
+    //건물 갯수 제한 코드 구간
+    private void LimitBuildCount(Define.BuildingType type)
+    {
+        if (type == Define.BuildingType.SlotMachine)
+        {
+            if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(Define.BuildingType.SlotMachine.ToString(), out int count) && count >= 1)
+                BuildingPlacer.Instance.islimitBuildCount = false;
+        }
+        if (type == Define.BuildingType.Shop)
+        {
+            if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(Define.BuildingType.Shop.ToString(), out int count) && count >= 1)
+                BuildingPlacer.Instance.islimitBuildCount = false;
+        }
+                        BuildingPlacer.Instance.islimitBuildCount = true;
     }
 
     //buildUI창 건설비용과 건물갯수 갱신
@@ -150,7 +154,7 @@ public class UI_BuildPopup : UI_Popup
 
             if (buildType == "Road") // 도로일 땐 else 처리,임시땜빵,나중에는 모든게 엑셀 데이터를 받아와서 계산해야함
             {
-               
+
                 GetText(i).text = BuildingPlacer.Instance.buildingSO[i].BuyMoney.ToString();
                 GetText(ToIndex((Texts)(100 + i))).text = "0";
                 continue;
@@ -167,6 +171,7 @@ public class UI_BuildPopup : UI_Popup
             }
         }
     }
+    //이거좀 불안정함
     private int ToIndex(Texts text)
     {
         int value = (int)text;
@@ -179,7 +184,7 @@ public class UI_BuildPopup : UI_Popup
     }
 
 
-
+    //골드갱신 함수,이벤트연결됨
     private void Refresh()
     {
         GetText((int)Texts.PlayerGoldText).text = Managers.Game.Gold.ToString();

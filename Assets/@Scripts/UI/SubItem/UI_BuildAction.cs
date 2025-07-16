@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Analytics;
 
 public class UI_BuildAction : UI_Popup
 {
@@ -27,7 +28,7 @@ public class UI_BuildAction : UI_Popup
     }
     #endregion
 
-
+    public bool islimitBuildCount;
     private void Awake()
     {
         Init();
@@ -49,18 +50,19 @@ public class UI_BuildAction : UI_Popup
     }
     private void AcceptBuild()
     {
+//여기서도 판별해야하는데..
         if (BuildingPlacer.Instance.isLongPressAcceptBuild)
         {
             BuildingPlacer.Instance.AcceptLongPressBuild();
             if (!BuildingPlacer.Instance.isLongPressAcceptBuild && BuildingPlacer.Instance._isBuild)
             {
-             BuildingPlacer.Instance.OnBuildingCancel?.Invoke();
+                BuildingPlacer.Instance.OnBuildingCancel?.Invoke();
             }
         }
-            else
-            {
-                BuildingPlacer.Instance.AcceptBuild();
-            }
+        else
+        {
+            BuildingPlacer.Instance.AcceptBuild();
+        }
              
     }
     private void CancelBuild()

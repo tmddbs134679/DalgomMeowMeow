@@ -139,7 +139,7 @@ public class ArrayMapPos : ScriptableObject
         if (BuildingPlacer.Instance != null)
         {
             BuildingPlacer.Instance.OnAutoSave += SaveMapTileData;
-            Debug.LogError("arraymappos연결됨");
+
         }
     }
 

@@ -199,7 +199,7 @@ public class ArrayBuildPos : ScriptableObject
         if (BuildingPlacer.Instance != null)
         {
             BuildingPlacer.Instance.OnAutoSave += SaveMapData;
-            Debug.LogError("arraybuildpos연결됨");
+
         }
     }
 

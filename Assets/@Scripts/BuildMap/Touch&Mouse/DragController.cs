@@ -20,6 +20,10 @@ public class DragController : MonoBehaviour
     private float delayTime = 0f;
     private Vector3 dragStartPos;   // 클릭한 화면상의 위치
 
+    void Awake()
+    {
+        BuildingPlacer.Instance.dragController = this;
+    }
     void Update()
     {
         if (isDelay)
@@ -29,7 +33,7 @@ public class DragController : MonoBehaviour
             {
                 delayTime = 0f;
                 isDelay = false;
-                            isPointerDown = true;
+                isPointerDown = true;
             }
         }
 
@@ -67,10 +71,10 @@ public class DragController : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(inputPos);
         if (began)
         {
-                        isDelay = true;
+            isDelay = true;
             pointerDownTimer = 0f;
 
-            if (Physics.Raycast(ray, out var hit,exceptPlayer))
+            if (Physics.Raycast(ray, out var hit, exceptPlayer))
             {
                 var draggable = hit.collider.GetComponent<IDraggable>();
                 if (draggable != null)
@@ -89,7 +93,7 @@ public class DragController : MonoBehaviour
             // 아직 드래그 시작 안했으면 거리 체크
             if (!isDragging)
             {
-                            isDelay = true;
+                isDelay = true;
                 float dist = Vector2.Distance(inputPos, dragStartPos);
                 if (dist >= dragThreshold)
                 {
@@ -100,7 +104,7 @@ public class DragController : MonoBehaviour
             // 드래그 중일 때만 이동
             if (isDragging)
             {
-                            isDelay = false;
+                isDelay = false;
                 if (Physics.Raycast(ray, out var groundHit, 1000f, groundLayer))
                 {
                     currentTarget.OnDrag(groundHit.point);
@@ -123,9 +127,15 @@ public class DragController : MonoBehaviour
     }
     private void OnLongPress()
     {
+
         if (currentTarget != null)
         {
             currentTarget.OnLongPress();
         }
+    }
+
+    public void ChangeTarget(IDraggable draggable)
+    {
+        currentTarget = draggable;
     }
 }

@@ -19,7 +19,7 @@ public class SlotMachineTestData
         new SlotResult { Symbol = "CAT",  RewardGold = 1000, Weight = 5  }
     };
 }
-public class SlotMachineBuilding : BaseObject
+public class SlotMachineBuilding : BuildingBase
 {
     private List<SlotResult> _results => SlotMachineTestData.TestResults;
 
@@ -160,5 +160,10 @@ public class SlotMachineBuilding : BaseObject
         UI_BuildContent popup = Managers.UI.ShowPopupUI<UI_BuildContent>();
         popup.SetTarget(gameObject);
         popup.SettingOnOff(Define.EBuildPopUpType.SlotButton);
+    }
+
+        public override void Produce()
+    {
+        
     }
 }

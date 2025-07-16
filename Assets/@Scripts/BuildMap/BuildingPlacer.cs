@@ -57,6 +57,10 @@ public class BuildingPlacer : MonoBehaviour
 
     private ArrayBuildPos _arrayBuildPos;
     private ArrayMapPos _arrayMapPos;
+
+    public bool islimitBuildCount;
+
+    public DragController dragController;
     private void Awake()
     {
         if (Instance == null)
@@ -65,38 +69,38 @@ public class BuildingPlacer : MonoBehaviour
             Destroy(gameObject);
     }
 
-void Start()
-{
-    InitializeMaps();
-}
+    void Start()
+    {
+        InitializeMaps();
+    }
 
-void InitializeMaps()
-{
+    void InitializeMaps()
+    {
         _arrayBuildPos = buildMap.ArrayBuildPos;
         _arrayMapPos = gridMap.ArrayMapPos;
-    _arrayBuildPos.BindEvent();
-    _arrayMapPos.BindEvent();
-}
+        _arrayBuildPos.BindEvent();
+        _arrayMapPos.BindEvent();
+    }
 
     /// <summary>
     /// 건물 종류 선택 시 호출
     /// </summary>
-    public void SelectBuildingType(int type)
+    public void SelectBuildingType(Define.BuildingType type)
     {
 
         isAI = true;
         isSelect = false;
         buildMap.ColliderAllOff();
-        tempTypeNum = type;
+        tempTypeNum = (int)type;
         Camera cam = Camera.main;
         Vector3 screenCenter = new Vector3(Screen.width / 2f, Screen.height / 2f, cam.nearClipPlane);
         Ray ray = Camera.main.ScreenPointToRay(screenCenter);
 
         if (Physics.Raycast(ray, out var groundHit, 1000f, groundLayer))
         {
-            _saveBuildingSO = buildingSO[type];
+            _saveBuildingSO = buildingSO[(int)type];
 
-            _PreviewOBJ = Instantiate(buildingSO[type].previewOBJ,
+            _PreviewOBJ = Instantiate(buildingSO[(int)type].previewOBJ,
                 new Vector3(groundHit.point.x, groundHit.point.y + _heightOffset, groundHit.point.z),
                 Quaternion.identity);
 
@@ -125,6 +129,7 @@ void InitializeMaps()
         tempDraggleOBJ.isDrag = true;
         tempDraggleOBJ.isLongPress = false;
         OriginTempOBJ = OriginOBJ;
+        dragController.ChangeTarget(tempDraggleOBJ);
         OriginTempOBJ.SetActive(false);
         _CurBuildData = new BuildData
         {
@@ -245,7 +250,7 @@ void InitializeMaps()
             //     Managers.AI.ValidateNavMeshPosition(ai);
             // }
         }
-                OnAutoSave?.Invoke();
+        OnAutoSave?.Invoke();
     }
 
     /// <summary>
@@ -315,6 +320,9 @@ void InitializeMaps()
         buildMap.LoadBuild(); //오브젝트 갱신
         surface.BuildNavMesh(); //네브매쉬 깔기
     }
+
+    //건물 갯수 제한 코드 구간
+
 
     Vector2Int GridKey(float x, float z)
     {
