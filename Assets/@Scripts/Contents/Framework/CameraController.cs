@@ -34,6 +34,7 @@ public class CameraController : MonoBehaviour
             _startedOnUI = IsPointerOverUI(); //  UI 위에서 눌렀는지 기록
             if (_startedOnUI) return;
 
+ClickObject(Input.mousePosition);
             _dragOrigin = Input.mousePosition;
             _touchStartPos = _dragOrigin;
             isDragging = false;
