@@ -132,7 +132,6 @@ public class GameManager
 
     #endregion
 
-
     #region Save
 
     string _path;
@@ -541,25 +540,7 @@ public class GameManager
         newChar.Init(creatureId, new Vector3(39f, 0, 27f)); // 위치 초기값
         newChar.SetInfo(creatureData);
        
-        var statRange = Managers.Data.GachaStatDataDic["S10001"];
-
-        float deltaHp = UnityEngine.Random.Range(statRange.HpMin, statRange.HpMax);
-        int signHp = UnityEngine.Random.value < 0.5f ? -1 : 1;
-        newChar.Hp += (signHp * deltaHp);
-        newChar.Hp = Mathf.Floor(newChar.Hp);
-
-        float deltaStamina = UnityEngine.Random.Range(statRange.StaminaMin, statRange.StaminaMax);
-        int signStamina = UnityEngine.Random.value < 0.5f ? -1 : 1;
-        newChar.MaxStamina += signStamina * deltaStamina;
-        newChar.MaxStamina = Mathf.Floor(newChar.MaxStamina);
-
-
-        newChar.Atk = Mathf.Floor(UnityEngine.Random.Range(statRange.AtkMin, statRange.AtkMax));
-        
-
-
-        newChar.MoveSpeed = UnityEngine.Random.Range(statRange.MoveSpeedMin, statRange.MoveSpeedMax);
-        newChar.MoveSpeed = (float)Math.Round(newChar.MoveSpeed, 1);
+        ApplyRandomStat(newChar);
 
 
         AICharacter aiChar = Managers.Object.Spawn<AICharacter>(new Vector3(39f, 1, 27f), creatureId, isReplica: false);
@@ -574,6 +555,27 @@ public class GameManager
         _characters[newChar.UniqueId] = newChar;
 
         return aiChar;
+    }
+
+    public void ApplyRandomStat(Character newChar)
+    {
+        var statRange = Managers.Data.GachaStatDataDic["S10001"];
+
+        float deltaHp = UnityEngine.Random.Range(statRange.HpMin, statRange.HpMax);
+        int signHp = UnityEngine.Random.value < 0.5f ? -1 : 1;
+        newChar.Hp += (signHp * deltaHp);
+        newChar.Hp = Mathf.Floor(newChar.Hp);
+
+        float deltaStamina = UnityEngine.Random.Range(statRange.StaminaMin, statRange.StaminaMax);
+        int signStamina = UnityEngine.Random.value < 0.5f ? -1 : 1;
+        newChar.MaxStamina += signStamina * deltaStamina;
+        newChar.MaxStamina = Mathf.Floor(newChar.MaxStamina);
+
+
+        newChar.Atk = Mathf.Floor(UnityEngine.Random.Range(statRange.AtkMin, statRange.AtkMax));
+
+        newChar.MoveSpeed = UnityEngine.Random.Range(statRange.MoveSpeedMin, statRange.MoveSpeedMax);
+        newChar.MoveSpeed = (float)Math.Round(newChar.MoveSpeed, 1);
     }
 
     public List<Equipment> DoEquipmentGacha(int count)
