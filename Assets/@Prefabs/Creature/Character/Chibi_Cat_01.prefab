@@ -2350,18 +2350,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8870700e18148e64aadcec72b1377200, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  originStat: {fileID: 11400000, guid: 7913dda2d8dea144da49d599e23469ac, type: 2}
+  loadState: 0
+  loadBuilding: {fileID: 0}
   nav: {fileID: 0}
   currentBuilding: {fileID: 0}
   animator: {fileID: 0}
   skinnedMeshRenderer: {fileID: 0}
   currentEmo: {fileID: 0}
-  emo: []
   characterAction: {fileID: 0}
-  Stamina: 0
   _isHelloReady: 1
+  CurrentState: 0
+  emo: {fileID: 0}
   sprites: []
   sprite: {fileID: 0}
+  hatBone: {fileID: 0}
+  bagBone: {fileID: 0}
+  accessoryBone: {fileID: 0}
+  isClicked: 0
+  camera: {fileID: 0}
+  tempSpeed: 0
+  infoButton: {fileID: 0}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  isFollowing: 0
+  IsReplica: 0
 --- !u!1 &6684507185372393371
 GameObject:
   m_ObjectHideFlags: 0
@@ -3395,6 +3408,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: f2216289b06c85640a519a63c1de0e10, type: 3}
       propertyPath: m_Name
       value: Box
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f2216289b06c85640a519a63c1de0e10, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

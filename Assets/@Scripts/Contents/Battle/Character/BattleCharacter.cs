@@ -15,15 +15,17 @@ public class BattleCharacter : BaseObject
     [SerializeField] protected SkinnedMeshRenderer[] _characterRenderer; // 캐릭터 렌더러
     [SerializeField] protected Vector3 _originalPosition; // 원래 위치 저장
     public EffectManager _effectManager; // 이펙트 매니저
-
+    
 
 
     public NavMeshAgent Agent { get; private set; } // NavMeshAgent 컴포넌트
     public Animator Animator; // 애니메이터 컴포넌트
     public Transform TargetLocation;
+
     public Transform LeftHandPivot;
     public Transform RightHandPivot;
     public Transform HeadPivot;
+
     public Transform CharacterObject; // 캐릭터 오브젝트 (프리팹)
 
     public HealthBarUI _hpBar;
@@ -114,6 +116,11 @@ public class BattleCharacter : BaseObject
         _originalPosition = transform.localPosition;
         Agent.speed = MoveSpeed; // NavMeshAgent의 이동 속도 설정
         Agent.stoppingDistance = AttackRange; // 공격 범위 내에서 멈추도록 설정
+
+        LeftHandPivot = transform.Find("Hand_l_equipment");
+        RightHandPivot = transform.Find("Hand_R_equipment");
+        HeadPivot = transform.Find("Head_equipment");
+            
         
     }
 

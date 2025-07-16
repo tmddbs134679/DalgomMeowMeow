@@ -1,18 +1,17 @@
 using Data;
+using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class TeamManager : MonoBehaviour
 {
-    [SerializeField] private SkinnedMeshRenderer[] _characterRenderer;
-    [SerializeField] private SkinnedMeshRenderer[] sourceRenderers;
-    [SerializeField] private Material[] sourceMaterials;
     [SerializeField] private CreatureData[] _creatureData; // 캐릭터 데이터
     [SerializeField] private BattleCharacter[] _battleCharacters; // 전투 캐릭터 배열
+    [SerializeField] private AnimatorController _catAnim;
+    [SerializeField] private AnimatorController _bearAnim;
 
     public string[] CatDataKey;     // 선택된 고양이 어드레서블 키(프리펩 이름)ID
-    public Material[] materials;
 
 
     //catdatakey만 먼저 가져와서 넣기
@@ -21,7 +20,6 @@ public class TeamManager : MonoBehaviour
     private void Awake()
     {
         _battleCharacters = GetComponentsInChildren<BattleCharacter>();
-        _characterRenderer = GetComponentsInChildren<SkinnedMeshRenderer>();
         _creatureData = new CreatureData[3];
         for (int k = 0; k < _creatureData.Length; k++)
             CatDataKey[k] = StageDataManager.Instance.PlayerCharacter[k].DataId;
@@ -38,52 +36,65 @@ public class TeamManager : MonoBehaviour
 
     private void Start()
     {
-        for (int i = 0; i < _characterRenderer.Length; i++)
+        for (int i = 0; i < 3; i++)
         {
             _creatureData[i] = Managers.Data.CreatureDic[CatDataKey[i]];    //id별 데이터 등록
-        }
-
-        for (int i = 0; i < _characterRenderer.Length; i++)
-        {
             LoadPrefab(i, _creatureData[i].PrefabLabel);//임시로 달아준 값 데이터 넘겨받을것
         }
-
-        
     }
 
-    public void LoadPrefab(int k, string catPrefabKey)
+    public void LoadPrefab(int index, string prefabKey)
     {
-        Addressables.LoadAssetAsync<GameObject>(catPrefabKey).Completed += handle =>
+        Addressables.LoadAssetAsync<GameObject>(prefabKey).Completed += handle =>
         {
             if (handle.Status == AsyncOperationStatus.Succeeded)
             {
                 GameObject prefab = handle.Result;
 
-                // 프리팹 안의 SkinnedMeshRenderer 가져오기
-                sourceRenderers[k] = prefab.GetComponentInChildren<SkinnedMeshRenderer>();
-                sourceMaterials = sourceRenderers[k].sharedMaterials;
+                // 필요한 자식 가져오기
+                Transform chibi = prefab.transform.GetChild(0); // "Chibi_Cat"
+                Transform root = prefab.transform.GetChild(1);  // "root"
 
-                // 머티리얼이 2개일 것이라고 가정
-                if (sourceMaterials.Length >= 2)
+                if (chibi == null || root == null)
                 {
-                    // 복사해서 새 배열 생성
-                    Material[] clonedMaterials = new Material[2];
-                    clonedMaterials[0] = new Material(sourceMaterials[0]);
-                    clonedMaterials[1] = new Material(sourceMaterials[1]);
+                    Debug.LogError("❌ 필요한 자식 오브젝트를 찾지 못함");
+                    return;
+                }
 
-                    // 전투씬 고양이에 적용
-                    _characterRenderer[k].materials = clonedMaterials;
+                Transform parent = _battleCharacters[index].transform.GetChild(0);
+                if (parent == null)
+                {
+                    Debug.LogError("❌ 부모 오브젝트 'Chibi_Cat_01'을 찾을 수 없습니다.");
+                    return;
+                }
+
+                GameObject chibiInstance = Instantiate(chibi.gameObject, parent);
+                chibiInstance.transform.localPosition = Vector3.zero;
+                chibiInstance.transform.localRotation = Quaternion.identity;
+                chibiInstance.name = chibiInstance.name.Replace("(Clone)", "");
+
+                GameObject rootInstance = Instantiate(root.gameObject, parent);
+                rootInstance.transform.localPosition = Vector3.zero;
+                rootInstance.transform.localRotation = Quaternion.identity;
+                chibiInstance.name = chibiInstance.name.Replace("(Clone)", "");
+
+                if ( chibiInstance.name.Contains("Cat"))
+                {
+                    //고양이 애니메이션
+                    parent.GetComponent<Animator>().runtimeAnimatorController = _catAnim;
                 }
                 else
                 {
-                    Debug.LogWarning($"프리팹 렌더러 {k}에 머티리얼이 2개 이상 존재하지 않습니다.");
+                    //곰 애니메이션
+                    parent.GetComponent<Animator>().runtimeAnimatorController = _bearAnim;
                 }
-                
             }
             else
             {
-                Debug.LogError("프리팹 로드 실패: " + catPrefabKey);
+                Debug.LogError($"❌ 프리팹 로드 실패: {prefabKey}");
             }
         };
     }
+
+
 }
