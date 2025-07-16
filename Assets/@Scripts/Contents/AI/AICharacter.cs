@@ -126,6 +126,8 @@ public class AICharacter : BaseObject
         ClickToSet();
     }
 
+    
+
     #region 생성 시 초기화 및 불러오기
     public override bool Init()
     {
@@ -182,6 +184,13 @@ public class AICharacter : BaseObject
     public void OnAnimalDelivered()
     {
         AnimalDelivered?.Invoke(this);
+    }
+
+    public void DistinguishCrops()
+    {
+        FarmBuilding farm = currentBuilding as FarmBuilding;
+        Define.ECropType type = farm.GetCropType();
+        farm.Harvest();
     }
     #endregion
 
