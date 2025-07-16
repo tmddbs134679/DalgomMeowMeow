@@ -20,7 +20,7 @@ public class Stop_MiniGameManager : MonoBehaviour
     public float LookBackTime = 3f;
     public float time;
 
-    public bool IsGameOver = false;
+    public bool IsGameOver = true;
     
 
 
@@ -54,6 +54,7 @@ public class Stop_MiniGameManager : MonoBehaviour
     [ContextMenu("GameStart")]
     public void GameStart()
     {
+
         Flip(); // 좌우 반전(앞에봄)
         float time = RandomTiming();
         StartCoroutine(GameStartCoroutine(time));

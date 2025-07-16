@@ -31,7 +31,7 @@ public class UI_MiniGame : UI_Popup
     public GameObject RewardUI;
     public TextMeshProUGUI Timer;
 
-    public float _time = 30;
+    public float _time = 45;
 
     public override bool Init()
     {
@@ -42,13 +42,13 @@ public class UI_MiniGame : UI_Popup
 
         StartButton = GetButton((int)Buttons.Start);
         TitleButton = GetButton((int)Buttons.Title);
-
         _gameManager = GetObject((int)GameObjects.Standing).GetComponent<Stop_MiniGameManager>();
         _player = GetObject((int)GameObjects.Player);
         Timer = GetObject((int)GameObjects.Timer).GetComponent<TextMeshProUGUI>();
         RewardUI = GetObject((int)GameObjects.Reward);
 
         StartButton.gameObject.BindEvent(StartGame);
+        TitleButton.gameObject.BindEvent(PopupClose);
 
         RewardUI.SetActive(false);
         TitleButton.gameObject.SetActive(false);
@@ -65,14 +65,17 @@ public class UI_MiniGame : UI_Popup
 
         _time -= Time.deltaTime; // 타이머 감소
         Timer.text = _time.ToString("F0"); // 소수점 첫째 자리까지 표시
+        if (_time < 0)
+        {
+            _gameManager.GameOver();
+            GameEndUI(0);
+        }
     }
 
     public void StartGame()
     {
-        if (_gameManager.IsGameOver)
-        {
-            return;
-        }
+        _gameManager.IsGameOver = false;
+
 
         GetButton((int)Buttons.ScreenTouch).gameObject.BindEvent(OnTouchScreen);
         _gameManager.GameStart();
@@ -120,6 +123,8 @@ public class UI_MiniGame : UI_Popup
 
     public void PopupClose()
     {
+
+        Debug.Log("closed");
         Managers.UI.ClosePopupUI(this);
     }
 }
