@@ -16,10 +16,7 @@ public class BuildingPlacer : MonoBehaviour
     public LayerMask groundLayer;
     public GridMap gridMap;
     public BuildMap buildMap;
-    public ArrayBuildPos arrayBuildPos;
     public NavMeshSurface surface;
-
-    public BuildUI buildUI;
 
     [Header("임시 드래그 오브젝트")]
     public DraggableObject tempDraggleOBJ;
@@ -55,6 +52,11 @@ public class BuildingPlacer : MonoBehaviour
 
     public int uniqueId;
     public int LV;
+
+    public event Action OnAutoSave;
+
+    private ArrayBuildPos _arrayBuildPos;
+    private ArrayMapPos _arrayMapPos;
     private void Awake()
     {
         if (Instance == null)
@@ -62,6 +64,19 @@ public class BuildingPlacer : MonoBehaviour
         else
             Destroy(gameObject);
     }
+
+void Start()
+{
+    InitializeMaps();
+}
+
+void InitializeMaps()
+{
+        _arrayBuildPos = buildMap.ArrayBuildPos;
+        _arrayMapPos = gridMap.ArrayMapPos;
+    _arrayBuildPos.BindEvent();
+    _arrayMapPos.BindEvent();
+}
 
     /// <summary>
     /// 건물 종류 선택 시 호출
@@ -178,7 +193,7 @@ public class BuildingPlacer : MonoBehaviour
                 UniqueId = hash,
             };
 
-            arrayBuildPos.GetBuildData(_buildData);//설치할 오브젝트
+            _arrayBuildPos.GetBuildData(_buildData);//설치할 오브젝트
 
             _PreviewOBJ.GetComponent<DraggableObject>().SetTileIsBuild();//새롭게 설치할 오브젝트의 타일
             gridMap.LoadMap(); //맵갱신
@@ -188,6 +203,8 @@ public class BuildingPlacer : MonoBehaviour
             OnBuildingAccepted?.Invoke(_saveBuildingSO);
         }
         _PreviewOBJ.GetComponent<DraggableObject>().CheckTilesUnderBuilding();
+
+        OnAutoSave?.Invoke();
     }
 
     public void AcceptLongPressBuild()
@@ -205,8 +222,8 @@ public class BuildingPlacer : MonoBehaviour
                 UniqueId = uniqueId,
                 LV = LV,
             };
-            arrayBuildPos.GetBuildData(_buildData);//설치할 오브젝트
-            arrayBuildPos.RemoveBuildData(_CurBuildData);//기존에 있던 오브젝트 제거
+            _arrayBuildPos.GetBuildData(_buildData);//설치할 오브젝트
+            _arrayBuildPos.RemoveBuildData(_CurBuildData);//기존에 있던 오브젝트 제거
             buildMap.Remove(_CurBuildData.UniqueId);
             _PreviewOBJ.GetComponent<DraggableObject>().SetTileIsBuild();//새롭게 설치할 오브젝트의 타일
             ClearTile();//기존에 있던 오브젝트의 타일 제거
@@ -228,6 +245,7 @@ public class BuildingPlacer : MonoBehaviour
             //     Managers.AI.ValidateNavMeshPosition(ai);
             // }
         }
+                OnAutoSave?.Invoke();
     }
 
     /// <summary>
@@ -254,7 +272,7 @@ public class BuildingPlacer : MonoBehaviour
 
     public void RemoveBuild()
     {
-        arrayBuildPos.RemoveBuildData(_CurBuildData);//기존에 있던 오브젝트 제거
+        _arrayBuildPos.RemoveBuildData(_CurBuildData);//기존에 있던 오브젝트 제거
         buildMap.Remove(_CurBuildData.UniqueId);
         ClearTile();//기존에 있던 오브젝트의 타일 제거
         Destroy(OriginTempOBJ);
@@ -288,7 +306,7 @@ public class BuildingPlacer : MonoBehaviour
             posZ = stage.transform.position.z,
             UnlockId = stage.GetComponent<ForestRegion>().Id,
         };
-        arrayBuildPos.RemoveStageData(data);//기존에 있던 오브젝트 제거
+        _arrayBuildPos.RemoveStageData(data);//기존에 있던 오브젝트 제거
         buildMap.Remove(data.UniqueId);
         stage.GetComponent<DraggableObject>().CurrentTileAndOBJ();
         ClearTile();//기존에 있던 오브젝트의 타일 제거

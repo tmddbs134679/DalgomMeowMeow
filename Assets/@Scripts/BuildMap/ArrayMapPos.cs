@@ -53,7 +53,7 @@ public class ArrayMapPos : ScriptableObject
 #endif
 
 #if UNITY_EDITOR
-    public void SaveMapTileData()
+    public void EditorSaveMapTileData()
     {
         string path = $"{Application.dataPath}/@Resources/Map/MapTileData.json";
 
@@ -70,7 +70,22 @@ public class ArrayMapPos : ScriptableObject
         Debug.Log("맵 타일 데이터 저장 완료!");
     }
 #endif
+    public void SaveMapTileData()
+    {
+        string path = $"{Application.dataPath}/@Resources/Map/MapTileData.json";
 
+        MapTileSaveData saveData = new MapTileSaveData
+        {
+            width = this.width,
+            height = this.height,
+            rows = this.rows
+        };
+
+        string json = JsonConvert.SerializeObject(saveData, Formatting.Indented);
+        File.WriteAllText(path, json);
+
+        Debug.Log("맵 타일 데이터 저장 완료!");
+    }
 #if UNITY_EDITOR
     public void LoadMapTileData()
     {
@@ -117,6 +132,25 @@ public class ArrayMapPos : ScriptableObject
     }
 #endif
 
+
+
+    public void BindEvent()
+    {
+        if (BuildingPlacer.Instance != null)
+        {
+            BuildingPlacer.Instance.OnAutoSave += SaveMapTileData;
+            Debug.LogError("arraymappos연결됨");
+        }
+    }
+
+    public void UnBindEvent()
+    {
+        if (BuildingPlacer.Instance != null)
+        {
+            BuildingPlacer.Instance.OnAutoSave -= SaveMapTileData;
+                                    Debug.LogError("arraymappos해제됨");
+        }
+    }
 }
 
 //TileData->TileRow

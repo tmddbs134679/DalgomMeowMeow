@@ -30,7 +30,7 @@ public class ArrayBuildPos : ScriptableObject
         float targetX = buildData.posX;
         float targetZ = buildData.posZ;
         BuildData dataToRemove = baseBuilding.Find(data =>
-        data.UniqueId==buildData.UniqueId);
+        data.UniqueId == buildData.UniqueId);
 
         if (dataToRemove != null)
         {
@@ -43,7 +43,7 @@ public class ArrayBuildPos : ScriptableObject
         float targetX = buildData.posX;
         float targetZ = buildData.posZ;
         BuildData dataToRemove = baseBuilding.Find(data =>
-        data.UnlockId==buildData.UnlockId);
+        data.UnlockId == buildData.UnlockId);
 
         if (dataToRemove != null)
         {
@@ -61,7 +61,7 @@ public class ArrayBuildPos : ScriptableObject
 
 #if UNITY_EDITOR
     //파일에서 건물데이터 저장하기
-    public void SaveMapData()
+    public void EditorSaveMapData()
     {
         string path = $"{Application.dataPath}/@Resources/Map/MapData.json";
         MapSaveData saveData = new MapSaveData();
@@ -84,6 +84,31 @@ public class ArrayBuildPos : ScriptableObject
         Debug.Log("건물 데이터 저장 완료!");
     }
 #endif
+
+    //save이벤트
+    public void SaveMapData()
+    {
+        string path = $"{Application.dataPath}/@Resources/Map/MapData.json";
+        MapSaveData saveData = new MapSaveData();
+
+        foreach (var data in baseBuilding)
+        {
+            saveData.buildings.Add(new BuildData
+            {
+                posX = data.posX,
+                posZ = data.posZ,
+                buildingName = data.testBaseBuilding.name, // 오브젝트 자체의 이름만 저장
+                UnlockId = data.UnlockId,
+                UniqueId = data.UniqueId,
+                LV = data.LV,
+            });
+        }
+
+        string json = JsonConvert.SerializeObject(saveData, Formatting.Indented);
+        File.WriteAllText(path, json);
+        Debug.Log("건물 데이터 저장 완료!");
+    }
+
 
 #if UNITY_EDITOR
     //파일에서 건물데이터 불러오기
@@ -159,13 +184,32 @@ public class ArrayBuildPos : ScriptableObject
                 testBaseBuilding = so,
                 UnlockId = data.UnlockId,
                 UniqueId = data.UniqueId,
-                LV=data.LV,
+                LV = data.LV,
             });
         }
         baseBuilding = buildDataList;
         Debug.Log("건물 데이터 불러오기 완료!");
     }
 #endif
+
+
+
+    public void BindEvent()
+    {
+        if (BuildingPlacer.Instance != null)
+        {
+            BuildingPlacer.Instance.OnAutoSave += SaveMapData;
+            Debug.LogError("arraybuildpos연결됨");
+        }
+    }
+
+    public void UnBindEvent()
+    {        if (BuildingPlacer.Instance != null)
+        {
+            BuildingPlacer.Instance.OnAutoSave -= SaveMapData;
+                                                Debug.LogError("arraybuildpos해제됨");
+        }
+    }
 }
 
 [Serializable]

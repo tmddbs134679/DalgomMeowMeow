@@ -10,8 +10,9 @@ using System;
 /// </summary>
 public class BuildMap : MonoBehaviour
 {
-    public ArrayBuildPos arrayBuildPos;
+    [SerializeField] private ArrayBuildPos _arrayBuildPos;
 
+    public ArrayBuildPos ArrayBuildPos{ get=>_arrayBuildPos; set=>_arrayBuildPos=value;}
     public NavMeshSurface surface;
     private Dictionary<int, GameObject> _spawnedBuilds = new Dictionary<int, GameObject>();
     public Dictionary<String, int> valueCounts = new Dictionary<string, int>();
@@ -19,7 +20,7 @@ public class BuildMap : MonoBehaviour
     private Dictionary<int, BuildData> _buildDataMap = new Dictionary<int, BuildData>();
     void Start()
     {
-        foreach (BuildData data in arrayBuildPos.baseBuilding)
+        foreach (BuildData data in _arrayBuildPos.baseBuilding)
         {
             _buildDataMap[data.UniqueId] = data;
             GameObject go = Instantiate(data.testBaseBuilding.buildOBJ, new Vector3(data.posX, 1f, data.posZ), Quaternion.identity, transform);
@@ -50,7 +51,7 @@ public class BuildMap : MonoBehaviour
 
     public void LoadBuild()
     {
-        foreach (BuildData data in arrayBuildPos.baseBuilding)
+        foreach (BuildData data in _arrayBuildPos.baseBuilding)
         {
             int key = data.UniqueId;
 
@@ -105,7 +106,7 @@ public class BuildMap : MonoBehaviour
 
     public void ColliderAllOn()
     {
-        foreach (BuildData data in arrayBuildPos.baseBuilding)
+        foreach (BuildData data in _arrayBuildPos.baseBuilding)
         {
             int key = data.UniqueId;
 
@@ -124,7 +125,7 @@ public class BuildMap : MonoBehaviour
     }
     public void ColliderAllOff()
     {
-        foreach (BuildData data in arrayBuildPos.baseBuilding)
+        foreach (BuildData data in _arrayBuildPos.baseBuilding)
         {
             int key = data.UniqueId;
             if (_spawnedBuilds.TryGetValue(key, out GameObject obj) && obj != null)
