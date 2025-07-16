@@ -35,4 +35,6 @@ public class CharacterAction : MonoBehaviour
     public void Build()   => OnAction?.Invoke(Define.EAIState.Build);
     [ContextMenu("Hello")]
     public void Hello() => OnAction?.Invoke(Define.EAIState.Hello);
+    [ContextMenu("Fishing")]
+    public void Fishing() => OnAction?.Invoke(Define.EAIState.Fishing);
 }

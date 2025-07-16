@@ -165,6 +165,7 @@ public class AICharacter : BaseObject
             _controller.RegisterState(new CharacterMoveToState(), this, Define.EAIState.MoveTo);
             _controller.RegisterState(new CharacterDeliverState(), this, Define.EAIState.Deliver);
             _controller.RegisterState(new CharacterHelloState(), this, Define.EAIState.Hello);
+            _controller.RegisterState(new CharacterFishingState(), this, Define.EAIState.Fishing);
     }
     #endregion
 

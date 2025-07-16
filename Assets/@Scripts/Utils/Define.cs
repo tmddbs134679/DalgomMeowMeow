@@ -60,6 +60,7 @@ public class Define
         Collect,
         Build,
         Hello,
+        Fishing,
         None,
 
     }
