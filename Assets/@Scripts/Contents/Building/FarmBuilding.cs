@@ -34,8 +34,6 @@ public class FarmBuilding : BuildingBase
 
         StoredCount++; //  생산 누적
 
-        Harvest();
-
 
         CurrentState = BuildingState.ReadyToCollect;
         // collectIcon.SetActive(true);
