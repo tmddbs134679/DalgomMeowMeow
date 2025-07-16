@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -64,9 +65,13 @@ public class UI_TitleScene : UI_Scene
                 Managers.Data.Init();
                 Managers.Game.Init();
                 Managers.Time.Init();
+                StartButtonAnimation();
             }
         });
     }
-
+    void StartButtonAnimation()
+    {
+        GetText((int)Texts.StartText).DOFade(0, 1f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutCubic).Play();
+    }
 
 }

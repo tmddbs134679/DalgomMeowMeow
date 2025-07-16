@@ -74,6 +74,7 @@ public class UI_GameScene : UI_Scene
         GetButton((int)Buttons.ShopButton).gameObject.BindEvent(OnClickShopButton);
         GetButton((int)Buttons.ShopButton).GetOrAddComponent<UI_ButtonAnimation>();
 
+        GetButton((int)Buttons.EditPosButton).gameObject.SetActive(false);
 
         #region Action 추가
         Managers.Game.OnResourcesChagned += Refresh;

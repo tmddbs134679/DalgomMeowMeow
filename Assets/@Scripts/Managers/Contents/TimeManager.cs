@@ -42,9 +42,74 @@ public class TimeManager : MonoBehaviour
             PlayerPrefs.Save();
         }
     }
+    private DateTime _lastRewardTime;
 
+    public DateTime LastRewardTime
+    {
+        get
+        {
+            if (_lastRewardTime == default(DateTime))
+            {
+                string savedTimeStr = PlayerPrefs.GetString("LastRewardTime", string.Empty);
+                if (!string.IsNullOrEmpty(savedTimeStr))
+                {
+                    _lastRewardTime = DateTime.Parse(savedTimeStr);
+                }
+                else
+                {
+                    _lastRewardTime = DateTime.Now;
+                }
+            }
+
+            return _lastRewardTime;
+        }
+        set
+        {
+            _lastRewardTime = value;
+            string timeStr = value.ToString();
+            PlayerPrefs.SetString("LastRewardTime", timeStr);
+            PlayerPrefs.Save();
+        }
+    }
+    public DateTime LastResetTime
+    {
+        get
+        {
+            string savedTimeStr = PlayerPrefs.GetString("LastResetTime", string.Empty);
+            if (!string.IsNullOrEmpty(savedTimeStr))
+            {
+                return DateTime.Parse(savedTimeStr);
+            }
+            else
+            {
+                return DateTime.MinValue; 
+            }
+        }
+        set
+        {
+            PlayerPrefs.SetString("LastResetTime", value.ToString());
+            PlayerPrefs.Save();
+        }
+    }
+
+
+
+    public TimeSpan TimeSinceLastReward
+    {
+        get
+        {
+            TimeSpan timeSpan = DateTime.Now - LastRewardTime;
+            if (timeSpan > TimeSpan.FromHours(24))
+            {
+                return TimeSpan.FromHours(24);
+            }
+            return timeSpan;
+        }
+    }
     public void Init()
     {
+        CheckOfflineAttendance();
+        CheckDailyReset();
         TimerStart();
     }
 
@@ -81,10 +146,67 @@ public class TimeManager : MonoBehaviour
         if (IsSameDay(LastLoginTime, DateTime.Now) == false)
         {
             AttendanceDay++;
+            LastLoginTime = DateTime.Now;
             Managers.Game.SaveGame();
         }
     }
 
+    private void CheckOfflineAttendance()
+    {
+        DateTime now = DateTime.Now;
+        DateTime lastLogin = LastLoginTime;
+
+        int daysPassed = (now.Date - lastLogin.Date).Days;
+
+        if(daysPassed > 0)
+        {
+            AttendanceDay += daysPassed;
+
+            LastLoginTime = now;
+            Managers.Game.SaveGame();
+        }
+    }
+
+    private void GiveOfflineGold()
+    {
+        TimeSpan offlineTime = DateTime.Now - LastLoginTime;
+
+        int goldPerminute = 100;
+        int totalMinutes = (int)offlineTime.TotalMinutes;
+        int totalGold = totalMinutes * goldPerminute;
+
+        if(totalGold > 0)
+        {
+            Managers.Game.Gold += totalGold;
+
+            LastRewardTime = DateTime.Now;
+            
+        }
+        else
+        {
+            Managers.UI.ShowToast("이미 보상을 받았습니다!");
+        }
+    }
 
 
+    //광고 카운트 및 9시 리셋
+    public void CheckDailyReset()
+    {
+        DateTime now = DateTime.Now;
+        DateTime todayResetTime = new DateTime(now.Year, now.Month, now.Day, 9, 0, 0); 
+        DateTime lastReset = LastResetTime;
+
+        if (lastReset < todayResetTime && now >= todayResetTime)
+        {
+        
+            ResetDailyCounts();
+            LastResetTime = now; 
+        }
+
+    }
+
+    private void ResetDailyCounts()
+    {
+        Managers.Game.AdvancedGachaOpenCount = 3;
+    }
 }

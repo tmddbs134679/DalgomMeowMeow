@@ -32,6 +32,8 @@ public class GameData
     public bool EffectSoundOn = true;
 
     public bool[] AttendanceReceived = new bool[30];
+    public int AdvancedGachaOpenCount = 0;
+
 
 }
 
@@ -118,6 +120,16 @@ public class GameManager
         set { _gameData.AttendanceReceived = value; }
 
     }
+
+    public int AdvancedGachaOpenCount
+    {
+        get { return _gameData.AdvancedGachaOpenCount; }
+        set
+        {
+            _gameData.AdvancedGachaOpenCount = value;
+        }
+    }
+
     #endregion
 
 
