@@ -66,10 +66,9 @@ public class UI_BattleCharacterSlot : UI_Base
         GetImage((int)Images.CharacterIcon).sprite = Managers.Resource.Load<Sprite>(_character.Data.IconLabel);
         GetImage((int)Images.HealthIcon).sprite = Managers.Resource.Load<Sprite>("Cheese");
         GetImage((int)Images.AtkIcon).sprite = Managers.Resource.Load<Sprite>("Fork");
-        //GetImage((int)Images.SkillIcon).sprite = Managers.Resource.Load<Sprite>(_character.Data.SkillTypeList.ToString());
+        GetImage((int)Images.SkillIcon).sprite = Managers.Resource.Load<Sprite>(_character.Data.SkillID.ToString());
 
         GetText((int)Texts.Health).text = _character.Hp.ToString();
         GetText((int)Texts.Atk).text = _character.Atk.ToString();
-        // 스킬 아이콘은 아직 구현 안됨
     }
 }
