@@ -33,6 +33,7 @@ public class Define
 
     public enum EUIEvent
     {
+        None,
         Click,
         Preseed,
         PointerDown,
@@ -228,5 +229,5 @@ public class Define
         Potato,
         Onion,
         Cabbage,
-}
+    }
 }
