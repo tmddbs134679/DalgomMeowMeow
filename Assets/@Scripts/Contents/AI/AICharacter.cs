@@ -70,20 +70,29 @@ public class AICharacter : BaseObject
     public Camera camera;
     [HideInInspector]
     public float tempSpeed;
-    [SerializeField]
+    [HideInInspector]
+    public bool isFollowing;
+
     private GameObject infoButton;
 
-    public  Action<AICharacter> AnimalLeaved;
+    #region Action
+    public Action<AICharacter> AnimalLeaved;
     public  Action<AICharacter> AnimalArrived;
     public  Action<AICharacter> AnimalDelivered;
     public Action<int> CharacterGainExp;
     public Action<float> Levelup;
+    #endregion
     private float clickStartTime = 0f;
     private float longPressThreshold = 0.2f;
     [SerializeField]
     private LayerMask groundLayer;
-    [HideInInspector]
-    public bool isFollowing;
+
+    public float Stamina;
+    public float MaxStamina;
+    public float Atk;
+    public float Hp;
+    public float MoveSpeed;
+
 
     //UI 상에 보일 캐릭터들
     public bool IsReplica = false;
@@ -117,6 +126,12 @@ public class AICharacter : BaseObject
 
         if (BuildingPlacer.Instance.isAI) OnClick();
         if (!BuildingPlacer.Instance.isAI)LongPressClick();
+
+        MaxStamina = Data.CurrentStamina;
+        Atk = Data.Atk;
+        Hp = Data.Hp;
+        MoveSpeed = Data.MoveSpeed;
+
     }
 
 

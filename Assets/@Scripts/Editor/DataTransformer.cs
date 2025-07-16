@@ -23,6 +23,7 @@ public class DataTransformer : EditorWindow
         ParseBuildingData("Building");
         ParseEquipmentData("Equipment");
         ParseGachaData("Gacha");
+        ParseGachaStatData("GachaStat");
         ParseCheckOutData("CheckOut");
         ParseMaterialData("Material");
         ParseEquipmentGacha("EquipmentGacha");
@@ -271,6 +272,44 @@ public class DataTransformer : EditorWindow
         File.WriteAllText($"{Application.dataPath}/@Resources/Data/JsonData/{filename}Data.json", jsonStr);
         AssetDatabase.Refresh();
     }
+
+    static void ParseGachaStatData(string filename)
+    {
+        GachaStatDataLoader loader = new GachaStatDataLoader();
+        #region ExcelData
+        string[] lines = File.ReadAllText($"{Application.dataPath}/@Resources/Data/Excel/{filename}Data.csv").Split("\n");
+        for (int y = 1; y < lines.Length; y++)
+        {
+            string[] row = lines[y].Replace("\r", "").Split(',');
+
+            if (row.Length == 0)
+                continue;
+            if (string.IsNullOrEmpty(row[0]))
+                continue;
+            int i = 0;
+
+            GachaStatData gc = new GachaStatData();
+            gc.DataId = ConvertValue<string>(row[i++]);
+            gc.HpMin = ConvertValue<float>(row[i++]);
+            gc.HpMax = ConvertValue<float>(row[i++]);
+            gc.AtkMin = ConvertValue<float>(row[i++]);
+            gc.AtkMax = ConvertValue<float>(row[i++]);
+            gc.MoveSpeedMin = ConvertValue<float>(row[i++]);
+            gc.MoveSpeedMax = ConvertValue<float>(row[i++]);
+            gc.StaminaMin = ConvertValue<float>(row[i++]);
+            gc.StaminaMax = ConvertValue<float>(row[i++]);
+
+            loader.GachaStats.Add(gc);
+
+
+        }
+        #endregion
+        string jsonStr = JsonConvert.SerializeObject(loader, Formatting.Indented);
+        File.WriteAllText($"{Application.dataPath}/@Resources/Data/JsonData/{filename}Data.json", jsonStr);
+        AssetDatabase.Refresh();
+    }
+
+
 
 
     private static void ParseEquipmentGacha(string filename)
