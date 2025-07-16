@@ -160,16 +160,19 @@ public class GameManager
         var newChar = new Character();
         newChar.Init("A10001", new Vector3(39f, 0, 27f)); // 위치 초기값
         newChar.SetInfo(Managers.Data.CreatureDic["A10001"]);
+        newChar.IsConfirmed = true;
         _characters[newChar.UniqueId] = newChar;
 
         var newCharTest = new Character();
         newCharTest.Init("A10002", new Vector3(39f, 0, 27f)); // 위치 초기값
         newCharTest.SetInfo(Managers.Data.CreatureDic["A10002"]);
+        newCharTest.IsConfirmed = true;
         _characters[newCharTest.UniqueId] = newCharTest;
 
         var newChar1 = new Character();
         newChar1.Init("A10006", new Vector3(38f, 0, 27f)); // 위치 초기값
         newChar1.SetInfo(Managers.Data.CreatureDic["A10006"]);
+        newChar1.IsConfirmed = true;
         _characters[newChar1.UniqueId] = newChar1;
 
         //var newChar2 = new Character();
