@@ -28,6 +28,8 @@ public class Managers : MonoBehaviour
     ObjectManager _object = new ObjectManager();
     PoolManager _pool = new PoolManager();
     AIManager _ai = new AIManager();
+    SoundManager _sound = new SoundManager();
+
     //Edit
     DebugManager _debug = new DebugManager();
     AdsManager _ads = new AdsManager();
@@ -41,6 +43,8 @@ public class Managers : MonoBehaviour
     public static DebugManager Debug { get { return Instance?._debug; } }
     public static ObjectManager Object { get { return Instance?._object; } }
     public static PoolManager Pool { get { return Instance?._pool; } }
+    public static SoundManager Sound { get { return Instance?._sound; } }
+
 
     [SerializeField] private DebugSettings debugSettingsSO;
 
@@ -62,12 +66,14 @@ public class Managers : MonoBehaviour
             s_instance = go.GetComponent<Managers>();
             s_instance._time = go.AddComponent<TimeManager>();
 
+            s_instance._sound.Init();
             Ads.Init();
         }
     }
 
     public static void Clear()
     {
+        Sound.Clear();
         Scene.Clear();
         UI.Clear();
         Object.Clear();

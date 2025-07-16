@@ -201,4 +201,15 @@ public class Define
         PopUpButton,
         SlotButton,
     }
+
+
+    public enum ESound
+    {
+        None,
+        Bgm,
+        SubBgm,
+        Effect,
+        Max,
+
+    }
 }

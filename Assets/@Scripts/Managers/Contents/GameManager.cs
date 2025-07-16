@@ -28,6 +28,8 @@ public class GameData
     public List<Character> CharacterList = new List<Character>();
     public List<Equipment> OwnedEquipments = new List<Equipment>();
 
+    public bool BGMOn = true;
+    public bool EffectSoundOn = true;
 
     public bool[] AttendanceReceived = new bool[30];
 
@@ -613,7 +615,38 @@ public class GameManager
 
     #endregion
 
+    #region Option
+    public bool BGMOn
+    {
+        get { return _gameData.BGMOn; }
+        set
+        {
+            if (_gameData.BGMOn == value)
+                return;
+            _gameData.BGMOn = value;
+            if (_gameData.BGMOn == false)
+            {
+                Managers.Sound.Stop(ESound.Bgm);
+            }
+            else
+            {
+                string name = "Bgm_Lobby";
+                if (Managers.Scene.CurrentScene.SceneType == Define.EScene.GameScene)
+                    name = "Bgm_Game";
 
+                Managers.Sound.Play(Define.ESound.Bgm, name);
+            }
+        }
+    }
+
+    public bool EffectSoundOn
+    {
+        get { return _gameData.EffectSoundOn; }
+        set { _gameData.EffectSoundOn = value; }
+    }
+
+
+    #endregion
 
 
 }
