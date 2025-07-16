@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
 
 public class CharacterAction : MonoBehaviour
 {
@@ -36,8 +35,6 @@ public class CharacterAction : MonoBehaviour
     public void Build()   => OnAction?.Invoke(Define.EAIState.Build);
     [ContextMenu("Hello")]
     public void Hello() => OnAction?.Invoke(Define.EAIState.Hello);
-
-
-    
-
+    [ContextMenu("Fishing")]
+    public void Fishing() => OnAction?.Invoke(Define.EAIState.Fishing);
 }
