@@ -97,6 +97,8 @@ public class TutorialManager : MonoBehaviour
         if (highlightTarget != null)
         {
             //FocusUI(highlightTarget);
+            yield return new WaitForSeconds(0.1f);
+            FocusOnlyThis(highlightTarget);
             highlighter.Follow(highlightTarget.GetComponent<RectTransform>());
             highlighter.gameObject.SetActive(true);
             dimOverlay?.gameObject.SetActive(true);
@@ -115,6 +117,8 @@ public class TutorialManager : MonoBehaviour
         dimOverlay?.gameObject.SetActive(false);
         UI?.gameObject.SetActive(false);
         IsRunning = false;
+        
+        StartCoroutine(EnableAllInteractablesAfterDelay());
         
         PlayerPrefs.SetInt("Tutorial_Completed", 1);
         PlayerPrefs.Save();
@@ -169,4 +173,65 @@ public class TutorialManager : MonoBehaviour
             Debug.Log($"[Tutorial] Canvas '{targetCanvas.name}' sortingOrder = 200");
         }
     }
+    void SetAllUIInteractable(bool state)
+    {
+        foreach (var button in FindObjectsOfType<Button>())
+        {
+            button.interactable = state;
+            button.image.raycastTarget = state;
+            Debug.Log($"{button} interactable: {button.interactable}" );
+            Debug.Log($"{button} raycastTarget:{button.image.raycastTarget}");
+        }
+
+        foreach (var toggle in FindObjectsOfType<Toggle>())
+        {
+            toggle.interactable = state;
+        }
+    }
+    void FocusOnlyThis(GameObject target)
+    {
+        SetAllUIInteractable(false); // 전체 비활성화
+
+        var btn = target.GetComponent<Button>();
+        Debug.Log($"{btn} interactable : {btn.interactable}" );
+        Debug.Log($"{btn} raycastTarget :{btn.image.raycastTarget}");
+        if (btn != null)
+        {
+            btn.interactable = true;
+            btn.image.raycastTarget = true;
+        }
+        Debug.Log($"{btn} : {btn.interactable}" );
+        Debug.Log($"{btn} :{btn.image.raycastTarget}");
+
+        var toggle = target.GetComponent<Toggle>();
+        if (toggle != null)
+            toggle.interactable = true;
+    }
+    
+    
+    private IEnumerator EnableAllInteractablesAfterDelay()
+    {
+        yield return new WaitForSeconds(0.1f); // UI가 SetActive(true) 된 이후로 대기
+        SetAllUIInteractable(true);
+    }
+    
+    void SetAllUIInteractableFromCanvas(Canvas canvas, bool state)
+    {
+        if (canvas == null) return;
+
+        Button[] buttons = canvas.GetComponentsInChildren<Button>(true); // 비활성 포함
+        foreach (var button in buttons)
+        {
+            button.interactable = state;
+            if (button.image != null)
+                button.image.raycastTarget = state;
+        }
+
+        Toggle[] toggles = canvas.GetComponentsInChildren<Toggle>(true);
+        foreach (var toggle in toggles)
+        {
+            toggle.interactable = state;
+        }
+    }
+
 }

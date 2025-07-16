@@ -136,4 +136,17 @@ public class QuestManager : MonoBehaviour
             return list;
         }
     }
+    
+    private void CheckUnlockConditions(string completedQuestId)
+    {
+
+    }
+    
+    public void TryUnlockByGold(string unlockId, int requiredGold)
+    {
+        if (Managers.Game.Gold >= requiredGold)
+        {
+
+        }
+    }
 }

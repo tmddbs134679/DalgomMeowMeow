@@ -109,7 +109,9 @@ public class UI_BuildPopup : UI_Popup
     //설치 건물 선택
     private void SelectBuildingType(Define.BuildingType type)
     {
-
+        var button = GetButton((int)type);
+        if (button != null && !button.interactable)
+            return;
         LimitBuildCount(type);
         if (!BuildingPlacer.Instance.islimitBuildCount) return;
         Setting();//데이터 갱신

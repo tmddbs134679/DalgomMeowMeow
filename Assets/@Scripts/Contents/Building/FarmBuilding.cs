@@ -3,11 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+public enum CropType
+{
+    Carrot,
+    Pumpkin,
+    Potato,
+    Onion
+}
 public class FarmBuilding : BuildingBase
 {
     [SerializeField] private Renderer buildingRenderer;
     public GameObject collectIcon;
     public event Action IsHarvest;
+    
+    public CropType CropType;
+    public CropType GetCropType() => CropType;
 
     public override bool Init()
     {
