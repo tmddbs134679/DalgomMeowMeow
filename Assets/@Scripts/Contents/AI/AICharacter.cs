@@ -73,9 +73,9 @@ public class AICharacter : BaseObject
     [SerializeField]
     private GameObject infoButton;
 
-    public event Action<AICharacter> AnimalLeaved;
-    public event Action<AICharacter> AnimalArrived;
-    public event Action<AICharacter> AnimalDelivered;
+    public  Action<AICharacter> AnimalLeaved;
+    public  Action<AICharacter> AnimalArrived;
+    public  Action<AICharacter> AnimalDelivered;
     public Action<int> CharacterGainExp;
     public Action<float> Levelup;
     private float clickStartTime = 0f;

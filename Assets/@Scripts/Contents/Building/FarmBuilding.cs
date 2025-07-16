@@ -34,7 +34,7 @@ public class FarmBuilding : BuildingBase
 
         StoredCount++; //  생산 누적
 
-        IsHarvest?.Invoke();//수확 가능
+        Harvest();
 
 
         CurrentState = BuildingState.ReadyToCollect;
@@ -72,4 +72,10 @@ public class FarmBuilding : BuildingBase
     {
         //재료 소비
     }
+
+    public void Harvest()
+    {
+        IsHarvest?.Invoke();
+    }
+
 }

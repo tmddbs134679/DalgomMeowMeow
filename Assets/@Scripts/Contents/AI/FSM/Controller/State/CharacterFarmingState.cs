@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.PlasticSCM.Editor.WebApi;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 
@@ -27,6 +28,10 @@ namespace Scripts.Contents.AI.FSM.State
             base.OnUpdate(deltaTime);
             if (elapsedTime >= character.currentBuilding.BuildingData.Interval)
             {
+                FarmBuilding farm = character.currentBuilding as FarmBuilding;
+                Define.ECropType type = farm.GetCropType();
+                farm.Harvest();
+
                 if(character.Controller.FindNearestBuilding(Define.EAIState.Deliver) == null)
                 {
                     character.characterAction.Idle();
