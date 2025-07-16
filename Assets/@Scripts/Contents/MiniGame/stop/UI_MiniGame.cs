@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -93,7 +94,7 @@ public class UI_MiniGame : UI_Popup
         {
             _gameManager.GameOver();
 
-
+            _player.transform.localScale = new Vector3(1.5f, 1, 1);
 
             GameEndUI(0); // 게임 오버시 보상 UI 띄우기
             return;
@@ -105,7 +106,17 @@ public class UI_MiniGame : UI_Popup
             GameEndUI(1000);
         }
 
-        _player.transform.position += Vector3.right*10;
+        _player.transform.localPosition += Vector3.right * 10f;
+
+        _player.transform.DOKill();
+        _player.transform.localScale = Vector3.one;
+
+        _player.transform.DOScale(1.1f, 0.1f)
+            .SetEase(Ease.OutBack)
+            .OnComplete(() =>
+            {
+                _player.transform.DOScale(1f, 0.1f).SetEase(Ease.InBack);
+            });
     }
 
     public void CharacterSet()
