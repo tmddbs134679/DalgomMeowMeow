@@ -29,7 +29,8 @@ public class UI_CharacterStoreScene : UI_Scene
         ShopButton,
         BuildButton,
         EditPosButton,
-            HomeButton,
+        HomeButton,
+        ChangeButton,
     }
 
     enum Texts
@@ -57,6 +58,7 @@ public class UI_CharacterStoreScene : UI_Scene
         _checkOutPopupUI = Managers.UI.ShowPopupUI<UI_CheckOutPopup>();
         _shopPopupUI = Managers.UI.ShowPopupUI<UI_ShopPopup>();
         _editSettingPopupUI = Managers.UI.ShowPopupUI<UI_EditSettingPopup>();
+        //_ChangePopupUI = Managers.UI.ShowPopupUI<UI_ChangePopup>();
 
         _quickMenuPopupUI.gameObject.SetActive(false);
         _checkOutPopupUI.gameObject.SetActive(false);
@@ -77,6 +79,8 @@ public class UI_CharacterStoreScene : UI_Scene
         GetButton((int)Buttons.ShopButton).gameObject.BindEvent(OnClickShopButton);
         GetButton((int)Buttons.ShopButton).GetOrAddComponent<UI_ButtonAnimation>();
         GetButton((int)Buttons.HomeButton).gameObject.BindEvent(OnClickHomeButton);
+
+        GetButton((int)Buttons.ChangeButton).gameObject.BindEvent();
 
 
         #region Action 추가
