@@ -66,6 +66,7 @@ public class GameManager
         set
         {
             _gameData.Gold = value;
+            QuestManager.Instance.TryUnlockByGold(); // 해금 골드조건 체크
             SaveGame();
             OnResourcesChagned?.Invoke();
         }

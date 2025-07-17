@@ -14,6 +14,7 @@ public class CookingBuilding : BuildingBase
 
     // 채소 누적 수
     private int deliveredVegetableCount = 0;
+    private Define.ECropType _cropType;
 
     // 단계별 요리 이름들
     [SerializeField] private List<FoodData> upgradeDishes;
@@ -117,7 +118,7 @@ public class CookingBuilding : BuildingBase
 
         if (animal.CurrentState == Define.EAIState.Deliver)
         {
-            Define.ECropType veagetable =  animal.DistinguishCrops();
+            _cropType = animal.DistinguishCrops();
             deliveredVegetableCount++;
             Managers.Debug.Log($"[야채 도착] 누적 채소 수: {deliveredVegetableCount}", Define.EDebugType.Building);
         }
