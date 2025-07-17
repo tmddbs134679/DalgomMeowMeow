@@ -24,8 +24,12 @@ public class MySceneManager
                 SceneManager.LoadScene(GetSceneName(type));
                 Managers.Clear();
                 break;
+            case EScene.CharacterStoreScene:
+                SceneManager.LoadScene(GetSceneName(type));
+                Managers.Clear();
+                break;
         }
-        Managers.Game.SaveGame();
+       // Managers.Game.SaveGame();
     }
 
     string GetSceneName(EScene type)

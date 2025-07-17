@@ -95,7 +95,8 @@ public class Define
         GameScene,
         FrameworkTestScene,
         BattleScene,
-        TutorialScene
+        TutorialScene,
+        CharacterStoreScene,
     }
 
     public enum EBuildingType
