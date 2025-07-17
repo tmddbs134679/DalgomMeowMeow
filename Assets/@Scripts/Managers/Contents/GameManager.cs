@@ -46,8 +46,12 @@ public class GameManager
     public Dictionary<string, Character> _characters = new Dictionary<string, Character>();
 
     public Dictionary<string, Character> CharacterMap = new();
+
+    public Dictionary<string, AICharacter> AllCharacter = new();
     // 씬에 존재하는 실제 캐릭터 오브젝트
-    public Dictionary<string, AICharacter> CharactersInScene = new();
+    public Dictionary<string, AICharacter> CharacterInMainScene = new();
+
+    public Dictionary<string, AICharacter> CharacterInStoreScene = new();
 
     public bool IsLoaded = false;
 
@@ -282,7 +286,7 @@ public class GameManager
         {
             Character character = pair.Value;
 
-            if (!Managers.Game.CharactersInScene.TryGetValue(character.UniqueId, out AICharacter ai))
+            if (!Managers.Game.CharacterInMainScene.TryGetValue(character.UniqueId, out AICharacter ai))
                 continue;
 
             character.Pos = new Vector3Data(ai.transform.position);
@@ -344,7 +348,7 @@ public class GameManager
         equipment.IsEquipped = true;
         equipment.IsConfirmed = true;
 
-        if (CharactersInScene.TryGetValue(uniqueId, out var ai))
+        if (CharacterInMainScene.TryGetValue(uniqueId, out var ai))
             AttachEquipmentToCharacter(ai, equipment);
 
         EquipInfoChanged?.Invoke();
@@ -369,7 +373,7 @@ public class GameManager
         equipment.EquippedByCharacterId = null;
         equipment.IsEquipped = false;
 
-        if (CharactersInScene.TryGetValue(uniqueId, out var ai))
+        if (CharacterInMainScene.TryGetValue(uniqueId, out var ai))
             DetachEquipmentFromCharacter(ai, type);
 
         EquipInfoChanged?.Invoke();

@@ -42,6 +42,7 @@ public class  Character
     public float MoveSpeed { get; set; }
     public float WalkSpeed { get; set; } 
     public bool IsConfirmed { get; set; }
+    public bool InMainScene { get; set; } 
     public List<string> EquippedItemIds { get; set; } = new();
 
     public Dictionary<EEquipmentType, Equipment> EquippedItems = new();
@@ -62,6 +63,7 @@ public class  Character
         CurrentStamina = MaxStamina;
         MoveSpeed =  Data?.MoveSpeed ?? 3f;
         WalkSpeed = Data?.WalkSpeed ?? 1.5f;
+
         EquippedItemIds = new();
     }
 

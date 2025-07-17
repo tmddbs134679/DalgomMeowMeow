@@ -32,7 +32,7 @@ public class AICharacter : BaseObject
     public float MoveSpeed;
 
     [Header("캐릭터 현재 위치")]
-    public bool inRoom = false; // 캐릭터가 방 안에 있는지 여부
+    public bool inMain = false; // 캐릭터가 메인 안에 있는지 여부
 
     #region Bone
     [SerializeField] private Transform hatBone;

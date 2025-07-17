@@ -21,8 +21,8 @@ public class GameScene : BaseScene
             ai.Init();
             ai.SetInfo(ch);
 
-            Managers.Game.CharactersInScene[ch.UniqueId] = ai;
-            Managers.Game.SetInitEquipment(Managers.Game.CharactersInScene[ch.UniqueId]);
+            Managers.Game.CharacterInMainScene[ch.UniqueId] = ai;
+            Managers.Game.SetInitEquipment(Managers.Game.CharacterInMainScene[ch.UniqueId]);
             Managers.AI.ValidateNavMeshPosition(ai);
             Managers.AI.Register(ai);
         }
