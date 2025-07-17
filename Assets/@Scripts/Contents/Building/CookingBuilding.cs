@@ -144,7 +144,7 @@ public class CookingBuilding : BuildingBase
     {
         if (CurrentState != BuildingState.Producing) return;
 
-        _currentIngredients.AddIngredient(animal.DistinguishCrops(), CurrentLevel);
+
         Managers.Debug.Log($"[야채 도착] 누적 채소 수: {deliveredVegetableCount}", Define.EDebugType.Building);
     }
 
@@ -155,8 +155,9 @@ public class CookingBuilding : BuildingBase
 
         if (animal.CurrentState == Define.EAIState.Deliver)
         {
-            _cropType = animal.DistinguishCrops();
-            deliveredVegetableCount++;
+ 
+            _currentIngredients.AddIngredient(animal._ecropType, CurrentLevel);
+
             Managers.Debug.Log($"[야채 도착] 누적 채소 수: {deliveredVegetableCount}", Define.EDebugType.Building);
         }
     }
