@@ -34,7 +34,7 @@ public class CameraController : MonoBehaviour
             _startedOnUI = IsPointerOverUI(); //  UI 위에서 눌렀는지 기록
             if (_startedOnUI) return;
 
-ClickObject(Input.mousePosition); //고양이일때만
+ClickCat(Input.mousePosition); //고양이일때만
             _dragOrigin = Input.mousePosition;
             _touchStartPos = _dragOrigin;
             isDragging = false;
@@ -57,7 +57,7 @@ ClickObject(Input.mousePosition); //고양이일때만
         }
         else if (Input.GetMouseButtonUp(0))
         {
-            if(!isDragging) ClickObject(Input.mousePosition); //건물일때만
+            if(!isDragging) ClickBuilding(Input.mousePosition); //건물일때만
             if (_startedOnUI)
             {
                 _startedOnUI = false; // 다시 초기화
@@ -150,6 +150,39 @@ ClickObject(Input.mousePosition); //고양이일때만
         }
 
     }
+
+    void ClickCat(Vector2 screenPos)
+    {
+        if (EventSystem.current.IsPointerOverGameObject()) return;
+
+        Ray ray = _cam.ScreenPointToRay(screenPos);
+        if (Physics.Raycast(ray, out RaycastHit hit, 100f, layerMask))
+        {
+            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Player"))
+            {
+                isAI = true;
+                Managers.Debug.Log($" Cat Clicked: {hit.collider.name}", Define.EDebugType.None);
+                var clickable = hit.collider.GetComponent<BaseObject>();
+                clickable?.OnClick();
+            }
+        }
+    }
+
+void ClickBuilding(Vector2 screenPos)
+{
+    if (EventSystem.current.IsPointerOverGameObject()) return;
+
+    Ray ray = _cam.ScreenPointToRay(screenPos);
+    if (Physics.Raycast(ray, out RaycastHit hit, 100f, layerMask))
+    {
+        if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Building"))
+        {
+            Managers.Debug.Log($" Building Clicked: {hit.collider.name}", Define.EDebugType.None);
+            var clickable = hit.collider.GetComponent<BaseObject>();
+            clickable?.OnClick();
+        }
+    }
+}
 
     bool IsPointerOverUI(int fingerId = -1)
     {
