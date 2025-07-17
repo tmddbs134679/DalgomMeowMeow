@@ -121,7 +121,11 @@ public class DataTransformer : EditorWindow
             data.Description = ConvertValue<string>(row[i++]);
             data.SpriteName = ConvertValue<string>(row[i++]);
             data.Price = ConvertValue<int>(row[i++]);
-            data.Count = ConvertValue<int>(row[i++]);   
+            data.Cabbage = Convert.ToInt32(row[i++]) == 1;
+            data.Carrot = Convert.ToInt32(row[i++]) == 1;
+            data.Pumpkin = Convert.ToInt32(row[i++]) == 1;
+            data.Potato = Convert.ToInt32(row[i++]) == 1;
+            data.Onion = Convert.ToInt32(row[i++]) == 1;
             loader.foods.Add(data);
         }
 

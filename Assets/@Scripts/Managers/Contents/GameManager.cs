@@ -688,6 +688,27 @@ public class GameManager
 
     #endregion
 
+    #region Reward
 
+    public void RewardMaterial(int rewardId, int count)
+    {
+
+        EMaterialType type = Managers.Data.MaterialDic[rewardId].MaterialType;
+        switch (type)
+        {
+            case EMaterialType.Gold:
+                Gold += count;
+            break;
+            case EMaterialType.Dia:
+                Dia += count;
+                break;
+            case EMaterialType.Ticket:
+                Ticket += count;
+                break;
+        }
+    }
+
+
+    #endregion
 }
 

@@ -95,7 +95,8 @@ public class Define
         GameScene,
         FrameworkTestScene,
         BattleScene,
-        TutorialScene
+        TutorialScene,
+        CharacterStoreScene,
     }
 
     public enum EBuildingType
@@ -153,6 +154,7 @@ public class Define
     {
         None,
         Gold,
+        Dia,
         Ticket,
     }
 
@@ -231,4 +233,5 @@ public class Define
         Onion,
         Cabbage,
     }
+
 }

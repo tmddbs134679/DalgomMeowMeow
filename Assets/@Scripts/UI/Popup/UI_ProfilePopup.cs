@@ -28,9 +28,11 @@ public class UI_ProfilePopup : UI_Popup
     enum Texts
     {
         CharacterNameText,
+        LevelText,
         HPText,
         AtkText,
         SpeedText,
+        MaxStaminaText,
         SkillText
     }
 
@@ -203,10 +205,11 @@ public class UI_ProfilePopup : UI_Popup
         }
 
 
-
+        GetText((int)Texts.LevelText).text = _character.Level.ToString();
         GetText((int)Texts.HPText).text = _character.Hp.ToString();
         GetText((int)Texts.AtkText).text = _character.Atk.ToString();
         GetText((int)Texts.SpeedText).text = _character.MoveSpeed.ToString();
+        GetText((int)Texts.MaxStaminaText).text = _character.MaxStamina.ToString();
         GetText((int)Texts.SkillText).text = Managers.Data.SkillDataDic[_character.Data.SkillID].Description;
         GetImage((int)Images.SkillImage).sprite = Managers.Resource.Load<Sprite>(character.Data.SkillID.ToString());
 

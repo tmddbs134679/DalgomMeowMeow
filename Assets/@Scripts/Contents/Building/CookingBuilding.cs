@@ -1,7 +1,40 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Data;
 using UnityEngine;
+
+public class IngredientSet
+{
+    public class IngredientInfo
+    {
+        public Define.ECropType Type;    // 재료 종류
+        public int FieldLevel;     // 채소를 가져온 밭 건물 레벨
+    }
+
+    public List<IngredientInfo> Ingredients = new List<IngredientInfo>();
+    public int TotalCount => Ingredients.Count;
+
+    // 밭 건물 평균 레벨 → 가격 보정 계수 계산
+    public float GetAvgFieldLevelMultiplier()
+    {
+        if (Ingredients.Count == 0) return 1.0f;
+
+        float avgFieldLevel = (float)Ingredients.Average(i => i.FieldLevel);
+        return 1.0f + ((avgFieldLevel - 1) * 0.1f); // Lv1=1.0, Lv2=1.1, Lv3=1.2
+    }
+
+    // 재료 추가
+    public void AddIngredient(Define.ECropType type, int fieldLevel)
+    {
+        Ingredients.Add(new IngredientInfo { Type = type, FieldLevel = fieldLevel });
+    }
+
+    public void Reset()
+    {
+        Ingredients.Clear();
+    }
+}
 
 public class CookingBuilding : BuildingBase
 {
@@ -11,6 +44,7 @@ public class CookingBuilding : BuildingBase
         Managers.Data.BuildingLevelDic[(BuildingData.Id.ToString(), CurrentLevel)];
 
     public GameObject collectIcon;
+    private IngredientSet _currentIngredients = new IngredientSet();
 
     // 채소 누적 수
     private int deliveredVegetableCount = 0;
@@ -60,7 +94,7 @@ public class CookingBuilding : BuildingBase
 
     public override void Produce()
     {
-        int dishLevel = Mathf.Clamp(deliveredVegetableCount, 0, upgradeDishes.Count - 1);
+        //int dishLevel = Mathf.Clamp(deliveredVegetableCount, 0, upgradeDishes.Count - 1);
         //FoodData finalDish = upgradeDishes[dishLevel];
 
         //Debug.Log($"{finalDish.Name} 요리 완성!");
@@ -70,11 +104,14 @@ public class CookingBuilding : BuildingBase
 
         Managers.Debug.Log($"요리 완성! 누적 수량: {StoredCount}", Define.EDebugType.Building);
 
-        Managers.Food.MakeFood(deliveredVegetableCount);
+        Managers.Food.MakeFood(_currentIngredients, CurrentLevel);
 
 
-        deliveredVegetableCount = 0; // 생산 후 초기화
+        // deliveredVegetableCount = 0; // 생산 후 초기화
         //(Managers.UI.SceneUI as UI_GameScene).ResetCookItem();
+
+        _currentIngredients.Reset();
+
         QuestManager.Instance.OnEvent(Define.EQuestConditionType.Collect, Define.ETargetType.Soup);
 
 
@@ -106,7 +143,7 @@ public class CookingBuilding : BuildingBase
     {
         if (CurrentState != BuildingState.Producing) return;
 
-        deliveredVegetableCount++;
+        _currentIngredients.AddIngredient(animal.DistinguishCrops(), CurrentLevel);
         Managers.Debug.Log($"[야채 도착] 누적 채소 수: {deliveredVegetableCount}", Define.EDebugType.Building);
     }
 

@@ -58,7 +58,11 @@ namespace Data
         public string Description;
         public string SpriteName;
         public float Price;
-        public int Count;
+        public bool Cabbage;
+        public bool Carrot;
+        public bool Pumpkin;
+        public bool Potato;
+        public bool Onion;
     }
 
     [Serializable]
