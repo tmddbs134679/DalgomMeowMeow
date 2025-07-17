@@ -48,7 +48,7 @@ public class QuestManager : MonoBehaviour
     }
     
 
-    public void OnEvent(Define.EQuestConditionType condition, Define.ETargetType target)
+    public void UpdateQuestProgress(Define.EQuestConditionType condition, Define.ETargetType target)
     {
         var key = (condition, target);
         if (!_questIndex.TryGetValue(key, out var questList)) return;
@@ -232,7 +232,6 @@ public class QuestManager : MonoBehaviour
     
     private void Unlock(string contentId)
     {
-        Debug.Log($"[해금 완료] 콘텐츠: {contentId}");
         // TODO: 콘텐츠 타입별로 처리 (ex: 건물, 지역, 캐릭터 등)
         // ex: Managers.Building.Unlock(contentId);
 
@@ -242,5 +241,30 @@ public class QuestManager : MonoBehaviour
         }
         // 저장할 경우 리스트에 추가
         // Managers.Game.UnlockedContent.Add(contentId);
+    }
+    
+    public void NotifyBuildingConstructed(string type)
+    {
+        // string → ETargetType 변환
+        if (!Enum.TryParse(type, out Define.ETargetType targetType))
+        {
+            Debug.LogWarning($"[퀘스트] 알 수 없는 건물 타입: {type}");
+            return;
+        }
+
+        UpdateQuestProgress(Define.EQuestConditionType.Build, targetType);
+    }
+    
+    private Define.ETargetType ConvertToTargetType(Define.BuildingType type)
+    {
+        return type switch
+        {
+            Define.BuildingType.OnionFarm => Define.ETargetType.Onion,
+            Define.BuildingType.PotatoFarm => Define.ETargetType.Potato,
+            Define.BuildingType.CabbageFarm => Define.ETargetType.Cabbage,
+            Define.BuildingType.CarrotFarm => Define.ETargetType.Carrot,
+            Define.BuildingType.PumpkinFarm => Define.ETargetType.Pumpkin,
+            _ => Define.ETargetType.None
+        };
     }
 }

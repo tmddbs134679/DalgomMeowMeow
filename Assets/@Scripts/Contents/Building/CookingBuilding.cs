@@ -113,7 +113,7 @@ public class CookingBuilding : BuildingBase
 
         _currentIngredients.Reset();
 
-        QuestManager.Instance.OnEvent(Define.EQuestConditionType.Collect, Define.ETargetType.Soup);
+        QuestManager.Instance.UpdateQuestProgress(Define.EQuestConditionType.Collect, Define.ETargetType.Soup);
 
 
         // QuestManager.Instance.GiveReward("Soup_10");

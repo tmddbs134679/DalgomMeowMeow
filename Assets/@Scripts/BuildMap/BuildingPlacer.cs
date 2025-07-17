@@ -207,6 +207,7 @@ public class BuildingPlacer : MonoBehaviour
             surface.BuildNavMesh(); //네브매쉬 깔기
             isLongPressAcceptBuild = false;
             OnBuildingAccepted?.Invoke(_saveBuildingSO);
+            QuestManager.Instance.NotifyBuildingConstructed(buildType);
         }
         _PreviewOBJ.GetComponent<DraggableObject>().CheckTilesUnderBuilding();
 
