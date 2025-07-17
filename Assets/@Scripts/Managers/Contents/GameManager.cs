@@ -33,7 +33,7 @@ public class GameData
 
     public bool[] AttendanceReceived = new bool[30];
     public int AdvancedGachaOpenCount = 0;
-
+    public int offineRewardGold = 0;
 
 }
 

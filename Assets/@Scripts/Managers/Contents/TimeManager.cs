@@ -167,17 +167,20 @@ public class TimeManager : MonoBehaviour
         }
     }
 
-    private void GiveOfflineGold()
+    //True이면 광고 보상
+    public void GiveOfflineGold(bool IsReward = false)
     {
         TimeSpan offlineTime = DateTime.Now - LastLoginTime;
-
-        int goldPerminute = 100;
         int totalMinutes = (int)offlineTime.TotalMinutes;
-        int totalGold = totalMinutes * goldPerminute;
+        int totalGold = totalMinutes * Define.GOLD_PER_MINUTE;
 
         if(totalGold > 0)
         {
-            Managers.Game.Gold += totalGold;
+           if(IsReward)
+                Managers.Game.Gold += (totalGold * 2);
+           else
+                Managers.Game.Gold += totalGold;
+
 
             LastRewardTime = DateTime.Now;
             
