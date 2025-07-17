@@ -34,6 +34,8 @@ public class GameData
     public bool[] AttendanceReceived = new bool[30];
     public int AdvancedGachaOpenCount = 0;
 
+    
+
 
 }
 
@@ -54,6 +56,9 @@ public class GameManager
     public Dictionary<string, AICharacter> CharacterInStoreScene = new();
 
     public bool IsLoaded = false;
+
+    public int MaxCountInScene = 5; // 씬에 존재하는 최대 캐릭터 수, 5명으로 제한
+    public int MainSceneCount = 0; // 메인 씬에 존재하는 캐릭터 수
 
     #region Action
 
@@ -176,18 +181,21 @@ public class GameManager
         #region 초기 생성 Test
         // 최초 생성
         var newChar = new Character();
+        newChar.InMainScene = true; // 메인 씬에 존재하는 캐릭터로 설정
         newChar.Init("A10001", new Vector3(39f, 0, 27f)); // 위치 초기값
         newChar.SetInfo(Managers.Data.CreatureDic["A10001"]);
         newChar.IsConfirmed = true;
         _characters[newChar.UniqueId] = newChar;
 
         var newCharTest = new Character();
+        newCharTest.InMainScene = true; // 메인 씬에 존재하는 캐릭터로 설정
         newCharTest.Init("A10002", new Vector3(39f, 0, 27f)); // 위치 초기값
         newCharTest.SetInfo(Managers.Data.CreatureDic["A10002"]);
         newCharTest.IsConfirmed = true;
         _characters[newCharTest.UniqueId] = newCharTest;
 
         var newChar1 = new Character();
+        newChar1.InMainScene = true; // 메인 씬에 존재하는 캐릭터로 설정
         newChar1.Init("A10006", new Vector3(38f, 0, 27f)); // 위치 초기값
         newChar1.SetInfo(Managers.Data.CreatureDic["A10006"]);
         newChar1.IsConfirmed = true;
@@ -545,20 +553,33 @@ public class GameManager
         }
 
         Character newChar = new Character();
-        newChar.Init(creatureId, new Vector3(39f, 0, 27f)); // 위치 초기값
+        newChar.Init(creatureId, new Vector3(39f,1,27f)); // 위치 초기값
         newChar.SetInfo(creatureData);
        
         ApplyRandomStat(newChar);
+        
+        int currentInScene = Characters.Count(c => c.InMainScene);
+        
+        if (currentInScene >= MaxCountInScene)
+        {
+            newChar.InMainScene = false;
+            _characters[newChar.UniqueId] = newChar;
+            Managers.Debug.Log($"[Gacha] 고양이 보관함에 저장됨: {newChar.DataId}",Define.EDebugType.AI);
+            SaveGame();
+            return null;
+        }
 
-
+        newChar.InMainScene = true;
         AICharacter aiChar = Managers.Object.Spawn<AICharacter>(new Vector3(39f, 1, 27f), creatureId, isReplica: false);
-
+            
         if (aiChar == null)
         {
             return null;
         }
         aiChar.Init();
         aiChar.SetInfo(newChar);
+
+        
         Managers.AI.Register(aiChar);
         _characters[newChar.UniqueId] = newChar;
 
