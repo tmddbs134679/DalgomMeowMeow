@@ -33,6 +33,7 @@ public class Define
 
     public enum EUIEvent
     {
+        None,
         Click,
         Preseed,
         PointerDown,
@@ -94,7 +95,8 @@ public class Define
         GameScene,
         FrameworkTestScene,
         BattleScene,
-        TutorialScene
+        TutorialScene,
+        CharacterStoreScene,
     }
 
     public enum EBuildingType
@@ -114,7 +116,7 @@ public class Define
     public enum BuildingType
     {
         Cooking,
-        Farm,
+        CabbageFarm,
         Playing,
         Resting,
         Fishing,
@@ -122,6 +124,10 @@ public class Define
         SlotMachine,
         Road,
         Shop,
+        CarrotFarm,
+        PumpkinFarm,
+        PotatoFarm,
+        OnionFarm,
         UnLockStage,
     }
 
@@ -140,6 +146,7 @@ public class Define
         AI,
         UI,
         Drag,
+        AD
     }
 
     public enum EMaterialType
@@ -223,5 +230,5 @@ public class Define
         Potato,
         Onion,
         Cabbage,
-}
+    }
 }

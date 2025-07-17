@@ -188,6 +188,9 @@ public class GameManager
         newChar1.IsConfirmed = true;
         _characters[newChar1.UniqueId] = newChar1;
 
+
+        AdvancedGachaOpenCount = 3;
+
         //var newChar2 = new Character();
         //newChar2.Init("A10003", new Vector3(38f, 0, 27)); // 위치 초기값
         //newChar2.SetInfo(Managers.Data.CreatureDic["A10003"]);

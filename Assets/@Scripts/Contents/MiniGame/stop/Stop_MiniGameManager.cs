@@ -51,7 +51,6 @@ public class Stop_MiniGameManager : MonoBehaviour
         return k;
     }
 
-    [ContextMenu("GameStart")]
     public void GameStart()
     {
 
@@ -106,9 +105,6 @@ public class Stop_MiniGameManager : MonoBehaviour
         IsGameOver = true;
         StopAllCoroutines(); // 현재 진행 중인 코루틴 모두 중지
         _image.DOKill(); // DOTween 트윈도 정리
-
-
-
     }
 
     public void GameClear()
@@ -117,8 +113,6 @@ public class Stop_MiniGameManager : MonoBehaviour
         StopAllCoroutines(); // 현재 진행 중인 코루틴 모두 중지
         _image.DOKill(); // DOTween 트윈도 정리
         //보상
-
-
     }
 
 

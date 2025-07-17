@@ -134,8 +134,7 @@ public class UI_MiniGame : UI_Popup
 
     public void PopupClose()
     {
-
-        Debug.Log("closed");
+        Managers.Debug.Log($"Closed", Define.EDebugType.None);
         Managers.UI.ClosePopupUI(this);
     }
 }

@@ -74,7 +74,7 @@ public class UI_BuildPopup : UI_Popup
         BindText(typeof(Texts));
 
         GetButton((int)Buttons.CookButton).gameObject.BindEvent(() => SelectBuildingType(Define.BuildingType.Cooking));
-        GetButton((int)Buttons.FarmButton).gameObject.BindEvent(() => SelectBuildingType(Define.BuildingType.Farm));
+        GetButton((int)Buttons.FarmButton).gameObject.BindEvent(ShowUIFarmPopup);
         GetButton((int)Buttons.PlayGroundButton).gameObject.BindEvent(() => SelectBuildingType(Define.BuildingType.Playing));
         GetButton((int)Buttons.RestButton).gameObject.BindEvent(() => SelectBuildingType(Define.BuildingType.Resting));
         GetButton((int)Buttons.FishingButton).gameObject.BindEvent(() => SelectBuildingType(Define.BuildingType.Fishing));
@@ -104,7 +104,10 @@ public class UI_BuildPopup : UI_Popup
 
     #region Build
 
-
+    private void ShowUIFarmPopup()
+    {
+        Managers.UI.ShowPopupUI<UI_FarmPopup>();
+}
 
     //설치 건물 선택
     private void SelectBuildingType(Define.BuildingType type)
@@ -129,11 +132,13 @@ public class UI_BuildPopup : UI_Popup
         {
             if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(Define.BuildingType.SlotMachine.ToString(), out int count) && count >= 1)
                 BuildingPlacer.Instance.islimitBuildCount = false;
+            return;
         }
         if (type == Define.BuildingType.Shop)
         {
             if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(Define.BuildingType.Shop.ToString(), out int count) && count >= 1)
                 BuildingPlacer.Instance.islimitBuildCount = false;
+                            return;
         }
                         BuildingPlacer.Instance.islimitBuildCount = true;
     }

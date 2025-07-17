@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 using UnityEngine.UIElements;
 
 public class UI_ShopPopup : UI_Popup
@@ -15,7 +17,8 @@ public class UI_ShopPopup : UI_Popup
         ShopPopupGroupObject,
         TicketObject,
         DiaObject,
-        GoldObject
+        GoldObject,
+        ShopTypeGroup
     }
 
     enum Buttons
@@ -37,6 +40,9 @@ public class UI_ShopPopup : UI_Popup
     UI_EquipmentShopPopup _equipmentShopPopup;
     UI_CharacterShopPopup _characterShopPopup;
     UI_ExchangeShopPopup _exchangeShopPopup;
+    ScrollRect _scrollRect;
+    bool _isDrag = false;
+
 
     private void OnEnable()
     {
@@ -81,6 +87,8 @@ public class UI_ShopPopup : UI_Popup
         _equipmentShopPopup.gameObject.transform.SetParent(GetObject((int)GameObjects.ShopPopupGroupObject).transform, false);
         _exchangeShopPopup.gameObject.transform.SetParent(GetObject((int)GameObjects.ShopPopupGroupObject).transform, false);
 
+        _scrollRect = GetObject((int)GameObjects.ShopTypeGroup).GetComponent<ScrollRect>();  
+
         GetObject((int)GameObjects.DiaObject).BindEvent(OnExchangeShopButton);
         GetObject((int)GameObjects.TicketObject).BindEvent(OnExchangeShopButton);
         
@@ -96,6 +104,20 @@ public class UI_ShopPopup : UI_Popup
         GetButton((int)Buttons.EquipmentPopupButton).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
         GetButton((int)Buttons.ExchangePopupButton).gameObject.BindEvent(OnExchangeShopButton);
         GetButton((int)Buttons.ExchangePopupButton).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
+
+        GetButton((int)Buttons.CharacterPopupButton).gameObject.BindEvent(null, OnDrag, Define.EUIEvent.Drag);
+        GetButton((int)Buttons.CharacterPopupButton).gameObject.BindEvent(null, OnBeginDrag, Define.EUIEvent.BeginDrag);
+        GetButton((int)Buttons.CharacterPopupButton).gameObject.BindEvent(null, OnEndDrag, Define.EUIEvent.EndDrag);
+
+        GetButton((int)Buttons.ExchangePopupButton).gameObject.BindEvent(null, OnDrag, Define.EUIEvent.Drag);
+        GetButton((int)Buttons.ExchangePopupButton).gameObject.BindEvent(null, OnBeginDrag, Define.EUIEvent.BeginDrag);
+        GetButton((int)Buttons.ExchangePopupButton).gameObject.BindEvent(null, OnEndDrag, Define.EUIEvent.EndDrag);
+
+        GetButton((int)Buttons.EquipmentPopupButton).gameObject.BindEvent(null, OnDrag, Define.EUIEvent.Drag);
+        GetButton((int)Buttons.EquipmentPopupButton).gameObject.BindEvent(null, OnBeginDrag, Define.EUIEvent.BeginDrag);
+        GetButton((int)Buttons.EquipmentPopupButton).gameObject.BindEvent(null, OnEndDrag, Define.EUIEvent.EndDrag);
+
+
 
 
         GetButton((int)Buttons.ExitButton).gameObject.BindEvent(OnClickExitButton);
@@ -151,4 +173,29 @@ public class UI_ShopPopup : UI_Popup
         GetText((int)Texts.DiaText).text = Managers.Game.Dia.ToString();
         GetText((int)Texts.GoldText).text = Managers.Game.Gold.ToString();
     }
+
+
+
+
+    public void OnDrag(BaseEventData baseEventData)
+    {
+        _isDrag = true;
+        PointerEventData pointerEventData = baseEventData as PointerEventData;
+        _scrollRect.OnDrag(pointerEventData);
+    }
+
+    public void OnBeginDrag(BaseEventData baseEventData)
+    {
+        _isDrag = true;
+        PointerEventData pointerEventData = baseEventData as PointerEventData;
+        _scrollRect.OnBeginDrag(pointerEventData);
+    }
+
+    public void OnEndDrag(BaseEventData baseEventData)
+    {
+        _isDrag = false;
+        PointerEventData pointerEventData = baseEventData as PointerEventData;
+        _scrollRect.OnEndDrag(pointerEventData);
+    }
+
 }

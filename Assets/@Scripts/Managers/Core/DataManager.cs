@@ -22,7 +22,9 @@ public class DataManager
     public Dictionary<int, Data.MaterialData> MaterialDic { get; private set; } = new Dictionary<int, Data.MaterialData>();
     public Dictionary<string, SkillData> SkillDataDic { get; private set; } = new Dictionary<string, SkillData>();
     public Dictionary<string, EquipmentGachaData> GachaTableDataDic { get; private set; } = new Dictionary<string, EquipmentGachaData>();
-    public Dictionary<string, QuestData> QuestDataDic { get; private set; } = new Dictionary<string, QuestData>();
+    public Dictionary<string, Data.QuestData> QuestDataDic { get; private set; } = new Dictionary<string, QuestData>();
+    public Dictionary<string, Data.UnlockContentsData> UnlockContentDic { get; private set; } = new Dictionary<string, UnlockContentsData>();
+
     public Dictionary<string, GachaStatData> GachaStatDataDic { get; private set; } = new Dictionary<string, GachaStatData>();
 
     public void Init()
@@ -38,6 +40,7 @@ public class DataManager
         GachaTableDataDic = LoadJson<Data.EquipmentGachaDataLoader, string, Data.EquipmentGachaData>("EquipmentGachaData").MakeDict();
         SkillDataDic = LoadJson<Data.SkillDataDataLoader, string, Data.SkillData>("SkillData").MakeDict();
         QuestDataDic = LoadJson<QuestDataLoader,string,Data.QuestData>("QuestData").MakeDict();
+      //  UnlockContentDic = LoadJson<UnlockContentsDataLoader, string, Data.UnlockContentsData>("UnlckCondition").MakeDict();
         GachaStatDataDic = LoadJson<Data.GachaStatDataLoader, string, Data.GachaStatData>("GachaStatData").MakeDict();
     }
 

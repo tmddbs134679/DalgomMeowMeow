@@ -117,6 +117,7 @@ public class CookingBuilding : BuildingBase
 
         if (animal.CurrentState == Define.EAIState.Deliver)
         {
+            Define.ECropType veagetable =  animal.DistinguishCrops();
             deliveredVegetableCount++;
             Managers.Debug.Log($"[야채 도착] 누적 채소 수: {deliveredVegetableCount}", Define.EDebugType.Building);
         }
