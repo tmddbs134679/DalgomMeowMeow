@@ -30,6 +30,7 @@ public class DataTransformer : EditorWindow
         ParseSkillData("Skill");
         ParseBuidingLevelData("BuildingLevel");
         ParseQuestData("Quest");
+        ParseUnlockContentsData("UnlockContents");
         
     }
 
@@ -436,6 +437,55 @@ public class DataTransformer : EditorWindow
     
             loader.quests.Add(quest);
         }
+        #endregion
+    
+        string jsonStr = JsonConvert.SerializeObject(loader, Formatting.Indented);
+        File.WriteAllText($"{Application.dataPath}/@Resources/Data/JsonData/{filename}Data.json", jsonStr);
+        AssetDatabase.Refresh();
+    }
+    
+    private static void ParseUnlockContentsData(string filename)
+    {
+        UnlockContentsDataLoader loader = new UnlockContentsDataLoader();
+        var contentDict = new Dictionary<string, UnlockContentsData>();
+    
+        #region ParseUnlockContentsData
+        string[] lines = File.ReadAllText($"{Application.dataPath}/@Resources/Data/Excel/{filename}Data.csv").Split("\n");
+    
+        for (int y = 1; y < lines.Length; y++) // Skip header
+        {
+            string[] row = lines[y].Replace("\r", "").Split(',');
+            if (row.Length < 4 || string.IsNullOrEmpty(row[0]))
+                continue;
+
+            int i = 0;
+
+            string contentId = ConvertValue<string>(row[i++]);
+            UnlockConditionType type = ConvertValue<UnlockConditionType>(row[i++]);
+            string questId = ConvertValue<string>(row[i++]);
+            int requiredGold = ConvertValue<int>(row[i++]);
+
+            var condition = new UnlockCondition
+            {
+                Type = type,
+                QuestId = questId,
+                RequiredGold = requiredGold
+            };
+
+            if (!contentDict.TryGetValue(contentId, out var unlockData))
+            {
+                unlockData = new UnlockContentsData
+                {
+                    ContentId = contentId,
+                    Conditions = new List<UnlockCondition>()
+                };
+                contentDict[contentId] = unlockData;
+            }
+
+            unlockData.Conditions.Add(condition);
+        }
+
+        loader.UnlockContents = new List<UnlockContentsData>(contentDict.Values);
         #endregion
     
         string jsonStr = JsonConvert.SerializeObject(loader, Formatting.Indented);
