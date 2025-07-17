@@ -23,7 +23,7 @@ public class UI_CheckOutItem : UI_Base
 
     enum Images
     {
-
+        RewardItemImage,
     }
 
     #endregion
@@ -32,7 +32,9 @@ public class UI_CheckOutItem : UI_Base
     bool _isCheckOut;
     bool _isVisul;
     private bool _isCanClick;
-    bool _isCanReward;
+    int _itemID;
+    int _rewardValue;
+    //bool _isCanReward;
 
     private void OnEnable()
     {
@@ -72,12 +74,12 @@ public class UI_CheckOutItem : UI_Base
         Managers.Game.AttendanceReceived[_dayCount - 1] = true;
 
         //재화 지급
-        int matId = Managers.Data.CheckOutDataDic[_dayCount].RewardItemId;
+        Managers.Game.RewardMaterial(_itemID, _rewardValue);
 
         UI_CheckOutRewardPopup popup = Managers.UI.ShowPopupUI<UI_CheckOutRewardPopup>();
         popup.SetInfo(_dayCount);
 
-        Managers.Game.Gold += 10;
+     
     }
 
     public void SetInfo(int dayCount, bool isCheckOut, bool canClick, bool isVisul = false)
@@ -89,13 +91,16 @@ public class UI_CheckOutItem : UI_Base
         _isVisul = isVisul;
         _isCanClick = canClick;
 
+
+        _itemID = Managers.Data.CheckOutDataDic[_dayCount].RewardItemId;
+
         if (_isVisul)
         {
             GetObject((int)GameObjects.DayValueObject).SetActive(false);
 
         }
 
-        if(isCheckOut)
+        if(_isCheckOut)
         {
             
             GetObject((int)GameObjects.ClearRewardCompleteObject).SetActive(true);
@@ -128,9 +133,10 @@ public class UI_CheckOutItem : UI_Base
             return;
 
 
-        int rewardItemValue = Managers.Data.CheckOutDataDic[_dayCount].RewardItemValue;
+        _rewardValue = Managers.Data.CheckOutDataDic[_dayCount].RewardItemValue;
 
         GetText((int)Texts.DayValueText).text = _dayCount.ToString();
-        GetText((int)Texts.RewardValueText).text = rewardItemValue.ToString();
+        GetText((int)Texts.RewardValueText).text = _rewardValue.ToString();
+        GetImage((int)Images.RewardItemImage).sprite = Managers.Resource.Load<Sprite>(Managers.Data.MaterialDic[_itemID].SpriteName);
     }
 }

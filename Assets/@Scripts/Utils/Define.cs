@@ -153,6 +153,7 @@ public class Define
     {
         None,
         Gold,
+        Dia,
         Ticket,
     }
 
@@ -231,4 +232,5 @@ public class Define
         Onion,
         Cabbage,
     }
+
 }

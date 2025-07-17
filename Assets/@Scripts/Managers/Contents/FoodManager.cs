@@ -57,16 +57,38 @@ public class FoodManager
     }
 
 
-    public void MakeFood(int foodCount)
+    public void MakeFood(IngredientSet ingredients, int buildingLevel)
     {
-       FoodData data = Managers.Data.FoodDic.Values
-                 .Where(fd => fd.Count <= foodCount)
-                 .OrderByDescending(fd => fd.Count)
-                 .FirstOrDefault();
+        FoodData recipe = Managers.Data.FoodDic.Values
+                 .FirstOrDefault(fd =>
+                     fd.Cabbage == ingredients.Ingredients.Exists(i => i.Type == Define.ECropType.Cabbage) &&
+                     fd.Carrot == ingredients.Ingredients.Exists(i => i.Type == Define.ECropType.Carrot) &&
+                     fd.Pumpkin == ingredients.Ingredients.Exists(i => i.Type == Define.ECropType.Pumpkin) &&
+                     fd.Potato == ingredients.Ingredients.Exists(i => i.Type == Define.ECropType.Potato) &&
+                     fd.Onion == ingredients.Ingredients.Exists(i => i.Type == Define.ECropType.Onion));
 
-        Food food = new Food(data);
+        //요리가 없으면 기본요리 생산
+        if (recipe == null)
+        {
+            recipe = Managers.Data.FoodDic["F0001"];
+        }
+
+        // 가격 계산
+        float basePrice = recipe.Price;
+        float ingredientBonus = 0.1f; // 재료 1개당 +10%
+        float fieldMultiplier = ingredients.GetAvgFieldLevelMultiplier();
+        float cookingMultiplier = 1.0f + ((buildingLevel - 1) * 0.15f); // Lv1=1.0, Lv2=1.15, Lv3=1.3
+
+        float finalPrice = basePrice * (1 + ingredients.TotalCount * ingredientBonus)
+                                     * fieldMultiplier
+                                     * cookingMultiplier;
+
+        recipe.Price = Mathf.FloorToInt(finalPrice);
+
+        // 요리 생성
+        Food food = new Food(recipe);
         Enqueue(food);
     }
 
-    // TODO : cook된거 데이터를 받아오던 랜덤을 받아오던 여기서 처리 
+
 }
