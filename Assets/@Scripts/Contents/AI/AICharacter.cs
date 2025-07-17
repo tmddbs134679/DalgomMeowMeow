@@ -9,6 +9,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.TextCore.Text;
 using UnityEngine.UIElements;
 using static Define;
+using static UnityEditor.MaterialProperty;
 
 public class AICharacter : BaseObject
 {
@@ -34,6 +35,7 @@ public class AICharacter : BaseObject
     [Header("캐릭터 현재 위치")]
     public bool inMain = false; // 캐릭터가 메인 안에 있는지 여부
 
+    public ECropType _ecropType;
     #region Bone
     [SerializeField] private Transform hatBone;
     [SerializeField] private Transform bagBone;
@@ -215,12 +217,10 @@ public class AICharacter : BaseObject
         AnimalDelivered?.Invoke(this);
     }
 
-    public ECropType DistinguishCrops()
+    public ECropType DistinguishCrops(ECropType type)
     {
-        FarmBuilding farm = currentBuilding as FarmBuilding;
-        Define.ECropType type = farm.GetCropType();
-        farm.Harvest();
-        return type;
+        _ecropType = type;
+        return _ecropType;
     }
     #endregion
 

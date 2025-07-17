@@ -28,7 +28,8 @@ namespace Scripts.Contents.AI.FSM.State
             base.OnUpdate(deltaTime);
             if (elapsedTime >= character.currentBuilding.BuildingData.Interval)
             {
-                character.DistinguishCrops();
+                FarmBuilding farm = character.currentBuilding as FarmBuilding;
+                character.DistinguishCrops(farm.CropType);
 
                 if(character.Controller.FindNearestBuilding(Define.EAIState.Deliver) == null)
                 {
