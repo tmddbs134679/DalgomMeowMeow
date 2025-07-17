@@ -40,7 +40,7 @@ public class DataManager
         GachaTableDataDic = LoadJson<Data.EquipmentGachaDataLoader, string, Data.EquipmentGachaData>("EquipmentGachaData").MakeDict();
         SkillDataDic = LoadJson<Data.SkillDataDataLoader, string, Data.SkillData>("SkillData").MakeDict();
         QuestDataDic = LoadJson<QuestDataLoader,string,Data.QuestData>("QuestData").MakeDict();
-      //  UnlockContentDic = LoadJson<UnlockContentsDataLoader, string, Data.UnlockContentsData>("UnlckCondition").MakeDict();
+        UnlockContentDic = LoadJson<UnlockContentsDataLoader, string, Data.UnlockContentsData>("UnlockContentsData").MakeDict();
         GachaStatDataDic = LoadJson<Data.GachaStatDataLoader, string, Data.GachaStatData>("GachaStatData").MakeDict();
     }
 

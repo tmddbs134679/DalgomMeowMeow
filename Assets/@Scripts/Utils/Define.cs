@@ -186,14 +186,22 @@ public class Define
     {
         None,
         Collect,
-        Kill
+        Kill,
+        Build
     }
     public enum ETargetType
     {
         None,
         Soup,
         Build,
-        Farm
+        Farm,
+        Animal,
+        Forest,
+        Fishing,
+        Onion,
+        Cabbage,
+        Carrot,
+        Potato,
     }
 
     public static readonly float[] COMMON_GACHA_GRADE = new float[]

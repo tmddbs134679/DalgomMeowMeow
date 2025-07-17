@@ -1,11 +1,73 @@
 {
-  "contents": [
+  "UnlockContents": [
+    {
+      "ContentId": "Chapter1",
+      "Conditions": [
+        {
+          "Type": 1,
+          "QuestId": null,
+          "RequiredGold": 1000
+        }
+      ]
+    },
     {
       "ContentId": "Chapter2",
       "Conditions": [
-        { "Type": 0, "QuestId": "Q0001", "RequiredGold": 0 },
-        { "Type": 0, "QuestId": "Q0002", "RequiredGold": 0 },
-        { "Type": 1, "QuestId": "", "RequiredGold": 1000 }
+        {
+          "Type": 0,
+          "QuestId": "Q2101",
+          "RequiredGold": 0
+        },
+        {
+          "Type": 0,
+          "QuestId": "Q2201",
+          "RequiredGold": 0
+        },
+        {
+          "Type": 1,
+          "QuestId": null,
+          "RequiredGold": 10000
+        }
+      ]
+    },
+    {
+      "ContentId": "Chapter3",
+      "Conditions": [
+        {
+          "Type": 0,
+          "QuestId": "Q3101",
+          "RequiredGold": 0
+        },
+        {
+          "Type": 0,
+          "QuestId": "Q3201",
+          "RequiredGold": 0
+        },
+        {
+          "Type": 1,
+          "QuestId": null,
+          "RequiredGold": 100000
+        }
+      ]
+    },
+    {
+      "ContentId": "Chapter4",
+      "Conditions": [
+        {
+          "Type": 0,
+          "QuestId": "Q4101",
+          "RequiredGold": 0
+        },
+        {
+          "Type": 0,
+          "QuestId": "Q4201",
+          "RequiredGold": 0
+        },
+        {
+          "Type": 1,
+          "QuestId": null,
+          "RequiredGold": 1000000
+        }
       ]
     }
   ]

@@ -68,6 +68,7 @@ public class QuestManager : MonoBehaviour
         if (_quests.TryGetValue(questId, out var quest))
         {
             quest.Reward();
+            CheckUnlockConditions(questId);
         }
     }
     
@@ -154,15 +155,45 @@ public class QuestManager : MonoBehaviour
         }
     }
     
-    public void TryUnlockByGold(string unlockId, int requiredGold)
+    public void TryUnlockByGold()
     {
-        if (Managers.Game.Gold >= requiredGold)
+        foreach (var kvp in Managers.Data.UnlockContentDic)
         {
-            TryUnlockContent(unlockId);
-        }
-        else
-        {
-            Debug.Log("[해금 실패] 골드 부족");
+            string contentId = kvp.Key;
+            var data = kvp.Value;
+
+            // 골드 조건이 없으면 continue
+            var goldCondition = data.Conditions.Find(cond => cond.Type == Data.UnlockConditionType.Gold);
+            if (goldCondition == null)
+                continue;
+
+            // 골드가 충족되지 않았으면 continue
+            if (Managers.Game.Gold < goldCondition.RequiredGold)
+                continue;
+
+            // 나머지 조건도 충족되는지 확인
+            bool allMet = true;
+            foreach (var condition in data.Conditions)
+            {
+                switch (condition.Type)
+                {
+                    case Data.UnlockConditionType.Quest:
+                        if (!IsQuestCompleted(condition.QuestId))
+                            allMet = false;
+                        break;
+                    case Data.UnlockConditionType.Gold:
+                        if (Managers.Game.Gold < condition.RequiredGold)
+                            allMet = false;
+                        break;
+                }
+
+                if (!allMet) break;
+            }
+
+            if (allMet)
+            {
+                Unlock(contentId); // 해금 실행
+            }
         }
     }
     
