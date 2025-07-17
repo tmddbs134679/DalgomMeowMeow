@@ -45,7 +45,6 @@ public class FishingBuilding : BuildingBase
                 break;
         }
 
-        Debug.Log($"총 누적 수량: {StoredCount}");
 
         // if (StoredCount > 0) collectIcon.SetActive(true);
 

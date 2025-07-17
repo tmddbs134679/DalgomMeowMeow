@@ -68,6 +68,7 @@ public class QuestManager : MonoBehaviour
         if (_quests.TryGetValue(questId, out var quest))
         {
             quest.Reward();
+            CheckUnlockConditions(questId);
         }
     }
     
