@@ -11,7 +11,7 @@ public class AIState : BaseState<AICharacter>
     public override void OnEnter()
     {
         base.OnEnter();
-        character.Data.CurrentState = state;
+        character.Data.CurrentState = state; 
         character.CurrentState = character.Data.CurrentState;
     }
 

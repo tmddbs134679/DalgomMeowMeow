@@ -20,6 +20,7 @@ public class UI_QuickMenu : UI_Popup
         BackgroundButton,
         CharacterInfoButton,
         CharacterEquipmentButton,
+        CharacterStoreSceneButton
     }
 
     enum Texts
@@ -60,7 +61,7 @@ public class UI_QuickMenu : UI_Popup
         GetButton((int)Buttons.CharacterInfoButton).gameObject.BindEvent(OnClickCharacterInfoButton);
         GetButton((int)Buttons.CharacterEquipmentButton).gameObject.BindEvent(OnClickCharacterEquipmentButton);
         GetButton((int)Buttons.BackgroundButton).gameObject.BindEvent(OnClickBackgroundButton);
-
+        GetButton((int)Buttons.CharacterStoreSceneButton).gameObject.BindEvent(OnClickCharacterStoreSceneButton);
 
         return true;
     }
@@ -77,6 +78,12 @@ public class UI_QuickMenu : UI_Popup
         _characterPopupUI.gameObject.SetActive(true);
         gameObject.SetActive(false);
     }
+
+    private void OnClickCharacterStoreSceneButton()
+    {
+        Managers.Scene.LoadScene(Define.EScene.CharacterStoreScene, transform);
+    }
+
 
     private void OnClickBackgroundButton()
     {

@@ -31,6 +31,9 @@ public class AICharacter : BaseObject
     public float Hp;
     public float MoveSpeed;
 
+    [Header("캐릭터 현재 위치")]
+    public bool inMain = false; // 캐릭터가 메인 안에 있는지 여부
+
     #region Bone
     [SerializeField] private Transform hatBone;
     [SerializeField] private Transform bagBone;
@@ -130,11 +133,13 @@ public class AICharacter : BaseObject
             nav.enabled = true;
             return;
         }
-        else Controller.OnUpdate(Time.deltaTime);
+
+        Controller.OnUpdate(Time.deltaTime);
 
         if (BuildingPlacer.Instance.isAI) OnClick();
         if (!BuildingPlacer.Instance.isAI)LongPressClick();
 
+        //확인하기 위한 스탯 설정
         MaxStamina = Data.CurrentStamina;
         Atk = Data.Atk;
         Hp = Data.Hp;
