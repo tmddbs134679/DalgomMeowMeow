@@ -170,7 +170,15 @@ public class TimeManager : MonoBehaviour
     //True이면 광고 보상
     public void GiveOfflineGold(bool IsReward = false)
     {
-        TimeSpan offlineTime = DateTime.Now - LastLoginTime;
+        // 이미 보상 받았는지 체크
+        if (LastRewardTime > LastLoginTime)
+        {
+            Managers.UI.ShowToast("이미 보상을 받았습니다!");
+            return;
+        }
+
+
+        TimeSpan offlineTime = DateTime.Now - LastRewardTime;
         int totalMinutes = (int)offlineTime.TotalMinutes;
         int totalGold = totalMinutes * Define.GOLD_PER_MINUTE;
 
@@ -183,11 +191,7 @@ public class TimeManager : MonoBehaviour
 
 
             LastRewardTime = DateTime.Now;
-            
-        }
-        else
-        {
-            Managers.UI.ShowToast("이미 보상을 받았습니다!");
+            _lastRewardTime = LastRewardTime;
         }
     }
 

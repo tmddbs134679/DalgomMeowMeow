@@ -71,19 +71,19 @@ public class UI_PotPopup : UI_Popup
         {
             Managers.Time.GiveOfflineGold(true);
         });
-
+        Managers.UI.ClosePopupUI(this);
     }
 
     private void OnClickRewardButton()
     {
         Managers.Time.GiveOfflineGold();
-
+        Managers.UI.ClosePopupUI(this);
     }
 
 
     void Refresh()
     {
-        TimeSpan offlineTime = DateTime.Now - Managers.Time.LastLoginTime;
+        TimeSpan offlineTime = DateTime.Now - Managers.Time.LastRewardTime;
 
 
         int totalMinutes = (int)offlineTime.TotalMinutes;
