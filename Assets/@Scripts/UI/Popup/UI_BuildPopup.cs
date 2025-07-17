@@ -25,7 +25,9 @@ public class UI_BuildPopup : UI_Popup
         ShopButton,
         CancelButton,
         PotButton,
+        TravelButton,
         UnlockAreaButton,
+
 
     }
 
@@ -41,6 +43,7 @@ public class UI_BuildPopup : UI_Popup
         RoadGoldText,
         ShopGoldText,
         PotGoldText,
+        TravelGoldText,
         PlayerGoldText,
 
         CookCountText = 100,
@@ -53,6 +56,7 @@ public class UI_BuildPopup : UI_Popup
         RoadCountText,
         ShopCountText,
         PotCountText,
+        TravelCountText,
 
     }
 
@@ -88,6 +92,7 @@ public class UI_BuildPopup : UI_Popup
         GetButton((int)Buttons.ShopButton).gameObject.BindEvent(() => SelectBuildingType(Define.BuildingType.Shop));
         GetButton((int)Buttons.UnlockAreaButton).gameObject.BindEvent(() => SelectBuildingType(Define.BuildingType.UnLockStage));
         GetButton((int)Buttons.PotButton).gameObject.BindEvent(() => SelectBuildingType(Define.BuildingType.Pot));
+        GetButton((int)Buttons.TravelButton).gameObject.BindEvent(() => SelectBuildingType(Define.BuildingType.Travel));
         GetButton((int)Buttons.CancelButton).gameObject.BindEvent(CancelBuildUI);
         Managers.Game.OnResourcesChagned += Refresh;
         BuildingPlacer.Instance.OnBuildingCancel += CancelBuildUI;
@@ -198,7 +203,7 @@ private void ShowUIFarmPopup()
     private int ToIndex(Texts text)
     {
         int value = (int)text;
-        return value >= 100 ? (value - 100) + 11 : value;
+        return value >= 100 ? (value - 100) + 12 : value;
     }
     private void CancelBuildUI()
     {

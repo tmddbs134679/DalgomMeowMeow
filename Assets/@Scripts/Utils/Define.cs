@@ -129,6 +129,7 @@ public class Define
         PumpkinFarm,
         CarrotFarm,
         Pot,
+        Travel,
         UnLockStage,
     }
 

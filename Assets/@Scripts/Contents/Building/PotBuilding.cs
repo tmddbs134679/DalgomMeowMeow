@@ -13,6 +13,6 @@ public class PotBuilding : BuildingBase
 
     public override void OnClick()
     {
-        
+        Debug.Log("efwef");
     }
 }
