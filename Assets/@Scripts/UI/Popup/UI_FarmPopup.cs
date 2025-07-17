@@ -7,7 +7,7 @@ public class UI_FarmPopup : UI_Popup
 {
     enum GameObjects
     {
-
+        BuildScrollObject,
     }
 
     enum Buttons
@@ -20,7 +20,7 @@ public class UI_FarmPopup : UI_Popup
         CloseBackGroundButton,
     }
     enum Texts
-    { 
+    {
         CabbageGoldText,
         CarrotGoldText,
         PumpkinGoldText,
@@ -35,6 +35,8 @@ public class UI_FarmPopup : UI_Popup
     }
     enum Images { }
 
+    private UI_BuildPopup _uI_BuildPopup;
+    private GameObject buildScrollObject;//이전 ui에서 받아온거
     public override bool Init()
     {
         if (!base.Init()) return false;
@@ -50,27 +52,36 @@ public class UI_FarmPopup : UI_Popup
         GetButton((int)Buttons.OnionButton).gameObject.BindEvent(() => SelectBuildingType(Define.BuildingType.OnionFarm));
         GetButton((int)Buttons.PotatoButton).gameObject.BindEvent(() => SelectBuildingType(Define.BuildingType.PotatoFarm));
         GetButton((int)Buttons.PumpkinButton).gameObject.BindEvent(() => SelectBuildingType(Define.BuildingType.PumpkinFarm));
-        GetButton((int)Buttons.CloseBackGroundButton).gameObject.BindEvent(OnClickBackgroundButton);        
+       //   GetButton((int)Buttons.CloseBackGroundButton).gameObject.BindEvent(OnClickBackgroundButton);
+        BuildingPlacer.Instance.OnBuildingCancel += CancelBuildUI;
+        Setting();
         return true;
     }
-
+    public void OnDestroy()
+    {
+        BuildingPlacer.Instance.OnBuildingCancel -= CancelBuildUI;
+    }
 
     private void OnClickBackgroundButton()
     {
-        Managers.UI.ClosePopupUI(this);
+
     }
 
- //설치 건물 선택
+    //설치 건물 선택
     private void SelectBuildingType(Define.BuildingType type)
     {
+                buildScrollObject.SetActive(false);
+        // var button = GetButton(type);
+        // if (button != null && !button.interactable)
+        //     return;
         LimitBuildCount(type);
         if (!BuildingPlacer.Instance.islimitBuildCount) return;
         Setting();//데이터 갱신
 
-
+        GetObject((int)GameObjects.BuildScrollObject).SetActive(false);
         BuildingPlacer.Instance.SelectBuildingType(type);
         UI_BuildAction popup = Managers.UI.MakeSubItem<UI_BuildAction>(this.transform);
-       // popup.islimitBuildCount = islimitBuildCount;
+        // popup.islimitBuildCount = islimitBuildCount;
     }
     //건물 갯수 제한 코드 구간
     private void LimitBuildCount(Define.BuildingType type)
@@ -85,9 +96,9 @@ public class UI_FarmPopup : UI_Popup
         {
             if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(Define.BuildingType.Shop.ToString(), out int count) && count >= 1)
                 BuildingPlacer.Instance.islimitBuildCount = false;
-                            return;
+            return;
         }
-                        BuildingPlacer.Instance.islimitBuildCount = true;
+        BuildingPlacer.Instance.islimitBuildCount = true;
     }
 
     //buildUI창 건설비용과 건물갯수 갱신
@@ -124,5 +135,15 @@ public class UI_FarmPopup : UI_Popup
         return value >= 100 ? (value - 100) + 5 : value;
     }
 
+    private void CancelBuildUI()
+    {
+        Managers.UI.ClosePopupUI(this); //스택이기 때문에 닫는 순서 중요함
+                Managers.UI.ClosePopupUI(_uI_BuildPopup);
+        (Managers.UI.SceneUI as UI_GameScene).gameObject.SetActive(true);
+    }
 
+    public void GetPopup(GameObject gameObject)
+    {
+        buildScrollObject = gameObject;
+    }
 }

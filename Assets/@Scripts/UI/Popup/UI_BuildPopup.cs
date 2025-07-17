@@ -24,6 +24,7 @@ public class UI_BuildPopup : UI_Popup
         RoadButton,
         ShopButton,
         CancelButton,
+        PotButton,
         UnlockAreaButton,
 
     }
@@ -39,6 +40,7 @@ public class UI_BuildPopup : UI_Popup
         SlotMachineGoldText,
         RoadGoldText,
         ShopGoldText,
+        PotGoldText,
         PlayerGoldText,
 
         CookCountText = 100,
@@ -50,6 +52,7 @@ public class UI_BuildPopup : UI_Popup
         SlotMachineCountText,
         RoadCountText,
         ShopCountText,
+        PotCountText,
 
     }
 
@@ -60,6 +63,7 @@ public class UI_BuildPopup : UI_Popup
     #endregion
 
     private Character _character;
+    private UI_FarmPopup _farmPopup;
     private void Awake()
     {
         Init();
@@ -83,6 +87,7 @@ public class UI_BuildPopup : UI_Popup
         GetButton((int)Buttons.RoadButton).gameObject.BindEvent(() => SelectBuildingType(Define.BuildingType.Road));
         GetButton((int)Buttons.ShopButton).gameObject.BindEvent(() => SelectBuildingType(Define.BuildingType.Shop));
         GetButton((int)Buttons.UnlockAreaButton).gameObject.BindEvent(() => SelectBuildingType(Define.BuildingType.UnLockStage));
+        GetButton((int)Buttons.PotButton).gameObject.BindEvent(() => SelectBuildingType(Define.BuildingType.Pot));
         GetButton((int)Buttons.CancelButton).gameObject.BindEvent(CancelBuildUI);
         Managers.Game.OnResourcesChagned += Refresh;
         BuildingPlacer.Instance.OnBuildingCancel += CancelBuildUI;
@@ -99,22 +104,32 @@ public class UI_BuildPopup : UI_Popup
 
         }
         BuildingPlacer.Instance.OnBuildingCancel -= CancelBuildUI;
-
     }
 
     #region Build
 
-    private void ShowUIFarmPopup()
+private void ShowUIFarmPopup()
+{
+    // 이미 열려 있다면 닫기
+    if (_farmPopup != null)
     {
-        Managers.UI.ShowPopupUI<UI_FarmPopup>();
+        Managers.UI.ClosePopupUI(_farmPopup); // 닫기
+        _farmPopup = null; // 참조 제거
+        return;
+    }
+
+    // 열려 있지 않으면 열기
+    BuildingPlacer.Instance.OnBuildingCancel -= CancelBuildUI;
+    _farmPopup = Managers.UI.ShowPopupUI<UI_FarmPopup>();
+    _farmPopup.GetPopup(GetObject((int)GameObjects.BuildScrollObject));
 }
 
     //설치 건물 선택
     private void SelectBuildingType(Define.BuildingType type)
     {
-        var button = GetButton((int)type);
-        if (button != null && !button.interactable)
-            return;
+        // var button = GetButton(type);
+        // if (button != null && !button.interactable)
+        //     return;
         LimitBuildCount(type);
         if (!BuildingPlacer.Instance.islimitBuildCount) return;
         Setting();//데이터 갱신
@@ -123,7 +138,7 @@ public class UI_BuildPopup : UI_Popup
         GetObject((int)GameObjects.BuildScrollObject).SetActive(false);
         BuildingPlacer.Instance.SelectBuildingType(type);
         UI_BuildAction popup = Managers.UI.MakeSubItem<UI_BuildAction>(this.transform);
-       // popup.islimitBuildCount = islimitBuildCount;
+        // popup.islimitBuildCount = islimitBuildCount;
     }
     //건물 갯수 제한 코드 구간
     private void LimitBuildCount(Define.BuildingType type)
@@ -138,9 +153,9 @@ public class UI_BuildPopup : UI_Popup
         {
             if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(Define.BuildingType.Shop.ToString(), out int count) && count >= 1)
                 BuildingPlacer.Instance.islimitBuildCount = false;
-                            return;
+            return;
         }
-                        BuildingPlacer.Instance.islimitBuildCount = true;
+        BuildingPlacer.Instance.islimitBuildCount = true;
     }
 
     //buildUI창 건설비용과 건물갯수 갱신
@@ -159,16 +174,17 @@ public class UI_BuildPopup : UI_Popup
         {
             buildType = ((Define.BuildingType)i).ToString();
 
+            if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(buildType, out int count))
+            {
             if (buildType == "Road") // 도로일 땐 else 처리,임시땜빵,나중에는 모든게 엑셀 데이터를 받아와서 계산해야함
             {
 
                 GetText(i).text = BuildingPlacer.Instance.buildingSO[i].BuyMoney.ToString();
-                GetText(ToIndex((Texts)(100 + i))).text = "0";
+                GetText(ToIndex((Texts)(100 + i))).text = count.ToString();
                 continue;
             }
-            if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(buildType, out int count))
-            {
-                GetText(i).text = (BuildingPlacer.Instance.buildingSO[i].BuyMoney * Mathf.Pow(1.2f, count)).ToString();
+
+                GetText(i).text = Mathf.RoundToInt(BuildingPlacer.Instance.buildingSO[i].BuyMoney * Mathf.Pow(1.2f, count)).ToString();
                 GetText(ToIndex((Texts)(100 + i))).text = count.ToString();
             }
             else
@@ -182,7 +198,7 @@ public class UI_BuildPopup : UI_Popup
     private int ToIndex(Texts text)
     {
         int value = (int)text;
-        return value >= 100 ? (value - 100) + 10 : value;
+        return value >= 100 ? (value - 100) + 11 : value;
     }
     private void CancelBuildUI()
     {

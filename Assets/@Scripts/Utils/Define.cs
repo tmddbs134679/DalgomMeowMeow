@@ -123,10 +123,11 @@ public class Define
         SlotMachine,
         Road,
         Shop,
-        CarrotFarm,
-        PumpkinFarm,
-        PotatoFarm,
         OnionFarm,
+        PotatoFarm,
+        PumpkinFarm,
+        CarrotFarm,
+        Pot,
         UnLockStage,
     }
 
