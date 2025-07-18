@@ -55,19 +55,7 @@ public class ArrayMapPos : ScriptableObject
 #if UNITY_EDITOR
     public void EditorSaveMapTileData()
     {
-        string path = $"{Application.dataPath}/@Resources/Map/MapTileData.json";
-
-        MapTileSaveData saveData = new MapTileSaveData
-        {
-            width = this.width,
-            height = this.height,
-            rows = this.rows
-        };
-
-        string json = JsonConvert.SerializeObject(saveData, Formatting.Indented);
-        File.WriteAllText(path, json);
-
-        Debug.Log("맵 타일 데이터 저장 완료!");
+        SaveMapTileData();
     }
 #endif
     public void SaveMapTileData()
@@ -87,6 +75,12 @@ public class ArrayMapPos : ScriptableObject
         Debug.Log("맵 타일 데이터 저장 완료!");
     }
 #if UNITY_EDITOR
+    public void EditorLoadMapTileData()
+    {
+        LoadMapTileData();
+    }
+#endif
+
     public void LoadMapTileData()
     {
         string path = $"{Application.dataPath}/@Resources/Map/MapTileData.json";
@@ -107,7 +101,6 @@ public class ArrayMapPos : ScriptableObject
         Debug.Log("맵 타일 데이터 로드 완료!");
         EditorUtility.SetDirty(this);
     }
-#endif
 
 #if UNITY_EDITOR
     public void LoadProtoTypeMapTileData()

@@ -18,6 +18,10 @@ public class BuildMap : MonoBehaviour
     public Dictionary<String, int> valueCounts = new Dictionary<string, int>();
     public Dictionary<String, int> filtervalueCounts = new Dictionary<string, int>();
     private Dictionary<int, BuildData> _buildDataMap = new Dictionary<int, BuildData>();
+    void Awake()
+    {
+        _arrayBuildPos.LoadMapData();
+    }
     void Start()
     {
         foreach (BuildData data in _arrayBuildPos.baseBuilding)

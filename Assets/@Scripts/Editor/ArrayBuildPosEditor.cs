@@ -25,7 +25,7 @@ public class ArrayBuildPosEditor : Editor
 
         if (GUILayout.Button("데이터 불러오기"))
         {
-            Build.LoadMapData();
+            Build.EditorLoadMapData();
         }
 
         if (GUILayout.Button("기초 맵 불러오기"))

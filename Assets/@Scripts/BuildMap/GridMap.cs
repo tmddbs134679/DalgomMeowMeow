@@ -20,6 +20,7 @@ public class GridMap : MonoBehaviour
     public ArrayMapPos ArrayMapPos{ get=>_arrayMapPos; set=>_arrayMapPos=value;}
     void Awake()
     {
+        _arrayMapPos.LoadMapTileData();
         width = _arrayMapPos.Width;
         height = _arrayMapPos.Height;
         tile = new GameObject[width, height];

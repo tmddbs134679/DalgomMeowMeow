@@ -85,6 +85,7 @@ public class UI_BuildingPopup : UI_Popup
 
     public void SetInfo()
     {
+        
         if (_targetBuilding == null) return;
 
         int nextLevel = _targetBuilding.CurrentLevel + 1;
