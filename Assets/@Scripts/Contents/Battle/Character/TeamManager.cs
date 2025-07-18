@@ -32,7 +32,7 @@ public class TeamManager : MonoBehaviour
             _battleCharacters[k].MaxHP = StageDataManager.Instance.PlayerCharacter[k].Hp;
             _battleCharacters[k].MoveSpeed = StageDataManager.Instance.PlayerCharacter[k].MoveSpeed;
             _battleCharacters[k].SkillID = StageDataManager.Instance.PlayerCharacter[k].Data.SkillID.Replace(".sprite", "");
-            _battleCharacters[k].prefabLabel = StageDataManager.Instance.PlayerCharacter[k].Data.PrefabLabel;
+            _battleCharacters[k].CharID = StageDataManager.Instance.PlayerCharacter[k].DataId;
         }
 
         for (int i = 0; i < 3; i++)
@@ -67,7 +67,7 @@ public class TeamManager : MonoBehaviour
 
 
                 _battleCharacters[index].CharacterObject = modelInstance.transform;//값 세팅
-                _battleCharacters[index].PivotSet();
+                _battleCharacters[index].PivotSet(); //피벗 설정 (손, 머리 등)
 
                 modelInstance.AddComponent<AnimationEvent>();
 

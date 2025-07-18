@@ -3,19 +3,14 @@ using UnityEngine;
 
 public class UI_BattleScene : UI_Scene
 {
-    [SerializeField] private BattleCharacter _playerCharacter_1;
-    [SerializeField] private BattleCharacter _playerCharacter_2;
-    [SerializeField] private BattleCharacter _playerCharacter_3;
-
-    [SerializeField] private ButtonCoolDown _skill_1;
-    [SerializeField] private ButtonCoolDown _skill_2;
-    [SerializeField] private ButtonCoolDown _skill_3;
+    [SerializeField] private BattleCharacter[] _playerCharacters = new BattleCharacter[3];
+    [SerializeField] private ButtonCoolDown[] _skillButtons = new ButtonCoolDown[3];
 
     private UI_PausePopup _pausePopup;
     private GameObject _skillScene;
     private UI_Skill _skill;
-    #region Enum
 
+    #region Enum
     enum Buttons
     {
         PauseButton,
@@ -25,18 +20,16 @@ public class UI_BattleScene : UI_Scene
     }
     #endregion
 
-    public Sprite cat;      //임시
-    public Sprite bear;     //임시
-
-
+    public Sprite cat;  // 임시
+    public Sprite bear; // 임시
 
     private void Awake()
     {
         Init();
-        _skill = Managers.UI.ShowPopupUI<UI_Skill>(); // 스킬 UI 표시
-        _skillScene = _skill.gameObject; // 스킬 UI 게임 오브젝트 저장
-        _skillScene.SetActive(false); // 스킬 UI 비활성화
-        
+
+        _skill = Managers.UI.ShowPopupUI<UI_Skill>();
+        _skillScene = _skill.gameObject;
+        _skillScene.SetActive(false);
     }
 
     public override bool Init()
@@ -46,74 +39,56 @@ public class UI_BattleScene : UI_Scene
 
         BindButton(typeof(Buttons));
         GetButton((int)Buttons.PauseButton).gameObject.BindEvent(OnClickPauseButton);
-        GetButton((int)Buttons.Skill_1_Btn).gameObject.BindEvent(OnClickSkill_1Button);
-        GetButton((int)Buttons.Skill_2_Btn).gameObject.BindEvent(OnClickSkill_2Button);
-        GetButton((int)Buttons.Skill_3_Btn).gameObject.BindEvent(OnClickSkill_3Button);
 
-
+        // 스킬 버튼 바인딩
+        for (int i = 0; i < _playerCharacters.Length; i++)
+        {
+            int idx = i; // 클로저 방지
+            GetButton((int)Buttons.Skill_1_Btn + idx).gameObject
+                .BindEvent(() => OnClickSkillButton(idx));
+        }
 
         return true;
     }
 
     private void Update()
     {
-        if (_playerCharacter_1.IsDead)
-            _skill_1.ButtonLock();
-        if (_playerCharacter_2.IsDead)
-            _skill_2.ButtonLock();
-        if (_playerCharacter_3.IsDead)
-            _skill_3.ButtonLock();
+        for (int i = 0; i < _playerCharacters.Length; i++)
+        {
+            if (_playerCharacters[i].IsDead)
+                _skillButtons[i].ButtonLock();
+        }
     }
 
-    public void OnClickPauseButton()
+    private void OnClickPauseButton()
     {
-        Time.timeScale = 0f; // 게임 일시 정지
-        _pausePopup = Managers.UI.ShowPopupUI<UI_PausePopup>(); // PausePopup UI 표시
+        Time.timeScale = 0f;
+        _pausePopup = Managers.UI.ShowPopupUI<UI_PausePopup>();
         _pausePopup.gameObject.SetActive(true);
     }
 
-    public void OnClickSkill_1Button()
+    private void OnClickSkillButton(int index)
     {
-        if(_playerCharacter_1.IsDead) return;
+        BattleCharacter character = _playerCharacters[index];
+        if (character.IsDead) return;
 
-        //_skill.SetImage( 로드 _playerCharacter_1.SkillID); // 스킬 UI에 플레이어 캐릭터 1의 이미지 설정
-        if (_playerCharacter_1.prefabLabel.Contains("Cat"))  //임시로 라벨체크
-            _skill.CharImg.sprite = cat; // 고양이 스킬 이미지 설정
-        else
-            _skill.CharImg.sprite = bear; // 곰 스킬 이미지 설정
-
-
-        StartCoroutine(SkillCutScene()); // 스킬 컷씬 실행
-        _playerCharacter_1.ActiveSkill(); // 플레이어 캐릭터 1의 첫 번째 스킬 활성화
-        _skill_1.SkillActive(_playerCharacter_1.SkillCooldown, _playerCharacter_1.IsDead); // 스킬 버튼 쿨타임 활성화
-    }
-    public void OnClickSkill_2Button()
-    {
-        if (_playerCharacter_2.IsDead) return;
-        StartCoroutine(SkillCutScene()); // 스킬 컷씬 실행
-        _playerCharacter_2.ActiveSkill(); // 플레이어 캐릭터 2의 두 번째 스킬 활성화
-        _skill_2.SkillActive(_playerCharacter_2.SkillCooldown, _playerCharacter_2.IsDead); // 스킬 버튼 쿨타임 활성화
-    }
-    public void OnClickSkill_3Button()
-    {
-        if (_playerCharacter_3.IsDead) return;
-        StartCoroutine(SkillCutScene()); // 스킬 컷씬 실행
-        _playerCharacter_3.ActiveSkill(); // 플레이어 캐릭터 3의 세 번째 스킬 활성화
-        _skill_3.SkillActive(_playerCharacter_3.SkillCooldown, _playerCharacter_3.IsDead); // 스킬 버튼 쿨타임 활성화
+        _skill.SetImage(Managers.Resource.Load<Sprite>($"{character.CharID}_S"));
+        StartCoroutine(SkillCutScene());
+        character.ActiveSkill();
+        _skillButtons[index].SkillActive(character.SkillCooldown, character.IsDead);
     }
 
     private IEnumerator SkillCutScene()
     {
-        //색바꾸기 or 이미지 바꾸기 등
-
-        _skillScene.SetActive(true); // 스킬 UI 활성화
-        Time.timeScale = 0.25f; // 게임 느리게
-        yield return new WaitForSecondsRealtime(1.5f); // 1.2초 대기
-        Time.timeScale = 1f; // 게임 재개
-        _skillScene.SetActive(false); // 스킬 UI 비활성화
+        _skillScene.SetActive(true);
+        Time.timeScale = 0.25f;
+        yield return new WaitForSecondsRealtime(1.5f);
+        Time.timeScale = 1f;
+        _skillScene.SetActive(false);
     }
+
     public void SetOFF()
     {
-        this.gameObject.SetActive(false); // UI_BattleScene 비활성화
+        gameObject.SetActive(false);
     }
 }

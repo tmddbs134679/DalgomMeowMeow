@@ -168,6 +168,7 @@ public class DataTransformer : EditorWindow
             cd.IconLabel = ConvertValue<string>(row[i++]);
             cd.SkillID = ConvertValue<string>(row[i++]);
             cd.WalkSpeed = ConvertValue<float>(row[i++]);
+            cd.SkillScene = ConvertValue<string>(row[i++]);
             loader.creatures.Add(cd);
         }
 
