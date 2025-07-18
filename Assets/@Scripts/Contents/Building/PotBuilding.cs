@@ -14,9 +14,8 @@ public class PotBuilding : BuildingBase
 
     public override void OnClick()
     {
-        TimeSpan offlineTime = DateTime.Now - Managers.Time.LastRewardTime;
 
-        if (offlineTime.TotalMinutes < 1)
+        if (Managers.Time._claimedThisSession || Managers.Time.CalculateOfflineGold() <= 0)
         {
             //  최근에 이미 보상 받음
             Managers.UI.ShowToast("이미 보상을 받았습니다!");
