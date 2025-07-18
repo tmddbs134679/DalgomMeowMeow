@@ -92,20 +92,41 @@ public class TimeManager : MonoBehaviour
         }
     }
 
-
-
-    public TimeSpan TimeSinceLastReward
+    public DateTime LastQuitTime
     {
         get
         {
-            TimeSpan timeSpan = DateTime.Now - LastRewardTime;
+            string savedTimeStr = PlayerPrefs.GetString("LastQuitTime", string.Empty);
+            if (!string.IsNullOrEmpty(savedTimeStr))
+                return DateTime.Parse(savedTimeStr);
+            else
+                return DateTime.Now;
+        }
+        set
+        {
+            PlayerPrefs.SetString("LastQuitTime", value.ToString());
+            PlayerPrefs.Save();
+        }
+    }
+    //최고 오프라인 시간 15시간 
+
+    public TimeSpan TimeSinceLastQuit
+    {
+        get
+        {
+            TimeSpan timeSpan = DateTime.Now - LastQuitTime;
             if (timeSpan > TimeSpan.FromHours(15))
-            {
                 return TimeSpan.FromHours(15);
-            }
             return timeSpan;
         }
     }
+
+    public bool _claimedThisSession;
+
+    public float TravelTime { get; private set; } // 남은 여행 시간 (초)
+
+    public bool IsTraveling => TravelTime > 0f;
+
     public void Init()
     {
         CheckOfflineAttendance();
@@ -170,19 +191,9 @@ public class TimeManager : MonoBehaviour
     //True이면 광고 보상
     public void GiveOfflineGold(bool IsReward = false)
     {
-        // 이미 보상 받았는지 체크
-        if (LastRewardTime > LastLoginTime)
-        {
-            Managers.UI.ShowToast("이미 보상을 받았습니다!");
-            return;
-        }
+        int totalGold = CalculateOfflineGold();
 
-
-        TimeSpan offlineTime = DateTime.Now - LastRewardTime;
-        int totalMinutes = (int)offlineTime.TotalMinutes;
-        int totalGold = totalMinutes * Define.GOLD_PER_MINUTE;
-
-        if(totalGold > 0)
+        if (totalGold > 0)
         {
            if(IsReward)
                 Managers.Game.Gold += (totalGold * 2);
@@ -192,6 +203,8 @@ public class TimeManager : MonoBehaviour
 
             LastRewardTime = DateTime.Now;
             _lastRewardTime = LastRewardTime;
+
+            _claimedThisSession = true;
         }
     }
 
@@ -215,5 +228,76 @@ public class TimeManager : MonoBehaviour
     private void ResetDailyCounts()
     {
         Managers.Game.AdvancedGachaOpenCount = 3;
+        _claimedThisSession = false;
+    }
+
+    public int CalculateOfflineGold()
+    {
+        // 마지막 보상 시각부터 현재까지 경과시간
+        int totalMinutes = (int)TimeSinceLastQuit.TotalMinutes;
+
+        // 골드 계산
+        int totalGold = totalMinutes * Define.GOLD_PER_MINUTE;
+
+        return totalGold;
+    }
+
+    #region Travel
+
+    public void StartTravel(Character character)
+    {
+        character.IsTravelMode = true;
+
+        if (Managers.Game.CharacterInMainScene.TryGetValue(character.UniqueId, out AICharacter aiCharacter))
+        {
+            //일단 false;
+            aiCharacter.gameObject.SetActive(false);
+        }
+
+       // StartCoroutine(TravelCountdown(character, travelDuration));
+
+    }
+
+    #endregion
+    private IEnumerator TravelCountdown()
+    {
+        while (TravelTime > 0f)
+        {
+            yield return new WaitForSeconds(1f);
+            TravelTime -= 1f;
+
+   
+            if (TravelTime <= 0f)
+            {
+                TravelTime = 0f;
+            }
+        }
+    }
+    private IEnumerator TravelCountdown(Character character, float duration)
+    {
+        float timer = duration;
+
+        while (timer > 0)
+        {
+            yield return new WaitForSeconds(1f);
+            timer -= 1f;
+
+        
+        }
+
+        OnTravelComplete(character);
+    }
+
+    private void OnTravelComplete(Character character)
+    {
+        character.IsTravelMode = false;
+
+        // 씬에 캐릭터 복귀
+        if (Managers.Game.CharacterInMainScene.TryGetValue(character.UniqueId, out AICharacter aiCharacter))
+        {
+            //스폰해야함 
+        }
+
+        Debug.Log($"{character.Name} 여행 끝! 맵에 복귀");
     }
 }

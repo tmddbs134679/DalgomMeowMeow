@@ -16,6 +16,9 @@ public class UIManager
 
     public Action<Character> OnCharacterChange;
     public Action OnLongPress;
+    public Action<UI_TravelCharacterSlot> OnTravelCharacter;
+
+
     public GameObject Root
     {
         get

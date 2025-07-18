@@ -260,12 +260,16 @@ public class GameManager
     public void SaveGame()
     {
 
+        Managers.Time.LastQuitTime = DateTime.Now;
+
         UpdateCharactersFromWorld();
 
         _gameData.CharacterList = new List<Character>(_characters.Values);
 
         string jsonStr = JsonConvert.SerializeObject(_gameData);
         File.WriteAllText(_path, jsonStr);
+
+
     }
     private bool LoadGame()
     {
@@ -734,5 +738,8 @@ public class GameManager
 
 
     #endregion
+
+
+
 }
 

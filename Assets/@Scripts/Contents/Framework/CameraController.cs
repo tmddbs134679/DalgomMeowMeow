@@ -182,6 +182,7 @@ void ClickBuilding(Vector2 screenPos)
             var clickable = hit.collider.GetComponent<BaseObject>();
             clickable?.OnClick();
         }
+        
     }
 }
 

@@ -45,6 +45,8 @@ public class  Character
     public bool InMainScene { get; set; } 
     public List<string> EquippedItemIds { get; set; } = new();
 
+    public bool IsTravelMode { get; set; }
+
     public Dictionary<EEquipmentType, Equipment> EquippedItems = new();
     public void Init(string dataid, Vector3 position)
     {
