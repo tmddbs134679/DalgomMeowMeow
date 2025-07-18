@@ -17,14 +17,16 @@ public class GameScene : BaseScene
         Managers.UI.ShowSceneUI<UI_GameScene>();
         foreach (var ch in Managers.Game.Characters)
         {
-            AICharacter ai = Managers.Object.Spawn<AICharacter>(ch.Pos.ToVector3(), ch.DataId);
-            ai.Init();
-            ai.SetInfo(ch);
+            if (!ch.InMainScene) continue;
+                AICharacter ai = Managers.Object.Spawn<AICharacter>(ch.Pos.ToVector3(), ch.DataId);
+                ai.Init();
+                ai.SetInfo(ch);
+                ch.InMainScene = true;
 
-            Managers.Game.CharacterInMainScene[ch.UniqueId] = ai;
-            Managers.Game.SetInitEquipment(Managers.Game.CharacterInMainScene[ch.UniqueId]);
-            Managers.AI.ValidateNavMeshPosition(ai);
-            Managers.AI.Register(ai);
+                Managers.Game.CharacterInMainScene[ch.UniqueId] = ai;
+                Managers.Game.SetInitEquipment(Managers.Game.CharacterInMainScene[ch.UniqueId]);
+                Managers.AI.ValidateNavMeshPosition(ai);
+                Managers.AI.Register(ai);
         }
 
     }
