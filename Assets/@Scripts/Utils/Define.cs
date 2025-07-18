@@ -203,6 +203,12 @@ public class Define
         Cabbage,
         Carrot,
         Potato,
+        Pumpkin,
+        OnionFarm,
+        CabbageFarm,
+        CarrotFarm,
+        PotatoFarm,
+        PumpkinFarm,
     }
 
     public static readonly float[] COMMON_GACHA_GRADE = new float[]

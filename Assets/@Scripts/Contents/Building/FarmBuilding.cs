@@ -37,7 +37,7 @@ public class FarmBuilding : BuildingBase
 
         CurrentState = BuildingState.ReadyToCollect;
         // collectIcon.SetActive(true);
-        QuestManager.Instance.OnEvent(Define.EQuestConditionType.Collect, Define.ETargetType.Farm);
+        QuestManager.Instance.UpdateQuestProgress(Define.EQuestConditionType.Collect, Define.ETargetType.Farm);
 
     }
     public void Collect()
