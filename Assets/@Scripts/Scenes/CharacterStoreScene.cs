@@ -19,6 +19,8 @@ public class CharacterStoreScene : BaseScene
                 ai.Init();
                 ai.Data = ch;
                 ai.ControllerRegister();
+            Managers.Game.CharacterInMainScene[ch.UniqueId] = ai;
+            //Managers.Game.SetInitEquipment(Managers.Game.CharacterInMainScene[ch.UniqueId]);
             Managers.AI.ValidateNavMeshPosition(ai);
         }
 
