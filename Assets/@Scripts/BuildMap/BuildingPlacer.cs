@@ -58,17 +58,20 @@ public class BuildingPlacer : MonoBehaviour
     private ArrayBuildPos _arrayBuildPos;
     private ArrayMapPos _arrayMapPos;
 
-    public bool islimitBuildCount;
+    public bool islimitBuildCount=true;
 
     public DragController dragController;
     private void Awake()
     {
         if (Instance == null)
+        {
             Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
         else
             Destroy(gameObject);
-    }
 
+    }
     void Start()
     {
         InitializeMaps();
