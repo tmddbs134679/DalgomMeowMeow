@@ -196,6 +196,7 @@ public class BuildingPlacer : MonoBehaviour
                 posZ = _PreviewOBJ.transform.position.z,
                 testBaseBuilding = _saveBuildingSO,
                 UniqueId = hash,
+                LV=1,
             };
 
             _arrayBuildPos.GetBuildData(_buildData);//설치할 오브젝트
