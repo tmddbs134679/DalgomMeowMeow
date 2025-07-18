@@ -349,16 +349,15 @@ public class AICharacter : BaseObject
                 animator.SetInteger("animation", 49);
                 SetSpeed(0);
                 this.transform.position = new Vector3(mouspot.x, hit.point.y + 2f, mouspot.z);
-                nav.enabled = false;
 
             }
         }
         if (Input.GetMouseButtonUp(0)  && isFollowing)
         {
             if (isFollowing)
+            {
                 this.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
-
-            nav.enabled = true;
+            }
             isFollowing = false;
             if (Controller.CurrentState() is CharacterIdleState)
                 SetSpeed(Data.WalkSpeed);
