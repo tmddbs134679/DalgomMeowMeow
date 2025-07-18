@@ -76,7 +76,7 @@ public class TeamManager : MonoBehaviour
                     if (modelInstance.name.Contains("Cat"))
                         animator.runtimeAnimatorController = _catAnim;
                     else
-                        animator.runtimeAnimatorController = _bearAnim;
+                        animator.runtimeAnimatorController = _catAnim;
 
                     _battleCharacters[index].SetAnimation();
                 }
