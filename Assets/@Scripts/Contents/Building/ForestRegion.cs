@@ -28,8 +28,8 @@ public class ForestRegion : BaseObject
 
         IsUnlocked = true;
         SaveUnlockState();
-        //UpdateVisual();
         BuildingPlacer.Instance.DeleteStage(gameObject);
+        QuestManager.Instance.UpdateQuestProgress(Define.EQuestConditionType.Collect,Define.ETargetType.Forest);
     }
 
     private void UpdateVisual()

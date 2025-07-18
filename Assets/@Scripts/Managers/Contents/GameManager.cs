@@ -543,7 +543,7 @@ public class GameManager
     {
         string creatureId = DrawRandomCreature();
 
-        
+        QuestManager.Instance.UpdateQuestProgress(Define.EQuestConditionType.Collect,Define.ETargetType.Animal);
 
         if (!Managers.Data.CreatureDic.TryGetValue(creatureId, out var creatureData))
         {
