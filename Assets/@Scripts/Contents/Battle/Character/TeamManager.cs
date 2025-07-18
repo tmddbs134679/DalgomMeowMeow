@@ -32,6 +32,7 @@ public class TeamManager : MonoBehaviour
             _battleCharacters[k].MaxHP = StageDataManager.Instance.PlayerCharacter[k].Hp;
             _battleCharacters[k].MoveSpeed = StageDataManager.Instance.PlayerCharacter[k].MoveSpeed;
             _battleCharacters[k].SkillID = StageDataManager.Instance.PlayerCharacter[k].Data.SkillID.Replace(".sprite", "");
+            _battleCharacters[k].prefabLabel = StageDataManager.Instance.PlayerCharacter[k].Data.PrefabLabel;
         }
 
         for (int i = 0; i < 3; i++)

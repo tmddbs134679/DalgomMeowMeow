@@ -23,7 +23,8 @@ public class SkillLibrary : MonoBehaviour
             { 1005, RangedAttack },
             { 1006, Invincible },
             { 1007, TeamInvincible },
-            { 1008, Rain   }
+            { 1008, Rain   },
+            { 1009, BearforceSmash },
         };
     }
 
@@ -265,4 +266,42 @@ public class SkillLibrary : MonoBehaviour
 
 
     #endregion
+
+    #region NewSkill
+    private IEnumerator BearforceSmash(BattleCharacter battleCharacter)
+    {
+        battleCharacter.UsingSkill = true;
+        battleCharacter.SkillCooldown = 10f;
+        battleCharacter.Animator.SetTrigger(battleCharacter.SkillTrigger);
+
+        yield return new WaitForSeconds(0.3f); // 타이밍 맞춤
+
+        Vector3 center = battleCharacter.transform.position + battleCharacter.transform.forward * 2f;
+        Collider[] enemies = Physics.OverlapSphere(center, 3f, LayerMask.GetMask("Enemy"));
+        foreach (var hit in enemies)
+        {
+            if (hit.TryGetComponent(out BattleCharacter enemy))
+            {
+                enemy.HpControl(battleCharacter.AttackDamage * 2f);
+
+                Vector3 dir = (enemy.transform.position - battleCharacter.transform.position).normalized;
+
+                enemy.Agent.isStopped = true;
+                enemy.Agent.Move(dir * 3f); // 넉백
+                StartCoroutine(ResumeMovement(enemy, 0.5f));
+                //battleCharacter._effectManager.ShockWave(center); // 시각 이펙트
+            }
+        }
+
+        yield return new WaitForSeconds(0.5f);
+        battleCharacter.UsingSkill = false;
+    }
+    private IEnumerator ResumeMovement(BattleCharacter character, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        character.Agent.isStopped = false;
+    }
+    #endregion
+
+
 }

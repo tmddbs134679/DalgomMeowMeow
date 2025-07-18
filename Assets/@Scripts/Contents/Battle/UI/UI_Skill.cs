@@ -1,5 +1,6 @@
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UI;
 using static Define;
 
 public class UI_Skill : UI_Popup   //어드레서블에 프리펩 넣기
@@ -7,6 +8,7 @@ public class UI_Skill : UI_Popup   //어드레서블에 프리펩 넣기
     public RectTransform LeftTop;
     public RectTransform RightBottom;
     public RectTransform CharacterImage;
+    public Image CharImg;
 
     private Vector2 leftInPos = new Vector2(-490f, 280f);
     private Vector2 rightInPos = new Vector2(850f, -410f);
@@ -29,6 +31,7 @@ public class UI_Skill : UI_Popup   //어드레서블에 프리펩 넣기
         LeftTop = transform.Find("LeftTop").GetComponent<RectTransform>();
         RightBottom = transform.Find("RightBottom").GetComponent<RectTransform>();
         CharacterImage = transform.Find("Character").GetComponent<RectTransform>();
+        CharImg = CharacterImage.GetComponent<Image>();
 
         Init();
     }
@@ -64,9 +67,10 @@ public class UI_Skill : UI_Popup   //어드레서블에 프리펩 넣기
         return true;
     }
 
-    public void SetImage()
+    public void SetImage(Sprite image)
     {
         // 스킬 캐릭터 이미지 설정
+        CharImg.sprite = image;
         // GetImage((int)Images.SkillCharacter).sprite = Managers.Resource.Load<Sprite>( cat sprite );
     }
 }
