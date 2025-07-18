@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Xml;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -739,7 +740,95 @@ public class GameManager
 
     #endregion
 
+    #region Travel
 
+    public void StartTravel(Character character, TimeSpan duration)
+    {
+        character.IsTravelMode = true;
+
+        Managers.Time.TravelStartTime = DateTime.Now;
+        Managers.Time.TravelDuration = duration;
+
+        if (Managers.Game.CharacterInMainScene.TryGetValue(character.UniqueId, out AICharacter aiCharacter))
+        {
+            //일단 false;
+            aiCharacter.gameObject.SetActive(false);
+        }
+
+        Managers.Game.SaveGame();
+    }
+
+
+
+    public void ReturnFromTravel()
+    {
+        Character travelingCharacter = Managers.Game.Characters.FirstOrDefault(c => c.IsTravelMode);
+
+        if (travelingCharacter == null)
+        {
+            Debug.Log("여행 중인 캐릭터가 없습니다.");
+            return;
+        }
+
+        travelingCharacter.IsTravelMode = false;
+
+        //복귀
+        if (Managers.Game.CharacterInMainScene.TryGetValue(travelingCharacter.UniqueId, out AICharacter aiCharacter))
+        {
+            aiCharacter.gameObject.SetActive(true);
+        }
+
+        Managers.Game.SaveGame();
+    }
+
+    public void OnTravelComplete()
+    {
+        ReturnFromTravel();
+
+        //보상 테이블에서  랜덤으로 주기 일단 테이블 없이 진행함.
+        List<EMaterialType> allRewards = new List<EMaterialType>
+        {
+            EMaterialType.Gold,
+            EMaterialType.Dia,
+            EMaterialType.Ticket
+        };
+
+        List<EMaterialType> selectedRewards = allRewards
+        .OrderBy(x => UnityEngine.Random.value)
+        .Take(2)
+        .ToList();
+
+        StringBuilder rewardMessage = new StringBuilder("여행 보상: ");
+
+        foreach (EMaterialType item in selectedRewards)
+        {
+            switch (item)
+            {
+                case EMaterialType.Gold: //테이블에 GOLD ID = 10000임.
+                    int GoldValue = UnityEngine.Random.Range(2000, 5001);
+                    Managers.Game.RewardMaterial(10000, GoldValue);
+                    rewardMessage.Append($"Gold {GoldValue}, ");
+                    break;
+                case EMaterialType.Dia:
+                    int DiaValue = UnityEngine.Random.Range(200, 1000);
+                    Managers.Game.RewardMaterial(10001, DiaValue);
+                    rewardMessage.Append($"Dia {DiaValue}, ");
+                    break;
+                case EMaterialType.Ticket:
+                    int TicketValue = UnityEngine.Random.Range(1, 3);
+                    Managers.Game.RewardMaterial(10002, TicketValue);
+                    rewardMessage.Append($"Ticket {TicketValue}, ");
+                    break;
+            }
+        }
+        
+        //마지막 쉼표 지우기
+        if (rewardMessage.Length >= 2)
+            rewardMessage.Length -= 2;
+
+        Managers.UI.ShowToast(rewardMessage.ToString());
+    }
+    #endregion
 
 }
 

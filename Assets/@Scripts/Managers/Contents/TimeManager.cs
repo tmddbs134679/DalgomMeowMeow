@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using static Define;
 
 public class TimeManager : MonoBehaviour
 {
@@ -121,11 +123,73 @@ public class TimeManager : MonoBehaviour
         }
     }
 
+    public DateTime TravelStartTime
+    {
+        get
+        {
+            string savedTimeStr = PlayerPrefs.GetString("TravelStartTime", string.Empty);
+            if (!string.IsNullOrEmpty(savedTimeStr))
+            {
+                return DateTime.Parse(savedTimeStr);
+            }
+            else
+            {
+                return DateTime.MinValue; // 기본값: 여행 안 함
+            }
+        }
+        set
+        {
+            PlayerPrefs.SetString("TravelStartTime", value.ToString());
+            PlayerPrefs.Save();
+        }
+    }
+    public TimeSpan TravelDuration
+    {
+        get
+        {
+            string savedDurationStr = PlayerPrefs.GetString("TravelDuration", string.Empty);
+            if (!string.IsNullOrEmpty(savedDurationStr))
+            {
+                return TimeSpan.Parse(savedDurationStr);
+            }
+            else
+            {
+                return TimeSpan.Zero; // 기본값: 여행 시간 없음
+            }
+        }
+        set
+        {
+            PlayerPrefs.SetString("TravelDuration", value.ToString());
+            PlayerPrefs.Save();
+        }
+    }
+    public TimeSpan TravelRemainingTime
+    {
+        get
+        {
+            if (TravelDuration == TimeSpan.Zero)
+                return TimeSpan.Zero; // 여행 중 아님
+
+            TimeSpan elapsed = DateTime.Now - TravelStartTime;
+            TimeSpan remaining = TravelDuration - elapsed;
+
+            // 이미 시간이 다 지났다면 0 반환
+            return remaining > TimeSpan.Zero ? remaining : TimeSpan.Zero;
+        }
+    }
     public bool _claimedThisSession;
 
-    public float TravelTime { get; private set; } // 남은 여행 시간 (초)
+    public bool IsTraveling
+    {
+        get
+        {
+            if (TravelDuration == TimeSpan.Zero)
+                return false;
 
-    public bool IsTraveling => TravelTime > 0f;
+            TimeSpan elapsed = DateTime.Now - TravelStartTime;
+            return elapsed < TravelDuration;
+        }
+    }
 
     public void Init()
     {
@@ -242,62 +306,5 @@ public class TimeManager : MonoBehaviour
         return totalGold;
     }
 
-    #region Travel
 
-    public void StartTravel(Character character)
-    {
-        character.IsTravelMode = true;
-
-        if (Managers.Game.CharacterInMainScene.TryGetValue(character.UniqueId, out AICharacter aiCharacter))
-        {
-            //일단 false;
-            aiCharacter.gameObject.SetActive(false);
-        }
-
-       // StartCoroutine(TravelCountdown(character, travelDuration));
-
-    }
-
-    #endregion
-    private IEnumerator TravelCountdown()
-    {
-        while (TravelTime > 0f)
-        {
-            yield return new WaitForSeconds(1f);
-            TravelTime -= 1f;
-
-   
-            if (TravelTime <= 0f)
-            {
-                TravelTime = 0f;
-            }
-        }
-    }
-    private IEnumerator TravelCountdown(Character character, float duration)
-    {
-        float timer = duration;
-
-        while (timer > 0)
-        {
-            yield return new WaitForSeconds(1f);
-            timer -= 1f;
-
-        
-        }
-
-        OnTravelComplete(character);
-    }
-
-    private void OnTravelComplete(Character character)
-    {
-        character.IsTravelMode = false;
-
-        // 씬에 캐릭터 복귀
-        if (Managers.Game.CharacterInMainScene.TryGetValue(character.UniqueId, out AICharacter aiCharacter))
-        {
-            //스폰해야함 
-        }
-
-        Debug.Log($"{character.Name} 여행 끝! 맵에 복귀");
-    }
 }
