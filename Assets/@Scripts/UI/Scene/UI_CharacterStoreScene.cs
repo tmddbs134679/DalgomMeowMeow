@@ -45,6 +45,7 @@ public class UI_CharacterStoreScene : UI_Scene
     UI_CheckOutPopup _checkOutPopupUI;
     UI_ShopPopup _shopPopupUI;
     UI_EditSettingPopup _editSettingPopupUI;
+    UI_ChangePopup _ChangePopupUI;
     public override bool Init()
     {
         if (base.Init() == false)
@@ -58,14 +59,15 @@ public class UI_CharacterStoreScene : UI_Scene
         _checkOutPopupUI = Managers.UI.ShowPopupUI<UI_CheckOutPopup>();
         _shopPopupUI = Managers.UI.ShowPopupUI<UI_ShopPopup>();
         _editSettingPopupUI = Managers.UI.ShowPopupUI<UI_EditSettingPopup>();
-        //_ChangePopupUI = Managers.UI.ShowPopupUI<UI_ChangePopup>();
+        _ChangePopupUI = Managers.UI.ShowPopupUI<UI_ChangePopup>();
 
         _quickMenuPopupUI.gameObject.SetActive(false);
         _checkOutPopupUI.gameObject.SetActive(false);
         _shopPopupUI.gameObject.SetActive(false);
         _editSettingPopupUI.gameObject.SetActive(false);
+        _ChangePopupUI.gameObject.SetActive(false);
 
- 
+
         GetButton((int)Buttons.QuickButton).gameObject.BindEvent(OnClickQuickButton);
         GetButton((int)Buttons.QuickButton).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
         GetButton((int)Buttons.CheckOutButton).gameObject.BindEvent(OnClickCheckOutButton);
@@ -80,7 +82,7 @@ public class UI_CharacterStoreScene : UI_Scene
         GetButton((int)Buttons.ShopButton).GetOrAddComponent<UI_ButtonAnimation>();
         GetButton((int)Buttons.HomeButton).gameObject.BindEvent(OnClickHomeButton);
 
-        GetButton((int)Buttons.ChangeButton).gameObject.BindEvent();
+        GetButton((int)Buttons.ChangeButton).gameObject.BindEvent(OnClickChangeButton);
 
 
         #region Action 추가
@@ -103,6 +105,11 @@ public class UI_CharacterStoreScene : UI_Scene
     private void OnClickShopButton()
     {
         _shopPopupUI.gameObject.SetActive(true);
+    }
+
+    private void OnClickChangeButton()
+    {
+        _ChangePopupUI.gameObject.SetActive(true);
     }
 
     private void OnClickCheckOutButton()
