@@ -49,12 +49,11 @@ public class AIManager
 
     public void AllRelocateToNearestNavMesh()
     {
-        Debug.Log(AllCharacters);
         foreach (AICharacter character in AllCharacters)
         {
             RelocateToNearestNavMesh(character);
         }
-            
+
     }
 
 }

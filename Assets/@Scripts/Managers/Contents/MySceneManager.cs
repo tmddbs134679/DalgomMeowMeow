@@ -32,7 +32,7 @@ public class MySceneManager
        // Managers.Game.SaveGame();
     }
 
-    string GetSceneName(EScene type)
+    public string GetSceneName(EScene type)
     {
         string name = System.Enum.GetName(typeof(EScene), type);
         return name;
