@@ -13,12 +13,13 @@ public class Managers : MonoBehaviour
     GameManager _game = new GameManager();
     FoodManager _food = new FoodManager();
     TimeManager _time;
+    RoomManager _room = new RoomManager();
 
 
     public static GameManager Game { get { return Instance?._game; } }
     public static FoodManager Food { get { return Instance?._food; } }
-
     public static TimeManager Time { get { return Instance?._time; } }
+    public static RoomManager Room { get { return Instance?._room; } }
 
     //Core
     DataManager _data = new DataManager();

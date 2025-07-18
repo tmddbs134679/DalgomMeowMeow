@@ -83,8 +83,21 @@ public class UI_ChangePopup : UI_Popup
             Managers.UI.ShowToast("메인 씬에 캐릭터는 최대 " + Managers.Game.MaxCountInScene + "명까지 가능합니다.");
             return;
         }
-        
-        Managers.Scene.LoadScene(Define.EScene.CharacterStoreScene, transform);
+        foreach (var ch in Managers.Game.Characters.Where(c => !c.InMainScene))
+        {
+            var pos = new Vector3(Random.Range(-5f, 5f), 0.616f, Random.Range(-5f, 5f));
+            AICharacter ai = Managers.Object.Spawn<AICharacter>(pos, ch.DataId);
+
+            ai.Init();
+            ai.Data = ch;
+            ai.ControllerRegister();
+
+            Managers.Game.CharacterInMainScene[ch.UniqueId] = ai;
+            Managers.AI.ValidateNavMeshPosition(ai);
+        }
+
+        this.gameObject.SetActive(false);
+
     }
 
     public void OnClickSlot(Character character)

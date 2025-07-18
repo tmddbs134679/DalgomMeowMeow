@@ -1,5 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class CharacterStoreScene : BaseScene
@@ -10,17 +13,21 @@ public class CharacterStoreScene : BaseScene
         SceneType = Define.EScene.CharacterStoreScene;
 
         Managers.UI.ShowSceneUI<UI_CharacterStoreScene>();
-        foreach (var ch in Managers.Game.Characters)
+
+        for(int i = 0; i < Managers.Room.UnLockRoom; i++)
         {
-            if (ch.InMainScene) continue;
+            Managers.Room.CreateRoom(Managers.Room.directions[i]);
+        }
 
-                AICharacter ai = Managers.Object.Spawn<AICharacter>(new Vector3(0f, 0.616f, 0f), ch.DataId);
+        foreach (var ch in Managers.Game.Characters.Where(c => !c.InMainScene))
+        {
+            var pos = new Vector3(Random.Range(-5f, 5f), 0.616f, Random.Range(-5f, 5f));
+            var ai = Managers.Object.Spawn<AICharacter>(pos, ch.DataId);
 
-                ai.Init();
-                ai.Data = ch;
-                ai.ControllerRegister();
-            Managers.Game.CharacterInMainScene[ch.UniqueId] = ai;
-            //Managers.Game.SetInitEquipment(Managers.Game.CharacterInMainScene[ch.UniqueId]);
+            ai.Init();
+            ai.Data = ch;
+            ai.ControllerRegister();
+
             Managers.AI.ValidateNavMeshPosition(ai);
         }
 
@@ -29,6 +36,5 @@ public class CharacterStoreScene : BaseScene
 
     public override void Clear()
     {
-        Managers.Game.SaveGame();
     }
 }

@@ -169,6 +169,22 @@ public class ObjectManager
 
         }
 
+        else if (type == typeof(Room))
+        {
+            string prefabLabel = templateID;
+            if (parent != null)
+            {
+                go = Managers.Resource.Instantiate(prefabLabel, parent, false);
+            }
+            else
+            {
+                go = Managers.Resource.Instantiate(prefabLabel, pooling: true);
+                go.transform.position = position;
+            }
+
+
+            return go.GetOrAddComponent<Room>() as T;
+        }
         return null;
     }
 
