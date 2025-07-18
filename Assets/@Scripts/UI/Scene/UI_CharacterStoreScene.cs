@@ -31,6 +31,7 @@ public class UI_CharacterStoreScene : UI_Scene
         EditPosButton,
         HomeButton,
         ChangeButton,
+        UnLockButton,
     }
 
     enum Texts
@@ -84,6 +85,8 @@ public class UI_CharacterStoreScene : UI_Scene
 
         GetButton((int)Buttons.ChangeButton).gameObject.BindEvent(OnClickChangeButton);
 
+        GetButton((int)Buttons.UnLockButton).gameObject.BindEvent(OnClickUnLockButton);
+
 
         #region Action 추가
         Managers.Game.OnResourcesChagned += Refresh;
@@ -110,6 +113,16 @@ public class UI_CharacterStoreScene : UI_Scene
     private void OnClickChangeButton()
     {
         _ChangePopupUI.gameObject.SetActive(true);
+    }
+
+    private void OnClickUnLockButton()
+    {
+        Managers.Room.UnLockRoom++;
+
+        for(int i = 0; i < Managers.Room.UnLockRoom; i++)
+        {
+            Managers.Room.CreateRoom(Managers.Room.directions[i]);
+        }
     }
 
     private void OnClickCheckOutButton()
