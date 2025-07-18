@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 public class SkillLibrary : MonoBehaviour
 {
@@ -9,8 +10,6 @@ public class SkillLibrary : MonoBehaviour
     private Dictionary<int, Coroutine> _runningCoroutines = new();
     private LayerMask _playerCharacter;
 
-    private bool _isHealPlay;
-    private bool _isPunchPlay;
     private void Awake()
     {
         _playerCharacter = LayerMask.GetMask("Player"); // 플레이어 캐릭터 레이어 마스크 설정
@@ -25,6 +24,7 @@ public class SkillLibrary : MonoBehaviour
             { 1007, TeamInvincible },
             { 1008, Rain   },
             { 1009, BearforceSmash },
+            { 1010, Debuff },
         };
     }
 
@@ -267,7 +267,8 @@ public class SkillLibrary : MonoBehaviour
 
     #endregion
 
-    #region NewSkill
+
+    #region BearSmash
     private IEnumerator BearforceSmash(BattleCharacter battleCharacter)
     {
         battleCharacter.UsingSkill = true;
@@ -304,4 +305,39 @@ public class SkillLibrary : MonoBehaviour
     #endregion
 
 
+    #region nextskill
+    private IEnumerator Debuff(BattleCharacter battleCharacter)
+    {
+        if (battleCharacter.TargetLocation != null)
+        {
+            battleCharacter.UsingSkill = true;
+            battleCharacter.SkillCooldown = 20f; // 스킬 쿨타임 설정
+            battleCharacter.Animator.SetTrigger(battleCharacter.SkillTrigger); // 스킬 애니메이션 트리거 활성화
+            StartCoroutine(battleCharacter._effectManager.Debuff(battleCharacter.TargetLocation.position)); //이펙트
+            AtkDown(battleCharacter.TargetLocation.position); // 효과
+            battleCharacter.UsingSkill = false;
+        }
+        yield return null;
+    }
+    public void AtkDown(Vector3 pos)
+    {
+        Collider[] hits = Physics.OverlapSphere(pos, 2.5f, LayerMask.GetMask("Enemy")); // 적 캐릭터 레이어 마스크 사용
+        foreach (var hit in hits)
+        {
+            if (hit.TryGetComponent<BattleCharacter>(out var targetCharacter))
+            {
+                StartCoroutine(Debuffplay(targetCharacter)); // 디버프 플레이 코루틴 실행
+            }
+        }
+    }
+
+    private IEnumerator Debuffplay(BattleCharacter battleCharacter)
+    {
+        battleCharacter.AttackDamage /= 2f; // 공격력 절반 감소
+        yield return new WaitForSeconds(10f);
+        battleCharacter.AttackDamage *= 2f; // 공격력 원래대로 되돌림
+    }
+
+
+    #endregion
 }
