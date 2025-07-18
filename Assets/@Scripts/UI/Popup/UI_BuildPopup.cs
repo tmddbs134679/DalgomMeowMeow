@@ -44,7 +44,6 @@ public class UI_BuildPopup : UI_Popup
         ShopGoldText,
         PotGoldText,
         TravelGoldText,
-        PlayerGoldText,
 
         CookCountText = 100,
         FarmCountText,
@@ -57,6 +56,7 @@ public class UI_BuildPopup : UI_Popup
         ShopCountText,
         PotCountText,
         TravelCountText,
+                PlayerGoldText=200,
 
     }
 
@@ -96,7 +96,7 @@ public class UI_BuildPopup : UI_Popup
         GetButton((int)Buttons.CancelButton).gameObject.BindEvent(CancelBuildUI);
         Managers.Game.OnResourcesChagned += Refresh;
         BuildingPlacer.Instance.OnBuildingCancel += CancelBuildUI;
-        Refresh();
+      //  Refresh();
         Setting();
         return true;
     }
@@ -176,7 +176,7 @@ public class UI_BuildPopup : UI_Popup
     .Cast<int>()
     .Count(value => value < 100);
 
-        for (int i = 0; i < textcount - 1; i++)
+        for (int i = 0; i < textcount-1; i++)
         {
             buildType = ((Define.BuildingType)i).ToString();
 
@@ -204,7 +204,7 @@ public class UI_BuildPopup : UI_Popup
     private int ToIndex(Texts text)
     {
         int value = (int)text;
-        return value >= 100 ? (value - 100) + 12 : value;
+        return value >= 100 ? (value - 100) + 11 : value;
     }
     private void CancelBuildUI()
     {
@@ -217,7 +217,7 @@ public class UI_BuildPopup : UI_Popup
     //골드갱신 함수,이벤트연결됨
     private void Refresh()
     {
-        GetText((int)Texts.PlayerGoldText).text = Managers.Game.Gold.ToString();
+    //    GetText((int)Texts.PlayerGoldText).text = Managers.Game.Gold.ToString();
     }
     #endregion
 
