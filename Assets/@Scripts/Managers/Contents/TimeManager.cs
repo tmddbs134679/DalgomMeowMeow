@@ -99,9 +99,9 @@ public class TimeManager : MonoBehaviour
         get
         {
             TimeSpan timeSpan = DateTime.Now - LastRewardTime;
-            if (timeSpan > TimeSpan.FromHours(24))
+            if (timeSpan > TimeSpan.FromHours(15))
             {
-                return TimeSpan.FromHours(24);
+                return TimeSpan.FromHours(15);
             }
             return timeSpan;
         }
@@ -167,24 +167,31 @@ public class TimeManager : MonoBehaviour
         }
     }
 
-    private void GiveOfflineGold()
+    //True이면 광고 보상
+    public void GiveOfflineGold(bool IsReward = false)
     {
-        TimeSpan offlineTime = DateTime.Now - LastLoginTime;
+        // 이미 보상 받았는지 체크
+        if (LastRewardTime > LastLoginTime)
+        {
+            Managers.UI.ShowToast("이미 보상을 받았습니다!");
+            return;
+        }
 
-        int goldPerminute = 100;
+
+        TimeSpan offlineTime = DateTime.Now - LastRewardTime;
         int totalMinutes = (int)offlineTime.TotalMinutes;
-        int totalGold = totalMinutes * goldPerminute;
+        int totalGold = totalMinutes * Define.GOLD_PER_MINUTE;
 
         if(totalGold > 0)
         {
-            Managers.Game.Gold += totalGold;
+           if(IsReward)
+                Managers.Game.Gold += (totalGold * 2);
+           else
+                Managers.Game.Gold += totalGold;
+
 
             LastRewardTime = DateTime.Now;
-            
-        }
-        else
-        {
-            Managers.UI.ShowToast("이미 보상을 받았습니다!");
+            _lastRewardTime = LastRewardTime;
         }
     }
 
