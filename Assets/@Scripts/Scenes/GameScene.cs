@@ -17,7 +17,13 @@ public class GameScene : BaseScene
         Managers.UI.ShowSceneUI<UI_GameScene>();
         foreach (var ch in Managers.Game.Characters)
         {
-            if (!ch.InMainScene) continue;
+            //여행중이면 Pass
+            if (ch.IsTravelMode)
+                continue;
+
+            if (!ch.InMainScene)
+                continue;
+
                 AICharacter ai = Managers.Object.Spawn<AICharacter>(ch.Pos.ToVector3(), ch.DataId);
                 ai.Init();
                 ai.SetInfo(ch);

@@ -122,6 +122,11 @@ public class TimeManager : MonoBehaviour
     }
 
     public bool _claimedThisSession;
+
+    public float TravelTime { get; private set; } // 남은 여행 시간 (초)
+
+    public bool IsTraveling => TravelTime > 0f;
+
     public void Init()
     {
         CheckOfflineAttendance();
@@ -235,5 +240,64 @@ public class TimeManager : MonoBehaviour
         int totalGold = totalMinutes * Define.GOLD_PER_MINUTE;
 
         return totalGold;
+    }
+
+    #region Travel
+
+    public void StartTravel(Character character)
+    {
+        character.IsTravelMode = true;
+
+        if (Managers.Game.CharacterInMainScene.TryGetValue(character.UniqueId, out AICharacter aiCharacter))
+        {
+            //일단 false;
+            aiCharacter.gameObject.SetActive(false);
+        }
+
+       // StartCoroutine(TravelCountdown(character, travelDuration));
+
+    }
+
+    #endregion
+    private IEnumerator TravelCountdown()
+    {
+        while (TravelTime > 0f)
+        {
+            yield return new WaitForSeconds(1f);
+            TravelTime -= 1f;
+
+   
+            if (TravelTime <= 0f)
+            {
+                TravelTime = 0f;
+            }
+        }
+    }
+    private IEnumerator TravelCountdown(Character character, float duration)
+    {
+        float timer = duration;
+
+        while (timer > 0)
+        {
+            yield return new WaitForSeconds(1f);
+            timer -= 1f;
+
+        
+        }
+
+        OnTravelComplete(character);
+    }
+
+    private void OnTravelComplete(Character character)
+    {
+        character.IsTravelMode = false;
+
+        // 씬에 캐릭터 복귀
+        if (Managers.Game.CharacterInMainScene.TryGetValue(character.UniqueId, out AICharacter aiCharacter))
+        {
+            //스폰해야함 
+        }
+
+        Debug.Log($"{character.Name} 여행 끝! 맵에 복귀");
     }
 }
