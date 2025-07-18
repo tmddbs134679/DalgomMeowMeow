@@ -8,6 +8,7 @@ public class EffectManager : MonoBehaviour
     public GameObject YellowShieldPrefab;
     public GameObject RainAreaPrefab;
     public GameObject PunchEffectPrefab;
+    public GameObject DebuffPrefab;
 
 
     #region PunchEffect
@@ -147,6 +148,19 @@ public class EffectManager : MonoBehaviour
         yield return new WaitForSeconds(5f); // 5초 동안 비 효과 유지
         RainAreaPrefab.SetActive(false); // 비 효과 비활성화
     }
+
+    #endregion
+
+    #region Debuff
+    public IEnumerator Debuff(Vector3 pos)
+    {
+        DebuffPrefab.transform.position = pos;
+        DebuffPrefab.SetActive(true);
+        DebuffPrefab.GetComponent<ParticleSystem>().Play(); // 얼음 효과 재생
+        yield return new WaitForSeconds(4f); // 4초 동안 얼음 효과 유지
+        DebuffPrefab.SetActive(false); // 얼음 효과 비활성화
+    }
+
 
     #endregion
 }

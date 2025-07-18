@@ -32,6 +32,7 @@ public class BattleCharacter : BaseObject
     public GameObject damageTextPrefab; // 피격 시 데미지 텍스트 프리팹
 
     #region Stats
+    public string prefabLabel; // 프리팹 레이블 (어드레서블 키)
     public float AttackDamage; // 공격력
     public string SkillID;
     public float MaxHP;

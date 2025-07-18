@@ -13,6 +13,7 @@ public class UI_BattleScene : UI_Scene
 
     private UI_PausePopup _pausePopup;
     private GameObject _skillScene;
+    private UI_Skill _skill;
     #region Enum
 
     enum Buttons
@@ -24,12 +25,18 @@ public class UI_BattleScene : UI_Scene
     }
     #endregion
 
+    public Sprite cat;      //임시
+    public Sprite bear;     //임시
+
+
+
     private void Awake()
     {
         Init();
-        UI_Skill _skill = Managers.UI.ShowPopupUI<UI_Skill>(); // 스킬 UI 표시
+        _skill = Managers.UI.ShowPopupUI<UI_Skill>(); // 스킬 UI 표시
         _skillScene = _skill.gameObject; // 스킬 UI 게임 오브젝트 저장
         _skillScene.SetActive(false); // 스킬 UI 비활성화
+        
     }
 
     public override bool Init()
@@ -68,6 +75,14 @@ public class UI_BattleScene : UI_Scene
     public void OnClickSkill_1Button()
     {
         if(_playerCharacter_1.IsDead) return;
+
+        //_skill.SetImage( 로드 _playerCharacter_1.SkillID); // 스킬 UI에 플레이어 캐릭터 1의 이미지 설정
+        if (_playerCharacter_1.prefabLabel.Contains("Cat"))  //임시로 라벨체크
+            _skill.CharImg.sprite = cat; // 고양이 스킬 이미지 설정
+        else
+            _skill.CharImg.sprite = bear; // 곰 스킬 이미지 설정
+
+
         StartCoroutine(SkillCutScene()); // 스킬 컷씬 실행
         _playerCharacter_1.ActiveSkill(); // 플레이어 캐릭터 1의 첫 번째 스킬 활성화
         _skill_1.SkillActive(_playerCharacter_1.SkillCooldown, _playerCharacter_1.IsDead); // 스킬 버튼 쿨타임 활성화
@@ -84,7 +99,6 @@ public class UI_BattleScene : UI_Scene
         if (_playerCharacter_3.IsDead) return;
         StartCoroutine(SkillCutScene()); // 스킬 컷씬 실행
         _playerCharacter_3.ActiveSkill(); // 플레이어 캐릭터 3의 세 번째 스킬 활성화
-        StartCoroutine(SkillCutScene()); // 스킬 컷씬 실행
         _skill_3.SkillActive(_playerCharacter_3.SkillCooldown, _playerCharacter_3.IsDead); // 스킬 버튼 쿨타임 활성화
     }
 

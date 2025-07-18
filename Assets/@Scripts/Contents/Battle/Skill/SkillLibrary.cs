@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 public class SkillLibrary : MonoBehaviour
 {
@@ -9,8 +10,6 @@ public class SkillLibrary : MonoBehaviour
     private Dictionary<int, Coroutine> _runningCoroutines = new();
     private LayerMask _playerCharacter;
 
-    private bool _isHealPlay;
-    private bool _isPunchPlay;
     private void Awake()
     {
         _playerCharacter = LayerMask.GetMask("Player"); // 플레이어 캐릭터 레이어 마스크 설정
@@ -23,7 +22,9 @@ public class SkillLibrary : MonoBehaviour
             { 1005, RangedAttack },
             { 1006, Invincible },
             { 1007, TeamInvincible },
-            { 1008, Rain   }
+            { 1008, Rain   },
+            { 1009, BearforceSmash },
+            { 1010, Debuff },
         };
     }
 
@@ -261,6 +262,80 @@ public class SkillLibrary : MonoBehaviour
             }
             yield return new WaitForSeconds(1f);
         }
+    }
+
+
+    #endregion
+
+
+    #region BearSmash
+    private IEnumerator BearforceSmash(BattleCharacter battleCharacter)
+    {
+        battleCharacter.UsingSkill = true;
+        battleCharacter.SkillCooldown = 10f;
+        battleCharacter.Animator.SetTrigger(battleCharacter.SkillTrigger);
+
+        yield return new WaitForSeconds(0.3f); // 타이밍 맞춤
+
+        Vector3 center = battleCharacter.transform.position + battleCharacter.transform.forward * 2f;
+        Collider[] enemies = Physics.OverlapSphere(center, 3f, LayerMask.GetMask("Enemy"));
+        foreach (var hit in enemies)
+        {
+            if (hit.TryGetComponent(out BattleCharacter enemy))
+            {
+                enemy.HpControl(battleCharacter.AttackDamage * 2f);
+
+                Vector3 dir = (enemy.transform.position - battleCharacter.transform.position).normalized;
+
+                enemy.Agent.isStopped = true;
+                enemy.Agent.Move(dir * 3f); // 넉백
+                StartCoroutine(ResumeMovement(enemy, 0.5f));
+                //battleCharacter._effectManager.ShockWave(center); // 시각 이펙트
+            }
+        }
+
+        yield return new WaitForSeconds(0.5f);
+        battleCharacter.UsingSkill = false;
+    }
+    private IEnumerator ResumeMovement(BattleCharacter character, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        character.Agent.isStopped = false;
+    }
+    #endregion
+
+
+    #region nextskill
+    private IEnumerator Debuff(BattleCharacter battleCharacter)
+    {
+        if (battleCharacter.TargetLocation != null)
+        {
+            battleCharacter.UsingSkill = true;
+            battleCharacter.SkillCooldown = 20f; // 스킬 쿨타임 설정
+            battleCharacter.Animator.SetTrigger(battleCharacter.SkillTrigger); // 스킬 애니메이션 트리거 활성화
+            StartCoroutine(battleCharacter._effectManager.Debuff(battleCharacter.TargetLocation.position)); //이펙트
+            AtkDown(battleCharacter.TargetLocation.position); // 효과
+            battleCharacter.UsingSkill = false;
+        }
+        yield return null;
+    }
+    public void AtkDown(Vector3 pos)
+    {
+        Collider[] hits = Physics.OverlapSphere(pos, 2.5f, LayerMask.GetMask("Enemy")); // 적 캐릭터 레이어 마스크 사용
+        foreach (var hit in hits)
+        {
+            if (hit.TryGetComponent<BattleCharacter>(out var targetCharacter))
+            {
+                StartCoroutine(Debuffplay(targetCharacter)); // 디버프 플레이 코루틴 실행
+            }
+        }
+    }
+
+    private IEnumerator Debuffplay(BattleCharacter battleCharacter)
+    {
+        battleCharacter.AttackDamage /= 2f; // 공격력 절반 감소
+        yield return new WaitForSeconds(10f);
+        battleCharacter.AttackDamage *= 2f; // 공격력 원래대로 되돌림
     }
 
 
