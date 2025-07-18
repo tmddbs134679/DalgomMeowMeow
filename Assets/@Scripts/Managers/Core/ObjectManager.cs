@@ -123,6 +123,7 @@ public class ObjectManager
 
             AICharacter ai = go.GetOrAddComponent<AICharacter>();
 
+
             if (isReplica)
             {
                 ai.GetComponent<NavMeshAgent>().enabled = false;

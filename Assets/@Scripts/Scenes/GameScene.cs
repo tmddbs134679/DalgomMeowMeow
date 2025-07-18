@@ -19,8 +19,7 @@ public class GameScene : BaseScene
         foreach (var ch in Managers.Game.Characters)
         {
                         //여행중이면 Pass
-            if (ch.IsTravelMode)
-                continue;
+      
 
             if (!ch.InMainScene)
                 continue;
@@ -37,6 +36,13 @@ public class GameScene : BaseScene
             Managers.Game.SetInitEquipment(Managers.Game.CharacterInMainScene[ch.UniqueId]);
             Managers.AI.ValidateNavMeshPosition(ai);
             Managers.AI.Register(ai);
+
+
+            if (ch.IsTravelMode)
+            {
+                ai.gameObject.SetActive(false);
+            }
+                
         }
 
     }
