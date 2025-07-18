@@ -30,6 +30,8 @@ public class QuestManager : MonoBehaviour
         yield return new WaitUntil(() => Managers.Data.QuestDataDic.Count > 0);
 
         InitQuest();
+        var saveData = SaveQuestSystem.Load();
+        QuestManager.Instance.LoadFromSaveData(saveData);
     }
 
     public void InitQuest()
@@ -143,15 +145,16 @@ public class QuestManager : MonoBehaviour
     {
         foreach (var kvp in Managers.Data.UnlockContentDic)
         {
-            foreach (var condition in kvp.Value.Conditions)
-            {
-                if (condition.Type == Data.UnlockConditionType.Quest &&
-                    condition.QuestId == completedQuestId)
-                {
-                    TryUnlockContent(kvp.Key);
-                    break;
-                }
-            }
+            var data = kvp.Value;
+
+            // 이 콘텐츠에 퀘스트 조건이 1개라도 포함되어 있는 경우만 검사
+            bool hasRelatedQuest = data.Conditions.Exists(c =>
+                c.Type == Data.UnlockConditionType.Quest && c.QuestId == completedQuestId);
+
+            if (!hasRelatedQuest)
+                continue;
+
+            TryUnlockContent(kvp.Key); // 모든 조건 재검사
         }
     }
     
@@ -192,6 +195,7 @@ public class QuestManager : MonoBehaviour
 
             if (allMet)
             {
+                // Debug.Log($"[현재 해금] 콘텐츠: {contentId}");
                 Unlock(contentId); // 해금 실행
             }
         }
@@ -221,6 +225,7 @@ public class QuestManager : MonoBehaviour
 
         if (allMet)
         {
+            // Debug.Log($"[해금 조건 달성] 콘텐츠: {contentId}");
             Unlock(contentId);
         }
     }
