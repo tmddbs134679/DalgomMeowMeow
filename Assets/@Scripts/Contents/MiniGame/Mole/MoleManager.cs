@@ -13,6 +13,8 @@ public class MoleManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _scoreText;
     [SerializeField] private float gameTime = 30f;  // 총 게임 시간
     [SerializeField] private TextMeshProUGUI _timeText;
+    [SerializeField] private GameObject _textUI;
+    [SerializeField] private GameObject _scoreUI;
 
     public float MoleDuration = 1.0f; // 몰이 올라와 있는 시간 (초 단위)
 
@@ -40,7 +42,7 @@ public class MoleManager : MonoBehaviour
 
         for (int i = 0; i < buttons.Length; i++)
         {
-            int idx = i; // 클로저 캡처 방지
+            int idx = i; 
             buttons[i].onClick.AddListener(() => OnClickMole(idx));
         }
     }
@@ -159,8 +161,9 @@ public class MoleManager : MonoBehaviour
     {
         isGameStarted = false; // 게임 루프 멈추는 기준
         StopAllCoroutines(); // 모든 코루틴 중지
+        _textUI.SetActive(false); // 게임 오버 UI 활성화
 
-
-        //점수창, 나가기버튼
+        _scoreUI.GetComponentInChildren<TextMeshProUGUI>().text = $"Score\n{_score}";
+        _scoreUI.SetActive(true); // 점수 UI 활성화
     }
 }

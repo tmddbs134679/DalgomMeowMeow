@@ -11,16 +11,24 @@ public class UI_Whack_a_mole : UI_Popup
     enum GameObjects
     {
         Mole_Manager,
+        ScoreUI,
+        TextUI,
     }
-
-
+    
     enum Buttons
     {
-        Start
+        Start,
+        CloseBtn,
     }
 
     public Button Startbtn;
+    public Button Closebtn;
 
+
+    private void Awake()
+    {
+        Init();
+    }
     public override bool Init()
     {
         if (!base.Init()) return false;
@@ -31,7 +39,13 @@ public class UI_Whack_a_mole : UI_Popup
         Startbtn = GetButton((int)Buttons.Start);
         Startbtn.gameObject.BindEvent(StartGame);
 
+
+        Closebtn = GetButton((int)Buttons.CloseBtn);
+        Closebtn.gameObject.BindEvent(PopupClose);
+
         Startbtn.gameObject.SetActive(true);
+        GetObject((int)GameObjects.ScoreUI).SetActive(false);
+        GetObject((int)GameObjects.TextUI).SetActive(true);
 
         return true;
     }
@@ -46,7 +60,7 @@ public class UI_Whack_a_mole : UI_Popup
     
     public void PopupClose()
     {
-        Managers.Debug.Log($"Closed", Define.EDebugType.None);
+        Debug.Log("PopupClose");
         Managers.UI.ClosePopupUI(this);
     }
 }
