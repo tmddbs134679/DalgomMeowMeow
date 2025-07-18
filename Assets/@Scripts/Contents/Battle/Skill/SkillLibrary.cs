@@ -22,7 +22,7 @@ public class SkillLibrary : MonoBehaviour
             { 1005, RangedAttack },
             { 1006, Invincible },
             { 1007, TeamInvincible },
-            { 1008, Rain   },
+            { 1008, Rain },
             { 1009, BearforceSmash },
             { 1010, Debuff },
         };

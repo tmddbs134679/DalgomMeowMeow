@@ -32,7 +32,7 @@ public class BattleCharacter : BaseObject
     public GameObject damageTextPrefab; // 피격 시 데미지 텍스트 프리팹
 
     #region Stats
-    public string prefabLabel; // 프리팹 레이블 (어드레서블 키)
+    public string CharID;
     public float AttackDamage; // 공격력
     public string SkillID;
     public float MaxHP;
@@ -117,10 +117,6 @@ public class BattleCharacter : BaseObject
         _originalPosition = transform.localPosition;
         Agent.speed = MoveSpeed; // NavMeshAgent의 이동 속도 설정
         Agent.stoppingDistance = AttackRange; // 공격 범위 내에서 멈추도록 설정
-
-        
-            
-        
     }
 
     void Update()
@@ -354,8 +350,8 @@ public class BattleCharacter : BaseObject
 
     public void PivotSet()
     {
-        LeftHandPivot = transform.Find("Hand_l_equipment");
-        RightHandPivot = transform.Find("Hand_R_equipment");
-        HeadPivot = transform.Find("Head_equipment");
+        LeftHandPivot = CharacterObject.transform.Find("root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/Hand_l_equipment");
+        RightHandPivot = CharacterObject.transform.Find("root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/Hand_r_equipment");
+        HeadPivot = CharacterObject.transform.Find("root/pelvis/spine_01/spine_02/spine_03/neck_01/head/Head_equipment");
     }
 }
