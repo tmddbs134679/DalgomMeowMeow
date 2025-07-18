@@ -29,6 +29,7 @@ namespace Data
         public string IconLabel;
         public string SkillID;
         public float WalkSpeed;
+        public string SkillScene;
         public bool InMain;
 
     }

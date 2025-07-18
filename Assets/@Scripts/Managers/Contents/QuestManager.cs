@@ -181,10 +181,14 @@ public class QuestManager : MonoBehaviour
                 switch (condition.Type)
                 {
                     case Data.UnlockConditionType.Quest:
+                        bool questCompleted = IsQuestCompleted(condition.QuestId);
+                        Debug.Log($"[해금검사:{contentId}] 퀘스트 {condition.QuestId} 완료 여부: {questCompleted}");
                         if (!IsQuestCompleted(condition.QuestId))
                             allMet = false;
                         break;
                     case Data.UnlockConditionType.Gold:
+                        bool goldEnough = Managers.Game.Gold >= condition.RequiredGold;
+                        Debug.Log($"[해금검사:{contentId}] 골드 {condition.RequiredGold} 필요, 현재 {Managers.Game.Gold} → 충족: {goldEnough}");
                         if (Managers.Game.Gold < condition.RequiredGold)
                             allMet = false;
                         break;
@@ -195,7 +199,7 @@ public class QuestManager : MonoBehaviour
 
             if (allMet)
             {
-                // Debug.Log($"[현재 해금] 콘텐츠: {contentId}");
+                Debug.Log($"[해금 검사] 콘텐츠: {contentId}");
                 Unlock(contentId); // 해금 실행
             }
         }

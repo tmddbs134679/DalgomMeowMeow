@@ -24,8 +24,6 @@ public class PlayerCharacter : BattleCharacter
         _originalPosition = transform.localPosition;
         string numberPart = SkillID.Replace("K","").Replace(".sprite",""); // 시작하면 숫자 파싱
         Skillnum = int.Parse(numberPart);
-
-        
     }
 
     public void SetOutline()
