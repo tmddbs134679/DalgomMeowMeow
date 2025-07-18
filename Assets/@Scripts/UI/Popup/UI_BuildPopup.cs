@@ -113,20 +113,21 @@ public class UI_BuildPopup : UI_Popup
 
     #region Build
 
-private void ShowUIFarmPopup()
-{
-    // 이미 열려 있다면 닫기
-    if (_farmPopup != null)
+    private void ShowUIFarmPopup()
     {
-        Managers.UI.ClosePopupUI(_farmPopup); // 닫기
-        _farmPopup = null; // 참조 제거
-        return;
-    }
+        // 이미 열려 있다면 닫기
+        if (_farmPopup != null)
+        {
+            Managers.UI.ClosePopupUI(_farmPopup); // 닫기
+            _farmPopup = null; // 참조 제거
+            return;
+        }
 
-    // 열려 있지 않으면 열기
-   // BuildingPlacer.Instance.OnBuildingCancel -= CancelBuildUI;
-    _farmPopup = Managers.UI.ShowPopupUI<UI_FarmPopup>();
-    _farmPopup.GetPopup(GetObject((int)GameObjects.BuildScrollObject));
+        // 열려 있지 않으면 열기
+        BuildingPlacer.Instance.OnBuildingCancel -= CancelBuildUI;
+        _farmPopup = Managers.UI.ShowPopupUI<UI_FarmPopup>();
+        _farmPopup.GetPopupObject(GetObject((int)GameObjects.BuildScrollObject));
+        _farmPopup.GetPopup(this);
 }
 
     //설치 건물 선택
@@ -207,6 +208,7 @@ private void ShowUIFarmPopup()
     }
     private void CancelBuildUI()
     {
+        Debug.Log("buildpopup닫기");
         Managers.UI.ClosePopupUI(this);
         (Managers.UI.SceneUI as UI_GameScene).gameObject.SetActive(true);
     }

@@ -36,7 +36,7 @@ public class UI_FarmPopup : UI_Popup
     enum Images { }
 
     private UI_BuildPopup _uI_BuildPopup;
-    private GameObject buildScrollObject;//이전 ui에서 받아온거
+    private GameObject _buildScrollObject;//이전 ui에서 받아온거
     public override bool Init()
     {
         if (!base.Init()) return false;
@@ -52,7 +52,7 @@ public class UI_FarmPopup : UI_Popup
         GetButton((int)Buttons.OnionButton).gameObject.BindEvent(() => SelectBuildingType(Define.BuildingType.OnionFarm));
         GetButton((int)Buttons.PotatoButton).gameObject.BindEvent(() => SelectBuildingType(Define.BuildingType.PotatoFarm));
         GetButton((int)Buttons.PumpkinButton).gameObject.BindEvent(() => SelectBuildingType(Define.BuildingType.PumpkinFarm));
-       //   GetButton((int)Buttons.CloseBackGroundButton).gameObject.BindEvent(OnClickBackgroundButton);
+        //   GetButton((int)Buttons.CloseBackGroundButton).gameObject.BindEvent(OnClickBackgroundButton);
         BuildingPlacer.Instance.OnBuildingCancel += CancelBuildUI;
         Setting();
         return true;
@@ -62,15 +62,10 @@ public class UI_FarmPopup : UI_Popup
         BuildingPlacer.Instance.OnBuildingCancel -= CancelBuildUI;
     }
 
-    private void OnClickBackgroundButton()
-    {
-
-    }
-
     //설치 건물 선택
     private void SelectBuildingType(Define.BuildingType type)
     {
-                buildScrollObject.SetActive(false);
+        _buildScrollObject.SetActive(false);
         // var button = GetButton(type);
         // if (button != null && !button.interactable)
         //     return;
@@ -137,13 +132,19 @@ public class UI_FarmPopup : UI_Popup
 
     private void CancelBuildUI()
     {
+        Debug.Log("farmpopup닫기");
         Managers.UI.ClosePopupUI(this); //스택이기 때문에 닫는 순서 중요함
-                Managers.UI.ClosePopupUI(_uI_BuildPopup);
+        Managers.UI.ClosePopupUI(_uI_BuildPopup);
         (Managers.UI.SceneUI as UI_GameScene).gameObject.SetActive(true);
     }
 
-    public void GetPopup(GameObject gameObject)
+    public void GetPopupObject(GameObject BuildScrollObject)
     {
-        buildScrollObject = gameObject;
+        _buildScrollObject = BuildScrollObject;
+    }
+    
+        public void GetPopup(UI_BuildPopup uI_BuildPopup)
+    {
+        _uI_BuildPopup = uI_BuildPopup;
     }
 }
