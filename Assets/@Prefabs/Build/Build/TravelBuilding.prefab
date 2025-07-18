@@ -365,6 +365,7 @@ GameObject:
   - component: {fileID: 945032672255512106}
   - component: {fileID: 2851948592429297827}
   - component: {fileID: -4140315742466721826}
+  - component: {fileID: 3103944771744021804}
   m_Layer: 7
   m_Name: TravelBuilding
   m_TagString: Untagged
@@ -434,6 +435,22 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3103944771744021804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4833702243874293581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fecb332b1a89c54ea0e5ecf1f97187c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BuildingData: {fileID: 11400000, guid: a992e19f82006e848b05c2fe5adc1258, type: 2}
+  CurrentState: 0
+  assignedAnimal: {fileID: 0}
+  _buildMap: {fileID: 0}
 --- !u!1 &4845235188945962666
 GameObject:
   m_ObjectHideFlags: 0
