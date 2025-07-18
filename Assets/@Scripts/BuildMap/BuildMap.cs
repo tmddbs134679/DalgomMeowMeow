@@ -4,6 +4,7 @@ using UnityEngine;
 using Unity.AI.Navigation;
 using System.Linq;
 using System;
+using UnityEngine.SceneManagement;
 /// <summary>
 /// 저장되어있는 데이터맵 가져와서 그리드맵 생성및 타일에 정보전달
 /// 현재까지는 remove,Collider ON,Off를 하기 위한 장치
@@ -24,6 +25,8 @@ public class BuildMap : MonoBehaviour
     }
     void Start()
     {
+        if (Managers.Scene.GetSceneName(Define.EScene.CharacterStoreScene) == SceneManager.GetActiveScene().name) return;
+        
         foreach (BuildData data in _arrayBuildPos.baseBuilding)
         {
             _buildDataMap[data.UniqueId] = data;
