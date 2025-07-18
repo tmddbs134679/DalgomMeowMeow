@@ -99,9 +99,9 @@ public class TimeManager : MonoBehaviour
         get
         {
             TimeSpan timeSpan = DateTime.Now - LastRewardTime;
-            if (timeSpan > TimeSpan.FromHours(24))
+            if (timeSpan > TimeSpan.FromHours(15))
             {
-                return TimeSpan.FromHours(24);
+                return TimeSpan.FromHours(15);
             }
             return timeSpan;
         }
