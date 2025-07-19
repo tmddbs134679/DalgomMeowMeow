@@ -15,7 +15,8 @@ public class BattleCharacter : BaseObject
     [SerializeField] protected SkinnedMeshRenderer[] _characterRenderer; // 캐릭터 렌더러
     [SerializeField] protected Vector3 _originalPosition; // 원래 위치 저장
     public EffectManager _effectManager; // 이펙트 매니저
-    
+    public CloneActivity _clone; // 클론 액티비티 (적용 여부는 캐릭터에 따라 다름)
+
 
 
     public NavMeshAgent Agent { get; private set; } // NavMeshAgent 컴포넌트
@@ -203,11 +204,13 @@ public class BattleCharacter : BaseObject
         if (TargetLocation != null && TargetLocation.TryGetComponent<BattleCharacter>(out _targetCharacter))
         {
             _targetCharacter.OnCharacterDied += HandleTargetDeath;
+        }
 
+        if (TargetLocation != null && TargetLocation.TryGetComponent<CloneActivity>(out _clone))
+        {
+            return;
         }
     }
-
-
 
 
     private void HandleTargetDeath(BattleCharacter deadChar)
