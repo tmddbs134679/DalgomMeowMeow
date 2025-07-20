@@ -59,7 +59,7 @@ public class DayNightCycle : MonoBehaviour
 
         // 조도 및 색상 변화 적용
         directionalLight.color = lightColorGradient.Evaluate(normalizedTime);
-        directionalLight.intensity = intensityCurve.Evaluate(normalizedTime);
+directionalLight.intensity = Mathf.Max(intensityCurve.Evaluate(normalizedTime), 0.001f);
     }
 
     void CheckDayNightCycle()
