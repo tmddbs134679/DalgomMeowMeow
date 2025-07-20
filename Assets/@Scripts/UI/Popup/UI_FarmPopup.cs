@@ -27,7 +27,7 @@ public class UI_FarmPopup : UI_Popup
         PotatoGoldText,
         OnionGoldText,
 
-        CabbageCountText = 100,
+        CabbageCountText,
         CarrotCountText,
         PumpkinCountText,
         PotatoCountText,
@@ -37,9 +37,14 @@ public class UI_FarmPopup : UI_Popup
 
     private UI_BuildPopup _uI_BuildPopup;
     private GameObject _buildScrollObject;//이전 ui에서 받아온거
+
+    Dictionary<Texts, (Define.BuildingType buildingType, Texts countText)> goldTextToBuildingMap;
     public override bool Init()
     {
         if (!base.Init()) return false;
+
+        SetDictionary();
+
 
         BindObject(typeof(GameObjects));
 
@@ -62,6 +67,20 @@ public class UI_FarmPopup : UI_Popup
         BuildingPlacer.Instance.OnBuildingCancel -= CancelBuildUI;
     }
 
+/// <summary>
+/// Enum Texts와 BuildingType 서로 매칭 연결
+/// </summary>
+    private void SetDictionary()
+    {
+        goldTextToBuildingMap = new()
+{
+    { Texts.CabbageGoldText, (Define.BuildingType.CabbageFarm, Texts.CabbageCountText) },
+    { Texts.CarrotGoldText,  (Define.BuildingType.CarrotFarm,  Texts.CarrotCountText) },
+    { Texts.OnionGoldText,   (Define.BuildingType.OnionFarm,   Texts.OnionCountText) },
+    { Texts.PotatoGoldText,  (Define.BuildingType.PotatoFarm,  Texts.PotatoCountText) },
+    { Texts.PumpkinGoldText, (Define.BuildingType.PumpkinFarm, Texts.PumpkinCountText) },
+};
+    }
     //설치 건물 선택
     private void SelectBuildingType(Define.BuildingType type)
     {
@@ -81,53 +100,43 @@ public class UI_FarmPopup : UI_Popup
     //건물 갯수 제한 코드 구간
     private void LimitBuildCount(Define.BuildingType type)
     {
-        if (type == Define.BuildingType.SlotMachine)
-        {
-            if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(Define.BuildingType.SlotMachine.ToString(), out int count) && count >= 1)
-                BuildingPlacer.Instance.islimitBuildCount = false;
-            return;
-        }
-        if (type == Define.BuildingType.Shop)
-        {
-            if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(Define.BuildingType.Shop.ToString(), out int count) && count >= 1)
-                BuildingPlacer.Instance.islimitBuildCount = false;
-            return;
-        }
+
         BuildingPlacer.Instance.islimitBuildCount = true;
     }
 
-    //buildUI창 건설비용과 건물갯수 갱신
-    private void Setting()
+    /// <summary>
+    /// buildUI창 건설비용과 건물갯수 갱신
+    /// goldTextEnum=Enum.Texts(GoldText)  buildingType=Enum.BuildingType  countText=Enum.Texts(CountText)
+    /// </summary>
+  private void Setting()
     {
         foreach (var a in BuildingPlacer.Instance.buildMap.valueCounts)
         {
-            Debug.Log($"#############{a.Key} : {a.Value}개");
+            Managers.Debug.Log($"#############{a.Key} : {a.Value}개",Define.EDebugType.Building);
         }
-        string buildType;
-        int textcount = Enum.GetValues(typeof(Texts))
-    .Cast<int>()
-    .Count(value => value < 100);
 
-        for (int i = 0; i < textcount - 1; i++)
+        Texts[] goldTexts = ((Texts[])Enum.GetValues(typeof(Texts))) //TextsEnum 의 Goldtext부분을 배열로 저장(크기 저장)
+            .Where(t => t.ToString().EndsWith("GoldText"))
+            .ToArray();
+        for (int i = 0; i < goldTexts.Length; i++)
         {
-            buildType = ((Define.BuildingType)i).ToString();
-            if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(buildType, out int count))
+            var goldTextEnum = goldTexts[i];
+            var buildingType = goldTextToBuildingMap[goldTextEnum].buildingType;
+            var countText = goldTextToBuildingMap[goldTextEnum].countText;
+            var buyMoney = BuildingPlacer.Instance.buildingSO[(int)buildingType].BuyMoney;
+
+
+            if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(buildingType.ToString(), out int output))
             {
-                GetText(i).text = (BuildingPlacer.Instance.buildingSO[i].BuyMoney * Mathf.Pow(1.2f, count)).ToString();
-                GetText(ToIndex((Texts)(100 + i))).text = count.ToString();
+                GetText((int)goldTextEnum).text = ((int)(buyMoney * Mathf.Pow(1.2f, output))).ToString();
+                GetText((int)countText).text = output.ToString();
             }
             else
             {
-                GetText(i).text = BuildingPlacer.Instance.buildingSO[i].BuyMoney.ToString();
-                GetText(ToIndex((Texts)(100 + i))).text = "0";
+                GetText((int)goldTextEnum).text = buyMoney.ToString();
+                GetText((int)countText).text = "0";
             }
         }
-    }
-    //이거좀 불안정함
-    private int ToIndex(Texts text)
-    {
-        int value = (int)text;
-        return value >= 100 ? (value - 100) + 5 : value;
     }
 
     private void CancelBuildUI()
