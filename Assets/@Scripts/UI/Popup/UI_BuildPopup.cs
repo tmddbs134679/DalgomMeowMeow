@@ -81,18 +81,18 @@ public class UI_BuildPopup : UI_Popup
         BindButton(typeof(Buttons));
         BindText(typeof(Texts));
 
-        GetButton((int)Buttons.CookButton).gameObject.BindEvent(() => SelectBuildingType(Define.BuildingType.Cooking));
+        GetButton((int)Buttons.CookButton).gameObject.BindEvent(() => SelectBuildingType(Define.EBuildingType.Cooking));
         GetButton((int)Buttons.FarmButton).gameObject.BindEvent(ShowUIFarmPopup);
-        GetButton((int)Buttons.PlayGroundButton).gameObject.BindEvent(() => SelectBuildingType(Define.BuildingType.Playing));
-        GetButton((int)Buttons.RestButton).gameObject.BindEvent(() => SelectBuildingType(Define.BuildingType.Resting));
-        GetButton((int)Buttons.FishingButton).gameObject.BindEvent(() => SelectBuildingType(Define.BuildingType.Fishing));
-        GetButton((int)Buttons.StorageButton).gameObject.BindEvent(() => SelectBuildingType(Define.BuildingType.Storage));
-        GetButton((int)Buttons.SlotMachineButton).gameObject.BindEvent(() => SelectBuildingType(Define.BuildingType.SlotMachine));
-        GetButton((int)Buttons.RoadButton).gameObject.BindEvent(() => SelectBuildingType(Define.BuildingType.Road));
-        GetButton((int)Buttons.ShopButton).gameObject.BindEvent(() => SelectBuildingType(Define.BuildingType.Shop));
-        GetButton((int)Buttons.UnlockAreaButton).gameObject.BindEvent(() => SelectBuildingType(Define.BuildingType.UnLockStage));
-        GetButton((int)Buttons.PotButton).gameObject.BindEvent(() => SelectBuildingType(Define.BuildingType.Pot));
-        GetButton((int)Buttons.TravelButton).gameObject.BindEvent(() => SelectBuildingType(Define.BuildingType.Travel));
+        GetButton((int)Buttons.PlayGroundButton).gameObject.BindEvent(() => SelectBuildingType(Define.EBuildingType.Playing));
+        GetButton((int)Buttons.RestButton).gameObject.BindEvent(() => SelectBuildingType(Define.EBuildingType.Resting));
+        GetButton((int)Buttons.FishingButton).gameObject.BindEvent(() => SelectBuildingType(Define.EBuildingType.Fishing));
+        GetButton((int)Buttons.StorageButton).gameObject.BindEvent(() => SelectBuildingType(Define.EBuildingType.Storage));
+        GetButton((int)Buttons.SlotMachineButton).gameObject.BindEvent(() => SelectBuildingType(Define.EBuildingType.SlotMachine));
+        GetButton((int)Buttons.RoadButton).gameObject.BindEvent(() => SelectBuildingType(Define.EBuildingType.Road));
+        GetButton((int)Buttons.ShopButton).gameObject.BindEvent(() => SelectBuildingType(Define.EBuildingType.Shop));
+        GetButton((int)Buttons.UnlockAreaButton).gameObject.BindEvent(() => SelectBuildingType(Define.EBuildingType.UnLockStage));
+        GetButton((int)Buttons.PotButton).gameObject.BindEvent(() => SelectBuildingType(Define.EBuildingType.Pot));
+        GetButton((int)Buttons.TravelButton).gameObject.BindEvent(() => SelectBuildingType(Define.EBuildingType.Travel));
         GetButton((int)Buttons.CancelButton).gameObject.BindEvent(CancelBuildUI);
         Managers.Game.OnResourcesChagned += Refresh;
         BuildingPlacer.Instance.OnBuildingCancel += CancelBuildUI;
@@ -131,7 +131,7 @@ public class UI_BuildPopup : UI_Popup
 }
 
     //설치 건물 선택
-    private void SelectBuildingType(Define.BuildingType type)
+    private void SelectBuildingType(Define.EBuildingType type)
     {
         // var button = GetButton(type);
         // if (button != null && !button.interactable)
@@ -147,19 +147,19 @@ public class UI_BuildPopup : UI_Popup
         // popup.islimitBuildCount = islimitBuildCount;
     }
     //건물 갯수 제한 코드 구간
-    private void LimitBuildCount(Define.BuildingType type)
+    private void LimitBuildCount(Define.EBuildingType type)
     {
-        if (type == Define.BuildingType.SlotMachine)
+        if (type == Define.EBuildingType.SlotMachine)
         {
-            if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(Define.BuildingType.SlotMachine.ToString(), out int count) && count >= 1)
+            if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(Define.EBuildingType.SlotMachine.ToString(), out int count) && count >= 1)
             {
                 BuildingPlacer.Instance.islimitBuildCount = false;
                 return;
             }
         }
-        if (type == Define.BuildingType.Shop)
+        if (type == Define.EBuildingType.Shop)
         {
-            if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(Define.BuildingType.Shop.ToString(), out int count) && count >= 1)
+            if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(Define.EBuildingType.Shop.ToString(), out int count) && count >= 1)
             {
                 BuildingPlacer.Instance.islimitBuildCount = false;
                 return;
@@ -182,7 +182,7 @@ public class UI_BuildPopup : UI_Popup
 
         for (int i = 0; i < textcount-1; i++)
         {
-            buildType = ((Define.BuildingType)i).ToString();
+            buildType = ((Define.EBuildingType)i).ToString();
 
             if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(buildType, out int count))
             {

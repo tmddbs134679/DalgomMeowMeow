@@ -33,6 +33,12 @@ public class Define
     public static readonly int GOLD_PER_MINUTE = 100;
 
     public static readonly int TRAVEL_TIME = 5;
+
+    public static readonly string COOK_TEXT = "휘적";
+    public static readonly string FARM_TEXT = "툭";
+    public static readonly string PLAYING_TEXT = "띠용";
+    public static readonly string REST_TEXT = "z..";
+
     public enum EUIEvent
     {
         None,
@@ -101,21 +107,21 @@ public class Define
         CharacterStoreScene,
     }
 
-    public enum EBuildingType
-    {
-        NONE,
-        COOK,
-        FARM,
-        FISHING,
-        PLAYGROUND,
-        REST,
-        SHOP,
-        STORAGE,
-        ROAD
-    }
+    //public enum EBuildingType
+    //{
+    //    NONE,
+    //    COOK,
+    //    FARM,
+    //    FISHING,
+    //    PLAYGROUND,
+    //    REST,
+    //    SHOP,
+    //    STORAGE,
+    //    ROAD
+    //}
 
     //BuildSo의 넘버링과 순서가 동일해야함
-    public enum BuildingType
+    public enum EBuildingType
     {
         Cooking,
         CabbageFarm,

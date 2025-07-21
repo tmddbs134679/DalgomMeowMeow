@@ -13,6 +13,20 @@ public class FarmBuilding : BuildingBase
     public Define.ECropType CropType;
     public Define.ECropType GetCropType() => CropType;
 
+    private void Awake()
+    {
+        _textAnim = Managers.UI.ShowPopupUI<UI_TextAnimation>();
+
+    }
+    protected override void Start()
+    {
+        base.Start();
+
+        _textAnim.gameObject.SetActive(false);
+        _textAnim.SetInfo(Define.EBuildingType.CabbageFarm, transform.position);
+
+    }
+
     public override bool Init()
     {
         base.Init();
@@ -40,6 +54,21 @@ public class FarmBuilding : BuildingBase
         QuestManager.Instance.UpdateQuestProgress(Define.EQuestConditionType.Collect, Define.ETargetType.Farm);
 
     }
+
+    public override void ConnectToAnimal(AICharacter animal)
+    {
+        base.ConnectToAnimal(animal);
+
+        _textAnim.gameObject.SetActive(true);
+    }
+
+    public override void DisconnectAnimal()
+    {
+        base.DisconnectAnimal();
+
+        _textAnim.gameObject.SetActive(false);
+    }
+
     public void Collect()
     {
         if (StoredCount <= 0) return;

@@ -7,6 +7,34 @@ public class RestBuilding : BuildingBase
     [SerializeField] private Renderer buildingRenderer;
 
     public GameObject collectIcon;
+
+    private void Awake()
+    {
+        _textAnim = Managers.UI.ShowPopupUI<UI_TextAnimation>();
+
+    }
+    protected override void Start()
+    {
+        base.Start();
+
+        _textAnim.gameObject.SetActive(false);
+        _textAnim.SetInfo(Define.EBuildingType.Resting, transform.position);
+    }
+    public override void ConnectToAnimal(AICharacter animal)
+    {
+        base.ConnectToAnimal(animal);
+
+        _textAnim.gameObject.SetActive(true);
+    }
+
+    public override void DisconnectAnimal()
+    {
+        base.DisconnectAnimal();
+
+        _textAnim.gameObject.SetActive(false);
+    }
+
+
     public override bool Init()
     {
         base.Init();

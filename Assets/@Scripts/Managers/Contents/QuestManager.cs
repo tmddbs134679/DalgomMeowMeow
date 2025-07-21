@@ -264,15 +264,15 @@ public class QuestManager : MonoBehaviour
         UpdateQuestProgress(Define.EQuestConditionType.Build, targetType);
     }
     
-    private Define.ETargetType ConvertToTargetType(Define.BuildingType type)
+    private Define.ETargetType ConvertToTargetType(Define.EBuildingType type)
     {
         return type switch
         {
-            Define.BuildingType.OnionFarm => Define.ETargetType.Onion,
-            Define.BuildingType.PotatoFarm => Define.ETargetType.Potato,
-            Define.BuildingType.CabbageFarm => Define.ETargetType.Cabbage,
-            Define.BuildingType.CarrotFarm => Define.ETargetType.Carrot,
-            Define.BuildingType.PumpkinFarm => Define.ETargetType.Pumpkin,
+            Define.EBuildingType.OnionFarm => Define.ETargetType.Onion,
+            Define.EBuildingType.PotatoFarm => Define.ETargetType.Potato,
+            Define.EBuildingType.CabbageFarm => Define.ETargetType.Cabbage,
+            Define.EBuildingType.CarrotFarm => Define.ETargetType.Carrot,
+            Define.EBuildingType.PumpkinFarm => Define.ETargetType.Pumpkin,
             _ => Define.ETargetType.None
         };
     }

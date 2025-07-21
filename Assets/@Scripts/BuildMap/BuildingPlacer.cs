@@ -88,7 +88,7 @@ public class BuildingPlacer : MonoBehaviour
     /// <summary>
     /// 건물 종류 선택 시 호출
     /// </summary>
-    public void SelectBuildingType(Define.BuildingType type)
+    public void SelectBuildingType(Define.EBuildingType type)
     {
 
         isAI = true;
@@ -176,7 +176,7 @@ public class BuildingPlacer : MonoBehaviour
 
         if (_isGold && _isBuild)
         {
-            string buildType = ((Define.BuildingType)tempTypeNum).ToString();
+            string buildType = ((Define.EBuildingType)tempTypeNum).ToString();
 
             if (buildType == "Road") // 도로일 땐 else 처리,임시땜빵,나중에는 모든게 엑셀 데이터를 받아와서 계산해야함
             {
