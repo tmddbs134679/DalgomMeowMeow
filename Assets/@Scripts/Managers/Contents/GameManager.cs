@@ -294,6 +294,9 @@ public class GameManager
 
     public void UpdateCharactersFromWorld()
     {
+        if (!(Managers.Scene.CurrentScene is GameScene))
+            return;
+
         foreach (var pair in _characters)
         {
             Character character = pair.Value;

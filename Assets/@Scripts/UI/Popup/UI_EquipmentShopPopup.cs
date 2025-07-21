@@ -26,6 +26,7 @@ public class UI_EquipmentShopPopup : UI_Popup
     #endregion
 
 
+    UI_GachaTablePopup _gachaTablePopup;
 
     private void OnEnable()
     {
@@ -45,9 +46,18 @@ public class UI_EquipmentShopPopup : UI_Popup
         if (base.Init() == false)
             return false;
 
+        _gachaTablePopup = Managers.UI.ShowPopupUI<UI_GachaTablePopup>();
+
+
+        _gachaTablePopup.gameObject.SetActive(false);
+
         BindObject(typeof(GameObjects));
         BindButton(typeof(Buttons));
         BindText(typeof(Texts));
+
+        GetButton((int)Buttons.ProbabilityButton).gameObject.BindEvent(OnClickGachaTableButon);
+        GetButton((int)Buttons.ProbabilityButton).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
+
 
 
         GetButton((int)Buttons.OneTimeGachaButton).gameObject.BindEvent(OnClickOneTimeGachaButon);
@@ -56,9 +66,15 @@ public class UI_EquipmentShopPopup : UI_Popup
         GetButton((int)Buttons.FiveTimeGachaButton).gameObject.BindEvent(OnClickFiveTimeGachaButon);
         GetButton((int)Buttons.FiveTimeGachaButton).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
 
+        _gachaTablePopup.SetInfo(Define.EGachaType.Equipment);
+
         return true;
     }
 
+    private void OnClickGachaTableButon()
+    {
+        _gachaTablePopup.gameObject.SetActive(true);
+    }
 
     private void OnClickOneTimeGachaButon()
     {

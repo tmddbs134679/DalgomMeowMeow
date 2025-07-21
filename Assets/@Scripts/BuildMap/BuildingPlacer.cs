@@ -203,18 +203,21 @@ public class BuildingPlacer : MonoBehaviour
         CanPlaceBuilding();
         if (_isBuild)
         {
+            Vector2Int pos = new Vector2Int((int)_PreviewOBJ.transform.position.x, (int)_PreviewOBJ.transform.position.z);
+            if (_roadPosArray.ContainsKey(pos)) //PreviewOBJ 동일 위치 중복 생성 방지
+            {
+                return;
+            }
             GameObject PreviewOBJ = Instantiate(buildingSO[tempTypeNum].buildOBJ,
                    new Vector3(_PreviewOBJ.transform.position.x, _PreviewOBJ.transform.position.y + _heightOffset, _PreviewOBJ.transform.position.z),
                    Quaternion.identity);
             PreviewOBJ.GetComponent<DraggableObject>().SnapToGrid(new Vector3(_PreviewOBJ.transform.position.x, _PreviewOBJ.transform.position.y - _heightOffset, _PreviewOBJ.transform.position.z));
+            PreviewOBJ.GetComponent<Collider>().enabled = false;
             _tempPreviewObjs.Add(PreviewOBJ);
-            Vector2Int pos = new Vector2Int((int)_PreviewOBJ.transform.position.x, (int)_PreviewOBJ.transform.position.z);
 
-            if (!_roadPosArray.ContainsKey(pos))
-            {
                 Vector3 temp = _PreviewOBJ.transform.position;
                 _roadPosArray.Add(pos, temp); // 값은 placeholder로 true 사용
-            }
+
         }
     }
 
@@ -226,37 +229,46 @@ public class BuildingPlacer : MonoBehaviour
                 Destroy(obj);
         }
         _tempPreviewObjs.Clear();
+        _roadPosArray.Clear();
     }
     /// <summary>
     /// 연속 건물 설치 확정
     /// </summary>
-    public void SequenceAcceptBuild()
+    public void AcceptSequenceBuild()
     {
+        isAI = false;
+        isSelect = false;
+        _isGold = CheckBuildGold();
+        CanPlaceBuilding();
 
-        foreach (var a in _roadPosArray)
+        if (_isGold)
         {
-            int hash = Guid.NewGuid().GetHashCode();
-            _buildData = new BuildData
+            foreach (var a in _roadPosArray)
             {
-                posX = a.Key.x,
-                posZ = a.Key.y,
-                testBaseBuilding = _saveBuildingSO,
-                UniqueId = hash,
-                LV = 0,
-            };
+                int hash = Guid.NewGuid().GetHashCode();
+                _buildData = new BuildData
+                {
+                    posX = a.Key.x,
+                    posZ = a.Key.y,
+                    testBaseBuilding = _saveBuildingSO,
+                    UniqueId = hash,
+                    LV = 0,
+                };
 
-            _arrayBuildPos.GetBuildData(_buildData);//설치할 오브젝트
-            _PreviewOBJ.transform.position = a.Value;
-            _PreviewOBJ.GetComponent<DraggableObject>().SetTileIsBuild();//새롭게 설치할 오브젝트의 타일
+                _arrayBuildPos.GetBuildData(_buildData);//설치할 오브젝트
+                _PreviewOBJ.transform.position = a.Value;
+                _PreviewOBJ.GetComponent<DraggableObject>().SetTileIsBuild();//새롭게 설치할 오브젝트의 타일
+            }
+            ClearTempPreviewObjects();
+            gridMap.LoadMap(); //맵갱신
+            buildMap.LoadBuild(); //오브젝트 갱신
+            surface.BuildNavMesh(); //네브매쉬 깔기
+            isLongPressAcceptBuild = false;
+
+            buildMap.ColliderAllOn();
+            // OnBuildingAccepted?.Invoke(_saveBuildingSO);
+            // QuestManager.Instance.NotifyBuildingConstructed(((Define.BuildingType)tempTypeNum).ToString());
         }
-        ClearTempPreviewObjects();
-        gridMap.LoadMap(); //맵갱신
-        buildMap.LoadBuild(); //오브젝트 갱신
-        surface.BuildNavMesh(); //네브매쉬 깔기
-        isLongPressAcceptBuild = false;
-
-        // OnBuildingAccepted?.Invoke(_saveBuildingSO);
-        // QuestManager.Instance.NotifyBuildingConstructed(((Define.BuildingType)tempTypeNum).ToString());
         OnAutoSave?.Invoke();
     }
 
@@ -375,6 +387,7 @@ public class BuildingPlacer : MonoBehaviour
         }
         buildMap.ColliderAllOn();
         isLongPressAcceptBuild = false;
+                ClearTempPreviewObjects();
     }
 
     public void RemoveBuild()

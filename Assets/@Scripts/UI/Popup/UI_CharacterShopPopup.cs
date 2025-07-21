@@ -28,6 +28,8 @@ public class UI_CharacterShopPopup : UI_Popup
 
 
 
+    UI_GachaTablePopup _gachaTablePopup;
+
     private void OnEnable()
     {
         PopupOpenAnimation(gameObject);
@@ -47,10 +49,21 @@ public class UI_CharacterShopPopup : UI_Popup
         if (base.Init() == false)
             return false;
 
+
+        _gachaTablePopup = Managers.UI.ShowPopupUI<UI_GachaTablePopup>();
+        _gachaTablePopup.SetInfo(Define.EGachaType.Creature);
+        _gachaTablePopup.gameObject.SetActive(false);
+
+
         BindObject(typeof(GameObjects));
         BindButton(typeof(Buttons));
         BindText(typeof(Texts));
         GetButton((int)Buttons.OneTimeGachaButton).gameObject.BindEvent(OnClickOneTimeGacha);
+
+
+        GetButton((int)Buttons.ProbabilityButton).gameObject.BindEvent(OnClickGachaTableButon);
+        GetButton((int)Buttons.ProbabilityButton).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
+
 
         GetButton((int)Buttons.OneTimeGachaButton).gameObject.BindEvent(OnClickOneTimeGachaButton);
         GetButton((int)Buttons.FiveTimeGachaButton).gameObject.BindEvent(OnClickFiveTimeGachaButton);
@@ -59,6 +72,12 @@ public class UI_CharacterShopPopup : UI_Popup
         GetButton((int)Buttons.FiveTimeGachaButton).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
         return true;
     }
+
+    private void OnClickGachaTableButon()
+    {
+        _gachaTablePopup.gameObject.SetActive(true);
+    }
+
     private void OnClickOneTimeGachaButton()
     {
         if (Managers.Game.Ticket >= 1)
