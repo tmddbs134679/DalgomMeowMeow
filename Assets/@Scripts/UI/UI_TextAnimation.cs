@@ -62,6 +62,10 @@ public class UI_TextAnimation : UI_Popup
                 GetText((int)Texts.AnimText).text = Define.PLAYING_TEXT;
                 PlayGroundAnimation();
                 break;
+            case EBuildingType.Fishing:
+                GetText((int)Texts.AnimText).text = Define.FISHING_TEXT;
+                StartSplashLoop();
+                break;
         }
     }
 
@@ -249,6 +253,55 @@ public class UI_TextAnimation : UI_Popup
 
 
         seq.SetLoops(-1, LoopType.Restart);
+    }
+
+    void PlayFishingAnimation(bool moveLeft = true)
+    {
+        // 초기 위치 및 크기
+        Vector3 startPos = transform.localPosition;
+        _canvasGroup.alpha = 1f;
+        transform.localScale = Vector3.one;
+
+        // 기존 시퀀스 정리
+        if (seq != null && seq.IsActive())
+            seq.Kill();
+
+        // 포물선 종착점 계산
+        float horizontal = moveLeft ? -1f : 1f;     // 왼쪽 or 오른쪽
+        float height = 2f;                           // 위로 튀는 높이
+        Vector3 midPoint = startPos + new Vector3(horizontal / 2f, height, 0);
+        Vector3 endPoint = startPos + new Vector3(horizontal, 0, 0);
+
+        // 시퀀스 생성
+        seq = DOTween.Sequence();
+
+        // 1단계: 위로 점프 (중간 포물선 지점)
+        seq.Append(transform.DOLocalMove(midPoint, 0.3f).SetEase(Ease.OutQuad));
+        // 2단계: 아래로 착지
+        seq.Append(transform.DOLocalMove(endPoint, 0.3f).SetEase(Ease.InQuad));
+
+        // 동시에 점점 사라지기
+        seq.Join(_canvasGroup.DOFade(0f, 0.6f));
+
+        // 종료 후 원래 위치/알파 초기화
+        seq.AppendCallback(() =>
+        {
+            transform.localPosition = startPos;
+            _canvasGroup.alpha = 1f;
+        });
+    }
+
+    private bool isLeft = true;
+
+    void StartSplashLoop()
+    {
+        InvokeRepeating(nameof(SpawnSplash), 0f, 1.5f); // 1.5초마다 첨벙 실행
+    }
+
+    void SpawnSplash()
+    {
+        PlayFishingAnimation(isLeft);
+        isLeft = !isLeft; // 방향 번갈아가며
     }
 
 }
