@@ -68,7 +68,7 @@ public class UI_BuildPopup : UI_Popup
 
     private Character _character;
     private UI_FarmPopup _farmPopup;
-    Dictionary<Texts, (Define.BuildingType buildingType, Texts countText)> goldTextToBuildingMap;
+    Dictionary<Texts, (Define.EBuildingType buildingType, Texts countText)> goldTextToBuildingMap;
     private void Awake()
     {
         Init();
@@ -121,17 +121,17 @@ public class UI_BuildPopup : UI_Popup
     {
         goldTextToBuildingMap = new()
         {
-    { Texts.CookGoldText, (Define.BuildingType.Cooking, Texts.CookCountText) },
-    { Texts.FarmGoldText, (Define.BuildingType.CabbageFarm, Texts.FarmCountText) },
-    { Texts.PlayGroundGoldText, (Define.BuildingType.Playing, Texts.PlayGroundCountText) },
-    { Texts.RestGoldText, (Define.BuildingType.Resting, Texts.RestCountText) },
-    { Texts.FishingGoldText, (Define.BuildingType.Fishing, Texts.FishingCountText) },
-    { Texts.StorageGoldText, (Define.BuildingType.Storage, Texts.StorageCountText) },
-    { Texts.SlotMachineGoldText, (Define.BuildingType.SlotMachine, Texts.SlotMachineCountText) },
-    { Texts.RoadGoldText, (Define.BuildingType.Road, Texts.RoadCountText) },
-    { Texts.ShopGoldText, (Define.BuildingType.Shop, Texts.ShopCountText) },
-    { Texts.PotGoldText, (Define.BuildingType.Pot, Texts.PotCountText) },
-    { Texts.TravelGoldText, (Define.BuildingType.Travel, Texts.TravelCountText) },
+    { Texts.CookGoldText, (Define.EBuildingType.Cooking, Texts.CookCountText) },
+    { Texts.FarmGoldText, (Define.EBuildingType.CabbageFarm, Texts.FarmCountText) },
+    { Texts.PlayGroundGoldText, (Define.EBuildingType.Playing, Texts.PlayGroundCountText) },
+    { Texts.RestGoldText, (Define.EBuildingType.Resting, Texts.RestCountText) },
+    { Texts.FishingGoldText, (Define.EBuildingType.Fishing, Texts.FishingCountText) },
+    { Texts.StorageGoldText, (Define.EBuildingType.Storage, Texts.StorageCountText) },
+    { Texts.SlotMachineGoldText, (Define.EBuildingType.SlotMachine, Texts.SlotMachineCountText) },
+    { Texts.RoadGoldText, (Define.EBuildingType.Road, Texts.RoadCountText) },
+    { Texts.ShopGoldText, (Define.EBuildingType.Shop, Texts.ShopCountText) },
+    { Texts.PotGoldText, (Define.EBuildingType.Pot, Texts.PotCountText) },
+    { Texts.TravelGoldText, (Define.EBuildingType.Travel, Texts.TravelCountText) },
         };
     }
 
@@ -173,27 +173,27 @@ public class UI_BuildPopup : UI_Popup
     {
         if (type == Define.EBuildingType.SlotMachine)
         {
-            if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(Define.BuildingType.SlotMachine.ToString(), out int count) && count >= 1)
+            if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(Define.EBuildingType.SlotMachine.ToString(), out int count) && count >= 1)
                 BuildingPlacer.Instance.islimitBuildCount = false;
             return;
         }
         if (type == Define.EBuildingType.Shop)
         {
-            if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(Define.BuildingType.Shop.ToString(), out int count) && count >= 1)
+            if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(Define.EBuildingType.Shop.ToString(), out int count) && count >= 1)
                 BuildingPlacer.Instance.islimitBuildCount = false;
             return;
         }
 
-        if (type == Define.BuildingType.Pot)
+        if (type == Define.EBuildingType.Pot)
         {
-            if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(Define.BuildingType.Pot.ToString(), out int count) && count >= 1)
+            if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(Define.EBuildingType.Pot.ToString(), out int count) && count >= 1)
                 BuildingPlacer.Instance.islimitBuildCount = false;
             return;
         }
 
-        if (type == Define.BuildingType.Travel)
+        if (type == Define.EBuildingType.Travel)
         {
-            if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(Define.BuildingType.Travel.ToString(), out int count) && count >= 1)
+            if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(Define.EBuildingType.Travel.ToString(), out int count) && count >= 1)
                 BuildingPlacer.Instance.islimitBuildCount = false;
             return;
         }
@@ -206,10 +206,10 @@ public class UI_BuildPopup : UI_Popup
     /// </summary>
     private void Setting()
     {
-        foreach (var a in BuildingPlacer.Instance.buildMap.valueCounts)
-        {
-            Managers.Debug.Log($"#############{a.Key} : {a.Value}개",Define.EDebugType.Building);
-        }
+        // foreach (var a in BuildingPlacer.Instance.buildMap.valueCounts)
+        // {
+        //     Managers.Debug.Log($"#############{a.Key} : {a.Value}개",Define.EDebugType.Building);
+        // }
 
         Texts[] goldTexts = ((Texts[])Enum.GetValues(typeof(Texts))) //TextsEnum 의 Goldtext부분을 배열로 저장(크기 저장)
             .Where(t => t.ToString().EndsWith("GoldText"))
@@ -225,7 +225,7 @@ public class UI_BuildPopup : UI_Popup
             if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(buildingType.ToString(), out int output))
             {
                 
-            if (buildingType == Define.BuildingType.Road) // 도로일 땐 else 처리,임시땜빵,나중에는 모든게 엑셀 데이터를 받아와서 계산해야함
+            if (buildingType == Define.EBuildingType.Road) // 도로일 땐 else 처리,임시땜빵,나중에는 모든게 엑셀 데이터를 받아와서 계산해야함
                 {
                     GetText((int)goldTextEnum).text = buyMoney.ToString();
                     GetText((int)countText).text =output.ToString();

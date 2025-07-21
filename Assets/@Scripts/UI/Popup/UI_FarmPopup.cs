@@ -38,7 +38,7 @@ public class UI_FarmPopup : UI_Popup
     private UI_BuildPopup _uI_BuildPopup;
     private GameObject _buildScrollObject;//이전 ui에서 받아온거
 
-    Dictionary<Texts, (Define.BuildingType buildingType, Texts countText)> goldTextToBuildingMap;
+    Dictionary<Texts, (Define.EBuildingType buildingType, Texts countText)> goldTextToBuildingMap;
     public override bool Init()
     {
         if (!base.Init()) return false;
@@ -74,11 +74,11 @@ public class UI_FarmPopup : UI_Popup
     {
         goldTextToBuildingMap = new()
 {
-    { Texts.CabbageGoldText, (Define.BuildingType.CabbageFarm, Texts.CabbageCountText) },
-    { Texts.CarrotGoldText,  (Define.BuildingType.CarrotFarm,  Texts.CarrotCountText) },
-    { Texts.OnionGoldText,   (Define.BuildingType.OnionFarm,   Texts.OnionCountText) },
-    { Texts.PotatoGoldText,  (Define.BuildingType.PotatoFarm,  Texts.PotatoCountText) },
-    { Texts.PumpkinGoldText, (Define.BuildingType.PumpkinFarm, Texts.PumpkinCountText) },
+    { Texts.CabbageGoldText, (Define.EBuildingType.CabbageFarm, Texts.CabbageCountText) },
+    { Texts.CarrotGoldText,  (Define.EBuildingType.CarrotFarm,  Texts.CarrotCountText) },
+    { Texts.OnionGoldText,   (Define.EBuildingType.OnionFarm,   Texts.OnionCountText) },
+    { Texts.PotatoGoldText,  (Define.EBuildingType.PotatoFarm,  Texts.PotatoCountText) },
+    { Texts.PumpkinGoldText, (Define.EBuildingType.PumpkinFarm, Texts.PumpkinCountText) },
 };
     }
     //설치 건물 선택
@@ -109,10 +109,10 @@ public class UI_FarmPopup : UI_Popup
     /// </summary>
   private void Setting()
     {
-        foreach (var a in BuildingPlacer.Instance.buildMap.valueCounts)
-        {
-            Managers.Debug.Log($"#############{a.Key} : {a.Value}개",Define.EDebugType.Building);
-        }
+        // foreach (var a in BuildingPlacer.Instance.buildMap.valueCounts)
+        // {
+        //     Managers.Debug.Log($"#############{a.Key} : {a.Value}개",Define.EDebugType.Building);
+        // }
 
         Texts[] goldTexts = ((Texts[])Enum.GetValues(typeof(Texts))) //TextsEnum 의 Goldtext부분을 배열로 저장(크기 저장)
             .Where(t => t.ToString().EndsWith("GoldText"))

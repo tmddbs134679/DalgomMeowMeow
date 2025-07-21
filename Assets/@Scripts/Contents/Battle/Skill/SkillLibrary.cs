@@ -349,11 +349,11 @@ public class SkillLibrary : MonoBehaviour
         battleCharacter.UsingSkill = true;
         battleCharacter.SkillCooldown = 40f; // 스킬 쿨타임 설정
         yield return new WaitForSeconds(0.5f); // 스킬 애니메이션 딜레이
-        GameObject clone = Instantiate(battleCharacter._effectManager.Clone, battleCharacter.transform.position, Quaternion.identity); // 클론 이펙트 생성
-        clone.GetComponent<CloneActivity>().Init(battleCharacter.Health*0.5f, battleCharacter.AttackDamage*0.75f, battleCharacter.MoveSpeed*1.2f, battleCharacter.AttackRange, battleCharacter.transform.position); // 클론 초기화
+      //  GameObject clone = Instantiate(battleCharacter._effectManager.Clone, battleCharacter.transform.position, Quaternion.identity); // 클론 이펙트 생성
+      //  clone.GetComponent<CloneActivity>().Init(battleCharacter.Health*0.5f, battleCharacter.AttackDamage*0.75f, battleCharacter.MoveSpeed*1.2f, battleCharacter.AttackRange, battleCharacter.transform.position); // 클론 초기화
         battleCharacter.UsingSkill = false; // 스킬 사용 종료
         yield return new WaitForSeconds(20f);
-        Destroy(clone);
+      //  Destroy(clone);
     }
     #endregion
 
@@ -379,7 +379,8 @@ public class SkillLibrary : MonoBehaviour
     private IEnumerator Atkup(BattleCharacter teamCharacter)
     {
         teamCharacter.AttackDamage *= 1.5f; // 공격력 1.5배 증가
-        yield return StartCoroutine(teamCharacter._effectManager.); // 10초 동안 지속
+        yield return null;
+      //  yield return StartCoroutine(teamCharacter._effectManager.); // 10초 동안 지속
         teamCharacter.AttackDamage /= 1.5f; // 공격력 원래대로 되돌림
     }
     #endregion

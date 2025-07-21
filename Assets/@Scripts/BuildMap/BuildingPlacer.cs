@@ -119,9 +119,9 @@ public class BuildingPlacer : MonoBehaviour
     /// <summary>
     ///  연속 설치 건물 종류 선택 시 호출
     /// </summary>
-    private bool SequenceSelectBuildingType(Define.BuildingType type)
+    private bool SequenceSelectBuildingType(Define.EBuildingType type)
     {
-        if (type != Define.BuildingType.Road) return false;
+        if (type != Define.EBuildingType.Road) return false;
 
         isSequenceBuild = true;
         isAI = true;
