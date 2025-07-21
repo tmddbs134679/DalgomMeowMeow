@@ -14,6 +14,7 @@ namespace Scripts.Contents.AI.FSM.State
         {
             base.OnEnter();
             character.SetEmotion(4);
+            character.currentBuilding.ConnectToAnimal(character);
             character.SetAnimation(25); // Cooking 애니메이션 설정
             character.Controller.NavRotateFalse(); // 회전 비활성화
         }
@@ -39,6 +40,8 @@ namespace Scripts.Contents.AI.FSM.State
         public override void OnExit()
         {
             base.OnExit();
+            character.currentBuilding.DisconnectAnimal();
+
             character.SetEmotion(Random.Range(0,character.emo.EmotionMaterials.Length)); // Reset emotion to a random value
             if (character.currentBuilding != null)
             {

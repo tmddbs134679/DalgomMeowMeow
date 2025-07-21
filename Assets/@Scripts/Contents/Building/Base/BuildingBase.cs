@@ -1,4 +1,4 @@
-﻿using Data;
+using Data;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -32,6 +32,12 @@ public abstract class BuildingBase : BaseObject
 
     public void SetUniqueId(int id) => UniqueId = id;
     public void SetLevel(int level) => CurrentLevel = level;
+
+    //TextAnimation
+    [SerializeField]protected UI_TextAnimation _textAnim;
+
+
+
     protected virtual void Start()
     {
         if (Timer == null)

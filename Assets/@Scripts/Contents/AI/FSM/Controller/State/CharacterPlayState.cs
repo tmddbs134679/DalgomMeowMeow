@@ -12,6 +12,7 @@ namespace Scripts.Contents.AI.FSM.State
         {
             base.OnEnter();
             character.SetAnimation(50); // Play 애니메이션 설정
+            character.currentBuilding.ConnectToAnimal(character);
             character.Controller.NavRotateFalse(); // 회전 비활성화
         }
         
@@ -27,6 +28,7 @@ namespace Scripts.Contents.AI.FSM.State
 
         public override void OnExit()
         {
+            character.currentBuilding.DisconnectAnimal();
             base.OnExit();
         }
     }

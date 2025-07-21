@@ -18,7 +18,7 @@ public class CookingBuildTrigger : MonoBehaviour
     {
         if (!TutorialManager.Instance.IsStepActive("요리건물건설")) return;
 
-        if (building.BuildingType == Define.BuildingType.Cooking)
+        if (building.BuildingType == Define.EBuildingType.Cooking)
         {
             TutorialManager.Instance.CompleteStep();
         }

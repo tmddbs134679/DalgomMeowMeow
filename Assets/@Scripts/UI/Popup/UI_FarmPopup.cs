@@ -52,11 +52,11 @@ public class UI_FarmPopup : UI_Popup
         BindButton(typeof(Buttons));
         BindImage(typeof(Images));
 
-        GetButton((int)Buttons.CabbageButton).gameObject.BindEvent(() => SelectBuildingType(Define.BuildingType.CabbageFarm));
-        GetButton((int)Buttons.CarrotButton).gameObject.BindEvent(() => SelectBuildingType(Define.BuildingType.CarrotFarm));
-        GetButton((int)Buttons.OnionButton).gameObject.BindEvent(() => SelectBuildingType(Define.BuildingType.OnionFarm));
-        GetButton((int)Buttons.PotatoButton).gameObject.BindEvent(() => SelectBuildingType(Define.BuildingType.PotatoFarm));
-        GetButton((int)Buttons.PumpkinButton).gameObject.BindEvent(() => SelectBuildingType(Define.BuildingType.PumpkinFarm));
+        GetButton((int)Buttons.CabbageButton).gameObject.BindEvent(() => SelectBuildingType(Define.EBuildingType.CabbageFarm));
+        GetButton((int)Buttons.CarrotButton).gameObject.BindEvent(() => SelectBuildingType(Define.EBuildingType.CarrotFarm));
+        GetButton((int)Buttons.OnionButton).gameObject.BindEvent(() => SelectBuildingType(Define.EBuildingType.OnionFarm));
+        GetButton((int)Buttons.PotatoButton).gameObject.BindEvent(() => SelectBuildingType(Define.EBuildingType.PotatoFarm));
+        GetButton((int)Buttons.PumpkinButton).gameObject.BindEvent(() => SelectBuildingType(Define.EBuildingType.PumpkinFarm));
         //   GetButton((int)Buttons.CloseBackGroundButton).gameObject.BindEvent(OnClickBackgroundButton);
         BuildingPlacer.Instance.OnBuildingCancel += CancelBuildUI;
         Setting();
@@ -82,7 +82,7 @@ public class UI_FarmPopup : UI_Popup
 };
     }
     //설치 건물 선택
-    private void SelectBuildingType(Define.BuildingType type)
+    private void SelectBuildingType(Define.EBuildingType type)
     {
         _buildScrollObject.SetActive(false);
         // var button = GetButton(type);
@@ -98,9 +98,8 @@ public class UI_FarmPopup : UI_Popup
         // popup.islimitBuildCount = islimitBuildCount;
     }
     //건물 갯수 제한 코드 구간
-    private void LimitBuildCount(Define.BuildingType type)
+    private void LimitBuildCount(Define.EBuildingType type)
     {
-
         BuildingPlacer.Instance.islimitBuildCount = true;
     }
 

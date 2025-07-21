@@ -32,35 +32,35 @@ namespace Scripts.Contents.AI.FSM.State
 
 
             if (elapsedTime > randomPlayTime &&
-                character.Controller.FindAvailableBuilding(Define.BuildingType.Playing))
+                character.Controller.FindAvailableBuilding(Define.EBuildingType.Playing))
             {
                 character.characterAction.Play();
                 return;
             }
 
             if (character.Data.CurrentStamina <= 19f && 
-                character.Controller.FindAvailableBuilding(Define.BuildingType.Resting) != null)
+                character.Controller.FindAvailableBuilding(Define.EBuildingType.Resting) != null)
             {
                 character.characterAction.Rest();
                 return;
             }
 
             if (character.Data.CurrentStamina >= 20 && 
-                character.Controller.FindAvailableBuilding(Define.BuildingType.Cooking) != null)
+                character.Controller.FindAvailableBuilding(Define.EBuildingType.Cooking) != null)
             {
                 character.characterAction.Cook();
                 return;
             }
 
             if (character.Data.CurrentStamina >= 25f && 
-                character.Controller.FindAvailableBuilding(Define.BuildingType.CabbageFarm))
+                character.Controller.FindAvailableBuilding(Define.EBuildingType.CabbageFarm))
             {
                 character.characterAction.Farm(); 
                 return;
             }
 
             if(character.Data.CurrentStamina >= 100f &&
-              character.Controller.FindAvailableBuilding(Define.BuildingType.Fishing))
+              character.Controller.FindAvailableBuilding(Define.EBuildingType.Fishing))
             {
                 character.characterAction.Fishing();
                 return;

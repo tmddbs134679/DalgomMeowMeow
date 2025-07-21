@@ -18,7 +18,7 @@ public class FarmBuildTrigger : MonoBehaviour
     {
         if (!TutorialManager.Instance.IsStepActive("농장건설")) return;
 
-        if (building.BuildingType == Define.BuildingType.CabbageFarm)
+        if (building.BuildingType == Define.EBuildingType.CabbageFarm)
         {
             TutorialManager.Instance.CompleteStep();
         }

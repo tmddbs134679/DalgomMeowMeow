@@ -53,8 +53,19 @@ public class CookingBuilding : BuildingBase
     // 단계별 요리 이름들
     [SerializeField] private List<FoodData> upgradeDishes;
 
-    private void Start()
+
+    private void Awake()
     {
+        _textAnim = Managers.UI.ShowPopupUI<UI_TextAnimation>();
+
+    }
+    protected override void Start()
+    {
+        base.Start();
+    
+        _textAnim.gameObject.SetActive(false);
+        _textAnim.SetInfo(Define.EBuildingType.Cooking, transform.position);
+
         Managers.Debug.Log($"현재 레벨: {CurrentLevel}", Define.EDebugType.Building);
         var key = (BuildingData.Id.ToString(), CurrentLevel + 1);
         if (Managers.Data.BuildingLevelDic.TryGetValue(key, out var levelData))
@@ -67,7 +78,19 @@ public class CookingBuilding : BuildingBase
             Debug.LogWarning($"[UpgradeTest] 다음 레벨 정보 없음: {key}");
         }
     }
+    public override void ConnectToAnimal(AICharacter animal)
+    {
+        base.ConnectToAnimal(animal);
 
+        _textAnim.gameObject.SetActive(true);
+    }
+
+    public override void DisconnectAnimal()
+    {
+        base.DisconnectAnimal();
+
+        _textAnim.gameObject.SetActive(false);
+    }
     public override bool Init()
     {
         base.Init();

@@ -18,7 +18,7 @@ public class RestBuildTrigger : MonoBehaviour
     {
         if (!TutorialManager.Instance.IsStepActive("침대건설")) return;
 
-        if (building.BuildingType == Define.BuildingType.Resting)
+        if (building.BuildingType == Define.EBuildingType.Resting)
         {
             TutorialManager.Instance.CompleteStep();
         }
