@@ -36,11 +36,16 @@ public class RoomManager
 
     public Room CreateRoom(Vector3 gridPos)
     {
+        if(rooms.ContainsKey(gridPos))
+        {
+            return rooms[gridPos];
+        }
         Vector3 worldPos = new Vector3(gridPos.x * 9.5f, gridPos.y * 5f, gridPos.z * 9.5f);
         GameObject go = Managers.Resource.Instantiate("Room", pooling: true);
         go.transform.localPosition = worldPos;
 
         Room room = go.GetComponent<Room>();
+        rooms.Add(gridPos, room);
         return room;
     }
 }

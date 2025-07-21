@@ -19,7 +19,7 @@ public class BaseBuildingSO : ScriptableObject
 
     [SerializeField] private int _id;
     [SerializeField] private string _buildingName;
-    [SerializeField] private Define.BuildingType _buildingType;
+    [SerializeField] private Define.EBuildingType _buildingType;
     [SerializeField] private float _interval;
     [SerializeField] private int _unlockCost;
     [SerializeField] private int _buyMoney;
@@ -33,7 +33,7 @@ public class BaseBuildingSO : ScriptableObject
 
     public int Id { get => _id; set => _id = value; }
     public string BuildingName { get => _buildingName; set => _buildingName = value; }
-    public Define.BuildingType BuildingType { get => _buildingType; set => _buildingType = value; }
+    public Define.EBuildingType BuildingType { get => _buildingType; set => _buildingType = value; }
     public float Interval { get => _interval; set => _interval = value; }
     public int UnlockCost { get => _unlockCost; set => _unlockCost = value; }
     public int BuyMoney { get => _buyMoney; set => _buyMoney = value; }

@@ -20,7 +20,8 @@ public class UI_QuickMenu : UI_Popup
         BackgroundButton,
         CharacterInfoButton,
         CharacterEquipmentButton,
-        CharacterStoreSceneButton
+        CharacterStoreSceneButton,
+        ChapterButton
     }
 
     enum Texts
@@ -62,8 +63,15 @@ public class UI_QuickMenu : UI_Popup
         GetButton((int)Buttons.CharacterEquipmentButton).gameObject.BindEvent(OnClickCharacterEquipmentButton);
         GetButton((int)Buttons.BackgroundButton).gameObject.BindEvent(OnClickBackgroundButton);
         GetButton((int)Buttons.CharacterStoreSceneButton).gameObject.BindEvent(OnClickCharacterStoreSceneButton);
+        GetButton((int)Buttons.ChapterButton).gameObject.BindEvent(OnClickChapterButtonButton);
 
         return true;
+    }
+
+    private void OnClickChapterButtonButton()
+    {
+        Managers.UI.ShowPopupUI<UI_ChapterPopup>();
+        gameObject.SetActive(false);
     }
 
 

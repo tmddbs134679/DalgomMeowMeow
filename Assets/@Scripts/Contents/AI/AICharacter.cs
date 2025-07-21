@@ -331,6 +331,7 @@ public class AICharacter : BaseObject
                     clickStartTime += Time.deltaTime;
                     if (clickStartTime > longPressThreshold)
                     {
+                        nav.enabled = false;
                         isClicked = false;
                         isFollowing = true;
                     }
@@ -347,7 +348,7 @@ public class AICharacter : BaseObject
                 infoButton.SetActive(false);
                 Vector3 mouspot = hit.point;
                 animator.SetInteger("animation", 49);
-                SetSpeed(0);
+                //SetSpeed(0);
                 this.transform.position = new Vector3(mouspot.x, hit.point.y + 2f, mouspot.z);
 
             }
@@ -356,16 +357,19 @@ public class AICharacter : BaseObject
         {
             if (isFollowing)
             {
+                nav.enabled = true;
                 this.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+                Managers.AI.ValidateNavMeshPosition(this);
             }
             isFollowing = false;
-            if (Controller.CurrentState() is CharacterIdleState)
+            //nav.ResetPath();
+            if (Controller.CurrentState() is CharacterMoveToState)
                 SetSpeed(Data.WalkSpeed);
-            else if (Controller.CurrentState() is CharacterDeliverState)
-                SetSpeed(Data.MoveSpeed / 2);
-            else
-                SetSpeed(Data.MoveSpeed);
-                SetAnimation(CurrentAnimation);
+            //else if (Controller.CurrentState() is CharacterDeliverState)
+            //    SetSpeed(Data.MoveSpeed / 2);
+            //else
+            //    SetSpeed(Data.MoveSpeed);
+            SetAnimation(CurrentAnimation);
             clickStartTime = 0f;
         }
     }

@@ -770,8 +770,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 2.16}
-  m_SizeDelta: {x: 450.50003, y: 203}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &8151761015131709082
 Canvas:
@@ -2369,7 +2369,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 2.5}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &377469525696019831
@@ -2892,30 +2892,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8870700e18148e64aadcec72b1377200, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loadState: 0
-  loadBuilding: {fileID: 0}
-  nav: {fileID: 0}
-  currentBuilding: {fileID: 0}
-  animator: {fileID: 0}
-  skinnedMeshRenderer: {fileID: 0}
-  currentEmo: {fileID: 0}
-  characterAction: {fileID: 0}
-  _isHelloReady: 1
   CurrentState: 0
-  emo: {fileID: 11400000, guid: 3ead5fd8cb98a9e408e75a11b129fb05, type: 2}
-  sprites: []
-  sprite: {fileID: 0}
+  currentBuilding: {fileID: 0}
+  Stamina: 0
+  MaxStamina: 0
+  Atk: 0
+  Hp: 0
+  MoveSpeed: 0
+  inMain: 0
+  _ecropType: 0
   hatBone: {fileID: 4335440602484753967}
   bagBone: {fileID: 8300693880116812485}
   accessoryBone: {fileID: 513887896817843066}
   isClicked: 0
   camera: {fileID: 0}
   tempSpeed: 0
-  infoButton: {fileID: 0}
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 0
   isFollowing: 0
+  loadState: 0
+  loadBuilding: {fileID: 0}
+  nav: {fileID: 0}
+  animator: {fileID: 0}
+  skinnedMeshRenderer: {fileID: 0}
+  currentEmo: {fileID: 0}
+  characterAction: {fileID: 0}
+  _isHelloReady: 1
+  emo: {fileID: 11400000, guid: 3ead5fd8cb98a9e408e75a11b129fb05, type: 2}
+  sprites: []
+  sprite: {fileID: 0}
   IsReplica: 0
 --- !u!136 &6171342563109739984
 CapsuleCollider:

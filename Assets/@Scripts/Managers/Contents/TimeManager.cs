@@ -177,6 +177,40 @@ public class TimeManager : MonoBehaviour
             return remaining > TimeSpan.Zero ? remaining : TimeSpan.Zero;
         }
     }
+
+    #region 낮과밤
+    private DateTime _lastDayNightCheckTime;
+
+public DateTime LastDayNightCheckTime
+{
+    get
+    {
+        if (_lastDayNightCheckTime == default(DateTime))
+        {
+            string savedTimeStr = PlayerPrefs.GetString("LastDayNightCheckTime", string.Empty);
+            if (!string.IsNullOrEmpty(savedTimeStr))
+            {
+                _lastDayNightCheckTime = DateTime.Parse(savedTimeStr);
+            }
+            else
+            {
+                _lastDayNightCheckTime = DateTime.Now;
+            }
+        }
+
+        return _lastDayNightCheckTime;
+    }
+    set
+    {
+        _lastDayNightCheckTime = value;
+        string timeStr = value.ToString();
+        PlayerPrefs.SetString("LastDayNightCheckTime", timeStr);
+        PlayerPrefs.Save();
+    }
+}
+#endregion
+
+
     public bool _claimedThisSession;
 
     public bool IsTraveling

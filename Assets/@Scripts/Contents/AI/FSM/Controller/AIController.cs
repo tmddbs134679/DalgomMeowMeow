@@ -107,7 +107,7 @@ public class AIController : BaseController<AICharacter>
 
         if (action == Define.EAIState.Deliver)
         {
-            var nearbuilding = FineOnlyBuilding(Define.BuildingType.Cooking);
+            var nearbuilding = FineOnlyBuilding(Define.EBuildingType.Cooking);
 
             return nearbuilding.transform.position;
         }
@@ -126,7 +126,7 @@ public class AIController : BaseController<AICharacter>
         return building.transform.position;
     }
 
-    public BuildingBase FineOnlyBuilding(Define.BuildingType type)
+    public BuildingBase FineOnlyBuilding(Define.EBuildingType type)
     {
 
         return BuildingManager.Instance._buildings
@@ -136,7 +136,7 @@ public class AIController : BaseController<AICharacter>
       .FirstOrDefault();
     }
 
-    public BuildingBase FindAvailableBuilding(Define.BuildingType type)
+    public BuildingBase FindAvailableBuilding(Define.EBuildingType type)
     {
         var allAssigned = new HashSet<BuildingBase>(
             Managers.AI.AllCharacters
@@ -151,16 +151,16 @@ public class AIController : BaseController<AICharacter>
             .FirstOrDefault();
     }
 
-    private Define.BuildingType GetBuildingType(Define.EAIState action)
+    private Define.EBuildingType GetBuildingType(Define.EAIState action)
     {
         return action switch
         {
-            Define.EAIState.Cook => Define.BuildingType.Cooking,
-            Define.EAIState.Farm => Define.BuildingType.CabbageFarm,
-            Define.EAIState.Rest => Define.BuildingType.Resting,
-            Define.EAIState.Play => Define.BuildingType.Playing,
-            Define.EAIState.Deliver => Define.BuildingType.Cooking,
-            Define.EAIState.Fishing => Define.BuildingType.Fishing,
+            Define.EAIState.Cook => Define.EBuildingType.Cooking,
+            Define.EAIState.Farm => Define.EBuildingType.CabbageFarm,
+            Define.EAIState.Rest => Define.EBuildingType.Resting,
+            Define.EAIState.Play => Define.EBuildingType.Playing,
+            Define.EAIState.Deliver => Define.EBuildingType.Cooking,
+            Define.EAIState.Fishing => Define.EBuildingType.Fishing,
 
         };
     }

@@ -382,10 +382,17 @@ namespace Data
         public string QuestId;      // Type == Quest
         public int RequiredGold;    // Type == Gold
     }
+    [System.Serializable]
+    public class UnlockItemData
+    {
+        public string Id;
+        public string Description;
+    }
     public class UnlockContentsData
     {
         public string ContentId; // 예: "Building_Smithy"
         public List<UnlockCondition> Conditions;
+        public List<UnlockItemData> Items;
     }
 
     [Serializable]

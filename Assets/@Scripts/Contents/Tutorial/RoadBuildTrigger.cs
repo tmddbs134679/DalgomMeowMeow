@@ -18,7 +18,7 @@ public class RoadBuildTrigger : MonoBehaviour
     {
         if (!TutorialManager.Instance.IsStepActive("도로건설")) return;
 
-        if (building.BuildingType == Define.BuildingType.Road)
+        if (building.BuildingType == Define.EBuildingType.Road)
         {
             TutorialManager.Instance.CompleteStep();
         }
