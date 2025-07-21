@@ -9,13 +9,14 @@ public class CloneActivity : MonoBehaviour
     [SerializeField] private Transform _targetLocation;
     [SerializeField] private NavMeshAgent _agent; // NavMeshAgent 컴포넌트
     [SerializeField] private BattleCharacter _targetCharacter; // 타겟 캐릭터
-    private int _health;
-    private int _maxHP;
-    private int _attack;
+    [SerializeField] private Transform _parent;
+    private bool targetloss = false; // 타겟이 없을 때 부모 위치로 이동하기 위한 플래그
+
+    private float _maxHP;
+    private float _attack;
     private float _moveSpeed;
     private float _attackRange; // 공격 범위
     private float _detectRangef; // 적 탐지 범위
-
     private float _currentHP; // 최대 체력 (초기화용)
     private float _attacktimer = 1f; // 공격 딜레이 타이머
     private const float _attackDelay = 1f; // 공격 딜레이 시간
@@ -43,6 +44,14 @@ public class CloneActivity : MonoBehaviour
         }
     }
 
+
+
+    private void Awake()
+    {
+        _animator = GetComponent<Animator>(); // 애니메이터 컴포넌트 초기화
+        _agent = GetComponent<NavMeshAgent>(); // NavMeshAgent 컴포넌트 초기화
+    }
+
     void Update()
     {
         if (_targetLocation == null)
@@ -57,6 +66,12 @@ public class CloneActivity : MonoBehaviour
                     _animator.SetInteger(_animationHash, 5);
                 }
             }
+            else if (!targetloss) // 타겟이 없고 플래그가 false일 때
+            {
+                _agent.SetDestination(_parent.position); // 타겟이 없으면 부모 위치로 이동
+            }
+
+
         }
         else
         {
@@ -83,15 +98,21 @@ public class CloneActivity : MonoBehaviour
     }
 
 
-    public void Init(int maxhp, int atk, int moveSpeed, float range, float detectionrange)
+    public void Init(float maxhp, float atk, float moveSpeed, float range, Vector3 parent)
     {
         _maxHP = maxhp;
-        _health = maxhp;
         _attack = atk;
         _moveSpeed = moveSpeed;
         _attackRange = range; // 공격 범위 설정
-        _detectRangef = detectionrange; // 적 탐지 범위 설정
-        _animationHash = Animator.StringToHash("animation"); // 애니메이션 해시 초기화
+        _detectRangef = 10f; // 적 탐지 범위 설정
+
+        _agent.stoppingDistance = _attackRange; // NavMeshAgent의 정지 거리 설정
+        _currentHP = _maxHP; // 현재 체력 초기화
+        _agent.speed = _moveSpeed; // NavMeshAgent 속도 설정
+
+        _animationHash = Animator.StringToHash("animation"); 
+        Vector3 pos = new Vector3(parent.x, parent.y, parent.z - 2);
+        _parent.position = pos; // 부모 위치 설정
     }
 
 
