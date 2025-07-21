@@ -3,7 +3,7 @@
     {
       "DataId": "B0001",
       "Name": "CookingBuilding",
-      "Type": 1,
+      "Type": 0,
       "Description": "요리건물",
       "BuildTime": 3.0,
       "ProductionTime": 15.0,
@@ -21,8 +21,8 @@
     {
       "DataId": "B0002",
       "Name": "Farm",
-      "Type": 2,
-      "Description": "농장건물",
+      "Type": 1,
+      "Description": "양배추건물",
       "BuildTime": 3.0,
       "ProductionTime": 15.0,
       "Size": {
@@ -38,8 +38,80 @@
     },
     {
       "DataId": "B0003",
+      "Name": "OnionFarm",
+      "Type": 9,
+      "Description": "양파건물",
+      "BuildTime": 3.0,
+      "ProductionTime": 15.0,
+      "Size": {
+        "x": 1,
+        "y": 2,
+        "magnitude": 2.236068,
+        "sqrMagnitude": 5
+      },
+      "DataName": "양파",
+      "UnlockLevel": 1,
+      "MaxLevel": 5,
+      "Exp": 100
+    },
+    {
+      "DataId": "B0004",
+      "Name": "PotatoFarm",
+      "Type": 10,
+      "Description": "감자건물",
+      "BuildTime": 3.0,
+      "ProductionTime": 15.0,
+      "Size": {
+        "x": 1,
+        "y": 3,
+        "magnitude": 3.1622777,
+        "sqrMagnitude": 10
+      },
+      "DataName": "감자",
+      "UnlockLevel": 1,
+      "MaxLevel": 5,
+      "Exp": 100
+    },
+    {
+      "DataId": "B0005",
+      "Name": "PumpkinFarm",
+      "Type": 11,
+      "Description": "호박건물",
+      "BuildTime": 3.0,
+      "ProductionTime": 15.0,
+      "Size": {
+        "x": 1,
+        "y": 4,
+        "magnitude": 4.12310553,
+        "sqrMagnitude": 17
+      },
+      "DataName": "호박",
+      "UnlockLevel": 1,
+      "MaxLevel": 5,
+      "Exp": 100
+    },
+    {
+      "DataId": "B0006",
+      "Name": "CarrotFarm",
+      "Type": 12,
+      "Description": "당근건물",
+      "BuildTime": 3.0,
+      "ProductionTime": 15.0,
+      "Size": {
+        "x": 1,
+        "y": 5,
+        "magnitude": 5.09901953,
+        "sqrMagnitude": 26
+      },
+      "DataName": "당근",
+      "UnlockLevel": 1,
+      "MaxLevel": 5,
+      "Exp": 100
+    },
+    {
+      "DataId": "B0007",
       "Name": "PlayGround",
-      "Type": 4,
+      "Type": 2,
       "Description": "놀이건물",
       "BuildTime": 3.0,
       "ProductionTime": 15.0,
@@ -55,9 +127,9 @@
       "Exp": 100
     },
     {
-      "DataId": "B0004",
+      "DataId": "B0008",
       "Name": "Fishing",
-      "Type": 3,
+      "Type": 4,
       "Description": "낚시건물",
       "BuildTime": 3.0,
       "ProductionTime": 15.0,
@@ -73,9 +145,9 @@
       "Exp": 100
     },
     {
-      "DataId": "B0005",
+      "DataId": "B0009",
       "Name": "Rest",
-      "Type": 5,
+      "Type": 3,
       "Description": "쉬는건물",
       "BuildTime": 3.0,
       "ProductionTime": 15.0,
@@ -91,9 +163,9 @@
       "Exp": 100
     },
     {
-      "DataId": "B0006",
+      "DataId": "B0010",
       "Name": "Shop",
-      "Type": 6,
+      "Type": 8,
       "Description": "상점건물",
       "BuildTime": 3.0,
       "ProductionTime": 15.0,
@@ -109,9 +181,9 @@
       "Exp": 100
     },
     {
-      "DataId": "B0007",
+      "DataId": "B0011",
       "Name": "Road",
-      "Type": 8,
+      "Type": 7,
       "Description": "도로",
       "BuildTime": 3.0,
       "ProductionTime": 15.0,
