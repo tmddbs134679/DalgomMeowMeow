@@ -260,14 +260,15 @@ public class BuildingPlacer : MonoBehaviour
                 _PreviewOBJ.GetComponent<DraggableObject>().SetTileIsBuild();//새롭게 설치할 오브젝트의 타일
             }
             ClearTempPreviewObjects();
+                        Destroy(_PreviewOBJ);
             gridMap.LoadMap(); //맵갱신
             buildMap.LoadBuild(); //오브젝트 갱신
             surface.BuildNavMesh(); //네브매쉬 깔기
             isLongPressAcceptBuild = false;
 
             buildMap.ColliderAllOn();
-            // OnBuildingAccepted?.Invoke(_saveBuildingSO);
-            // QuestManager.Instance.NotifyBuildingConstructed(((Define.BuildingType)tempTypeNum).ToString());
+            OnBuildingAccepted?.Invoke(_saveBuildingSO);
+            QuestManager.Instance.NotifyBuildingConstructed(((Define.EBuildingType)tempTypeNum).ToString());
         }
         OnAutoSave?.Invoke();
     }
