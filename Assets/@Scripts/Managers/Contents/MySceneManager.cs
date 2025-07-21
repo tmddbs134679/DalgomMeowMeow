@@ -29,7 +29,7 @@ public class MySceneManager
                 Managers.Clear();
                 break;
         }
-       // Managers.Game.SaveGame();
+        //Managers.Game.SaveGame();
     }
 
     public string GetSceneName(EScene type)

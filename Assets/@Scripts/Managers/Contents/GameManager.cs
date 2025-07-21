@@ -294,7 +294,8 @@ public class GameManager
 
     public void UpdateCharactersFromWorld()
     {
-        if (!(Managers.Scene.CurrentScene is GameScene))
+        if (Managers.Scene.CurrentScene is not GameScene &&
+            Managers.Scene.CurrentScene is not CharacterStoreScene)
             return;
 
         foreach (var pair in _characters)
@@ -303,10 +304,17 @@ public class GameManager
 
             if (!Managers.Game.CharacterInMainScene.TryGetValue(character.UniqueId, out AICharacter ai))
                 continue;
+            if(Managers.Scene.CurrentScene is GameScene)
+            {
+              character.Pos = new Vector3Data(ai.transform.position);
+              character.CurrentState = ai.Data.CurrentState;
+              character.CurrentStamina = ai.Data.CurrentStamina;
+            }
 
-            character.Pos = new Vector3Data(ai.transform.position);
-            character.CurrentState = ai.Data.CurrentState;
-            character.CurrentStamina = ai.Data.CurrentStamina;
+            if(Managers.Scene.CurrentScene is CharacterStoreScene)
+            {
+                character.RoomPos = new Vector3Data(ai.transform.position);
+            }
         }
     }
 

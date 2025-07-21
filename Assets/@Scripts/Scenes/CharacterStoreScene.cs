@@ -22,28 +22,18 @@ public class CharacterStoreScene : BaseScene
 
         foreach (var ch in Managers.Game.Characters.Where(c => !c.InMainScene))
         {
-            Vector3 offset = new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f));
-            Vector3 basePos = Vector3.zero;
+            Vector3 offset = new Vector3(Random.Range(-3f, 3f), 0f, Random.Range(-3f, 3f));
 
-            switch (ch.UniqueRoomNumber)
-            {
-                case 1: basePos = Vector3.zero; break;
-                case 2: basePos = new Vector3(9.5f, 5f, 0f); break;
-                case 3: basePos = new Vector3(0f, 5f, -9.5f); break;
-                default:
-                    Debug.LogWarning($"Unknown room number: {ch.UniqueRoomNumber}");
-                    break;
-            }
-            Vector3 pos = basePos;
-            pos.y += 0.5f; // or NavMesh 높이 보정
-
-            var ai = Managers.Object.Spawn<AICharacter>(pos, ch.DataId);
+            var ai = Managers.Object.Spawn<AICharacter>(Vector3.zero, ch.DataId);
 
             ai.Data = ch;
             ai.Init();
             ai.ControllerRegister();
-            
-            
+            ai.transform.position = ch.RoomPos.ToVector3();
+
+            Managers.Game.CharacterInMainScene[ch.UniqueId] = ai;
+            Managers.Game.SetInitEquipment(Managers.Game.CharacterInMainScene[ch.UniqueId]);
+
         }
 
     }
@@ -51,6 +41,6 @@ public class CharacterStoreScene : BaseScene
 
     public override void Clear()
     {
-        //Managers.Game.SaveGame();
+        Managers.Game.SaveGame();
     }
 }

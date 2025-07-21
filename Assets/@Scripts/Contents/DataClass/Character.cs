@@ -35,6 +35,7 @@ public class  Character
     public EAIState CurrentState { get; set; } 
     public BuildingBase LoadBuilding { get; set; }
     public Vector3Data Pos { get; set; } = new Vector3Data();
+    public Vector3Data RoomPos { get; set; } = new Vector3Data(); // 방 내 위치
     public float MaxStamina { get; set; } 
     public float CurrentStamina { get; set; } 
     public float Atk { get; set; } 
@@ -55,6 +56,7 @@ public class  Character
 
         DataId = dataid;
         Pos = new Vector3Data(position);
+        RoomPos = new Vector3Data(Vector3.zero);
         Hp = Data?.MaxHp ?? 100f; 
         MaxExp = Data?.MaxExp ?? 15f;    
         CurrentExp = Data?.CurrentExp ?? 0; 
