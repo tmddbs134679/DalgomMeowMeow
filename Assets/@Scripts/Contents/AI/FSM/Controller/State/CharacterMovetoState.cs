@@ -18,7 +18,7 @@ namespace Scripts.Contents.AI.FSM.State
             this.isArrived = false;
         }
 
-   
+
 
         public override void OnEnter()
         {
@@ -34,12 +34,22 @@ namespace Scripts.Contents.AI.FSM.State
         public override void OnUpdate(float deltaTime)
         {
             base.OnUpdate(deltaTime);
+
+
             // 일정 거리 이내면 도착한 것으로 판단
             if (character.currentBuilding == null)
             {
                 character.characterAction.Idle();
             }
-            if (Vector3.Distance(character.transform.position, targetPosition) < 0.5f)
+            if (elapsedTime > 0.5f)
+            {
+                targetPosition = character.currentBuilding.transform.position;
+                character.Controller.Move(targetPosition);
+                elapsedTime = 0f; // 시간 초기화
+            }
+
+
+            if (Vector3.Distance(character.transform.position, targetPosition) < 0.5f && !character.isFollowing)
             {
                 isArrived = true;
 

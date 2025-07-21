@@ -13,7 +13,7 @@ public class CharacterStoreScene : BaseScene
         SceneType = Define.EScene.CharacterStoreScene;
 
         Managers.UI.ShowSceneUI<UI_CharacterStoreScene>();
-
+        Managers.Room.rooms.Clear();
         for(int i = 0; i < Managers.Room.UnLockRoom; i++)
         {
             Managers.Room.CreateRoom(Managers.Room.directions[i]);
