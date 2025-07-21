@@ -39,22 +39,35 @@ public class DraggableObject : MonoBehaviour, IDraggable
     }
 
     //드래그
-    public void OnDrag(Vector3 groundPos)
+   private Vector3Int _prevGridPos = Vector3Int.zero;
+
+public void OnDrag(Vector3 groundPos)
+{
+    if (isDrag)
     {
-        if (isDrag)
-        {
-            Vector3 snappedPos = GetSnappedPosition(groundPos);
-            transform.position = snappedPos;
-            CheckTilesUnderBuilding();
+        Vector3 snappedPos = GetSnappedPosition(groundPos);
+        transform.position = snappedPos;
 
-            Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.main, transform.position);
-            if (_uI_BuildAction != null)
-                _uI_BuildAction.transform.position = screenPos;
+        // 🔍 현재 그리드 기준 위치 계산
+        Vector3Int currentGridPos = new Vector3Int(
+            Mathf.RoundToInt(transform.position.x / gridSize),
+            0,
+            Mathf.RoundToInt(transform.position.z / gridSize)
+        );
 
-           // Managers.UI.ClosePopupUI(UI_BuildContent);
+            // ✅ 이전과 다를 때만 처리
+            if (currentGridPos != _prevGridPos)
+            {
+                _prevGridPos = currentGridPos;
+                CheckTilesUnderBuilding();
+                                if (BuildingPlacer.Instance.isSequenceBuild) BuildingPlacer.Instance.SaveandRemoveRoad();
         }
-    }
 
+        Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.main, transform.position);
+        if (_uI_BuildAction != null)
+            _uI_BuildAction.transform.position = screenPos;
+    }
+}
     //드래그 드롭
     public void OnDragEnd() { }
 
@@ -131,6 +144,7 @@ public class DraggableObject : MonoBehaviour, IDraggable
         }
         isBuild = allcheck == hitColliders.Length ? true : false;
         if (_isBuildColor != null) _isBuildColor.SetIsBUildColor(isBuild);
+
     }
 
     //타일에 isLoadBuild값 전달후 SetTile()호출해 arrayMapPos맵데이터 갱신

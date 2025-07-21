@@ -61,6 +61,8 @@ public class BuildingPlacer : MonoBehaviour
     public bool islimitBuildCount=true;
 
     public DragController dragController;
+
+    public bool isSequenceBuild;
     private void Awake()
     {
         if (Instance == null)
@@ -90,7 +92,7 @@ public class BuildingPlacer : MonoBehaviour
     /// </summary>
     public void SelectBuildingType(Define.BuildingType type)
     {
-
+        if (SequenceSelectBuildingType(type)) return;
         isAI = true;
         isSelect = false;
         buildMap.ColliderAllOff();
@@ -112,6 +114,40 @@ public class BuildingPlacer : MonoBehaviour
             tempDraggleOBJ.isDrag = true;
             tempDraggleOBJ.isLongPress = false;
         }
+    }
+
+    /// <summary>
+    ///  연속 설치 건물 종류 선택 시 호출
+    /// </summary>
+    private bool SequenceSelectBuildingType(Define.BuildingType type)
+    {
+        if (type != Define.BuildingType.Road) return false;
+
+        isSequenceBuild = true;
+        isAI = true;
+        isSelect = false;
+        buildMap.ColliderAllOff();
+        tempTypeNum = (int)type;
+        Camera cam = Camera.main;
+        Vector3 screenCenter = new Vector3(Screen.width / 2f, Screen.height / 2f, cam.nearClipPlane);
+        Ray ray = Camera.main.ScreenPointToRay(screenCenter);
+
+        if (Physics.Raycast(ray, out var groundHit, 1000f, groundLayer))
+        {
+            _saveBuildingSO = buildingSO[(int)type];
+
+            _PreviewOBJ = Instantiate(buildingSO[(int)type].previewOBJ,
+                new Vector3(groundHit.point.x, groundHit.point.y + _heightOffset, groundHit.point.z),
+                Quaternion.identity);
+
+            tempDraggleOBJ = _PreviewOBJ.GetComponent<DraggableObject>();
+            tempDraggleOBJ.SnapToGrid(groundHit.point);
+            tempDraggleOBJ.isDrag = true;
+            tempDraggleOBJ.isLongPress = false;
+        }
+
+
+        return true;
     }
 
     /// <summary>
@@ -150,7 +186,6 @@ public class BuildingPlacer : MonoBehaviour
     /// </summary>
     bool CheckBuildGold()
     {
-
         return Managers.Game.Gold - buyMoney > 0;
     }
 
@@ -161,6 +196,70 @@ public class BuildingPlacer : MonoBehaviour
     {
         if (_PreviewOBJ != null)
             _isBuild = _PreviewOBJ.GetComponent<DraggableObject>().isBuild;
+    }
+
+Dictionary<Vector2Int,Vector3> roadPosArray = new Dictionary<Vector2Int,Vector3>();
+List<GameObject> _tempPreviewObjs = new List<GameObject>();
+public void SaveandRemoveRoad()
+{
+    CanPlaceBuilding();
+    if (_isBuild)
+    {
+         GameObject PreviewOBJ = Instantiate(buildingSO[tempTypeNum].buildOBJ,
+                new Vector3(_PreviewOBJ.transform.position.x,_PreviewOBJ.transform.position.y,_PreviewOBJ.transform.position.z),
+                Quaternion.identity);
+         PreviewOBJ.GetComponent<DraggableObject>().SnapToGrid(_PreviewOBJ.transform.position);
+                 _tempPreviewObjs.Add(PreviewOBJ);
+        Vector2Int pos = new Vector2Int((int)_PreviewOBJ.transform.position.x, (int)_PreviewOBJ.transform.position.z);
+
+        if (!roadPosArray.ContainsKey(pos))
+        {
+                Vector3 temp=_PreviewOBJ.transform.position;
+            roadPosArray.Add(pos,temp); // 값은 placeholder로 true 사용
+        }
+    }
+}
+
+public void ClearTempPreviewObjects()
+{
+    foreach (var obj in _tempPreviewObjs)
+    {
+        if (obj != null)
+            Destroy(obj);
+    }
+    _tempPreviewObjs.Clear();
+}
+    /// <summary>
+    /// 연속 건물 설치 확정
+    /// </summary>
+    public void SequenceAcceptBuild()
+    {
+
+        foreach (var a in roadPosArray)
+        {
+            int hash = Guid.NewGuid().GetHashCode();
+            _buildData = new BuildData
+            {
+                posX = a.Key.x,
+                posZ = a.Key.y,
+                testBaseBuilding = _saveBuildingSO,
+                UniqueId = hash,
+                LV = 0,
+            };
+
+            _arrayBuildPos.GetBuildData(_buildData);//설치할 오브젝트
+            _PreviewOBJ.transform.position = a.Value;
+            _PreviewOBJ.GetComponent<DraggableObject>().SetTileIsBuild();//새롭게 설치할 오브젝트의 타일
+        }
+        ClearTempPreviewObjects();
+        gridMap.LoadMap(); //맵갱신
+        buildMap.LoadBuild(); //오브젝트 갱신
+        surface.BuildNavMesh(); //네브매쉬 깔기
+        isLongPressAcceptBuild = false;
+
+        // OnBuildingAccepted?.Invoke(_saveBuildingSO);
+        // QuestManager.Instance.NotifyBuildingConstructed(((Define.BuildingType)tempTypeNum).ToString());
+        OnAutoSave?.Invoke();
     }
 
     /// <summary>
@@ -199,12 +298,12 @@ public class BuildingPlacer : MonoBehaviour
                 posZ = _PreviewOBJ.transform.position.z,
                 testBaseBuilding = _saveBuildingSO,
                 UniqueId = hash,
-                LV=1,
+                LV = 1,
             };
 
             _arrayBuildPos.GetBuildData(_buildData);//설치할 오브젝트
-
             _PreviewOBJ.GetComponent<DraggableObject>().SetTileIsBuild();//새롭게 설치할 오브젝트의 타일
+
             gridMap.LoadMap(); //맵갱신
             buildMap.LoadBuild(); //오브젝트 갱신
             surface.BuildNavMesh(); //네브매쉬 깔기
@@ -212,7 +311,7 @@ public class BuildingPlacer : MonoBehaviour
             OnBuildingAccepted?.Invoke(_saveBuildingSO);
             QuestManager.Instance.NotifyBuildingConstructed(buildType);
         }
-        _PreviewOBJ.GetComponent<DraggableObject>().CheckTilesUnderBuilding();
+        _PreviewOBJ.GetComponent<DraggableObject>().CheckTilesUnderBuilding(); //설치 이후 종료하는게 아니기 때문에 계속 타일 판별
 
         OnAutoSave?.Invoke();
     }

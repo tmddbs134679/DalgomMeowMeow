@@ -50,7 +50,7 @@ public class UI_BuildAction : UI_Popup
     }
     private void AcceptBuild()
     {
-//여기서도 판별해야하는데..
+
         if (BuildingPlacer.Instance.isLongPressAcceptBuild)
         {
             BuildingPlacer.Instance.AcceptLongPressBuild();
@@ -61,8 +61,14 @@ public class UI_BuildAction : UI_Popup
         }
         else
         {
-            BuildingPlacer.Instance.AcceptBuild();
+            if (BuildingPlacer.Instance.isSequenceBuild) BuildingPlacer.Instance.SequenceAcceptBuild();
+            else
+            {
+                BuildingPlacer.Instance.AcceptBuild();
+            }
+
         }
+        BuildingPlacer.Instance.isSequenceBuild = false;
              
     }
     private void CancelBuild()
