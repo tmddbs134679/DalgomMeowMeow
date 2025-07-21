@@ -16,7 +16,31 @@ public class FishingBuilding : BuildingBase
     [Header("낚시 확률 (0~1)")]
     [Range(0f, 1f)] public float JackpotProbability = 0.1f;
     [Range(0f, 1f)] public float NormalProbability = 0.7f;
-    
+    private void Awake()
+    {
+        _textAnim = Managers.UI.ShowPopupUI<UI_TextAnimation>();
+
+    }
+    protected override void Start()
+    {
+        base.Start();
+
+        _textAnim.gameObject.SetActive(false);
+        _textAnim.SetInfo(Define.EBuildingType.Fishing, transform.position);
+    }
+    public override void ConnectToAnimal(AICharacter animal)
+    {
+        base.ConnectToAnimal(animal);
+
+        _textAnim.gameObject.SetActive(true);
+    }
+
+    public override void DisconnectAnimal()
+    {
+        base.DisconnectAnimal();
+
+        _textAnim.gameObject.SetActive(false);
+    }
     public override bool Init()
     {
         base.Init();

@@ -15,7 +15,6 @@ public class UI_CharacterStoreScene : UI_Scene
     #region Enum
     enum GameObjects
     {
-        StorageObject,
         QuickNotifyObject
     }
 
@@ -27,8 +26,6 @@ public class UI_CharacterStoreScene : UI_Scene
         CheckOutButton,
         QuickButton,
         ShopButton,
-        BuildButton,
-        EditPosButton,
         HomeButton,
         ChangeButton,
         UnLockButton,
