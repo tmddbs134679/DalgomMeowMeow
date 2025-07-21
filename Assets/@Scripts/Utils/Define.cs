@@ -108,19 +108,6 @@ public class Define
         CharacterStoreScene,
     }
 
-    //public enum EBuildingType
-    //{
-    //    NONE,
-    //    COOK,
-    //    FARM,
-    //    FISHING,
-    //    PLAYGROUND,
-    //    REST,
-    //    SHOP,
-    //    STORAGE,
-    //    ROAD
-    //}
-
     //BuildSo의 넘버링과 순서가 동일해야함
     public enum EBuildingType
     {
@@ -221,13 +208,13 @@ public class Define
     }
 
     public static readonly float[] COMMON_GACHA_GRADE = new float[]
-{
-        0,
-        0.62f,   // Common 확률
-        0.18f,   // Uncommon 확률
-        0.15f,   // Rare 확률
-        0.05f,  // Epic 확률
-};
+    {
+            0,
+            0.62f,   // Common 확률
+            0.18f,   // Uncommon 확률
+            0.15f,   // Rare 확률
+            0.05f,  // Epic 확률
+    };
 
 
     public enum EBuildPopUpType
@@ -256,6 +243,13 @@ public class Define
         Potato,
         Onion,
         Cabbage,
+    }
+
+    public enum EGachaType
+    {
+        None,
+        Creature,
+        Equipment
     }
 
 }
