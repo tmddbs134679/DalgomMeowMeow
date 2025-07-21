@@ -12,6 +12,7 @@ public class TeamManager : MonoBehaviour
     [SerializeField] private AnimatorController _catAnim;
     [SerializeField] private AnimatorController _bearAnim;
 
+    [SerializeField] private EffectManager[] _effectManager; // 이펙트 매니저
     public string[] CatDataKey;     // 선택된 고양이 어드레서블 키(프리펩 이름)ID
 
 
@@ -20,6 +21,7 @@ public class TeamManager : MonoBehaviour
 
     private void Awake()
     {
+        _effectManager = GetComponentsInChildren<EffectManager>();
         _battleCharacters = GetComponentsInChildren<BattleCharacter>();
         _creatureData = new CreatureData[3];
         for (int k = 0; k < _creatureData.Length; k++)
@@ -42,7 +44,14 @@ public class TeamManager : MonoBehaviour
         }
 
     }
-    
+    private void Start()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            _battleCharacters[i]._effectManager = EffectHandler.Instance.effectManagers[i]; //이펙트 매니저 등록
+        }
+    }
+
 
     public void LoadPrefab(int index, string prefabKey)
     {
