@@ -61,7 +61,12 @@ public class UI_BuildAction : UI_Popup
         }
         else
         {
-            if (BuildingPlacer.Instance.isSequenceBuild) BuildingPlacer.Instance.AcceptSequenceBuild();
+            if (BuildingPlacer.Instance.isSequenceBuild)
+            {
+                BuildingPlacer.Instance.AcceptSequenceBuild();
+                BuildingPlacer.Instance.OnBuildingCancel?.Invoke();
+
+            }
             else
             {
                 BuildingPlacer.Instance.AcceptBuild();
@@ -69,7 +74,7 @@ public class UI_BuildAction : UI_Popup
 
         }
         BuildingPlacer.Instance.isSequenceBuild = false;
-             
+
     }
     private void CancelBuild()
     {
@@ -89,7 +94,7 @@ public class UI_BuildAction : UI_Popup
     {
         if (BuildingPlacer.Instance.isLongPressAcceptBuild)
         {
-                    BuildingPlacer.Instance.OnBuildingCancel?.Invoke();//UI끄기 이벤트
+            BuildingPlacer.Instance.OnBuildingCancel?.Invoke();//UI끄기 이벤트
             BuildingPlacer.Instance.RemoveBuild();
         }
     }

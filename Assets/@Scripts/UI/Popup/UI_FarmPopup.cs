@@ -85,7 +85,7 @@ public class UI_FarmPopup : UI_Popup
     private void SelectBuildingType(Define.EBuildingType type)
     {
         _buildScrollObject.SetActive(false);
-        // var button = GetButton(type);
+        // var button = GetButton((int)type);
         // if (button != null && !button.interactable)
         //     return;
         LimitBuildCount(type);
