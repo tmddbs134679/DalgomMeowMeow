@@ -1,3 +1,4 @@
+using Scripts.Contents.AI.FSM.State;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,14 +22,28 @@ public class CharacterStoreScene : BaseScene
 
         foreach (var ch in Managers.Game.Characters.Where(c => !c.InMainScene))
         {
-            var pos = new Vector3(Random.Range(-5f, 5f), 0.616f, Random.Range(-5f, 5f));
+            Vector3 offset = new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f));
+            Vector3 basePos = Vector3.zero;
+
+            switch (ch.UniqueRoomNumber)
+            {
+                case 1: basePos = Vector3.zero; break;
+                case 2: basePos = new Vector3(9.5f, 5f, 0f); break;
+                case 3: basePos = new Vector3(0f, 5f, -9.5f); break;
+                default:
+                    Debug.LogWarning($"Unknown room number: {ch.UniqueRoomNumber}");
+                    break;
+            }
+            Vector3 pos = basePos + offset;
+            pos.y += 0.616f; // or NavMesh 높이 보정
+
             var ai = Managers.Object.Spawn<AICharacter>(pos, ch.DataId);
 
-            ai.Init();
             ai.Data = ch;
+            ai.Init();
             ai.ControllerRegister();
-
             Managers.AI.ValidateNavMeshPosition(ai);
+            
         }
 
     }
@@ -36,5 +51,6 @@ public class CharacterStoreScene : BaseScene
 
     public override void Clear()
     {
+        //Managers.Game.SaveGame();
     }
 }
