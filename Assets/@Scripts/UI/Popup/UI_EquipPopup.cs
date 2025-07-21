@@ -125,7 +125,11 @@ public class UI_EquipPopup : UI_Popup
     {
 
         //Nofity Check
-        (Managers.UI.SceneUI as UI_GameScene).CheckNotify();
+        if(Managers.UI.SceneUI is UI_GameScene)
+            (Managers.UI.SceneUI as UI_GameScene).CheckNotify();
+        else
+            (Managers.UI.SceneUI as UI_CharacterStoreScene).CheckNotify();
+
 
         gameObject.SetActive(false);
         _currentType = Define.EEquipmentType.None;
