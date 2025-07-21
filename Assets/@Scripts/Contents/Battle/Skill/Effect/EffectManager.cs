@@ -9,7 +9,15 @@ public class EffectManager : MonoBehaviour
     public GameObject RainAreaPrefab;
     public GameObject PunchEffectPrefab;
     public GameObject DebuffPrefab;
+    public GameObject ClonePrefab;
+    public GameObject BuffPrefab;
 
+    public ParticleSystem[] BuffEffect;
+
+    private void Awake()
+    {
+        BuffEffect = BuffPrefab.GetComponentsInChildren<ParticleSystem>();
+    }
 
     #region PunchEffect
     public IEnumerator Punch(Vector3 pos)
@@ -163,4 +171,24 @@ public class EffectManager : MonoBehaviour
 
 
     #endregion
+
+    #region Buff
+    public IEnumerator Buff()
+    {
+        DebuffPrefab.SetActive(true);
+        DebuffPrefab.GetComponent<ParticleSystem>().Play(); // 얼음 효과 재생
+        yield return new WaitForSeconds(10f); // 4초 동안 얼음 효과 유지
+        DebuffPrefab.SetActive(false); // 얼음 효과 비활성화
+    }
+
+    public void BuffColorSet(Color color)
+    {
+        foreach (var effect in BuffEffect)
+        {
+            var main = effect.main; // main 모듈 가져오기
+            main.startColor = color; // startColor 설정
+        }
+    }
+    #endregion Buff
+
 }
