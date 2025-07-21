@@ -21,48 +21,48 @@ public class BuildingPlacer : MonoBehaviour
     [Header("임시 드래그 오브젝트")]
     public DraggableObject tempDraggleOBJ;
 
+    [Header("연속설치 설정")]
+    Dictionary<Vector2Int, Vector3> _roadPosArray = new Dictionary<Vector2Int, Vector3>();
+    List<GameObject> _tempPreviewObjs = new List<GameObject>();
+
     [SerializeField] private float _heightOffset = 0.5f;
     public Collider[] TempCollider;
+    public UI_BuildAction uI_BuildAction;
 
+    public GameObject OriginTempOBJ; //롱프레스쪽 임시저장 오브젝트
+    public static event Action<BaseBuildingSO> OnBuildingAccepted;
+    public DragController dragController;
+
+    private ArrayBuildPos _arrayBuildPos;
+    private ArrayMapPos _arrayMapPos;
     private GameObject _PreviewOBJ;
     private BaseBuildingSO _saveBuildingSO;
     private BuildData _buildData;
     private BuildData _CurBuildData;
-    private int buyMoney;
 
-    private bool _isGold;
-    public bool _isBuild;
-    public bool isSelect = false;
-
-    public bool isLongPressAcceptBuild = false;
-    public UI_BuildAction uI_BuildAction;
-
-    public bool isAI = false;
-
+    //event
     public Action OnBuildingCancel;
     public Action OnBuildingAccept; //사용 안하는중
+    public event Action OnAutoSave;
 
-    public GameObject OriginTempOBJ; //롱프레스쪽 임시저장 오브젝트
-
-    public static event Action<BaseBuildingSO> OnBuildingAccepted;
-
-
+    //Int값
     public int tempTypeNum;
     public int BuyMoney { get => buyMoney; set => buyMoney = value; }
-
     public int uniqueId;
     public int LV;
 
-    public event Action OnAutoSave;
+    private int buyMoney;
 
-    private ArrayBuildPos _arrayBuildPos;
-    private ArrayMapPos _arrayMapPos;
-
-    public bool islimitBuildCount=true;
-
-    public DragController dragController;
-
+    //Bool값
+    public bool _isBuild;
+    public bool isSelect = false;
+    public bool isLongPressAcceptBuild = false;
+    public bool isAI = false;
+    public bool islimitBuildCount = true;
     public bool isSequenceBuild;
+
+    private bool _isGold;
+
     private void Awake()
     {
         if (Instance == null)
@@ -141,7 +141,7 @@ public class BuildingPlacer : MonoBehaviour
                 Quaternion.identity);
 
             tempDraggleOBJ = _PreviewOBJ.GetComponent<DraggableObject>();
-            tempDraggleOBJ.SnapToGrid(groundHit.point);
+            tempDraggleOBJ.SnapToGrid(new Vector3(groundHit.point.x, groundHit.point.y - _heightOffset, groundHit.point.z));
             tempDraggleOBJ.isDrag = true;
             tempDraggleOBJ.isLongPress = false;
         }
@@ -198,44 +198,42 @@ public class BuildingPlacer : MonoBehaviour
             _isBuild = _PreviewOBJ.GetComponent<DraggableObject>().isBuild;
     }
 
-Dictionary<Vector2Int,Vector3> roadPosArray = new Dictionary<Vector2Int,Vector3>();
-List<GameObject> _tempPreviewObjs = new List<GameObject>();
-public void SaveandRemoveRoad()
-{
-    CanPlaceBuilding();
-    if (_isBuild)
+    public void SaveandRemoveRoad()
     {
-         GameObject PreviewOBJ = Instantiate(buildingSO[tempTypeNum].buildOBJ,
-                new Vector3(_PreviewOBJ.transform.position.x,_PreviewOBJ.transform.position.y,_PreviewOBJ.transform.position.z),
-                Quaternion.identity);
-         PreviewOBJ.GetComponent<DraggableObject>().SnapToGrid(_PreviewOBJ.transform.position);
-                 _tempPreviewObjs.Add(PreviewOBJ);
-        Vector2Int pos = new Vector2Int((int)_PreviewOBJ.transform.position.x, (int)_PreviewOBJ.transform.position.z);
-
-        if (!roadPosArray.ContainsKey(pos))
+        CanPlaceBuilding();
+        if (_isBuild)
         {
-                Vector3 temp=_PreviewOBJ.transform.position;
-            roadPosArray.Add(pos,temp); // 값은 placeholder로 true 사용
+            GameObject PreviewOBJ = Instantiate(buildingSO[tempTypeNum].buildOBJ,
+                   new Vector3(_PreviewOBJ.transform.position.x, _PreviewOBJ.transform.position.y + _heightOffset, _PreviewOBJ.transform.position.z),
+                   Quaternion.identity);
+            PreviewOBJ.GetComponent<DraggableObject>().SnapToGrid(new Vector3(_PreviewOBJ.transform.position.x, _PreviewOBJ.transform.position.y - _heightOffset, _PreviewOBJ.transform.position.z));
+            _tempPreviewObjs.Add(PreviewOBJ);
+            Vector2Int pos = new Vector2Int((int)_PreviewOBJ.transform.position.x, (int)_PreviewOBJ.transform.position.z);
+
+            if (!_roadPosArray.ContainsKey(pos))
+            {
+                Vector3 temp = _PreviewOBJ.transform.position;
+                _roadPosArray.Add(pos, temp); // 값은 placeholder로 true 사용
+            }
         }
     }
-}
 
-public void ClearTempPreviewObjects()
-{
-    foreach (var obj in _tempPreviewObjs)
+    public void ClearTempPreviewObjects()
     {
-        if (obj != null)
-            Destroy(obj);
+        foreach (var obj in _tempPreviewObjs)
+        {
+            if (obj != null)
+                Destroy(obj);
+        }
+        _tempPreviewObjs.Clear();
     }
-    _tempPreviewObjs.Clear();
-}
     /// <summary>
     /// 연속 건물 설치 확정
     /// </summary>
     public void SequenceAcceptBuild()
     {
 
-        foreach (var a in roadPosArray)
+        foreach (var a in _roadPosArray)
         {
             int hash = Guid.NewGuid().GetHashCode();
             _buildData = new BuildData
