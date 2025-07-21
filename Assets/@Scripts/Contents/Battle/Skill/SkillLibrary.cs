@@ -24,7 +24,7 @@ public class SkillLibrary : MonoBehaviour
             { 1007, TeamInvincible },
             { 1008, Rain },
             { 1009, BearforceSmash },
-            { 1010, Debuff },
+            { 1010, DebuffAtk },
         };
     }
 
@@ -305,8 +305,8 @@ public class SkillLibrary : MonoBehaviour
     #endregion
 
 
-    #region nextskill
-    private IEnumerator Debuff(BattleCharacter battleCharacter)
+    #region AtkDown
+    private IEnumerator DebuffAtk(BattleCharacter battleCharacter)
     {
         if (battleCharacter.TargetLocation != null)
         {
@@ -337,6 +337,19 @@ public class SkillLibrary : MonoBehaviour
         yield return new WaitForSeconds(10f);
         battleCharacter.AttackDamage *= 2f; // 공격력 원래대로 되돌림
     }
+
+
+    #endregion
+
+
+    #region Clone
+    private IEnumerator Clone(BattleCharacter battleCharacter)
+    {
+        GameObject clone =Instantiate(this.gameObject);
+        yield return null;
+    }
+
+
 
 
     #endregion
