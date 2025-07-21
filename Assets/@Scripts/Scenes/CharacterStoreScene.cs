@@ -34,15 +34,15 @@ public class CharacterStoreScene : BaseScene
                     Debug.LogWarning($"Unknown room number: {ch.UniqueRoomNumber}");
                     break;
             }
-            Vector3 pos = basePos + offset;
-            pos.y += 0.616f; // or NavMesh 높이 보정
+            Vector3 pos = basePos;
+            pos.y += 0.5f; // or NavMesh 높이 보정
 
             var ai = Managers.Object.Spawn<AICharacter>(pos, ch.DataId);
 
             ai.Data = ch;
             ai.Init();
             ai.ControllerRegister();
-            Managers.AI.ValidateNavMeshPosition(ai);
+            
             
         }
 
