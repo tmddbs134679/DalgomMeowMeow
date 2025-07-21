@@ -26,6 +26,7 @@ public class SkillLibrary : MonoBehaviour
             { 1009, BearforceSmash },
             { 1010, DebuffAtk },
             { 1011, Clone },
+            { 1012, TeamAtkup }
         };
     }
 
