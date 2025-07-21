@@ -26,6 +26,8 @@ public class SkillLibrary : MonoBehaviour
             { 1009, BearforceSmash },
             { 1010, DebuffAtk },
             { 1011, Clone },
+            { 1012, TeamAtkup },
+            { 1013, TeamASup }
         };
     }
 
@@ -112,11 +114,13 @@ public class SkillLibrary : MonoBehaviour
         battleCharacter.SkillCooldown = 15f; // 스킬 쿨타임 설정
         battleCharacter.AttackDelay /= 2f; // 공격 딜레이를 절반으로 줄임
         battleCharacter.Animator.speed = 2f; // 애니메이션 속도를 두 배로 증가시킴
+        battleCharacter.Agent.speed *= 2f; // 이동 속도 증가
         battleCharacter.UsingSkill = false;
         yield return StartCoroutine(battleCharacter._effectManager.FireHand(battleCharacter.LeftHandPivot, battleCharacter.RightHandPivot)); // FireHand 효과 실행
         battleCharacter.UsingSkill = true;
         battleCharacter.AttackDelay *= 2f; // 공격 딜레이를 원래대로 되돌림
         battleCharacter.Animator.speed = 1f; // 애니메이션 속도를 원래대로 되돌림
+        battleCharacter.Agent.speed /= 2f; // 이동 속도 증가
         battleCharacter.UsingSkill = false; // 스킬 사용 종료
     }
     #endregion
@@ -349,11 +353,11 @@ public class SkillLibrary : MonoBehaviour
         battleCharacter.UsingSkill = true;
         battleCharacter.SkillCooldown = 40f; // 스킬 쿨타임 설정
         yield return new WaitForSeconds(0.5f); // 스킬 애니메이션 딜레이
-      //  GameObject clone = Instantiate(battleCharacter._effectManager.Clone, battleCharacter.transform.position, Quaternion.identity); // 클론 이펙트 생성
-      //  clone.GetComponent<CloneActivity>().Init(battleCharacter.Health*0.5f, battleCharacter.AttackDamage*0.75f, battleCharacter.MoveSpeed*1.2f, battleCharacter.AttackRange, battleCharacter.transform.position); // 클론 초기화
+        GameObject clone = Instantiate(battleCharacter._effectManager.ClonePrefab, battleCharacter.transform.position, Quaternion.identity); // 클론 이펙트 생성
+        clone.GetComponent<CloneActivity>().Init(battleCharacter.Health*0.5f, battleCharacter.AttackDamage*0.75f, battleCharacter.MoveSpeed*1.2f, battleCharacter.AttackRange, battleCharacter.transform.position); // 클론 초기화
         battleCharacter.UsingSkill = false; // 스킬 사용 종료
         yield return new WaitForSeconds(20f);
-      //  Destroy(clone);
+        Destroy(clone);
     }
     #endregion
 
@@ -380,8 +384,37 @@ public class SkillLibrary : MonoBehaviour
     {
         teamCharacter.AttackDamage *= 1.5f; // 공격력 1.5배 증가
         yield return null;
-      //  yield return StartCoroutine(teamCharacter._effectManager.); // 10초 동안 지속
+        yield return StartCoroutine(teamCharacter._effectManager.Buff(teamCharacter._effectManager.AtkUp)); // 10초 동안 지속
         teamCharacter.AttackDamage /= 1.5f; // 공격력 원래대로 되돌림
+    }
+    #endregion
+
+
+    #region TeamASup
+    private IEnumerator TeamASup(BattleCharacter battleCharacter)
+    {
+        battleCharacter.UsingSkill = true;
+        battleCharacter.SkillCooldown = 25f; // 스킬 쿨타임 설정
+        battleCharacter.Animator.SetTrigger(battleCharacter.SkillTrigger);
+        yield return new WaitForSeconds(1f); // 스킬 애니메이션 딜레이
+        Collider[] hits = Physics.OverlapSphere(battleCharacter.transform.position, 5f, LayerMask.GetMask("Player"));
+        foreach (var hit in hits)
+        {
+            if (hit.TryGetComponent<BattleCharacter>(out var teamCharacter))
+            {
+                StartCoroutine(ASup(teamCharacter)); // 팀원에게 무적 효과 적용
+            }
+        }
+        battleCharacter.UsingSkill = false;
+    }
+
+    private IEnumerator ASup(BattleCharacter teamCharacter)
+    {
+        teamCharacter.AttackDelay /= 1.5f; // 공격 딜레이를 절반으로 줄임
+        teamCharacter.Animator.speed = 1.5f; // 애니메이션 속도를 두 배로 증가시킴
+        yield return StartCoroutine(teamCharacter._effectManager.Buff(teamCharacter._effectManager.speedUp)); // 10초 동안 지속
+        teamCharacter.AttackDelay *= 1.5f; // 공격 딜레이를 원래대로 되돌림
+        teamCharacter.Animator.speed = 1f; // 애니메이션 속도를 원래대로 되돌림
     }
     #endregion
 }

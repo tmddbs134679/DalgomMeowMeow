@@ -14,6 +14,10 @@ public class EffectManager : MonoBehaviour
 
     public ParticleSystem[] BuffEffect;
 
+
+    public Color AtkUp = new Color(255 / 255f, 231 / 255f, 83 / 255f);
+    public Color speedUp = new Color(95 / 255f, 253 / 255f, 255 / 255f);
+
     private void Awake()
     {
         BuffEffect = BuffPrefab.GetComponentsInChildren<ParticleSystem>();
@@ -173,8 +177,9 @@ public class EffectManager : MonoBehaviour
     #endregion
 
     #region Buff
-    public IEnumerator Buff()
+    public IEnumerator Buff(Color color)
     {
+        BuffColorSet(color);
         DebuffPrefab.SetActive(true);
         DebuffPrefab.GetComponent<ParticleSystem>().Play(); // 얼음 효과 재생
         yield return new WaitForSeconds(10f); // 4초 동안 얼음 효과 유지
