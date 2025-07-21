@@ -152,14 +152,18 @@ public class UI_BuildPopup : UI_Popup
         if (type == Define.BuildingType.SlotMachine)
         {
             if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(Define.BuildingType.SlotMachine.ToString(), out int count) && count >= 1)
+            {
                 BuildingPlacer.Instance.islimitBuildCount = false;
-            return;
+                return;
+            }
         }
         if (type == Define.BuildingType.Shop)
         {
             if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(Define.BuildingType.Shop.ToString(), out int count) && count >= 1)
+            {
                 BuildingPlacer.Instance.islimitBuildCount = false;
-            return;
+                return;
+            }
         }
         BuildingPlacer.Instance.islimitBuildCount = true;
     }

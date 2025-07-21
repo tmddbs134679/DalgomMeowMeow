@@ -31,6 +31,8 @@ public class Define
 
     public static readonly int FOOD_MAX_VALUE = 12;
     public static readonly int GOLD_PER_MINUTE = 100;
+
+    public static readonly int TRAVEL_TIME = 5;
     public enum EUIEvent
     {
         None,

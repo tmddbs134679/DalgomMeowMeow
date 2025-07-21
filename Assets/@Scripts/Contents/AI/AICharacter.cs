@@ -139,13 +139,7 @@ public class AICharacter : BaseObject
         Controller.OnUpdate(Time.deltaTime);
 
         if (BuildingPlacer.Instance.isAI) OnClick();
-        if (!BuildingPlacer.Instance.isAI)LongPressClick();
-
-        //확인하기 위한 스탯 설정
-        MaxStamina = Data.CurrentStamina;
-        Atk = Data.Atk;
-        Hp = Data.Hp;
-        MoveSpeed = Data.MoveSpeed;
+        if (!BuildingPlacer.Instance.isAI) LongPressClick();
 
     }
 
@@ -354,13 +348,16 @@ public class AICharacter : BaseObject
                 Vector3 mouspot = hit.point;
                 animator.SetInteger("animation", 49);
                 SetSpeed(0);
-                this.transform.position = new Vector3(mouspot.x, 2f, mouspot.z);
+                this.transform.position = new Vector3(mouspot.x, hit.point.y + 2f, mouspot.z);
+
             }
         }
         if (Input.GetMouseButtonUp(0)  && isFollowing)
         {
             if (isFollowing)
-                this.transform.position = new Vector3(transform.position.x, 0.616f, transform.position.z);
+            {
+                this.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+            }
             isFollowing = false;
             if (Controller.CurrentState() is CharacterIdleState)
                 SetSpeed(Data.WalkSpeed);

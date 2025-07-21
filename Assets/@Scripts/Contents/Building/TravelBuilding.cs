@@ -15,7 +15,7 @@ public class TravelBuilding : BuildingBase
         }
         else
         {
-            Debug.Log("여행중");
+            Managers.UI.ShowPopupUI<UI_TravelCheckPopup>();
         }
  
     }

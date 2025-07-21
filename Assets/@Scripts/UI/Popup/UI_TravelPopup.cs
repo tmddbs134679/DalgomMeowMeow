@@ -100,7 +100,13 @@ public class UI_TravelPopup : UI_Popup
             Managers.UI.ShowToast("캐릭터를 먼저 선택하세요!");
             return;
         }
-        Managers.Time.StartTravel(_character);
+
+        TimeSpan travelTime = TimeSpan.FromHours(Define.TRAVEL_TIME);
+
+        TimeSpan travelTimetest = TimeSpan.FromSeconds(10);
+
+        //테스트중
+        Managers.Game.StartTravel(_character, travelTimetest);
         Managers.UI.ClosePopupUI(this);
     }
 
@@ -120,6 +126,10 @@ public class UI_TravelPopup : UI_Popup
         Managers.Ads.ShowRewardedAd(() =>
         {
             //여행시간 30분 줄이기.
+            TimeSpan travelTime = TimeSpan.FromHours(Define.TRAVEL_TIME - 0.5);
+
+            Managers.Game.StartTravel(_character, travelTime);
+
             _character.IsTravelMode = true;
             Managers.UI.ClosePopupUI(this);
         });
