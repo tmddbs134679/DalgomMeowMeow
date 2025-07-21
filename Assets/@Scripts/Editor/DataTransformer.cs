@@ -450,51 +450,68 @@ public class DataTransformer : EditorWindow
     
     private static void ParseUnlockContentsData(string filename)
     {
-        UnlockContentsDataLoader loader = new UnlockContentsDataLoader();
-        var contentDict = new Dictionary<string, UnlockContentsData>();
-    
-        #region ParseUnlockContentsData
-        string[] lines = File.ReadAllText($"{Application.dataPath}/@Resources/Data/Excel/{filename}Data.csv").Split("\n");
-    
-        for (int y = 1; y < lines.Length; y++) // Skip header
+   UnlockContentsDataLoader loader = new UnlockContentsDataLoader();
+    var contentDict = new Dictionary<string, UnlockContentsData>();
+
+    #region ParseUnlockContentsData
+    string[] lines = File.ReadAllText($"{Application.dataPath}/@Resources/Data/Excel/{filename}Data.csv").Split('\n');
+
+    for (int y = 1; y < lines.Length; y++) // Skip header
+    {
+        string[] row = lines[y].Replace("\r", "").Split(',');
+        if (row.Length < 6 || string.IsNullOrEmpty(row[0]))
+            continue;
+
+        int i = 0;
+
+        string contentId = ConvertValue<string>(row[i++]);
+        string conditionTypeStr = row[i++];
+        string questId = ConvertValue<string>(row[i++]);
+        int requiredGold = ConvertValue<int>(row[i++]);
+        string itemId = ConvertValue<string>(row[i++]);
+        string description = ConvertValue<string>(row[i++]);
+
+        // 없으면 생성
+        if (!contentDict.TryGetValue(contentId, out var unlockData))
         {
-            string[] row = lines[y].Replace("\r", "").Split(',');
-            if (row.Length < 4 || string.IsNullOrEmpty(row[0]))
-                continue;
+            unlockData = new UnlockContentsData
+            {
+                ContentId = contentId,
+                Conditions = new List<UnlockCondition>(),
+                Items = new List<UnlockItemData>()
+            };
+            contentDict[contentId] = unlockData;
+        }
 
-            int i = 0;
-
-            string contentId = ConvertValue<string>(row[i++]);
-            UnlockConditionType type = ConvertValue<UnlockConditionType>(row[i++]);
-            string questId = ConvertValue<string>(row[i++]);
-            int requiredGold = ConvertValue<int>(row[i++]);
-
-            var condition = new UnlockCondition
+        // 조건 있는 경우 추가
+        if (!string.IsNullOrWhiteSpace(conditionTypeStr))
+        {
+            UnlockConditionType type = (UnlockConditionType)Enum.Parse(typeof(UnlockConditionType), conditionTypeStr);
+            unlockData.Conditions.Add(new UnlockCondition
             {
                 Type = type,
                 QuestId = questId,
                 RequiredGold = requiredGold
-            };
-
-            if (!contentDict.TryGetValue(contentId, out var unlockData))
-            {
-                unlockData = new UnlockContentsData
-                {
-                    ContentId = contentId,
-                    Conditions = new List<UnlockCondition>()
-                };
-                contentDict[contentId] = unlockData;
-            }
-
-            unlockData.Conditions.Add(condition);
+            });
         }
 
-        loader.UnlockContents = new List<UnlockContentsData>(contentDict.Values);
-        #endregion
-    
-        string jsonStr = JsonConvert.SerializeObject(loader, Formatting.Indented);
-        File.WriteAllText($"{Application.dataPath}/@Resources/Data/JsonData/{filename}Data.json", jsonStr);
-        AssetDatabase.Refresh();
+        // 해금 콘텐츠 있는 경우 추가
+        if (!string.IsNullOrWhiteSpace(description))
+        {
+            unlockData.Items.Add(new UnlockItemData
+            {
+                Id = itemId,
+                Description = description
+            });
+        }
+    }
+
+    loader.UnlockContents = new List<UnlockContentsData>(contentDict.Values);
+    #endregion
+
+    string jsonStr = JsonConvert.SerializeObject(loader, Formatting.Indented);
+    File.WriteAllText($"{Application.dataPath}/@Resources/Data/JsonData/{filename}Data.json", jsonStr);
+    AssetDatabase.Refresh();
     }
 
     public static T ConvertValue<T>(string value)
