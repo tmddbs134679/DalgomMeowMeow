@@ -146,7 +146,7 @@ public class UI_BuildPopup : UI_Popup
         }
 
         // 열려 있지 않으면 열기
-        BuildingPlacer.Instance.OnBuildingCancel -= CancelBuildUI;
+       // BuildingPlacer.Instance.OnBuildingCancel -= CancelBuildUI;
         _farmPopup = Managers.UI.ShowPopupUI<UI_FarmPopup>();
         _farmPopup.GetPopupObject(GetObject((int)GameObjects.BuildScrollObject));
         _farmPopup.GetPopup(this);
@@ -245,7 +245,6 @@ public class UI_BuildPopup : UI_Popup
 
     private void CancelBuildUI()
     {
-        Debug.Log("buildpopup닫기");
         Managers.UI.ClosePopupUI(this);
         (Managers.UI.SceneUI as UI_GameScene).gameObject.SetActive(true);
     }

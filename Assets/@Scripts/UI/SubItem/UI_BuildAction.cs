@@ -61,7 +61,7 @@ public class UI_BuildAction : UI_Popup
         }
         else
         {
-            if (BuildingPlacer.Instance.isSequenceBuild) BuildingPlacer.Instance.SequenceAcceptBuild();
+            if (BuildingPlacer.Instance.isSequenceBuild) BuildingPlacer.Instance.AcceptSequenceBuild();
             else
             {
                 BuildingPlacer.Instance.AcceptBuild();
@@ -74,12 +74,13 @@ public class UI_BuildAction : UI_Popup
     private void CancelBuild()
     {
         if (BuildingPlacer.Instance.OnBuildingCancel != null)
-{
-    foreach (var d in BuildingPlacer.Instance.OnBuildingCancel.GetInvocationList())
-    {
-        Debug.Log($"구독자: {d.Method.Name}, 소유 클래스: {d.Target}");
-    }
-}
+        {
+            foreach (var d in BuildingPlacer.Instance.OnBuildingCancel.GetInvocationList())
+            {
+                Debug.Log($"구독자: {d.Method.Name}, 소유 클래스: {d.Target}");
+            }
+        }
+        BuildingPlacer.Instance.isSequenceBuild = false;
         BuildingPlacer.Instance.OnBuildingCancel?.Invoke();//UI끄기 이벤트
         BuildingPlacer.Instance.CancelBuild();
     }

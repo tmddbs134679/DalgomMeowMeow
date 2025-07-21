@@ -17,7 +17,7 @@ public class UI_FarmPopup : UI_Popup
         PumpkinButton,
         PotatoButton,
         OnionButton,
-        CloseBackGroundButton,
+      //  CloseBackGroundButton,
     }
     enum Texts
     {
@@ -140,7 +140,6 @@ public class UI_FarmPopup : UI_Popup
 
     private void CancelBuildUI()
     {
-        Debug.Log("farmpopup닫기");
         Managers.UI.ClosePopupUI(this); //스택이기 때문에 닫는 순서 중요함
         Managers.UI.ClosePopupUI(_uI_BuildPopup);
         (Managers.UI.SceneUI as UI_GameScene).gameObject.SetActive(true);
