@@ -128,6 +128,7 @@ public class ObjectManager
             {
                 ai.GetComponent<NavMeshAgent>().enabled = false;
                 ai.IsReplica = true;
+                Util.SetLayerRecursively(ai.gameObject, 30);
             }
 
             return ai as T;
