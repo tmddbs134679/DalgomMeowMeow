@@ -43,7 +43,9 @@ public class UI_GameScene : UI_Scene
     UI_CheckOutPopup _checkOutPopupUI;
     UI_ShopPopup _shopPopupUI;
     UI_EditSettingPopup _editSettingPopupUI;
-    // UI_BuildAction _uI_BuildAction;
+    UI_NotiPopup _uiNotiPopup;
+    public UI_BuildAction _uI_BuildAction;
+
     public override bool Init()
     {
         if (base.Init() == false)
@@ -57,14 +59,16 @@ public class UI_GameScene : UI_Scene
         _checkOutPopupUI = Managers.UI.ShowPopupUI<UI_CheckOutPopup>();
         _shopPopupUI = Managers.UI.ShowPopupUI<UI_ShopPopup>();
         _editSettingPopupUI = Managers.UI.ShowPopupUI<UI_EditSettingPopup>();
-        // _uI_BuildAction = Managers.UI.MakeSubItem<UI_BuildAction>();
-        
+        _uI_BuildAction = Managers.UI.MakeSubItem<UI_BuildAction>();
+        _uiNotiPopup = Managers.UI.ShowPopupUI<UI_NotiPopup>();
+
         _quickMenuPopupUI.gameObject.SetActive(false);
         _checkOutPopupUI.gameObject.SetActive(false);
         _shopPopupUI.gameObject.SetActive(false);
         _editSettingPopupUI.gameObject.SetActive(false);
-        // _uI_BuildAction.SetActive(false);
+        _uI_BuildAction.SetActive(false);
 
+        _uiNotiPopup.gameObject.SetActive(false);
 
         GetObject((int)GameObjects.StorageObject).GetComponent<HorizontalLayoutGroup>().spacing = UI_GROUP_SPACING;
 
@@ -83,6 +87,10 @@ public class UI_GameScene : UI_Scene
         GetButton((int)Buttons.ShopButton).gameObject.BindEvent(OnClickShopButton);
         GetButton((int)Buttons.ShopButton).GetOrAddComponent<UI_ButtonAnimation>();
 
+
+        GetButton((int)Buttons.NoticeButton).gameObject.BindEvent(OnClickNoticeButton);
+        GetButton((int)Buttons.NoticeButton).GetOrAddComponent<UI_ButtonAnimation>();
+
         GetButton((int)Buttons.EditPosButton).gameObject.SetActive(false);
 
         #region Action 추가
@@ -98,9 +106,14 @@ public class UI_GameScene : UI_Scene
         return true;
     }
 
+    private void OnClickNoticeButton()
+    {
+        _uiNotiPopup.gameObject.SetActive(true);
+    }
+
     private void OnClickEditSettingButton()
     {
-       _editSettingPopupUI.gameObject.SetActive(true);
+        _editSettingPopupUI.gameObject.SetActive(true);
     }
 
     private void OnClickShopButton()
