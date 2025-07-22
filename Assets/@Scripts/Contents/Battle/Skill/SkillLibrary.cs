@@ -354,7 +354,7 @@ public class SkillLibrary : MonoBehaviour
         battleCharacter.SkillCooldown = 40f; // 스킬 쿨타임 설정
         yield return new WaitForSeconds(0.5f); // 스킬 애니메이션 딜레이
         GameObject clone = Instantiate(battleCharacter._effectManager.ClonePrefab, battleCharacter.transform.position, Quaternion.identity); // 클론 이펙트 생성
-        clone.GetComponent<CloneActivity>().Init(battleCharacter.Health*0.5f, battleCharacter.AttackDamage*0.75f, battleCharacter.MoveSpeed*1.2f, battleCharacter.AttackRange, battleCharacter.transform.position); // 클론 초기화
+        clone.GetComponent<CloneActivity>().Init(battleCharacter.Health*0.5f, battleCharacter.AttackDamage*0.75f, battleCharacter.MoveSpeed*1.2f, battleCharacter.AttackRange, battleCharacter.transform); // 클론 초기화
         battleCharacter.UsingSkill = false; // 스킬 사용 종료
         yield return new WaitForSeconds(20f);
         Destroy(clone);
