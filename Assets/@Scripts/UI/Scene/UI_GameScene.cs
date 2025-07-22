@@ -43,6 +43,9 @@ public class UI_GameScene : UI_Scene
     UI_CheckOutPopup _checkOutPopupUI;
     UI_ShopPopup _shopPopupUI;
     UI_EditSettingPopup _editSettingPopupUI;
+    UI_NotiPopup _uiNotiPopup;
+    public UI_BuildAction _uI_BuildAction;
+
     public override bool Init()
     {
         if (base.Init() == false)
@@ -52,18 +55,23 @@ public class UI_GameScene : UI_Scene
         BindButton(typeof(Buttons));
         BindText(typeof(Texts));
 
-        _quickMenuPopupUI =  Managers.UI.ShowPopupUI<UI_QuickMenu>();
+        _quickMenuPopupUI = Managers.UI.ShowPopupUI<UI_QuickMenu>();
         _checkOutPopupUI = Managers.UI.ShowPopupUI<UI_CheckOutPopup>();
         _shopPopupUI = Managers.UI.ShowPopupUI<UI_ShopPopup>();
         _editSettingPopupUI = Managers.UI.ShowPopupUI<UI_EditSettingPopup>();
+        _uI_BuildAction = Managers.UI.MakeSubItem<UI_BuildAction>();
+        _uiNotiPopup = Managers.UI.ShowPopupUI<UI_NotiPopup>();
 
         _quickMenuPopupUI.gameObject.SetActive(false);
         _checkOutPopupUI.gameObject.SetActive(false);
         _shopPopupUI.gameObject.SetActive(false);
         _editSettingPopupUI.gameObject.SetActive(false);
+        _uI_BuildAction.SetActive(false);
+
+        _uiNotiPopup.gameObject.SetActive(false);
 
         GetObject((int)GameObjects.StorageObject).GetComponent<HorizontalLayoutGroup>().spacing = UI_GROUP_SPACING;
- 
+
         GetButton((int)Buttons.QuickButton).gameObject.BindEvent(OnClickQuickButton);
         GetButton((int)Buttons.QuickButton).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
         GetButton((int)Buttons.BuildButton).gameObject.BindEvent(OnClickBuildButton);
@@ -78,6 +86,10 @@ public class UI_GameScene : UI_Scene
 
         GetButton((int)Buttons.ShopButton).gameObject.BindEvent(OnClickShopButton);
         GetButton((int)Buttons.ShopButton).GetOrAddComponent<UI_ButtonAnimation>();
+
+
+        GetButton((int)Buttons.NoticeButton).gameObject.BindEvent(OnClickNoticeButton);
+        GetButton((int)Buttons.NoticeButton).GetOrAddComponent<UI_ButtonAnimation>();
 
         GetButton((int)Buttons.EditPosButton).gameObject.SetActive(false);
 
@@ -94,9 +106,14 @@ public class UI_GameScene : UI_Scene
         return true;
     }
 
+    private void OnClickNoticeButton()
+    {
+        _uiNotiPopup.gameObject.SetActive(true);
+    }
+
     private void OnClickEditSettingButton()
     {
-       _editSettingPopupUI.gameObject.SetActive(true);
+        _editSettingPopupUI.gameObject.SetActive(true);
     }
 
     private void OnClickShopButton()

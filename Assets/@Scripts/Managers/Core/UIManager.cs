@@ -136,7 +136,6 @@ public class UIManager
             return;
 
         UI_Popup popup = _popupStack.Pop();
-        Debug.Log(popup);
         Managers.Resource.Destroy(popup.gameObject);
         popup = null;
         _order--;
