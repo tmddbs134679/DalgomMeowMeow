@@ -6,7 +6,8 @@ public class PlayerCharacter : BattleCharacter
     private BattleManager _battleManager;
 
     public Material CharacterMaterial;
-    public float OutlineWidth; 
+    public float OutlineWidth;
+    public bool victory = false;
 
     protected override void Awake()
     {

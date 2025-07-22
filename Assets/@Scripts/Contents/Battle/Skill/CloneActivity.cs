@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Rendering;
 
 public class CloneActivity : MonoBehaviour
 {
@@ -11,15 +12,18 @@ public class CloneActivity : MonoBehaviour
     [SerializeField] private BattleCharacter _targetCharacter; // 타겟 캐릭터
     [SerializeField] private Transform _parent;
     private bool targetloss = false; // 타겟이 없을 때 부모 위치로 이동하기 위한 플래그
+    private PlayerCharacter _parentCharactger;
 
-    private float _maxHP;
-    private float _attack;
-    private float _moveSpeed;
-    private float _attackRange; // 공격 범위
-    private float _detectRangef; // 적 탐지 범위
+    [Header("Stats")]
+    [SerializeField] private float _maxHP;
+    [SerializeField] private float _attack;
+    [SerializeField] private float _moveSpeed;
+    [SerializeField] private float _attackRange; // 공격 범위
+    [SerializeField] private float _detectRangef; // 적 탐지 범위
+    [SerializeField] private const float _attackDelay = 1f; // 공격 딜레이 시간
+
     private float _currentHP; // 최대 체력 (초기화용)
     private float _attacktimer = 1f; // 공격 딜레이 타이머
-    private const float _attackDelay = 1f; // 공격 딜레이 시간
     private int _animationHash; // 애니메이션 해시
 
 
@@ -49,11 +53,18 @@ public class CloneActivity : MonoBehaviour
     private void Awake()
     {
         _animator = GetComponent<Animator>(); // 애니메이터 컴포넌트 초기화
+        _animationHash = Animator.StringToHash("animation");
         _agent = GetComponent<NavMeshAgent>(); // NavMeshAgent 컴포넌트 초기화
+        _parentCharactger = _parent.GetComponent<PlayerCharacter>();
     }
 
     void Update()
     {
+        if(_parentCharactger.victory)
+        {
+            this.gameObject.SetActive(false); 
+        }
+
         if (_targetLocation == null)
         {
             var newTarget = FindClosestEnemyInRange(_detectRangef);
@@ -68,7 +79,7 @@ public class CloneActivity : MonoBehaviour
             }
             else if (!targetloss) // 타겟이 없고 플래그가 false일 때
             {
-                _agent.SetDestination(_parent.position); // 타겟이 없으면 부모 위치로 이동
+                _agent.SetDestination(_parent.position); // 타겟이 없으면 부모 근처로 이동
             }
 
 
@@ -98,7 +109,7 @@ public class CloneActivity : MonoBehaviour
     }
 
 
-    public void Init(float maxhp, float atk, float moveSpeed, float range, Vector3 parent)
+    public void Init(float maxhp, float atk, float moveSpeed, float range, Transform parent)
     {
         _maxHP = maxhp;
         _attack = atk;
@@ -109,9 +120,10 @@ public class CloneActivity : MonoBehaviour
         _agent.stoppingDistance = _attackRange; // NavMeshAgent의 정지 거리 설정
         _currentHP = _maxHP; // 현재 체력 초기화
         _agent.speed = _moveSpeed; // NavMeshAgent 속도 설정
+        _parentCharactger = parent.GetComponent<PlayerCharacter>();
 
         _animationHash = Animator.StringToHash("animation"); 
-        Vector3 pos = new Vector3(parent.x, parent.y, parent.z - 2);
+        Vector3 pos = new Vector3(parent.position.x, parent.position.y, parent.position.z - 2);
         _parent.position = pos; // 부모 위치 설정
     }
 

@@ -46,7 +46,7 @@ public class BattleManager : MonoBehaviour
             Victory = true;
             _teamController._members.ForEach(m => { m.AttackRange = 1; m.Agent.stoppingDistance = 1; });
             _teamController._members.ForEach(m => m.CharacterObject.transform.localScale = new Vector3(1, 1, 1));
-
+            _teamController._members.ForEach(m => m.victory = true); // 승리 머티리얼 적용
             _teamController._members.ForEach(m => m.SetOutline()); // 승리 머티리얼 적용
 
 

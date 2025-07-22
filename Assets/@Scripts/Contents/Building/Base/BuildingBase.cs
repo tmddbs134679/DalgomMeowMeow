@@ -23,7 +23,6 @@ public abstract class BuildingBase : BaseObject
     // [Header("동물 배치")]
     //protected Animal assignedAnimal;
     //주석추가
-
     public int CurrentLevel { get; protected set; } = 1;
 
     public int UniqueId { get; private set; }
