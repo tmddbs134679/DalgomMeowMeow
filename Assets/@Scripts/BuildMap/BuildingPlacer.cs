@@ -399,9 +399,11 @@ public class BuildingPlacer : MonoBehaviour
         buildMap.Remove(_CurBuildData.UniqueId);
         ClearTile();//기존에 있던 오브젝트의 타일 제거
         Destroy(OriginTempOBJ);
+        Destroy(_PreviewOBJ);
         gridMap.LoadMap(); //맵갱신
         buildMap.LoadBuild(); //오브젝트 갱신
         surface.BuildNavMesh(); //네브매쉬 깔기
+                OnAutoSave?.Invoke();
     }
 
     /// <summary>
