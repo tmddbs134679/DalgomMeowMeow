@@ -5,7 +5,18 @@ public class RoomManager
 {
     public GameObject roomPrefab;
     public Dictionary<Vector3, Room> rooms = new Dictionary<Vector3, Room>();
-    public int UnLockRoom = 1;
+    public int UnLockRoom
+    {
+        get
+        {
+            return PlayerPrefs.GetInt("UnLockRoom", 1); // 기본값 1
+        }
+        set
+        {
+            PlayerPrefs.SetInt("UnLockRoom", value);
+            PlayerPrefs.Save();
+        }
+    }
 
     // 기준 방향 (예: 위, 왼쪽 위, 오른쪽 위)
 
