@@ -44,6 +44,11 @@ namespace Scripts.Contents.AI.FSM.State
             if (elapsedTime > 0.5f)
             {
                 targetPosition = character.currentBuilding.transform.position;
+                if (character.currentBuilding.BuildingData.BuildingType == Define.EBuildingType.Playing)
+                {
+                    targetPosition -= new Vector3(0.9f, 0, 0);
+                }
+
                 character.Controller.Move(targetPosition);
                 elapsedTime = 0f; // 시간 초기화
             }
