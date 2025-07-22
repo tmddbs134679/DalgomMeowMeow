@@ -40,6 +40,7 @@ namespace Scripts.Contents.AI.FSM.State
             if (character.currentBuilding == null)
             {
                 character.characterAction.Idle();
+                return;
             }
             if (elapsedTime > 0.5f)
             {
