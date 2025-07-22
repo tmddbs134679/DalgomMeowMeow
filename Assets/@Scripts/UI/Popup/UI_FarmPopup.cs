@@ -94,8 +94,8 @@ public class UI_FarmPopup : UI_Popup
 
         GetObject((int)GameObjects.BuildScrollObject).SetActive(false);
         BuildingPlacer.Instance.SelectBuildingType(type);
-        UI_BuildAction popup = Managers.UI.MakeSubItem<UI_BuildAction>(this.transform);
-        // popup.islimitBuildCount = islimitBuildCount;
+        BuildingPlacer.Instance.uI_BuildAction.transform.position = this.transform.position;
+        BuildingPlacer.Instance.uI_BuildAction.SetActive(true);
     }
     //건물 갯수 제한 코드 구간
     private void LimitBuildCount(Define.EBuildingType type)

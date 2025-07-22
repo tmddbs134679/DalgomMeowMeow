@@ -38,17 +38,20 @@ CancelButton
                 BuildingPlacer.Instance.OnBuildingCancel += CancelBuildUI;
         return true;
     }
+        public void OnDestroy()
+    {
+        BuildingPlacer.Instance.OnBuildingCancel -= CancelBuildUI;
+    }
     void Start()
     {
-        BuildingPlacer.Instance.uI_BuildAction = Managers.UI.MakeSubItem<UI_BuildAction>(this.transform);
-        Debug.Log(BuildingPlacer.Instance.uI_BuildAction+"세이브무브빌드");
+        BuildingPlacer.Instance.uI_BuildAction.transform.position = this.transform.position;
+        BuildingPlacer.Instance.uI_BuildAction.SetActive(true);
     }
 
     #region Build
     private void CancelBuildUI()
     {
         BuildingPlacer.Instance.isSelect = false;
-        BuildingPlacer.Instance.CancelBuild();
         Managers.UI.ClosePopupUI(this);
         (Managers.UI.SceneUI as UI_GameScene).gameObject.SetActive(true);
     }
