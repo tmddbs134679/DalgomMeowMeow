@@ -25,12 +25,12 @@ public class AICharacter : BaseObject
     [Header("AI 캐릭터 배정된 건물")]
     public BuildingBase currentBuilding;
 
-    [Header("캐릭터 스탯")]
-    public float Stamina;
-    public float MaxStamina;
-    public float Atk;
-    public float Hp;
-    public float MoveSpeed;
+    //[Header("캐릭터 스탯")]
+    //public float Stamina;
+    //public float MaxStamina;
+    //public float Atk;
+    //public float Hp;
+    //public float MoveSpeed;
 
     [Header("캐릭터 현재 위치")]
     public bool inMain = false; // 캐릭터가 메인 안에 있는지 여부
@@ -79,8 +79,6 @@ public class AICharacter : BaseObject
 
     [HideInInspector]
     public bool _isHelloReady = true;
-
-    
 
     [HideInInspector]
     public CharacterEmoSet emo;
@@ -137,7 +135,6 @@ public class AICharacter : BaseObject
         }
 
         Controller.OnUpdate(Time.deltaTime);
-
         if (BuildingPlacer.Instance.isAI) OnClick();
         if (!BuildingPlacer.Instance.isAI) LongPressClick();
 
@@ -172,6 +169,7 @@ public class AICharacter : BaseObject
         CurrentState = Data.CurrentState;
         loadState = Data.CurrentState;
         loadBuilding = Data.LoadBuilding;
+
 
         // TODO : FSM 등 상태 적용
         ControllerRegister();

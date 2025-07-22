@@ -30,7 +30,6 @@ namespace Data
         public string SkillID;
         public float WalkSpeed;
         public string SkillScene;
-        public bool InMain;
 
     }
 

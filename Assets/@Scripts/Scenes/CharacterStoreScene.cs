@@ -1,3 +1,4 @@
+using Scripts.Contents.AI.FSM.State;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,14 +22,18 @@ public class CharacterStoreScene : BaseScene
 
         foreach (var ch in Managers.Game.Characters.Where(c => !c.InMainScene))
         {
-            var pos = new Vector3(Random.Range(-5f, 5f), 0.616f, Random.Range(-5f, 5f));
-            var ai = Managers.Object.Spawn<AICharacter>(pos, ch.DataId);
+            Vector3 offset = new Vector3(Random.Range(-3f, 3f), 0f, Random.Range(-3f, 3f));
 
-            ai.Init();
+            var ai = Managers.Object.Spawn<AICharacter>(Vector3.zero, ch.DataId);
+
             ai.Data = ch;
+            ai.Init();
             ai.ControllerRegister();
+            ai.transform.position = ch.RoomPos.ToVector3();
 
-            Managers.AI.ValidateNavMeshPosition(ai);
+            Managers.Game.CharacterInMainScene[ch.UniqueId] = ai;
+            Managers.Game.SetInitEquipment(Managers.Game.CharacterInMainScene[ch.UniqueId]);
+
         }
 
     }
@@ -36,5 +41,6 @@ public class CharacterStoreScene : BaseScene
 
     public override void Clear()
     {
+        Managers.Game.SaveGame();
     }
 }
