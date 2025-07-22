@@ -60,6 +60,13 @@ public class QuestManager : MonoBehaviour
             if (quest.State == QuestProgressState.InProgress)
             {
                 quest.AddProgress();
+                
+                // ✅ 퀘스트 목표에 도달했으면 즉시 콘텐츠 해금 조건 검사
+                if (quest.State == QuestProgressState.Completed)
+                {
+                    CheckUnlockConditions(quest.QuestData.QuestId);
+                    TryActivateNext(quest.QuestData.QuestId); // 다음 퀘스트도 활성화
+                }
             }
         }
         OnQuestUpdated?.Invoke(); // 이벤트 호출

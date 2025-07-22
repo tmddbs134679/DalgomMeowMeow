@@ -158,7 +158,10 @@ public class UI_BuildPopup : UI_Popup
     {
         var button = GetButton((int)type);
         if (button != null && !button.interactable)
+        {
+            Managers.UI.ShowToast("아직 열리지 않았습니다");
             return;
+        }
         LimitBuildCount(type);
         if (!BuildingPlacer.Instance.islimitBuildCount) return;
         Setting();//데이터 갱신
