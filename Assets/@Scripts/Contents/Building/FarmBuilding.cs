@@ -26,7 +26,10 @@ public class FarmBuilding : BuildingBase
         _textAnim.SetInfo(Define.EBuildingType.CabbageFarm, transform.position);
 
     }
-
+    private void OnDisable()
+    {
+        _textAnim.gameObject.SetActive(false);
+    }
     public override bool Init()
     {
         base.Init();
