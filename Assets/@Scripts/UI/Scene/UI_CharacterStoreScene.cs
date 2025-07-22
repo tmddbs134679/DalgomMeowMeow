@@ -155,6 +155,7 @@ public class UI_CharacterStoreScene : UI_Scene
             {
                 Managers.Room.CreateRoom(Managers.Room.directions[i]);
             }
+            GetObject((int)GameObjects.CheckImage).gameObject.SetActive(false);
         }
 
         else
