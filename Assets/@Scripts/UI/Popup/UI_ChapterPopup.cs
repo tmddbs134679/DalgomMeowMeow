@@ -27,6 +27,7 @@ public class UI_ChapterPopup : UI_Popup
         UnlockText3,
     }
 
+    private string _currentChapterId = "Chapter1";
     public override bool Init()
     {
         if (!base.Init()) return false;
@@ -49,27 +50,31 @@ public class UI_ChapterPopup : UI_Popup
 
     private void OnClickUnlockButton()
     {
-        
+        QuestManager.Instance.TryUnlockContent(_currentChapterId);
     }
 
     private void OnClickChapter4Button()
     {
-        CreateChapterSlot("Chapter4"); 
+        _currentChapterId = "Chapter4";
+        CreateChapterSlot(_currentChapterId); 
     }
 
     private void OnClickChapter3Button()
     {
-        CreateChapterSlot("Chapter3");   
+        _currentChapterId = "Chapter3";
+        CreateChapterSlot(_currentChapterId);   
     }
 
     private void OnClickChapter2Button()
     {
-        CreateChapterSlot("Chapter2"); 
+        _currentChapterId = "Chapter2";
+        CreateChapterSlot(_currentChapterId); 
     }
 
     private void OnClickChapter1Button()
     {
-        CreateChapterSlot("Chapter1"); 
+        _currentChapterId = "Chapter1";
+        CreateChapterSlot(_currentChapterId); 
     }
 
     private void OnClickBackgroundButton()
@@ -90,6 +95,7 @@ public class UI_ChapterPopup : UI_Popup
             {
                 var slot = Managers.UI.MakeSubItem<UI_ChapterSlot>(contentParent);
                 slot.Init();
+                slot.SetContentId(chapterId);
                 slot.SetCondition(cond);
             }
         }

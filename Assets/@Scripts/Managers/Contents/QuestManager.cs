@@ -182,13 +182,11 @@ public class QuestManager : MonoBehaviour
                 {
                     case Data.UnlockConditionType.Quest:
                         bool questCompleted = IsQuestCompleted(condition.QuestId);
-                        Debug.Log($"[해금검사:{contentId}] 퀘스트 {condition.QuestId} 완료 여부: {questCompleted}");
                         if (!IsQuestCompleted(condition.QuestId))
                             allMet = false;
                         break;
                     case Data.UnlockConditionType.Gold:
                         bool goldEnough = Managers.Game.Gold >= condition.RequiredGold;
-                        Debug.Log($"[해금검사:{contentId}] 골드 {condition.RequiredGold} 필요, 현재 {Managers.Game.Gold} → 충족: {goldEnough}");
                         if (Managers.Game.Gold < condition.RequiredGold)
                             allMet = false;
                         break;
@@ -239,18 +237,6 @@ public class QuestManager : MonoBehaviour
                quest.State == QuestProgressState.Completed;
     }
     
-    private void Unlock(string contentId)
-    {
-        // TODO: 콘텐츠 타입별로 처리 (ex: 건물, 지역, 캐릭터 등)
-        // ex: Managers.Building.Unlock(contentId);
-
-        if (contentId.StartsWith("Building_"))
-        {
-            
-        }
-        // 저장할 경우 리스트에 추가
-        // Managers.Game.UnlockedContent.Add(contentId);
-    }
     
     public void NotifyBuildingConstructed(string type)
     {
@@ -275,5 +261,36 @@ public class QuestManager : MonoBehaviour
             Define.EBuildingType.PumpkinFarm => Define.ETargetType.Pumpkin,
             _ => Define.ETargetType.None
         };
+    }
+    public HashSet<string> UnlockedContent = new(); // 콘텐츠 ID 저장
+
+    public bool IsUnlocked(string contentId)
+    {
+        return UnlockedContent.Contains(contentId);
+    }
+
+    public void Unlock(string contentId)
+    {
+        Debug.Log(!UnlockedContent.Contains(contentId));
+        if (!UnlockedContent.Contains(contentId))
+        {
+            UnlockedContent.Add(contentId);
+
+            Debug.Log($"해금 완료: {contentId}");
+            
+            // 🟢 콘텐츠 목록에 연결된 추가 해금 항목도 처리
+            if (Managers.Data.UnlockContentDic.TryGetValue(contentId, out var unlockData))
+            {
+                foreach (var item in unlockData.Items)
+                {
+                    if (!string.IsNullOrEmpty(item.Id))
+                        Unlock(item.Id); // 재귀 호출로 실제 콘텐츠들 해금
+                }
+            }
+            UI_BuildPopup buildPopup = FindObjectOfType<UI_BuildPopup>();
+            UI_FarmPopup FarmPopup = FindObjectOfType<UI_FarmPopup>();
+            FarmPopup?.UpdateButtonStates();
+            buildPopup?.UpdateButtonStates();
+        }
     }
 }
