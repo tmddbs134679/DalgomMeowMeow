@@ -47,7 +47,7 @@ public class UI_ShopPopup : UI_Popup
     private void OnEnable()
     {
         Managers.Game.OnResourcesChagned -= Refresh;
-        Managers.Game.OnResourcesChagned += Refresh;
+        Managers.Game.OnResourcesChagned -= Refresh;
 
         PopupOpenAnimation(GetObject((int)GameObjects.ContentObject));
         _characterShopPopup.gameObject.SetActive(true);
