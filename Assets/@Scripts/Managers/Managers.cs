@@ -11,12 +11,14 @@ public class Managers : MonoBehaviour
     static Managers Instance { get { Init(); return s_instance; } }
     //Contents
     GameManager _game = new GameManager();
+    EquipmentManager _equipment = new EquipmentManager();
     FoodManager _food = new FoodManager();
     TimeManager _time;
     RoomManager _room = new RoomManager();
 
 
     public static GameManager Game { get { return Instance?._game; } }
+    public static EquipmentManager Equipment { get { return Instance?._equipment; } }
     public static FoodManager Food { get { return Instance?._food; } }
     public static TimeManager Time { get { return Instance?._time; } }
     public static RoomManager Room { get { return Instance?._room; } }

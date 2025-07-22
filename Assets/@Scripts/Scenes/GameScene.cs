@@ -33,7 +33,7 @@ public class GameScene : BaseScene
             ch.InMainScene = true;
 
             Managers.Game.CharacterInMainScene[ch.UniqueId] = ai;
-            Managers.Game.SetInitEquipment(Managers.Game.CharacterInMainScene[ch.UniqueId]);
+            Managers.Equipment.SetInitEquipment(Managers.Game.CharacterInMainScene[ch.UniqueId]);
             Managers.AI.ValidateNavMeshPosition(ai);
             Managers.AI.Register(ai);
 

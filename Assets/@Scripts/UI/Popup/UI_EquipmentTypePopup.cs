@@ -80,7 +80,7 @@ public class UI_EquipmentTypePopup : UI_Popup
     private void OnClickUnEquipButton()
     {
         Clear();
-        Managers.Game.UnEquipItem(_character, _equipment);
+        Managers.Equipment.UnEquipItem(_character, _equipment);
         Managers.UI.ClosePopupUI(this);
     }
 
@@ -94,7 +94,7 @@ public class UI_EquipmentTypePopup : UI_Popup
     {
       
         Clear();
-        Managers.Game.EquipItem(_character, _equipment);
+        Managers.Equipment.EquipItem(_character, _equipment);
 
         Managers.UI.ClosePopupUI(this);
     }
@@ -156,12 +156,12 @@ public class UI_EquipmentTypePopup : UI_Popup
         if (isEquippedByThisCharacter)
         {
             // 장비 주인이므로 실제 장비 상태대로 시각화
-            Managers.Game.EquipCharacterVisual(_aicharacter, _character);
+            Managers.Equipment.EquipCharacterVisual(_aicharacter, _character);
         }
         else
         {
             // 다른 캐릭터라면 미리보기로만 보여줌
-            Managers.Game.EquipCharacterVisual(_aicharacter, _character, _equipment);
+            Managers.Equipment.EquipCharacterVisual(_aicharacter, _character, _equipment);
         }
 
         // 버튼 상태 갱신

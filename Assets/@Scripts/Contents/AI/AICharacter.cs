@@ -414,7 +414,7 @@ public class AICharacter : BaseObject
         // Managers.Game.EquipCharacterVisual(this, character);
         Data = character;
 
-        Managers.Game.ApplyEquipmentPreview(this, character);
+        Managers.Equipment.ApplyEquipmentPreview(this, character);
     }
 
     #endregion

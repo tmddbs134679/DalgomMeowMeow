@@ -65,12 +65,12 @@ public class UI_EquipmentInfoPopup : UI_Popup
     {
         PopupOpenAnimation(GetObject((int)GameObjects.ContentObject));
 
-        Managers.Game.EquipInfoChanged += Refresh;
+        Managers.Equipment.EquipInfoChanged += Refresh;
     }
 
     private void OnDestroy()
     {
-        Managers.Game.EquipInfoChanged -= Refresh;
+        Managers.Equipment.EquipInfoChanged -= Refresh;
     }
     private void OnCilckEquipButton()
     {
