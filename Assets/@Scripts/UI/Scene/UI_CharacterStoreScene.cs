@@ -111,6 +111,15 @@ public class UI_CharacterStoreScene : UI_Scene
         return true;
     }
 
+
+    public void OnDestroy()
+    {
+        if (Managers.Game != null)
+        {
+            Managers.Game.OnResourcesChagned -= Refresh;
+            Managers.Game.OnCharacterChanged -= Refresh;
+        }
+    }
     private void OnClickEditSettingButton()
     {
         _editSettingPopupUI.gameObject.SetActive(true);
