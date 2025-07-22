@@ -60,6 +60,7 @@ public class UI_FarmPopup : UI_Popup
         //   GetButton((int)Buttons.CloseBackGroundButton).gameObject.BindEvent(OnClickBackgroundButton);
         BuildingPlacer.Instance.OnBuildingCancel += CancelBuildUI;
         Setting();
+        UpdateButtonStates();//챕터
         return true;
     }
     public void OnDestroy()
@@ -85,9 +86,12 @@ public class UI_FarmPopup : UI_Popup
     private void SelectBuildingType(Define.EBuildingType type)
     {
         _buildScrollObject.SetActive(false);
-        // var button = GetButton((int)type);
-        // if (button != null && !button.interactable)
-        //     return;
+        if (_buttonMap.TryGetValue(type, out var buttonEnum))
+        {
+            var button = GetButton((int)buttonEnum);
+            if (button != null && !button.interactable)
+                return;
+        }
         LimitBuildCount(type);
         if (!BuildingPlacer.Instance.islimitBuildCount) return;
         Setting();//데이터 갱신
@@ -154,4 +158,30 @@ public class UI_FarmPopup : UI_Popup
     {
         _uI_BuildPopup = uI_BuildPopup;
     }
+        
+        //챕터
+        private Dictionary<Define.EBuildingType, Buttons> _buttonMap = new()
+        {
+            { Define.EBuildingType.CarrotFarm,  Buttons.CarrotButton },
+            { Define.EBuildingType.PotatoFarm,  Buttons.PotatoButton },
+            { Define.EBuildingType.PumpkinFarm, Buttons.PumpkinButton },
+            { Define.EBuildingType.OnionFarm,   Buttons.OnionButton }
+        };
+
+    
+        public void UpdateButtonStates()
+        {
+            foreach (var pair in _buttonMap)
+            {
+                var buildingType = pair.Key;
+                var buttonEnum = pair.Value;
+
+                string contentId = $"Building_{buildingType}";
+                bool isUnlocked = QuestManager.Instance.IsUnlocked(contentId);
+
+                var button = GetButton((int)buttonEnum);
+                if (button != null)
+                    button.interactable = isUnlocked;
+            }
+        }
 }

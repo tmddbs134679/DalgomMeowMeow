@@ -57,6 +57,7 @@ public class UI_BuildPopup : UI_Popup
         PotCountText,
         TravelCountText,
         PlayerGoldTxt,
+        DiaValueText
 
     }
 
@@ -98,7 +99,8 @@ public class UI_BuildPopup : UI_Popup
         Managers.Game.OnResourcesChagned += Refresh;
         BuildingPlacer.Instance.OnBuildingCancel += CancelBuildUI;
         Refresh();
-        Setting();
+        Setting(); 
+        UpdateButtonStates(); //챕터
         return true;
     }
 
@@ -155,9 +157,9 @@ public class UI_BuildPopup : UI_Popup
     //설치 건물 선택
     private void SelectBuildingType(Define.EBuildingType type)
     {
-        // var button = GetButton(type);
-        // if (button != null && !button.interactable)
-        //     return;
+        var button = GetButton((int)type);
+        if (button != null && !button.interactable)
+            return;
         LimitBuildCount(type);
         if (!BuildingPlacer.Instance.islimitBuildCount) return;
         Setting();//데이터 갱신
@@ -254,7 +256,29 @@ public class UI_BuildPopup : UI_Popup
     private void Refresh()
     {
        GetText((int)Texts.PlayerGoldTxt).text = Managers.Game.Gold.ToString();
+       GetText((int)Texts.DiaValueText).text = Managers.Game.Dia.ToString();
     }
     #endregion
 
+    //챕터
+    private Dictionary<Define.EBuildingType, string> _contentIdMap = new()
+    {
+        { Define.EBuildingType.SlotMachine,    "Building_SlotMachine" },
+        { Define.EBuildingType.Fishing,        "Building_FishingSpot" },
+    };
+    
+    public void UpdateButtonStates()
+    {
+        foreach (var pair in _contentIdMap)
+        {
+            Define.EBuildingType type = pair.Key;
+            string contentId = pair.Value;
+    
+            bool isUnlocked = QuestManager.Instance.IsUnlocked(contentId);
+            var button = GetButton((int)(Buttons)Enum.Parse(typeof(Buttons), $"{type}Button")); // "Cooking" → "CookButton"
+    
+            if (button != null)
+                button.interactable = isUnlocked;
+        }
+    }
 }
