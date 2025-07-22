@@ -69,8 +69,13 @@ public class BuildMap : MonoBehaviour
             else
             {
                 // 건설 후 추가 생성
+                float randomY = UnityEngine.Random.Range(0f, 360f);
+                Quaternion randomRotation = Quaternion.Euler(0f, randomY, 0f);
                 GameObject go = Instantiate(data.testBaseBuilding.buildOBJ, new Vector3(data.posX, 1f, data.posZ), Quaternion.identity, transform);
                 go.name = data.testBaseBuilding.BuildingType.ToString();
+                if (go.layer == LayerMask.NameToLayer("Road"))
+                    go.transform.rotation = randomRotation;
+
                 _buildDataMap[data.UniqueId] = data;
                 if (go.GetComponent<BuildingBase>() != null)
                 {
