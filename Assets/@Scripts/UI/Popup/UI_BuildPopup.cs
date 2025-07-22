@@ -57,6 +57,7 @@ public class UI_BuildPopup : UI_Popup
         PotCountText,
         TravelCountText,
         PlayerGoldTxt,
+        DiaValueText
 
     }
 
@@ -255,6 +256,7 @@ public class UI_BuildPopup : UI_Popup
     private void Refresh()
     {
        GetText((int)Texts.PlayerGoldTxt).text = Managers.Game.Gold.ToString();
+       GetText((int)Texts.DiaValueText).text = Managers.Game.Dia.ToString();
     }
     #endregion
 
