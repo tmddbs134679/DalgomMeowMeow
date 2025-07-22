@@ -28,10 +28,6 @@ public class UI_EquipmentTypePopup : UI_Popup
         CharacterNameText,
     }
 
-    enum Images
-    {
-        CharacterProfileImage,
-    }
 
     #endregion
 
@@ -62,7 +58,6 @@ public class UI_EquipmentTypePopup : UI_Popup
         BindObject(typeof(GameObjects));
         BindButton(typeof(Buttons));
         BindText(typeof(Texts));
-        BindImage(typeof(Images));  
 
         GetButton((int)Buttons.BackgroundButton).gameObject.BindEvent(OnClickBackgroundButton);
         GetButton((int)Buttons.EquipButton).gameObject.BindEvent(OnClickEquipButton);

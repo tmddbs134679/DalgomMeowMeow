@@ -234,6 +234,7 @@ public DateTime LastDayNightCheckTime
 
     public void TimerStart()
     {
+        CheckAttendance();
         StartCoroutine(CoStartTimer());
     }
     IEnumerator CoStartTimer()

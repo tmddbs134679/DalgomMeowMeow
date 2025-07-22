@@ -111,6 +111,7 @@ public class Define
     //BuildSo의 넘버링과 순서가 동일해야함
     public enum EBuildingType
     {
+        None,
         Cooking,
         CabbageFarm,
         Playing,
