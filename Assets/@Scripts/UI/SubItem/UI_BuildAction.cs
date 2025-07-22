@@ -8,6 +8,7 @@ public class UI_BuildAction : UI_Popup
     #region Enum
     enum GameObjects
     {
+        MoveUI,
     }
 
     enum Buttons
@@ -50,21 +51,23 @@ public class UI_BuildAction : UI_Popup
     }
     private void AcceptBuild()
     {
-
+                BuildingPlacer.Instance.OnBuildingCancel?.Invoke();
         if (BuildingPlacer.Instance.isLongPressAcceptBuild)
         {
             BuildingPlacer.Instance.AcceptLongPressBuild();
             if (!BuildingPlacer.Instance.isLongPressAcceptBuild && BuildingPlacer.Instance._isBuild)
             {
-                BuildingPlacer.Instance.OnBuildingCancel?.Invoke();
+
+                BuildingPlacer.Instance.uI_BuildAction.SetActive(false);
             }
         }
         else
         {
             if (BuildingPlacer.Instance.isSequenceBuild)
             {
+
                 BuildingPlacer.Instance.AcceptSequenceBuild();
-                BuildingPlacer.Instance.OnBuildingCancel?.Invoke();
+                BuildingPlacer.Instance.uI_BuildAction.SetActive(false);
 
             }
             else
@@ -86,15 +89,17 @@ public class UI_BuildAction : UI_Popup
             }
         }
         BuildingPlacer.Instance.isSequenceBuild = false;
+        BuildingPlacer.Instance.OnBuildingCancel?.Invoke();
         BuildingPlacer.Instance.CancelBuild();
-        BuildingPlacer.Instance.OnBuildingCancel?.Invoke();//UI끄기 이벤트
+        BuildingPlacer.Instance.uI_BuildAction.SetActive(false);
     }
 
     private void RemoveBuild()
     {
         if (BuildingPlacer.Instance.isLongPressAcceptBuild)
         {
-            BuildingPlacer.Instance.OnBuildingCancel?.Invoke();//UI끄기 이벤트
+            BuildingPlacer.Instance.OnBuildingCancel?.Invoke();
+            BuildingPlacer.Instance.uI_BuildAction.SetActive(false);
             BuildingPlacer.Instance.RemoveBuild();
         }
     }
@@ -103,7 +108,8 @@ public class UI_BuildAction : UI_Popup
         if (BuildingPlacer.Instance.tempDraggleOBJ != null && this.gameObject.activeSelf)
         {
             Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.main, BuildingPlacer.Instance.tempDraggleOBJ.transform.position);
-            this.gameObject.GetComponent<RectTransform>().position = screenPos;
+GetObject((int)GameObjects.MoveUI).transform.position=screenPos;
+          //  this.gameObject.GetComponent<RectTransform>().position = screenPos;
         }
     }
 

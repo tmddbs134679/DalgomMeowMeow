@@ -43,6 +43,7 @@ public class UI_GameScene : UI_Scene
     UI_CheckOutPopup _checkOutPopupUI;
     UI_ShopPopup _shopPopupUI;
     UI_EditSettingPopup _editSettingPopupUI;
+    // UI_BuildAction _uI_BuildAction;
     public override bool Init()
     {
         if (base.Init() == false)
@@ -52,18 +53,21 @@ public class UI_GameScene : UI_Scene
         BindButton(typeof(Buttons));
         BindText(typeof(Texts));
 
-        _quickMenuPopupUI =  Managers.UI.ShowPopupUI<UI_QuickMenu>();
+        _quickMenuPopupUI = Managers.UI.ShowPopupUI<UI_QuickMenu>();
         _checkOutPopupUI = Managers.UI.ShowPopupUI<UI_CheckOutPopup>();
         _shopPopupUI = Managers.UI.ShowPopupUI<UI_ShopPopup>();
         _editSettingPopupUI = Managers.UI.ShowPopupUI<UI_EditSettingPopup>();
-
+        // _uI_BuildAction = Managers.UI.MakeSubItem<UI_BuildAction>();
+        
         _quickMenuPopupUI.gameObject.SetActive(false);
         _checkOutPopupUI.gameObject.SetActive(false);
         _shopPopupUI.gameObject.SetActive(false);
         _editSettingPopupUI.gameObject.SetActive(false);
+        // _uI_BuildAction.SetActive(false);
+
 
         GetObject((int)GameObjects.StorageObject).GetComponent<HorizontalLayoutGroup>().spacing = UI_GROUP_SPACING;
- 
+
         GetButton((int)Buttons.QuickButton).gameObject.BindEvent(OnClickQuickButton);
         GetButton((int)Buttons.QuickButton).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
         GetButton((int)Buttons.BuildButton).gameObject.BindEvent(OnClickBuildButton);

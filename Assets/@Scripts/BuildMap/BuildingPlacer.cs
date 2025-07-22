@@ -77,6 +77,8 @@ public class BuildingPlacer : MonoBehaviour
     void Start()
     {
         InitializeMaps();
+        uI_BuildAction = Managers.UI.MakeSubItem<UI_BuildAction>();
+        uI_BuildAction.SetActive(false);
     }
 
     void InitializeMaps()
