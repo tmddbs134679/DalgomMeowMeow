@@ -135,8 +135,7 @@ public class AICharacter : BaseObject
         }
 
         Controller.OnUpdate(Time.deltaTime);
-        if (BuildingPlacer.Instance.isAI) OnClick();
-        if (!BuildingPlacer.Instance.isAI) LongPressClick();
+if (BuildingPlacer.Instance == null || !BuildingPlacer.Instance.isAI)LongPressClick();
 
     }
 
