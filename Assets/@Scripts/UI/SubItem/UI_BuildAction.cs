@@ -86,8 +86,8 @@ public class UI_BuildAction : UI_Popup
             }
         }
         BuildingPlacer.Instance.isSequenceBuild = false;
-        BuildingPlacer.Instance.OnBuildingCancel?.Invoke();//UI끄기 이벤트
         BuildingPlacer.Instance.CancelBuild();
+        BuildingPlacer.Instance.OnBuildingCancel?.Invoke();//UI끄기 이벤트
     }
 
     private void RemoveBuild()
