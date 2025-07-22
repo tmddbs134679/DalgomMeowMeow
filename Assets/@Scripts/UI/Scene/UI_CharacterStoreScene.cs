@@ -15,7 +15,8 @@ public class UI_CharacterStoreScene : UI_Scene
     #region Enum
     enum GameObjects
     {
-        QuickNotifyObject
+        QuickNotifyObject,
+        CheckImage
     }
 
     enum Buttons
@@ -29,6 +30,9 @@ public class UI_CharacterStoreScene : UI_Scene
         HomeButton,
         ChangeButton,
         UnLockButton,
+        Yes,
+        No,
+        RoomReset,
     }
 
     enum Texts
@@ -37,6 +41,12 @@ public class UI_CharacterStoreScene : UI_Scene
         CreatureCountText,
         DiaText,
     }
+
+    enum Images
+    {
+
+    }
+
     #endregion
 
     UI_QuickMenu _quickMenuPopupUI;
@@ -52,8 +62,9 @@ public class UI_CharacterStoreScene : UI_Scene
         BindObject(typeof(GameObjects));
         BindButton(typeof(Buttons));
         BindText(typeof(Texts));
+        BindImage(typeof(Images));
 
-        _quickMenuPopupUI =  Managers.UI.ShowPopupUI<UI_QuickMenu>();
+        _quickMenuPopupUI = Managers.UI.ShowPopupUI<UI_QuickMenu>();
         _checkOutPopupUI = Managers.UI.ShowPopupUI<UI_CheckOutPopup>();
         _shopPopupUI = Managers.UI.ShowPopupUI<UI_ShopPopup>();
         _editSettingPopupUI = Managers.UI.ShowPopupUI<UI_EditSettingPopup>();
@@ -64,7 +75,7 @@ public class UI_CharacterStoreScene : UI_Scene
         _shopPopupUI.gameObject.SetActive(false);
         _editSettingPopupUI.gameObject.SetActive(false);
         _ChangePopupUI.gameObject.SetActive(false);
-
+        GetObject((int)GameObjects.CheckImage).gameObject.SetActive(false);
 
         GetButton((int)Buttons.QuickButton).gameObject.BindEvent(OnClickQuickButton);
         GetButton((int)Buttons.QuickButton).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
@@ -83,12 +94,15 @@ public class UI_CharacterStoreScene : UI_Scene
         GetButton((int)Buttons.ChangeButton).gameObject.BindEvent(OnClickChangeButton);
 
         GetButton((int)Buttons.UnLockButton).gameObject.BindEvent(OnClickUnLockButton);
+        GetButton((int)Buttons.Yes).gameObject.BindEvent(OnClickYes);
+        GetButton((int)Buttons.No).gameObject.BindEvent(OnClickNo);
+        GetButton((int)Buttons.RoomReset).gameObject.BindEvent(OnClickRoomReset);
 
 
         #region Action 추가
         Managers.Game.OnResourcesChagned += Refresh;
         Managers.Game.OnCharacterChanged += Refresh;
-      
+
 
         #endregion
 
@@ -99,7 +113,7 @@ public class UI_CharacterStoreScene : UI_Scene
 
     private void OnClickEditSettingButton()
     {
-       _editSettingPopupUI.gameObject.SetActive(true);
+        _editSettingPopupUI.gameObject.SetActive(true);
     }
 
     private void OnClickShopButton()
@@ -114,13 +128,48 @@ public class UI_CharacterStoreScene : UI_Scene
 
     private void OnClickUnLockButton()
     {
-        Managers.Room.UnLockRoom++;
-
-        for(int i = 0; i < Managers.Room.UnLockRoom; i++)
+        if (Managers.Room.UnLockRoom >= 3)
         {
-            Managers.Room.CreateRoom(Managers.Room.directions[i]);
+            Managers.UI.ShowToast("모든 방이 열렸습니다!");
+            GetObject((int)GameObjects.CheckImage).gameObject.SetActive(false);
+            return;
         }
+        GetObject((int)GameObjects.CheckImage).gameObject.SetActive(true);
     }
+
+
+    private void OnClickNo()
+    {
+        GetObject((int)GameObjects.CheckImage).gameObject.SetActive(false);
+    }
+
+
+    private void OnClickYes()
+    {
+
+        if (Managers.Game.Dia >= 300)
+        {
+            Managers.Room.UnLockRoom++;
+            Managers.UI.ShowToast($"방이 총 {Managers.Room.UnLockRoom}개 열렸습니다!");
+            for (int i = 0; i < Managers.Room.UnLockRoom; i++)
+            {
+                Managers.Room.CreateRoom(Managers.Room.directions[i]);
+            }
+        }
+
+        else
+        {
+            Managers.UI.ShowToast("다이아가 부족합니다!");
+        }
+
+
+    }
+
+    private void OnClickRoomReset()
+    {
+        PlayerPrefs.DeleteKey("UnLockRoom");
+    }
+
 
     private void OnClickCheckOutButton()
     {
@@ -149,7 +198,7 @@ public class UI_CharacterStoreScene : UI_Scene
     {
         Init();
     }
-  
+
 
 
 
@@ -162,7 +211,7 @@ public class UI_CharacterStoreScene : UI_Scene
         CheckNotify();
     }
 
-    
+
 
     #region Battle
 
