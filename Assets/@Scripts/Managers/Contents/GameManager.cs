@@ -250,7 +250,7 @@ public class GameManager
 
         #endregion
 
-        Gold += 10000;
+        Gold += 100050;
 
         SaveGame();
         IsLoaded = true;
