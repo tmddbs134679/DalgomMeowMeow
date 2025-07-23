@@ -149,6 +149,11 @@ public class UI_GameScene : UI_Scene
 
     private void OnClickShopButton()
     {
+        if (!QuestManager.Instance.IsUnlocked("Content_AnimalAdoption"))
+        {
+            Managers.UI.ShowToast("아직 열리지 않았습니다");
+            return;
+        }
         _shopPopupUI.gameObject.SetActive(true);
     }
 
