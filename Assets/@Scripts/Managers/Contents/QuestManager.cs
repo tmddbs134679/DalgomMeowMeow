@@ -68,6 +68,8 @@ public class QuestManager : MonoBehaviour
                     CheckUnlockConditions(quest.QuestData.QuestId);
                     TryActivateNext(quest.QuestData.QuestId); // 다음 퀘스트도 활성화
                 }
+                
+                CheckChapterUnlock(quest.QuestData.QuestId);
             }
         }
         OnQuestUpdated?.Invoke(); // 이벤트 호출
@@ -160,6 +162,7 @@ public class QuestManager : MonoBehaviour
         }
     }
     
+    // 챕터 언락 조건 체크
     private void CheckUnlockConditions(string completedQuestId)
     {
         foreach (var kvp in Managers.Data.UnlockContentDic)
@@ -311,5 +314,33 @@ public class QuestManager : MonoBehaviour
             FarmPopup?.UpdateButtonStates();
             buildPopup?.UpdateButtonStates();
         }
+    }
+    
+    // 챕터 언락 조건 체크
+    public void CheckChapterUnlock(string contentId)
+    {
+        if (!Managers.Data.UnlockContentDic.TryGetValue(contentId, out var data)) return;
+
+        bool allMet = true;
+        foreach (var condition in data.Conditions)
+        {
+            switch (condition.Type)
+            {
+                case Data.UnlockConditionType.Quest:
+                    if (!QuestManager.Instance.IsQuestCompleted(condition.QuestId))
+                        allMet = false;
+                    break;
+                case Data.UnlockConditionType.Gold:
+                    if (Managers.Game.Gold < condition.RequiredGold)
+                        allMet = false;
+                    break;
+            }
+        }
+        if (allMet)
+        {
+            // 해금조건달성 알림 
+            
+        }
+
     }
 }
