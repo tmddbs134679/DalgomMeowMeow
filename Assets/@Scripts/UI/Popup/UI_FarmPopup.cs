@@ -39,6 +39,7 @@ public class UI_FarmPopup : UI_Popup
     private GameObject _buildScrollObject;//이전 ui에서 받아온거
 
     Dictionary<Texts, (Define.EBuildingType buildingType, Texts countText)> goldTextToBuildingMap;
+        private Dictionary<Define.EBuildingType,int> _buttonToMap;
     public override bool Init()
     {
         if (!base.Init()) return false;
@@ -68,9 +69,9 @@ public class UI_FarmPopup : UI_Popup
         BuildingPlacer.Instance.OnBuildingCancel -= CancelBuildUI;
     }
 
-/// <summary>
-/// Enum Texts와 BuildingType 서로 매칭 연결
-/// </summary>
+    /// <summary>
+    /// Enum Texts와 BuildingType 서로 매칭 연결
+    /// </summary>
     private void SetDictionary()
     {
         goldTextToBuildingMap = new()
@@ -81,14 +82,22 @@ public class UI_FarmPopup : UI_Popup
     { Texts.PotatoGoldText,  (Define.EBuildingType.PotatoFarm,  Texts.PotatoCountText) },
     { Texts.PumpkinGoldText, (Define.EBuildingType.PumpkinFarm, Texts.PumpkinCountText) },
 };
+
+     _buttonToMap = new()
+{
+    { Define.EBuildingType.CabbageFarm,   (int)Buttons.CabbageButton },
+    { Define.EBuildingType.CarrotFarm,    (int)Buttons.CarrotButton },
+    { Define.EBuildingType.OnionFarm,     (int)Buttons.OnionButton },
+    { Define.EBuildingType.PotatoFarm,    (int)Buttons.PotatoButton },
+    { Define.EBuildingType.PumpkinFarm,   (int)Buttons.PumpkinButton },
+};
     }
     //설치 건물 선택
     private void SelectBuildingType(Define.EBuildingType type)
     {
-        _buildScrollObject.SetActive(false);
-        if (_buttonMap.TryGetValue(type, out var buttonEnum))
+        if (_buttonToMap.TryGetValue(type, out int buttons))
         {
-            var button = GetButton((int)buttonEnum);
+            var button = GetButton(buttons);
             if (button != null && !button.interactable)
             {
                 Managers.UI.ShowToast("아직 열리지 않았습니다");
@@ -98,7 +107,7 @@ public class UI_FarmPopup : UI_Popup
         LimitBuildCount(type);
         if (!BuildingPlacer.Instance.islimitBuildCount) return;
         Setting();//데이터 갱신
-
+        _buildScrollObject.SetActive(false);
         GetObject((int)GameObjects.BuildScrollObject).SetActive(false);
         BuildingPlacer.Instance.SelectBuildingType(type);
         BuildingPlacer.Instance.uI_BuildAction.transform.position = this.transform.position;

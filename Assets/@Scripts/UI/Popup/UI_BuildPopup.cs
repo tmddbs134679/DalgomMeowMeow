@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Linq;
+using UnityEngine.UI;
 public class UI_BuildPopup : UI_Popup
 {
     #region Enum
@@ -70,6 +71,7 @@ public class UI_BuildPopup : UI_Popup
     private Character _character;
     private UI_FarmPopup _farmPopup;
     Dictionary<Texts, (Define.EBuildingType buildingType, Texts countText)> goldTextToBuildingMap;
+    private Dictionary<Define.EBuildingType,int> _buttonToMap;
     private void Awake()
     {
         Init();
@@ -135,7 +137,26 @@ public class UI_BuildPopup : UI_Popup
     { Texts.PotGoldText, (Define.EBuildingType.Pot, Texts.PotCountText) },
     { Texts.TravelGoldText, (Define.EBuildingType.Travel, Texts.TravelCountText) },
         };
+
+
+     _buttonToMap = new()
+{
+    { Define.EBuildingType.Cooking,(int)Buttons.CookButton },
+    { Define.EBuildingType.Playing,(int)Buttons.PlayGroundButton },
+    { Define.EBuildingType.Resting,(int)Buttons.RestButton },
+    { Define.EBuildingType.Fishing,(int)Buttons.FishingButton },
+    { Define.EBuildingType.Storage,(int)Buttons.StorageButton },
+    { Define.EBuildingType.SlotMachine,(int)Buttons.SlotMachineButton },
+    { Define.EBuildingType.Road,(int)Buttons.RoadButton },
+    { Define.EBuildingType.Shop,(int)Buttons.ShopButton },
+    { Define.EBuildingType.UnLockStage,(int)Buttons.UnlockAreaButton },
+    { Define.EBuildingType.Pot,(int)Buttons.PotButton },
+    { Define.EBuildingType.Travel,(int)Buttons.TravelButton },
+};
     }
+    
+
+    
 
     private void ShowUIFarmPopup()
     {
@@ -148,7 +169,7 @@ public class UI_BuildPopup : UI_Popup
         }
 
         // 열려 있지 않으면 열기
-       // BuildingPlacer.Instance.OnBuildingCancel -= CancelBuildUI;
+        // BuildingPlacer.Instance.OnBuildingCancel -= CancelBuildUI;
         _farmPopup = Managers.UI.ShowPopupUI<UI_FarmPopup>();
         _farmPopup.GetPopupObject(GetObject((int)GameObjects.BuildScrollObject));
         _farmPopup.GetPopup(this);
@@ -157,11 +178,14 @@ public class UI_BuildPopup : UI_Popup
     //설치 건물 선택
     private void SelectBuildingType(Define.EBuildingType type)
     {
-        var button = GetButton((int)type);
-        if (button != null && !button.interactable)
+        if (_buttonToMap.TryGetValue(type, out int buttons))
         {
-            Managers.UI.ShowToast("아직 열리지 않았습니다");
-            return;
+            var button = GetButton(buttons);
+            if (button != null && !button.interactable)
+            {
+                Managers.UI.ShowToast("아직 열리지 않았습니다");
+                return;
+            }
         }
         LimitBuildCount(type);
         if (!BuildingPlacer.Instance.islimitBuildCount) return;
