@@ -71,7 +71,7 @@ public class UI_BuildPopup : UI_Popup
     private Character _character;
     private UI_FarmPopup _farmPopup;
     Dictionary<Texts, (Define.EBuildingType buildingType, Texts countText)> goldTextToBuildingMap;
-    private Dictionary<Define.EBuildingType,int> _buttonToMap;
+    private Dictionary<Define.EBuildingType, int> _buttonToMap;
     private void Awake()
     {
         Init();
@@ -101,7 +101,7 @@ public class UI_BuildPopup : UI_Popup
         Managers.Game.OnResourcesChagned += Refresh;
         BuildingPlacer.Instance.OnBuildingCancel += CancelBuildUI;
         Refresh();
-        Setting(); 
+        Setting();
         UpdateButtonStates(); //챕터
         return true;
     }
@@ -139,7 +139,7 @@ public class UI_BuildPopup : UI_Popup
         };
 
 
-     _buttonToMap = new()
+        _buttonToMap = new()
 {
     { Define.EBuildingType.Cooking,(int)Buttons.CookButton },
     { Define.EBuildingType.Playing,(int)Buttons.PlayGroundButton },
@@ -154,9 +154,9 @@ public class UI_BuildPopup : UI_Popup
     { Define.EBuildingType.Travel,(int)Buttons.TravelButton },
 };
     }
-    
 
-    
+
+
 
     private void ShowUIFarmPopup()
     {
@@ -187,6 +187,7 @@ public class UI_BuildPopup : UI_Popup
                 return;
             }
         }
+        OnOfffarmPopup();
         LimitBuildCount(type);
         if (!BuildingPlacer.Instance.islimitBuildCount) return;
         Setting();//데이터 갱신
@@ -194,8 +195,15 @@ public class UI_BuildPopup : UI_Popup
 
         GetObject((int)GameObjects.BuildScrollObject).SetActive(false);
         BuildingPlacer.Instance.SelectBuildingType(type);
-        BuildingPlacer.Instance.uI_BuildAction.transform.position = this.transform.position;
-        BuildingPlacer.Instance.uI_BuildAction.SetActive(true);
+        if (BuildingPlacer.Instance.isGold)
+        {
+            BuildingPlacer.Instance.uI_BuildAction.transform.position = this.transform.position;
+            BuildingPlacer.Instance.uI_BuildAction.SetActive(true);
+        }
+        else
+        {
+                 (Managers.UI.SceneUI as UI_GameScene).gameObject.SetActive(true);
+        }
     }
     //건물 갯수 제한 코드 구간
     private void LimitBuildCount(Define.EBuildingType type)
@@ -253,11 +261,11 @@ public class UI_BuildPopup : UI_Popup
 
             if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(buildingType.ToString(), out int output))
             {
-                
-            if (buildingType == Define.EBuildingType.Road) // 도로일 땐 else 처리,임시땜빵,나중에는 모든게 엑셀 데이터를 받아와서 계산해야함
+
+                if (buildingType == Define.EBuildingType.Road) // 도로일 땐 else 처리,임시땜빵,나중에는 모든게 엑셀 데이터를 받아와서 계산해야함
                 {
                     GetText((int)goldTextEnum).text = buyMoney.ToString();
-                    GetText((int)countText).text =output.ToString();
+                    GetText((int)countText).text = output.ToString();
                     continue;
                 }
 
@@ -274,6 +282,7 @@ public class UI_BuildPopup : UI_Popup
 
     private void CancelBuildUI()
     {
+        OnOfffarmPopup();
         Managers.UI.ClosePopupUI(this);
         (Managers.UI.SceneUI as UI_GameScene).gameObject.SetActive(true);
     }
@@ -282,8 +291,8 @@ public class UI_BuildPopup : UI_Popup
     //골드갱신 함수,이벤트연결됨
     private void Refresh()
     {
-       GetText((int)Texts.PlayerGoldTxt).text = Managers.Game.Gold.ToString();
-       GetText((int)Texts.DiaValueText).text = Managers.Game.Dia.ToString();
+        GetText((int)Texts.PlayerGoldTxt).text = Managers.Game.Gold.ToString();
+        GetText((int)Texts.DiaValueText).text = Managers.Game.Dia.ToString();
     }
     #endregion
 
@@ -293,19 +302,29 @@ public class UI_BuildPopup : UI_Popup
         { Define.EBuildingType.SlotMachine,    "Building_SlotMachine" },
         { Define.EBuildingType.Fishing,        "Building_FishingSpot" },
     };
-    
+
     public void UpdateButtonStates()
     {
         foreach (var pair in _contentIdMap)
         {
             Define.EBuildingType type = pair.Key;
             string contentId = pair.Value;
-    
+
             bool isUnlocked = QuestManager.Instance.IsUnlocked(contentId);
             var button = GetButton((int)(Buttons)Enum.Parse(typeof(Buttons), $"{type}Button")); // "Cooking" → "CookButton"
-    
+
             if (button != null)
                 button.interactable = isUnlocked;
+        }
+    }
+
+    private void OnOfffarmPopup()
+    {
+                // 이미 열려 있다면 닫기
+        if (_farmPopup != null)
+        {
+            Managers.UI.ClosePopupUI(_farmPopup); // 닫기
+            _farmPopup = null; // 참조 제거
         }
     }
 }

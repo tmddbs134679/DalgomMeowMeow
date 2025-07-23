@@ -61,8 +61,8 @@ public class BuildingPlacer : MonoBehaviour
     public bool islimitBuildCount = true;
     public bool isSequenceBuild;
 
-    private bool _isGold;
-
+    public bool isGold;
+    private string buildType;
     private void Awake()
     {
         if (Instance == null)
@@ -94,11 +94,16 @@ public class BuildingPlacer : MonoBehaviour
     /// </summary>
     public void SelectBuildingType(Define.EBuildingType type)
     {
+        tempTypeNum = (int)type;
+        if (!CheckBuildGold(type))
+        {
+                            Managers.UI.ShowToast("돈이 부족합니다.");
+            return;
+        }
         if (SequenceSelectBuildingType(type)) return;
         isAI = true;
         isSelect = false;
         buildMap.ColliderAllOff();
-        tempTypeNum = (int)type;
         Camera cam = Camera.main;
         Vector3 screenCenter = new Vector3(Screen.width / 2f, Screen.height / 2f, cam.nearClipPlane);
         Ray ray = Camera.main.ScreenPointToRay(screenCenter);
@@ -186,9 +191,24 @@ public class BuildingPlacer : MonoBehaviour
     /// <summary>
     /// 설치 재료(돈) 판별
     /// </summary>
-    bool CheckBuildGold()
+    bool CheckBuildGold(Define.EBuildingType Type)
     {
-        return Managers.Game.Gold - buyMoney > 0;
+        buildType = Type.ToString();
+        
+  if (buildType == "Road") // 도로일 땐 else 처리,임시땜빵,나중에는 모든게 엑셀 데이터를 받아와서 계산해야함
+        {
+            BuyMoney = buildingSO[tempTypeNum].BuyMoney;
+        }
+        else if (buildMap.valueCounts.TryGetValue(buildType, out int count))
+        {
+            BuyMoney = (int)(buildingSO[tempTypeNum].BuyMoney * Mathf.Pow(1.2f, count));
+        }
+        else
+        {
+            BuyMoney = buildingSO[tempTypeNum].BuyMoney;
+        }
+        isGold = Managers.Game.Gold > buyMoney;
+        return isGold;
     }
 
     /// <summary>
@@ -240,11 +260,10 @@ public class BuildingPlacer : MonoBehaviour
     {
         isAI = false;
         isSelect = false;
-        _isGold = CheckBuildGold();
         CanPlaceBuilding();
 
-        if (_isGold)
-        {
+
+
             foreach (var a in _roadPosArray)
             {
                 int hash = Guid.NewGuid().GetHashCode();
@@ -271,7 +290,7 @@ public class BuildingPlacer : MonoBehaviour
             buildMap.ColliderAllOn();
             OnBuildingAccepted?.Invoke(_saveBuildingSO);
             QuestManager.Instance.NotifyBuildingConstructed(((Define.EBuildingType)tempTypeNum).ToString());
-        }
+        
         OnAutoSave?.Invoke();
     }
 
@@ -282,26 +301,12 @@ public class BuildingPlacer : MonoBehaviour
     {
         isAI = false;
         isSelect = false;
-        _isGold = CheckBuildGold();
         CanPlaceBuilding();
 
 
-        if (_isGold && _isBuild)
+        if ( _isBuild)
         {
-            string buildType = ((Define.EBuildingType)tempTypeNum).ToString();
 
-            if (buildType == "Road") // 도로일 땐 else 처리,임시땜빵,나중에는 모든게 엑셀 데이터를 받아와서 계산해야함
-            {
-                BuyMoney = buildingSO[tempTypeNum].BuyMoney;
-            }
-            else if (buildMap.valueCounts.TryGetValue(buildType, out int count))
-            {
-                BuyMoney = (int)(buildingSO[tempTypeNum].BuyMoney * Mathf.Pow(1.2f, count));
-            }
-            else
-            {
-                BuyMoney = buildingSO[tempTypeNum].BuyMoney;
-            }
             Managers.Game.Gold -= buyMoney;
 
             int hash = Guid.NewGuid().GetHashCode();
