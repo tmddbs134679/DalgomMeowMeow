@@ -79,7 +79,7 @@ directionalLight.intensity = Mathf.Max(intensityCurve.Evaluate(adjustedNormalize
 
         if (timeSinceLastCheck.TotalMinutes >= 8)
         {
-            SwitchDayNight();
+            // SwitchDayNight();
             Managers.Time.LastDayNightCheckTime = DateTime.Now;
         }
     }

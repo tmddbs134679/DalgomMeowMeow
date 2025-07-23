@@ -95,8 +95,7 @@ public class UI_ChapterPopup : UI_Popup
             {
                 var slot = Managers.UI.MakeSubItem<UI_ChapterSlot>(contentParent);
                 slot.Init();
-                slot.SetContentId(chapterId);
-                slot.SetCondition(cond);
+                slot.SetCondition(cond, chapterId);
             }
         }
         // 오른쪽 해금 콘텐츠 텍스트 설정

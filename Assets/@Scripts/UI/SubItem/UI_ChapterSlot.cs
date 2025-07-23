@@ -7,7 +7,6 @@ public class UI_ChapterSlot : UI_Base
 {
     enum Texts { QuestTitleText, }
     enum Images { CompleteCheckImage }
-    private string _contentId;
     
     public override bool Init()
     {
@@ -18,47 +17,67 @@ public class UI_ChapterSlot : UI_Base
 
         return true;
     }
-    public void SetCondition(UnlockCondition condition)
+    public void SetCondition(UnlockCondition condition,string contentId)
     {
         string title = "";
-        string progress = "";
-        Color CompleteCheckColor = Color.green;
+        Color CompleteCheckColor = Color.red;
 
-        // ✅ 해금 여부 확인 (현재 콘텐츠가 이미 해금된 상태인지)
-        bool isContentUnlocked = false;
-
-        // 슬롯이 어떤 콘텐츠(챕터)에 해당하는지 상위에서 알려줘야 함
-        if (!string.IsNullOrEmpty(_contentId))
-            isContentUnlocked = QuestManager.Instance.IsUnlocked(_contentId);
-
-        switch (condition.Type)
+        // ✅ 이미 해금된 콘텐츠라면 무조건 초록색 처리
+        bool isContentUnlocked = QuestManager.Instance.IsUnlocked(contentId);
+        if (isContentUnlocked)
         {
-            case UnlockConditionType.Gold:
-                float currentGold = Managers.Game.Gold;
-                title = $"골드 조건 {condition.RequiredGold}";
-                progress = $"{currentGold} / {condition.RequiredGold}";
+            // 이미 해금된 콘텐츠이므로 상태를 초록색으로만 표시
+            switch (condition.Type)
+            {
+                case UnlockConditionType.Gold:
+                    title = $"골드 조건 {condition.RequiredGold}";
+                    break;
 
-                if (!isContentUnlocked)
+                case UnlockConditionType.Quest:
+                    if (!string.IsNullOrEmpty(condition.QuestId) &&
+                        Managers.Data.QuestDataDic.TryGetValue(condition.QuestId, out var questData))
+                    {
+                        title = $"{questData.Title}";
+                    }
+                    else
+                    {
+                        title = "퀘스트 완료";
+                    }
+                    break;
+            }
+
+            CompleteCheckColor = Color.green;
+        }
+        else
+        {
+            // 아직 해금되지 않은 경우 → 조건 충족 여부에 따라 색상 결정
+            switch (condition.Type)
+            {
+                case UnlockConditionType.Gold:
+                    float currentGold = Managers.Game.Gold;
+                    title = $"골드 조건 {condition.RequiredGold}";
                     CompleteCheckColor = currentGold >= condition.RequiredGold ? Color.green : Color.red;
-                break;
+                    break;
 
-            case UnlockConditionType.Quest:
-                bool isCompleted = QuestManager.Instance.IsQuestCompleted(condition.QuestId);
+                case UnlockConditionType.Quest:
+                    bool isCompleted = QuestManager.Instance.IsQuestCompleted(condition.QuestId);
+                    if (!string.IsNullOrEmpty(condition.QuestId) &&
+                        Managers.Data.QuestDataDic.TryGetValue(condition.QuestId, out var questData))
+                    {
+                        title = $"{questData.Title}";
+                    }
+                    else
+                    {
+                        title = "퀘스트 완료";
+                    }
 
-                if (!string.IsNullOrEmpty(condition.QuestId) &&
-                    Managers.Data.QuestDataDic.TryGetValue(condition.QuestId, out var questData))
-                    title = $"{questData.Title}";
-
-                if (!isContentUnlocked)
                     CompleteCheckColor = isCompleted ? Color.green : Color.red;
-                break;
+                    break;
+            }
         }
 
         GetText((int)Texts.QuestTitleText).text = title;
         GetImage((int)Images.CompleteCheckImage).color = CompleteCheckColor;
     }
-    public void SetContentId(string contentId)
-    {
-        _contentId = contentId;
-    }
+
 }
