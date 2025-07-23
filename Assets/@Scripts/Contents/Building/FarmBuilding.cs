@@ -26,7 +26,7 @@ public class FarmBuilding : BuildingBase
         _textAnim.SetInfo(Define.EBuildingType.CabbageFarm, transform.position);
 
     }
-    private void OnDisable()
+    private void OnDestroy()
     {
         _textAnim.gameObject.SetActive(false);
     }

@@ -19,10 +19,10 @@ public class PlaygroundBuilding : BuildingBase
         _textAnim.SetInfo(Define.EBuildingType.Playing, transform.position);
     }
 
-    private void OnDisable()
+
+    private void OnDestroy()
     {
         _textAnim.gameObject.SetActive(false);
-
     }
     public override void ConnectToAnimal(AICharacter animal)
     {
