@@ -73,6 +73,7 @@ public class UI_BuildAction : UI_Popup
             else
             {
                 BuildingPlacer.Instance.AcceptBuild();
+                                BuildingPlacer.Instance.uI_BuildAction.SetActive(false);
             }
 
         }

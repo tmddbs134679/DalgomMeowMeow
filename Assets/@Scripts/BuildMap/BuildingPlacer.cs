@@ -316,7 +316,7 @@ public class BuildingPlacer : MonoBehaviour
 
             _arrayBuildPos.GetBuildData(_buildData);//설치할 오브젝트
             _PreviewOBJ.GetComponent<DraggableObject>().SetTileIsBuild();//새롭게 설치할 오브젝트의 타일
-
+                        Destroy(_PreviewOBJ);
             gridMap.LoadMap(); //맵갱신
             buildMap.LoadBuild(); //오브젝트 갱신
             surface.BuildNavMesh(); //네브매쉬 깔기

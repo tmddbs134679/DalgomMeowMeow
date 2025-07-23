@@ -200,6 +200,7 @@ public class UI_BuildPopup : UI_Popup
     //건물 갯수 제한 코드 구간
     private void LimitBuildCount(Define.EBuildingType type)
     {
+        BuildingPlacer.Instance.islimitBuildCount = true;
         if (type == Define.EBuildingType.SlotMachine)
         {
             if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(Define.EBuildingType.SlotMachine.ToString(), out int count) && count >= 1)
@@ -226,7 +227,6 @@ public class UI_BuildPopup : UI_Popup
                 BuildingPlacer.Instance.islimitBuildCount = false;
             return;
         }
-        BuildingPlacer.Instance.islimitBuildCount = true;
     }
 
     /// <summary>
