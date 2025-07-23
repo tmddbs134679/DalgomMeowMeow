@@ -65,5 +65,7 @@ public class UI_InfoBuild : UI_Popup
     public void SetTarget(BuildingBase building)
     {
         _targetBuilding = building;
+        GetText((int)Texts.EquipmentText).text = building.BuildingData.BuildingName;
+        GetText((int)Texts.EquipmentDescriptionText).text = building.BuildingData.Description;
     }
 }
