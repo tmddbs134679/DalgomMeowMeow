@@ -46,12 +46,12 @@ public class UI_EquipPopup : UI_Popup
        
         OnClickTypeToggle();
 
-        Managers.Game.EquipInfoChanged += Refresh;
+        Managers.Equipment.EquipInfoChanged += Refresh;
     }
 
     private void OnDestroy()
     {
-        Managers.Game.EquipInfoChanged -= Refresh;
+        Managers.Equipment.EquipInfoChanged -= Refresh;
     }
     public override bool Init()
     {

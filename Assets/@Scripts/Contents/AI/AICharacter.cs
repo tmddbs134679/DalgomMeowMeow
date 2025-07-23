@@ -52,7 +52,7 @@ public class AICharacter : BaseObject
     public bool isClicked = false;
     private Transform head;
     [HideInInspector]
-    public Camera camera;
+    public Camera _camera;
     [HideInInspector]
     public float tempSpeed;
     [HideInInspector]
@@ -116,7 +116,7 @@ public class AICharacter : BaseObject
 
     private void Start()
     {
-        camera = Camera.main;
+        _camera = Camera.main;
         head = transform.Find("root/pelvis/spine_01/spine_02/spine_03/neck_01");
         infoButton = transform.Find("Canvas").gameObject;
 
@@ -375,7 +375,7 @@ if (BuildingPlacer.Instance == null || !BuildingPlacer.Instance.isAI)LongPressCl
         if (isClicked)
         {
             SetSpeed(0);
-            this.gameObject.transform.rotation = Quaternion.Euler(0, camera.transform.eulerAngles.y + 180, 0);
+            this.gameObject.transform.rotation = Quaternion.Euler(0, _camera.transform.eulerAngles.y + 180, 0);
             head.transform.localRotation = quaternion.Euler(0, 0, -12);
             infoButton.SetActive(true);
             animator.SetInteger("animation", 36);
@@ -413,7 +413,7 @@ if (BuildingPlacer.Instance == null || !BuildingPlacer.Instance.isAI)LongPressCl
         // Managers.Game.EquipCharacterVisual(this, character);
         Data = character;
 
-        Managers.Game.ApplyEquipmentPreview(this, character);
+        Managers.Equipment.ApplyEquipmentPreview(this, character);
     }
 
     #endregion

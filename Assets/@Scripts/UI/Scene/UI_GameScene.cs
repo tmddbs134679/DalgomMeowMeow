@@ -96,6 +96,8 @@ public class UI_GameScene : UI_Scene
         #region Action 추가
         Managers.Game.OnResourcesChagned += Refresh;
         Managers.Game.OnCharacterChanged += Refresh;
+        Managers.Equipment.EquipInfoChanged += Refresh;
+
         Managers.Food.OnFoodAdded += AddFoodSlot;
         Managers.Food.OnFoodSold += RemoveFoodSlot;
 
@@ -104,6 +106,35 @@ public class UI_GameScene : UI_Scene
         Refresh();
 
         return true;
+    }
+
+
+
+    private void Awake()
+    {
+        Init();
+    }
+    public void OnDestroy()
+    {
+        if (Managers.Game != null)
+        {
+            Managers.Game.OnResourcesChagned -= Refresh;
+            Managers.Game.OnCharacterChanged -= Refresh;
+            Managers.Food.OnFoodAdded -= AddFoodSlot;
+            Managers.Food.OnFoodSold -= RemoveFoodSlot;
+            Managers.Equipment.EquipInfoChanged -= Refresh;
+        }
+    }
+
+
+
+    void Refresh()
+    {
+        GetText((int)Texts.PlayerGoldText).text = Managers.Game.Gold.ToString();
+        GetText((int)Texts.CreatureCountText).text = Managers.Game._characters.Count.ToString();
+        GetText((int)Texts.DiaText).text = Managers.Game.Dia.ToString();
+
+        CheckNotify();
     }
 
     private void OnClickNoticeButton()
@@ -145,31 +176,6 @@ public class UI_GameScene : UI_Scene
         _quickMenuPopupUI.gameObject.SetActive(true);
     }
 
-    private void Awake()
-    {
-        Init();
-    }
-    public void OnDestroy()
-    {
-        if (Managers.Game != null)
-        {
-            Managers.Game.OnResourcesChagned -= Refresh;
-            Managers.Game.OnCharacterChanged -= Refresh;
-            Managers.Food.OnFoodAdded -= AddFoodSlot;
-            Managers.Food.OnFoodSold -= RemoveFoodSlot;
-        }
-    }
-
-
-
-    void Refresh()
-    {
-        GetText((int)Texts.PlayerGoldText).text = Managers.Game.Gold.ToString();
-        GetText((int)Texts.CreatureCountText).text = Managers.Game._characters.Count.ToString();
-        GetText((int)Texts.DiaText).text = Managers.Game.Dia.ToString();
-
-        CheckNotify();
-    }
 
     #region Food
 
@@ -282,4 +288,7 @@ public class UI_GameScene : UI_Scene
         else
             GetObject((int)GameObjects.QuickNotifyObject).SetActive(false);
     }
+
+
+
 }

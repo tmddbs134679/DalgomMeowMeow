@@ -20,6 +20,12 @@ public class RestBuilding : BuildingBase
         _textAnim.gameObject.SetActive(false);
         _textAnim.SetInfo(Define.EBuildingType.Resting, transform.position);
     }
+
+    private void OnDisable()
+    {
+        _textAnim.gameObject.SetActive(false);
+    }
+
     public override void ConnectToAnimal(AICharacter animal)
     {
         base.ConnectToAnimal(animal);

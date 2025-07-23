@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +9,7 @@ public class BuildingManager : MonoBehaviour
 
     public List<BuildingBase> _buildings = new();
     
-    public event Action<Define.EBuildingType> OnAnimalArrived;
+   // public event Action<Define.EBuildingType> OnAnimalArrived;
 
     void Awake()
     {

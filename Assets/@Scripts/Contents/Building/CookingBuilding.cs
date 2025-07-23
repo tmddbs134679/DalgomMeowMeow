@@ -59,6 +59,11 @@ public class CookingBuilding : BuildingBase
         _textAnim = Managers.UI.ShowPopupUI<UI_TextAnimation>();
 
     }
+
+    private void OnDisable()
+    {
+        _textAnim.gameObject.SetActive(false);
+    }
     protected override void Start()
     {
         base.Start();
