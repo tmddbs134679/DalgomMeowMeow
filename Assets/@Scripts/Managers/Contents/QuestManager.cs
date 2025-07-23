@@ -9,6 +9,7 @@ public class QuestManager : MonoBehaviour
     
     private Dictionary<string, Quest> _quests = new();
     private Dictionary<(Define.EQuestConditionType, Define.ETargetType), List<Quest>> _questIndex = new();
+    private List<string> _unlockedContentIds = new();
 
     public event Action OnQuestUpdated;
 
@@ -60,6 +61,13 @@ public class QuestManager : MonoBehaviour
             if (quest.State == QuestProgressState.InProgress)
             {
                 quest.AddProgress();
+                
+                // ✅ 퀘스트 목표에 도달했으면 즉시 콘텐츠 해금 조건 검사
+                if (quest.State == QuestProgressState.Completed)
+                {
+                    CheckUnlockConditions(quest.QuestData.QuestId);
+                    TryActivateNext(quest.QuestData.QuestId); // 다음 퀘스트도 활성화
+                }
             }
         }
         OnQuestUpdated?.Invoke(); // 이벤트 호출
@@ -92,25 +100,36 @@ public class QuestManager : MonoBehaviour
         }
     }
     
-    public List<QuestSaveData> GetAllQuestSaveData()
+    public QuestSaveData GetAllQuestSaveData()
     {
-        List<QuestSaveData> saveList = new();
-        foreach (var quest in _quests.Values)
+        var data = new QuestSaveData();
+
+        foreach (var pair in _quests)
         {
-            saveList.Add(quest.ToSaveData());
+            data.questRecords[pair.Key] = new QuestRecord
+            {
+                Progress = pair.Value.Progress,
+                State = pair.Value.State
+            };
         }
-        return saveList;
+
+        data.unlockedContentIds = new List<string>(_unlockedContentIds);
+        return data;
     }
     
-    public void LoadFromSaveData(List<QuestSaveData> saveDataList)
+
+    public void LoadFromSaveData(QuestSaveData data)
     {
-        foreach (var saveData in saveDataList)
+        foreach (var pair in data.questRecords)
         {
-            if (_quests.TryGetValue(saveData.QuestId, out var quest))
+            if (_quests.TryGetValue(pair.Key, out var quest))
             {
-                quest.LoadProgress(saveData);
+                quest.Progress = pair.Value.Progress;
+                quest.State = pair.Value.State;
             }
         }
+
+        _unlockedContentIds = new List<string>(data.unlockedContentIds);
     }
     
     public List<Quest> DailyQuests
