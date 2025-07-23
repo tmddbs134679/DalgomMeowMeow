@@ -339,7 +339,7 @@ public class QuestManager : MonoBehaviour
         if (allMet)
         {
             // 해금조건달성 알림 
-            
+            int a = 0;
         }
 
     }

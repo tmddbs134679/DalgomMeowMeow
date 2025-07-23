@@ -22,10 +22,9 @@ public class FishingBuilding : BuildingBase
 
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
         _textAnim.gameObject.SetActive(false);
-
     }
     protected override void Start()
     {

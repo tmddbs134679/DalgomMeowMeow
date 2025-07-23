@@ -60,7 +60,7 @@ public class CookingBuilding : BuildingBase
 
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
         _textAnim.gameObject.SetActive(false);
     }
