@@ -3313,30 +3313,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8870700e18148e64aadcec72b1377200, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CurrentState: 0
+  currentBuilding: {fileID: 0}
+  inMain: 0
+  _ecropType: 0
+  hatBone: {fileID: 5822033153708481259}
+  bagBone: {fileID: 6600973107993278192}
+  accessoryBone: {fileID: 4046298459120742408}
+  isClicked: 0
+  _camera: {fileID: 0}
+  tempSpeed: 0
+  isFollowing: 0
   loadState: 0
   loadBuilding: {fileID: 0}
   nav: {fileID: 0}
-  currentBuilding: {fileID: 0}
   animator: {fileID: 0}
   skinnedMeshRenderer: {fileID: 0}
   currentEmo: {fileID: 0}
   characterAction: {fileID: 0}
   _isHelloReady: 1
-  CurrentState: 0
   emo: {fileID: 11400000, guid: 3ead5fd8cb98a9e408e75a11b129fb05, type: 2}
   sprites: []
   sprite: {fileID: 0}
-  hatBone: {fileID: 5822033153708481259}
-  bagBone: {fileID: 6600973107993278192}
-  accessoryBone: {fileID: 4046298459120742408}
-  isClicked: 0
-  camera: {fileID: 0}
-  tempSpeed: 0
-  infoButton: {fileID: 0}
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  isFollowing: 0
   IsReplica: 0
 --- !u!136 &87279126941025039
 CapsuleCollider:

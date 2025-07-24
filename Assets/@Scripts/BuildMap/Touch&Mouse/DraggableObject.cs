@@ -22,6 +22,8 @@ public class DraggableObject : MonoBehaviour, IDraggable
     public GameObject TempOBJ;
 
     private IsBuildColor _isBuildColor;
+    [SerializeField] private Vector2 buildSize = new Vector2(1f, 1f); // 건축물 밑면 크기 (x, z)
+    [SerializeField] private LayerMask tileLayer;
 
     void Start()
     {
@@ -32,8 +34,8 @@ public class DraggableObject : MonoBehaviour, IDraggable
     public void OnDragStart(Vector3 hitPos)
     {
         BuildingPlacer.Instance.tempDraggleOBJ = this;
-        _offsetx = (gameObject.transform.localScale.x % 2 == 0) ? (gridSize / 2f) : 0f;
-        _offsety = (gameObject.transform.localScale.z % 2 == 0) ? (gridSize / 2f) : 0f;
+        _offsetx = (buildSize.x % 2 == 0) ? (gridSize / 2f) : 0f;
+        _offsety = (buildSize.y % 2 == 0) ? (gridSize / 2f) : 0f;
         CheckTilesUnderBuilding();
 
     }
@@ -121,8 +123,6 @@ public void OnDrag(Vector3 groundPos)
         return new Vector3(x, y, z);
     }
 
-    [SerializeField] private Vector2 buildSize = new Vector2(1f, 1f); // 건축물 밑면 크기 (x, z)
-    [SerializeField] private LayerMask tileLayer;
 
     //건물밑 타일 판별후 정보전달
     public void CheckTilesUnderBuilding()
