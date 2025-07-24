@@ -19,6 +19,7 @@ public abstract class BuildingBase : BaseObject
     [Header("생산 타이머")] public BuildingTimer Timer;
     public int StoredCount { get; protected set; } = 0; // 누적된 생산 수량
     public AICharacter assignedAnimal;
+    [SerializeField] protected Animator _animator;
 
     // [Header("동물 배치")]
     //protected Animal assignedAnimal;
@@ -47,6 +48,10 @@ public abstract class BuildingBase : BaseObject
     {
         Timer = new BuildingTimer(BuildingData.Interval);
         BuildingManager.Instance.Register(this);
+
+        if(_animator != null)
+            AnimStop();
+
         return true;
     }
 
@@ -62,6 +67,9 @@ public abstract class BuildingBase : BaseObject
     public virtual void DisconnectAnimal()
     {
         if (assignedAnimal == null) return;
+
+        if (_animator != null)
+            AnimStop();
 
         assignedAnimal.AnimalArrived -= AssignAnimal;
         assignedAnimal.AnimalLeaved -= UnassignAnimal;
@@ -81,10 +89,15 @@ public abstract class BuildingBase : BaseObject
     public virtual void AssignAnimal(AICharacter animal)
     {
         if (assignedAnimal != animal) return;
+
+        if (_animator != null)
+            AnimStart();
+
         Unlock();
     }
     public virtual void UnassignAnimal(AICharacter animal)
     {
+
         CurrentState = BuildingState.Idle;
         DisconnectAnimal();
     }
@@ -128,5 +141,19 @@ public abstract class BuildingBase : BaseObject
         Managers.Debug.Log($"[CookingBuilding] 업그레이드 완료 → Lv.{CurrentLevel}",Define.EDebugType.Building);
         //Debug.Log($"[CookingBuilding] 업그레이드 완료 → Lv.{CurrentLevel}, 생산 요리: {LevelData.ProducedFood.Name}");
         // 외형 변경, 사운드 등도 여기에
+    }
+
+    protected virtual void AnimStart()
+    {
+        _animator.speed = 1;
+        _animator.enabled = true;
+    }
+
+    protected virtual void AnimStop()
+    {
+        _animator.speed = 0;
+        _animator.Play(0, 0, 0f);
+        _animator.Update(0f);
+        _animator.enabled = false;
     }
 }
