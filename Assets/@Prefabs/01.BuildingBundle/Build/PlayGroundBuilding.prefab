@@ -97,6 +97,7 @@ MonoBehaviour:
   BuildingData: {fileID: 11400000, guid: c1cb63264d2447a49bbfe99b8aba4e6b, type: 2}
   CurrentState: 0
   assignedAnimal: {fileID: 0}
+  _animator: {fileID: 0}
   _buildMap: {fileID: 0}
   _textAnim: {fileID: 0}
 --- !u!95 &8871486752911548452
@@ -284,7 +285,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1332103663467626419, guid: 22555e3c83ed3214a9b69d8ea86ad52c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.2066
+      value: -1.015
       objectReference: {fileID: 0}
     - target: {fileID: 1332103663467626419, guid: 22555e3c83ed3214a9b69d8ea86ad52c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -347,8 +348,16 @@ PrefabInstance:
       value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 5312646535422113296, guid: 22555e3c83ed3214a9b69d8ea86ad52c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -2.232
+      objectReference: {fileID: 0}
+    - target: {fileID: 5312646535422113296, guid: 22555e3c83ed3214a9b69d8ea86ad52c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.4122
+      value: 2.377
+      objectReference: {fileID: 0}
+    - target: {fileID: 5312646535422113296, guid: 22555e3c83ed3214a9b69d8ea86ad52c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1.003
       objectReference: {fileID: 0}
     - target: {fileID: 5312646535422113296, guid: 22555e3c83ed3214a9b69d8ea86ad52c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -376,6 +385,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8285957213577418290, guid: 22555e3c83ed3214a9b69d8ea86ad52c, type: 3}
       propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8478418236966615768, guid: 22555e3c83ed3214a9b69d8ea86ad52c, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9059121768960933602, guid: 22555e3c83ed3214a9b69d8ea86ad52c, type: 3}
