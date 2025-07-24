@@ -58,7 +58,7 @@ public class  Character
         Pos = new Vector3Data(position);
         RoomPos = new Vector3Data(Vector3.zero);
         Hp = Data?.MaxHp ?? 100f; 
-        MaxExp = Data?.MaxExp ?? 15f;    
+        MaxExp = Data?.MaxExp ?? 500f;    
         CurrentExp = Data?.CurrentExp ?? 0; 
         MaxStamina = Data?.MaxStamina ?? 100f; 
         Atk = Data?.Atk ?? 10f;
