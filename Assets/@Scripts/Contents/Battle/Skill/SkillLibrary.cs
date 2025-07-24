@@ -178,12 +178,12 @@ public class SkillLibrary : MonoBehaviour
     {
         battleCharacter.UsingSkill = true;
         battleCharacter.SkillCooldown = 20f; // 스킬 쿨타임 설정
-        battleCharacter.AttackRange *= 10f; // 사거리 6배 증가
+        battleCharacter.AttackRange *= 5f; // 사거리 6배 증가
         battleCharacter.Agent.stoppingDistance = battleCharacter.AttackRange;
         battleCharacter.UsingSkill = false;
         yield return new WaitForSeconds(5f);
         battleCharacter.UsingSkill = true;
-        battleCharacter.AttackRange /= 10f; // 사거리 원래대로 되돌림
+        battleCharacter.AttackRange /= 5f; // 사거리 원래대로 되돌림
         battleCharacter.Agent.stoppingDistance = battleCharacter.AttackRange;
         battleCharacter.UsingSkill = false;
     }
@@ -354,7 +354,7 @@ public class SkillLibrary : MonoBehaviour
         battleCharacter.SkillCooldown = 40f; // 스킬 쿨타임 설정
         yield return new WaitForSeconds(0.5f); // 스킬 애니메이션 딜레이
         GameObject clone = Instantiate(battleCharacter._effectManager.ClonePrefab, battleCharacter.transform.position, Quaternion.identity); // 클론 이펙트 생성
-        clone.GetComponent<CloneActivity>().Init(battleCharacter.Health*0.5f, battleCharacter.AttackDamage*0.75f, battleCharacter.MoveSpeed*1.2f, battleCharacter.AttackRange, battleCharacter.transform); // 클론 초기화
+        clone.GetComponent<CloneActivity>().Init(battleCharacter.Health*0.5f, battleCharacter.AttackDamage*0.75f, battleCharacter.MoveSpeed*1.2f, battleCharacter.AttackRange, battleCharacter.transform ); // 클론 초기화
         battleCharacter.UsingSkill = false; // 스킬 사용 종료
         yield return new WaitForSeconds(20f);
         Destroy(clone);

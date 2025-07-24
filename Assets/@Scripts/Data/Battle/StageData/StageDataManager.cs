@@ -63,7 +63,10 @@ public class StageDataManager : MonoBehaviour
         if (manager.PendingGoldReward > 0 || manager.PendingExpReward > 0)
         {
             Managers.Game.Gold += manager.PendingGoldReward;
-            //Managers.Game.Exp += manager.PendingExpReward;
+            for (int k = 0; k < PlayerCharacter.Length; k++)
+            { 
+                PlayerCharacter[k].CurrentExp += manager.PendingExpReward;
+            }
             Managers.Debug.Log($"Stage Clear! Gold: {manager.PendingGoldReward}, Exp: {manager.PendingExpReward}",Define.EDebugType.AI);
             manager.ClearReward();
         }
