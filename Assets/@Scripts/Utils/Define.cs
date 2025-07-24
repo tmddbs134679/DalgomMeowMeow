@@ -40,6 +40,7 @@ public class Define
     public static readonly string FISHING_TEXT = "첨벙";
     public static readonly string REST_TEXT = "z..";
 
+    public static readonly string[] CAT_SOUNDS = { "Cat1", "Cat2" };
     public enum EUIEvent
     {
         None,
