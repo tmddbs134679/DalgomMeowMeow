@@ -4,6 +4,8 @@ using UnityEngine;
 using System;
 using System.Linq;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
+
 public class UI_BuildPopup : UI_Popup
 {
     #region Enum
@@ -72,6 +74,10 @@ public class UI_BuildPopup : UI_Popup
     private UI_FarmPopup _farmPopup;
     Dictionary<Texts, (Define.EBuildingType buildingType, Texts countText)> goldTextToBuildingMap;
     private Dictionary<Define.EBuildingType, int> _buttonToMap;
+    ScrollRect _scrollRect;
+    bool _isDrag = false;
+
+
     private void Awake()
     {
         Init();
@@ -84,6 +90,10 @@ public class UI_BuildPopup : UI_Popup
         BindObject(typeof(GameObjects));
         BindButton(typeof(Buttons));
         BindText(typeof(Texts));
+
+        _scrollRect = GetObject((int)GameObjects.BuildScrollObject).GetComponent<ScrollRect>();
+
+        ButtonSetting();
 
         GetButton((int)Buttons.CookButton).gameObject.BindEvent(() => SelectBuildingType(Define.EBuildingType.Cooking));
         GetButton((int)Buttons.FarmButton).gameObject.BindEvent(ShowUIFarmPopup);
@@ -326,5 +336,82 @@ public class UI_BuildPopup : UI_Popup
             Managers.UI.ClosePopupUI(_farmPopup); // 닫기
             _farmPopup = null; // 참조 제거
         }
+    }
+
+
+    private void ButtonSetting()
+    {
+        GetButton((int)Buttons.CookButton).gameObject.gameObject.BindEvent(null, OnDrag, Define.EUIEvent.Drag);
+        GetButton((int)Buttons.CookButton).gameObject.gameObject.BindEvent(null, OnBeginDrag, Define.EUIEvent.BeginDrag);
+        GetButton((int)Buttons.CookButton).gameObject.gameObject.BindEvent(null, OnEndDrag, Define.EUIEvent.EndDrag);
+
+        GetButton((int)Buttons.FarmButton).gameObject.gameObject.BindEvent(null, OnDrag, Define.EUIEvent.Drag);
+        GetButton((int)Buttons.FarmButton).gameObject.gameObject.BindEvent(null, OnBeginDrag, Define.EUIEvent.BeginDrag);
+        GetButton((int)Buttons.FarmButton).gameObject.gameObject.BindEvent(null, OnEndDrag, Define.EUIEvent.EndDrag);
+
+        GetButton((int)Buttons.PlayGroundButton).gameObject.gameObject.BindEvent(null, OnDrag, Define.EUIEvent.Drag);
+        GetButton((int)Buttons.PlayGroundButton).gameObject.gameObject.BindEvent(null, OnBeginDrag, Define.EUIEvent.BeginDrag);
+        GetButton((int)Buttons.PlayGroundButton).gameObject.gameObject.BindEvent(null, OnEndDrag, Define.EUIEvent.EndDrag);
+
+        GetButton((int)Buttons.RestButton).gameObject.gameObject.BindEvent(null, OnDrag, Define.EUIEvent.Drag);
+        GetButton((int)Buttons.RestButton).gameObject.gameObject.BindEvent(null, OnBeginDrag, Define.EUIEvent.BeginDrag);
+        GetButton((int)Buttons.RestButton).gameObject.gameObject.BindEvent(null, OnEndDrag, Define.EUIEvent.EndDrag);
+
+        GetButton((int)Buttons.FishingButton).gameObject.gameObject.BindEvent(null, OnDrag, Define.EUIEvent.Drag);
+        GetButton((int)Buttons.FishingButton).gameObject.gameObject.BindEvent(null, OnBeginDrag, Define.EUIEvent.BeginDrag);
+        GetButton((int)Buttons.FishingButton).gameObject.gameObject.BindEvent(null, OnEndDrag, Define.EUIEvent.EndDrag);
+
+
+        GetButton((int)Buttons.StorageButton).gameObject.gameObject.BindEvent(null, OnDrag, Define.EUIEvent.Drag);
+        GetButton((int)Buttons.StorageButton).gameObject.gameObject.BindEvent(null, OnBeginDrag, Define.EUIEvent.BeginDrag);
+        GetButton((int)Buttons.StorageButton).gameObject.gameObject.BindEvent(null, OnEndDrag, Define.EUIEvent.EndDrag);
+
+
+        GetButton((int)Buttons.SlotMachineButton).gameObject.gameObject.BindEvent(null, OnDrag, Define.EUIEvent.Drag);
+        GetButton((int)Buttons.SlotMachineButton).gameObject.gameObject.BindEvent(null, OnBeginDrag, Define.EUIEvent.BeginDrag);
+        GetButton((int)Buttons.SlotMachineButton).gameObject.gameObject.BindEvent(null, OnEndDrag, Define.EUIEvent.EndDrag);
+
+        GetButton((int)Buttons.RoadButton).gameObject.gameObject.BindEvent(null, OnDrag, Define.EUIEvent.Drag);
+        GetButton((int)Buttons.RoadButton).gameObject.gameObject.BindEvent(null, OnBeginDrag, Define.EUIEvent.BeginDrag);
+        GetButton((int)Buttons.RoadButton).gameObject.gameObject.BindEvent(null, OnEndDrag, Define.EUIEvent.EndDrag);
+
+
+        GetButton((int)Buttons.ShopButton).gameObject.gameObject.BindEvent(null, OnDrag, Define.EUIEvent.Drag);
+        GetButton((int)Buttons.ShopButton).gameObject.gameObject.BindEvent(null, OnBeginDrag, Define.EUIEvent.BeginDrag);
+        GetButton((int)Buttons.ShopButton).gameObject.gameObject.BindEvent(null, OnEndDrag, Define.EUIEvent.EndDrag);
+
+        GetButton((int)Buttons.UnlockAreaButton).gameObject.gameObject.BindEvent(null, OnDrag, Define.EUIEvent.Drag);
+        GetButton((int)Buttons.UnlockAreaButton).gameObject.gameObject.BindEvent(null, OnBeginDrag, Define.EUIEvent.BeginDrag);
+        GetButton((int)Buttons.UnlockAreaButton).gameObject.gameObject.BindEvent(null, OnEndDrag, Define.EUIEvent.EndDrag);
+
+        GetButton((int)Buttons.PotButton).gameObject.gameObject.BindEvent(null, OnDrag, Define.EUIEvent.Drag);
+        GetButton((int)Buttons.PotButton).gameObject.gameObject.BindEvent(null, OnBeginDrag, Define.EUIEvent.BeginDrag);
+        GetButton((int)Buttons.PotButton).gameObject.gameObject.BindEvent(null, OnEndDrag, Define.EUIEvent.EndDrag);
+
+        GetButton((int)Buttons.TravelButton).gameObject.gameObject.BindEvent(null, OnDrag, Define.EUIEvent.Drag);
+        GetButton((int)Buttons.TravelButton).gameObject.gameObject.BindEvent(null, OnBeginDrag, Define.EUIEvent.BeginDrag);
+        GetButton((int)Buttons.TravelButton).gameObject.gameObject.BindEvent(null, OnEndDrag, Define.EUIEvent.EndDrag);
+    }
+
+    public void OnDrag(BaseEventData baseEventData)
+    {
+        _isDrag = true;
+        PointerEventData pointerEventData = baseEventData as PointerEventData;
+        _scrollRect.OnDrag(pointerEventData);
+    }
+
+    public void OnBeginDrag(BaseEventData baseEventData)
+    {
+        _isDrag = true;
+        PointerEventData pointerEventData = baseEventData as PointerEventData;
+        _scrollRect.OnBeginDrag(pointerEventData);
+    }
+
+    public void OnEndDrag(BaseEventData baseEventData)
+    {
+        _isDrag = false;
+        PointerEventData pointerEventData = baseEventData as PointerEventData;
+        _scrollRect.OnEndDrag(pointerEventData);
+
     }
 }

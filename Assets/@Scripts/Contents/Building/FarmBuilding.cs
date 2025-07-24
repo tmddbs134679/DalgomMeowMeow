@@ -28,7 +28,8 @@ public class FarmBuilding : BuildingBase
     }
     private void OnDestroy()
     {
-        _textAnim.gameObject.SetActive(false);
+        if(_textAnim != null)
+            _textAnim.gameObject.SetActive(false);
     }
     public override bool Init()
     {
