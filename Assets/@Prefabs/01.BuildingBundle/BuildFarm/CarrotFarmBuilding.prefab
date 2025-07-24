@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: -1949684592167558083}
   - component: {fileID: 867387851631776429}
   - component: {fileID: 219752967041393178}
-  - component: {fileID: 3485084692996760926}
   m_Layer: 7
   m_Name: CarrotFarmBuilding
   m_TagString: Untagged
@@ -97,33 +96,12 @@ MonoBehaviour:
   BuildingData: {fileID: 11400000, guid: 1a52b6539f85359438d70a4b8780c768, type: 2}
   CurrentState: 0
   assignedAnimal: {fileID: 0}
-  _animator: {fileID: 3485084692996760926}
+  _animator: {fileID: 683182486262431132}
   _buildMap: {fileID: 0}
   _textAnim: {fileID: 0}
   buildingRenderer: {fileID: 0}
   collectIcon: {fileID: 0}
   CropType: 1
---- !u!95 &3485084692996760926
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 32036862332168101}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 39a5898c2496d454e8d98d2ae6f06641, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1118768333574496275
 GameObject:
   m_ObjectHideFlags: 0
@@ -913,6 +891,11 @@ PrefabInstance:
       addedObject: {fileID: 1774722331304271808}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2d40f135505b4c7439e04eaab299d94c, type: 3}
+--- !u!95 &683182486262431132 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 1189260911958352255, guid: 2d40f135505b4c7439e04eaab299d94c, type: 3}
+  m_PrefabInstance: {fileID: 1871875277059546339}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4852427655032937447 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6534007945858729732, guid: 2d40f135505b4c7439e04eaab299d94c, type: 3}
