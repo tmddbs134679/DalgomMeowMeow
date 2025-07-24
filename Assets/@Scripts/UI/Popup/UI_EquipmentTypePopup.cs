@@ -13,7 +13,8 @@ public class UI_EquipmentTypePopup : UI_Popup
     enum GameObjects
     {
         ContentObject,
-        CharacterScrollObject
+        CharacterScrollObject,
+        CharacterListGroup,
     }
 
     enum Buttons
@@ -34,6 +35,9 @@ public class UI_EquipmentTypePopup : UI_Popup
     AICharacter _aicharacter;
     Character _character;
     Equipment _equipment;
+
+    ScrollRect _scrollRect;
+
     private void Awake()
     {
         Init();
@@ -59,6 +63,7 @@ public class UI_EquipmentTypePopup : UI_Popup
         BindButton(typeof(Buttons));
         BindText(typeof(Texts));
 
+        _scrollRect = GetObject((int)GameObjects.CharacterListGroup).GetComponent<ScrollRect>();
         GetButton((int)Buttons.BackgroundButton).gameObject.BindEvent(OnClickBackgroundButton);
         GetButton((int)Buttons.EquipButton).gameObject.BindEvent(OnClickEquipButton);
         GetButton((int)Buttons.EquipButton).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
@@ -122,7 +127,7 @@ public class UI_EquipmentTypePopup : UI_Popup
         foreach (Character character in characterList)
         {
             UI_CharacterTypeSlot slot = Managers.UI.MakeSubItem<UI_CharacterTypeSlot>(GetObject((int)GameObjects.CharacterScrollObject).transform);
-            slot.SetInfo(character, _equipment.EquipmentData.EquipmentType);
+            slot.SetInfo(character, _equipment.EquipmentData.EquipmentType, _scrollRect);
         }
 
         UpdateEquipButtonState();
