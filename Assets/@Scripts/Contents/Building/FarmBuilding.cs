@@ -9,7 +9,6 @@ public class FarmBuilding : BuildingBase
     [SerializeField] private Renderer buildingRenderer;
     public GameObject collectIcon;
     public event Action IsHarvest;
-    
     public Define.ECropType CropType;
     public Define.ECropType GetCropType() => CropType;
 
@@ -28,7 +27,8 @@ public class FarmBuilding : BuildingBase
     }
     private void OnDestroy()
     {
-        _textAnim.gameObject.SetActive(false);
+        if(_textAnim != null)
+            _textAnim.gameObject.SetActive(false);
     }
     public override bool Init()
     {
