@@ -32,12 +32,8 @@ public class FoodManager
             if (first != null)
             {
                 Food soldFood = first.Value;
-
-     
                 Cancel(soldFood);
-
                 OnFoodSold?.Invoke(soldFood);
-
                 int discountPrice = Mathf.FloorToInt(soldFood.FoodData.Price * 0.5f);
                 Managers.Game.Gold += discountPrice;
             }
