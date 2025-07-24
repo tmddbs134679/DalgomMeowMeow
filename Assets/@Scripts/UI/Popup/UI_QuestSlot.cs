@@ -5,9 +5,18 @@ using UnityEngine;
 
 public class UI_QuestSlot : UI_Base
 {
-    enum Texts { QuestTitleText, ProgressText,RewardButtonText }
-    enum Images { ProgressBarFill }
-    enum Buttons { RewardButton }
+    enum Texts { QuestTitleText, ProgressText, RewardButtonText }
+
+    enum Images
+    {
+        ProgressBarFill,
+        RewardImage
+    }
+
+    enum Buttons
+    {
+        RewardButton
+    }
 
     Quest _quest;
 
@@ -20,6 +29,7 @@ public class UI_QuestSlot : UI_Base
         BindImage(typeof(Images));
 
         GetButton((int)Buttons.RewardButton).gameObject.BindEvent(OnClickRewardButton);
+        GetImage((int)Images.RewardImage).gameObject.SetActive(false);
         return true;
     }
 
@@ -28,16 +38,16 @@ public class UI_QuestSlot : UI_Base
         Init();
 
         _quest = quest;
-        
+
         int current = quest.Progress;
         int goal = quest.QuestData.GoalCount;
         float percent = (float)current / goal;
-        
+
         GetText((int)Texts.QuestTitleText).text = quest.QuestData.Title;
         GetText((int)Texts.ProgressText).text = $"{quest.Progress}/{quest.QuestData.GoalCount}";
         GetText((int)Texts.RewardButtonText).text = $"완료보상\n{quest.QuestData.Reward}";
         GetImage((int)Images.ProgressBarFill).fillAmount = percent;
-        
+
 
         bool canClaim = quest.State == QuestProgressState.Completed;
         GetButton((int)Buttons.RewardButton).interactable = canClaim;
@@ -48,12 +58,13 @@ public class UI_QuestSlot : UI_Base
         if (_quest.State == QuestProgressState.Completed)
         {
             QuestManager.Instance.GiveReward(_quest.QuestData.QuestId);
-            
+
             if (_quest.QuestData.QuestType == Define.EQuestType.Daily)
             {
                 // Daily 퀘스트는 클릭 시 맨 아래로 이동
                 transform.SetAsLastSibling();
             }
+
             // 업적일 경우 UI 갱신 (다음 퀘스트 등장)
             if (_quest.QuestData.QuestType == Define.EQuestType.Achievement)
             {
@@ -68,7 +79,7 @@ public class UI_QuestSlot : UI_Base
             SetQuest(_quest); // UI 갱신
         }
     }
-    
+
     public void UpdateProgressUI()
     {
         if (_quest == null) return;
@@ -81,6 +92,6 @@ public class UI_QuestSlot : UI_Base
 
         // 완료되었으면 버튼 활성화
         GetButton((int)Buttons.RewardButton).interactable = _quest.State == QuestProgressState.Completed;
+        GetImage((int)Images.RewardImage).gameObject.SetActive(_quest.State == QuestProgressState.Completed);
     }
 }
-

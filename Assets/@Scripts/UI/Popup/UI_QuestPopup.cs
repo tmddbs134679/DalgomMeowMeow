@@ -38,6 +38,7 @@ public class UI_QuestPopup : UI_Popup
         GetButton((int)Buttons.AchievementButton).gameObject.BindEvent(AchievementButton);
         GetImage((int)Images.AchievementSelectedImage).gameObject.SetActive(false);
 
+
         CreateQuestSlots();
 
         return true;
