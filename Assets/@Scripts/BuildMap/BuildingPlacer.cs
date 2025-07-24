@@ -408,6 +408,7 @@ public class BuildingPlacer : MonoBehaviour
         gridMap.LoadMap(); //맵갱신
         buildMap.LoadBuild(); //오브젝트 갱신
         surface.BuildNavMesh(); //네브매쉬 깔기
+        Managers.AI.AllRelocateToNearestNavMesh();
                 OnAutoSave?.Invoke();
     }
 

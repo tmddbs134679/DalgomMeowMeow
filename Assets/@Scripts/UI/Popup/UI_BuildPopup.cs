@@ -197,7 +197,7 @@ public class UI_BuildPopup : UI_Popup
                 return;
             }
         }
-        OnOfffarmPopup();
+        OnOffFarmPopup();
         LimitBuildCount(type);
         if (!BuildingPlacer.Instance.islimitBuildCount) return;
         Setting();//데이터 갱신
@@ -292,7 +292,8 @@ public class UI_BuildPopup : UI_Popup
 
     private void CancelBuildUI()
     {
-        OnOfffarmPopup();
+        BuildingPlacer.Instance.buildMap.ColliderAllOn();
+        OnOffFarmPopup();
         Managers.UI.ClosePopupUI(this);
         (Managers.UI.SceneUI as UI_GameScene).gameObject.SetActive(true);
     }
@@ -328,7 +329,7 @@ public class UI_BuildPopup : UI_Popup
         }
     }
 
-    private void OnOfffarmPopup()
+    private void OnOffFarmPopup()
     {
                 // 이미 열려 있다면 닫기
         if (_farmPopup != null)

@@ -172,6 +172,7 @@ public class UI_GameScene : UI_Scene
 
     private void OnClickBuildButton()
     {
+        BuildingPlacer.Instance.buildMap.ColliderAllOff();
         Managers.UI.ShowPopupUI<UI_BuildPopup>();
         gameObject.SetActive(false);
     }
