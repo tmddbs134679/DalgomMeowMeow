@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class ForestBattleContext
 {
@@ -61,6 +62,7 @@ public class ForestRegion : BaseObject
 
     public override void OnClick()
     {
+            if (EventSystem.current.IsPointerOverGameObject()) return;
         // if (!QuestManager.Instance.IsUnlocked(requiredContentId))
         // {
         //     Managers.UI.ShowToast("챕터에서 숲 전투를 먼저 해금하세요.");
@@ -68,7 +70,7 @@ public class ForestRegion : BaseObject
         // }
         if (IsUnlocked)
         {
-            Managers.Debug.Log($"{Id}해제된 지역",Define.EDebugType.Building);
+            Managers.Debug.Log($"{Id}해제된 지역", Define.EDebugType.Building);
             // Debug.Log($"{Id}해제된 지역"); 
             return;
         }
