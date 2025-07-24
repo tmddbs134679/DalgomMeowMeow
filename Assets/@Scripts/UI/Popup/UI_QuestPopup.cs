@@ -19,16 +19,24 @@ public class UI_QuestPopup : UI_Popup
         AchievementButton
     }
 
+    enum Images
+    {
+        DailySelectedImage,
+        AchievementSelectedImage,
+    }
+
     public override bool Init()
     {
         if (!base.Init()) return false;
 
         BindObject(typeof(GameObjects));
         BindButton(typeof(Buttons));
+        BindImage(typeof(Images));
 
         GetButton((int)Buttons.BackgroundButton).gameObject.BindEvent(OnClickBackgroundButton);
         GetButton((int)Buttons.DailyButton).gameObject.BindEvent(DailyButton);
         GetButton((int)Buttons.AchievementButton).gameObject.BindEvent(AchievementButton);
+        GetImage((int)Images.AchievementSelectedImage).gameObject.SetActive(false);
 
         CreateQuestSlots();
 
@@ -56,12 +64,16 @@ public class UI_QuestPopup : UI_Popup
     private void DailyButton()
     {
         _currentTab =  Define.EQuestType.Daily;
+        GetImage((int)Images.DailySelectedImage).gameObject.SetActive(true);
+        GetImage((int)Images.AchievementSelectedImage).gameObject.SetActive(false);
         CreateQuestSlots();
     }
 
     private void AchievementButton()
     {
         _currentTab =  Define.EQuestType.Achievement;
+        GetImage((int)Images.AchievementSelectedImage).gameObject.SetActive(true);
+        GetImage((int)Images.DailySelectedImage).gameObject.SetActive(false);
         CreateAchievementSlots();
     }
 
