@@ -28,8 +28,8 @@ Transform:
   m_GameObject: {fileID: 1757142910568654162}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.4015, y: -0.7395, z: 0}
-  m_LocalScale: {x: 1.5086694, y: 2.4212565, z: 1}
+  m_LocalPosition: {x: 0.4015, y: -0.8279, z: 0}
+  m_LocalScale: {x: 1.5086694, y: 2.5980082, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7131119274367419301}
@@ -167,8 +167,8 @@ Transform:
   m_GameObject: {fileID: 6645964425556852567}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.0008, y: 0.0869, z: -0}
-  m_LocalScale: {x: 3.7417715, y: 1.0489234, z: 1}
+  m_LocalPosition: {x: 0.0303, y: 0.0869, z: -0}
+  m_LocalScale: {x: 4.075658, y: 1.0489234, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7131119274367419301}
@@ -341,6 +341,7 @@ MonoBehaviour:
   BuildingData: {fileID: 11400000, guid: 90dc4d2869e060447b743c61fecefd7f, type: 2}
   CurrentState: 0
   assignedAnimal: {fileID: 0}
+  _animator: {fileID: 1964137592285707247}
   _buildMap: {fileID: 0}
   _textAnim: {fileID: 0}
   buildingRenderer: {fileID: 0}
@@ -431,6 +432,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c21cfbb0e51928248b3af40d2ff12f85, type: 3}
+--- !u!95 &1964137592285707247 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 4299721648763474814, guid: c21cfbb0e51928248b3af40d2ff12f85, type: 3}
+  m_PrefabInstance: {fileID: 2371614372443498641}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7159515323152457449 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4877996479861716600, guid: c21cfbb0e51928248b3af40d2ff12f85, type: 3}
