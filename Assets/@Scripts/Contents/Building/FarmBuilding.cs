@@ -9,7 +9,6 @@ public class FarmBuilding : BuildingBase
     [SerializeField] private Renderer buildingRenderer;
     public GameObject collectIcon;
     public event Action IsHarvest;
-    
     public Define.ECropType CropType;
     public Define.ECropType GetCropType() => CropType;
 
