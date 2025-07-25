@@ -44,7 +44,7 @@ public class GameScene : BaseScene
             }
                 
         }
-
+            Managers.Sound.Play(Define.ESound.Bgm, "BGM1");
     }
 
 
