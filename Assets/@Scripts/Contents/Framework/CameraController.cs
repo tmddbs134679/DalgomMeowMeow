@@ -59,7 +59,8 @@ public class CameraController : MonoBehaviour
         }
         else if (Input.GetMouseButtonUp(0))
         {
-            if(!isDragging) ClickBuilding(Input.mousePosition); //건물일때만
+            if(!isDragging&&!isCatTouch) ClickBuilding(Input.mousePosition); //건물일때만
+            isCatTouch = false;
             if (_startedOnUI)
             {
                 _startedOnUI = false; // 다시 초기화
