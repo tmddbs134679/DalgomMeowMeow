@@ -302,24 +302,12 @@ public class AICharacter : BaseObject
             string randomCatSound = Define.CAT_SOUNDS[random.Next(Define.CAT_SOUNDS.Length)];
             Managers.Sound.Play(Define.ESound.Effect, randomCatSound);
         }
-           
-                if (gameObject == this.gameObject &&
-                    Controller.CurrentState() is not CharacterHelloState)
-                {
-                      if (!isClicked)
-            {
-                tempCameraPos = _camera.transform.position;
-                tempCameraSize = _camera.orthographicSize;
-            }
-            if (isClicked)
-            {
-                _camera.orthographicSize = tempCameraSize;
-                _camera.transform.position = tempCameraPos;
-            }
-                    clickStartTime = 0;
-                    isClicked = !isClicked;
 
-                }
+        if (gameObject == this.gameObject &&
+            Controller.CurrentState() is not CharacterHelloState)
+        {
+            clickStartTime = 0;
+        }
 
     }
     private void LongPressClick()
@@ -369,14 +357,27 @@ public class AICharacter : BaseObject
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
-                if (clickStartTime <= 0.2f && hit.collider.gameObject == this.gameObject && isClicked)
-                {
-                    // 부드럽게 줌인
-                    _camera.DOOrthoSize(2f, 1f); // 1초 동안 줌인
 
-                    // 부드럽게 위치 이동
-                    Vector3 targetPos = new Vector3(transform.position.x - 20.3f, 30.5f, transform.position.z - 20.6f);
-                    _camera.transform.DOMove(targetPos, 1f); // 1초 동안 이동
+                if(clickStartTime <= 0.2f && hit.collider.gameObject == this.gameObject)
+{
+                    if (!isClicked)
+                    {
+                        // 확대 전 상태 저장
+                        tempCameraSize = _camera.orthographicSize;
+                        tempCameraPos = _camera.transform.position;
+
+                        // 부드럽게 줌인
+                        _camera.DOOrthoSize(2f, 1f);
+                        Vector3 targetPos = new Vector3(transform.position.x - 20.3f, 30.5f, transform.position.z - 20.6f);
+                        _camera.transform.DOMove(targetPos, 1f);
+                    }
+                    else
+                    {
+                        // 부드럽게 원래대로 복귀
+                        _camera.DOOrthoSize(tempCameraSize, 1f);
+                        _camera.transform.DOMove(tempCameraPos, 1f);
+                    }
+
                 }
             }
 
