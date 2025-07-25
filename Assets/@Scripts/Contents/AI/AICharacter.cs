@@ -306,6 +306,7 @@ public class AICharacter : BaseObject
         if (gameObject == this.gameObject &&
             Controller.CurrentState() is not CharacterHelloState)
         {
+            isClicked = !isClicked;
             clickStartTime = 0;
         }
 
@@ -360,7 +361,7 @@ public class AICharacter : BaseObject
 
                 if(clickStartTime <= 0.2f && hit.collider.gameObject == this.gameObject)
 {
-                    if (!isClicked)
+                    if (isClicked)
                     {
                         // 확대 전 상태 저장
                         tempCameraSize = _camera.orthographicSize;
