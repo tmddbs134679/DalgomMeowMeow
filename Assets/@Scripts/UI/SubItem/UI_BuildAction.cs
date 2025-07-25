@@ -51,8 +51,9 @@ public class UI_BuildAction : UI_Popup
     }
     private void AcceptBuild()
     {
-        if(BuildingPlacer.Instance._isBuild)
-                BuildingPlacer.Instance.OnBuildingCancel?.Invoke();
+        BuildingPlacer.Instance.CanPlaceBuilding();
+        if (BuildingPlacer.Instance._isBuild)
+            BuildingPlacer.Instance.OnBuildingCancel?.Invoke();
         if (BuildingPlacer.Instance.isLongPressAcceptBuild)
         {
             BuildingPlacer.Instance.AcceptLongPressBuild();
