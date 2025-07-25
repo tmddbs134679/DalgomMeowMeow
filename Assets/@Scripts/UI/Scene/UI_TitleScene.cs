@@ -9,6 +9,7 @@ public class UI_TitleScene : UI_Scene
     #region Enum
     enum GameObjects
     {
+        TextObjectGroup,
         Slider,
     }
 
@@ -19,7 +20,11 @@ public class UI_TitleScene : UI_Scene
 
     enum Texts
     {
-        StartText
+        StartText,
+        DaText,
+        NaText,
+        MaText
+
     }
     #endregion
 
@@ -55,6 +60,8 @@ public class UI_TitleScene : UI_Scene
 
     private void Start()
     {
+        PlayTitleAnimation();
+
         Managers.Resource.LoadAllAsync<Object>("PreLoad", (key, count, totalCount) =>
         {
             GetObject((int)GameObjects.Slider).GetComponent<Slider>().value = (float)count / totalCount;
@@ -73,5 +80,40 @@ public class UI_TitleScene : UI_Scene
     {
         GetText((int)Texts.StartText).DOFade(0, 1f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutCubic).Play();
     }
+    void PlayTitleAnimation()
+    {
+        var da = GetText((int)Texts.DaText).rectTransform;
+        var na = GetText((int)Texts.NaText).rectTransform;
+        var ma = GetText((int)Texts.MaText).rectTransform;
 
+        Sequence seq = DOTween.Sequence();
+
+        // 달곰
+        seq.Append(PlayBouncyAnimation(da));
+        seq.AppendInterval(0.3f); 
+
+        // 냥냥
+        seq.Append(PlayBouncyAnimation(na));
+        seq.AppendInterval(0.3f);
+
+        // 마을
+        seq.Append(PlayBouncyAnimation(ma));
+    }
+
+    Sequence PlayBouncyAnimation(RectTransform target)
+    {
+        Sequence bounceSeq = DOTween.Sequence();
+
+        Vector3 originalScale = target.localScale;
+        Vector3 punchScale = originalScale * 2f;
+
+        // 스케일 업 + 흔들림
+        bounceSeq.Append(target.DOScale(punchScale, 0.3f).SetEase(Ease.OutBack));
+        bounceSeq.Join(target.DOShakeAnchorPos(0.3f, new Vector2(10f, 0), 10, 90f, false, true));
+
+        // 스케일 복원
+        bounceSeq.Append(target.DOScale(originalScale, 0.2f).SetEase(Ease.InOutQuad));
+
+        return bounceSeq;
+    }
 }
