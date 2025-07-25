@@ -32,7 +32,7 @@ public class BuildingManager : MonoBehaviour
     {
         _buildings.Remove(building);
     }
-    
+   /* 
     void Update()
     {
         float deltaTime = Time.deltaTime;
@@ -41,4 +41,5 @@ public class BuildingManager : MonoBehaviour
             building.Tick(deltaTime);
         }
     }
+    */
 }
