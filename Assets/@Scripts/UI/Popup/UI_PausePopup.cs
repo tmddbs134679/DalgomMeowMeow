@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UI_PausePopup : UI_Popup   //어드레서블에 프리펩 넣기
 {
@@ -10,8 +11,14 @@ public class UI_PausePopup : UI_Popup   //어드레서블에 프리펩 넣기
         RetryButton,
         TitleButton
     }
+
+    enum Images
+    {
+        Pause    
+    }
     #endregion
 
+    [SerializeField]Sprite[] Image;
     private void Awake()
     {
         Init();
@@ -27,11 +34,16 @@ public class UI_PausePopup : UI_Popup   //어드레서블에 프리펩 넣기
             return false;
 
         BindButton(typeof(Buttons));
+        BindImage(typeof(Images));
         
         GetButton((int)Buttons.ResumeButton).gameObject.BindEvent(OnClickResumeButton); //버튼 등록
         GetButton((int)Buttons.RetryButton).gameObject.BindEvent(OnClickRetryButton);
         GetButton((int)Buttons.TitleButton).gameObject.BindEvent(OnClickTitleButton);
-        
+
+        //getimage
+        GetImage((int)Images.Pause).sprite = Image[Random.Range(0,3)];
+
+
 
 
         return true;
