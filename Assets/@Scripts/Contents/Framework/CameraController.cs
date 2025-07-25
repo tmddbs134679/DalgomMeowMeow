@@ -111,10 +111,7 @@ ClickCat(Input.mousePosition); //고양이일때만
             Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize - zoomAmount, 6f, 10f);
         }
 
-
     }
-
-
 
     void ApplyCameraMove(Vector2 delta)
     {
