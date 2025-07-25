@@ -25,8 +25,8 @@ public class DraggableObject : MonoBehaviour, IDraggable
     [SerializeField] private Vector2 buildSize = new Vector2(1f, 1f); // 건축물 밑면 크기 (x, z)
     [SerializeField] private LayerMask tileLayer;
 
-    public float x=2f;
-    public float y=2f;
+    public float testx=2.1f;
+    public float testy=2.1f;
     void Start()
     {
         _isBuildColor = GetComponent<IsBuildColor>();
@@ -52,18 +52,18 @@ public void OnDrag(Vector3 groundPos)
         Vector3 snappedPos = GetSnappedPosition(groundPos);
         transform.position = snappedPos;
 
-        // 🔍 현재 그리드 기준 위치 계산
+        // 현재 그리드 기준 위치 계산
         Vector3Int currentGridPos = new Vector3Int(
             Mathf.RoundToInt(transform.position.x / gridSize),
             0,
             Mathf.RoundToInt(transform.position.z / gridSize)
         );
 
-            // ✅ 이전과 다를 때만 처리
+                CheckTilesUnderBuilding();
+            // 이전과 다를 때만 처리
             if (currentGridPos != _prevGridPos)
             {
                 _prevGridPos = currentGridPos;
-                CheckTilesUnderBuilding();
                                 if (BuildingPlacer.Instance.isSequenceBuild) BuildingPlacer.Instance.SaveandRemoveRoad();
         }
 
@@ -132,7 +132,7 @@ public void OnDrag(Vector3 groundPos)
   _offsetx = (buildSize.x % 2 == 0) ? (gridSize / 2f) : 0f;
    _offsety = (buildSize.y % 2 == 0) ? (gridSize / 2f) : 0f;
         Vector3 center = transform.position + Vector3.down * 0.5f;
-        Vector3 halfExtents = new Vector3(buildSize.x /2f,0.1f, buildSize.y /2f);
+        Vector3 halfExtents = new Vector3(buildSize.x /testx, 0.1f, buildSize.y /testy);
 
         Collider[] hitColliders = Physics.OverlapBox(center, halfExtents, Quaternion.identity, tileLayer);
 
@@ -154,7 +154,7 @@ public void OnDrag(Vector3 groundPos)
     public void SetTileIsBuild()
     {
         Vector3 center = transform.position + Vector3.down * 0.5f;
-        Vector3 halfExtents = new Vector3(buildSize.x /2.5f, 0.1f, buildSize.y /2.5f);
+        Vector3 halfExtents = new Vector3(buildSize.x /testx, 0.1f, buildSize.y /testy);
 
         Collider[] hitColliders = Physics.OverlapBox(center, halfExtents, Quaternion.identity, tileLayer);
         foreach (Collider col in hitColliders)
@@ -173,7 +173,7 @@ public void OnDrag(Vector3 groundPos)
     public void CurrentTileAndOBJ()
     {
         Vector3 center = transform.position + Vector3.down * 0.5f;
-        Vector3 halfExtents = new Vector3(buildSize.x / 2.5f, 0.1f, buildSize.y / 2.5f);
+        Vector3 halfExtents = new Vector3(buildSize.x /testx, 0.1f, buildSize.y /testy);
 
         Collider[] hitColliders = Physics.OverlapBox(center, halfExtents, Quaternion.identity, tileLayer);
         BuildingPlacer.Instance.TempCollider = hitColliders.ToArray();
@@ -186,7 +186,7 @@ public void OnDrag(Vector3 groundPos)
           _offsetx = (buildSize.x % 2 == 0) ? (gridSize / 2f) : 0f;
    _offsety = (buildSize.y % 2 == 0) ? (gridSize / 2f) : 0f;
         Vector3 center = transform.position + Vector3.down * 0.5f;
-        Vector3 halfExtents = new Vector3(buildSize.x / 3f, 0.1f, buildSize.y / 3f);
+        Vector3 halfExtents = new Vector3(buildSize.x /testx, 0.1f, buildSize.y /testy);
         Gizmos.color = Color.magenta;
         Gizmos.DrawWireCube(center, halfExtents * 2f);
     }
