@@ -24,7 +24,6 @@ public class UI_CheckOutRewardPopup : UI_Popup
     }
     #endregion
 
-
     private void Awake()
     {
         Init();
@@ -61,6 +60,20 @@ public class UI_CheckOutRewardPopup : UI_Popup
         GameObject GroupObject = GetObject((int)GameObjects.RewardGroupObject);
         UI_CheckOutItem slot = Managers.UI.MakeSubItem<UI_CheckOutItem>(GroupObject.transform);
         slot.SetInfo(dayCount, false, false);
+    }
+
+    public void SetInfo(Equipment equipment)
+    {
+        GameObject GroupObject = GetObject((int)GameObjects.RewardGroupObject);
+        UI_EquipSlot slot = Managers.UI.MakeSubItem<UI_EquipSlot>(GroupObject.transform);
+        slot.SetInfo(equipment, true);
+    }
+
+    public void SetInfo(Character character)
+    {
+        GameObject GroupObject = GetObject((int)GameObjects.RewardGroupObject);
+        UI_BattleCharacterSlot slot = Managers.UI.MakeSubItem<UI_BattleCharacterSlot>(GroupObject.transform);
+        slot.SetInfo(character);
     }
 
     private void OnClickBackgroundButton()

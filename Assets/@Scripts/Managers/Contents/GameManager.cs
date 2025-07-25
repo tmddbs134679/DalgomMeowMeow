@@ -357,7 +357,7 @@ public class GameManager
     }
 
 
-    public AICharacter SpawnRandomGachaCharacter()
+    public Character SpawnRandomGachaCharacter()
     {
         string creatureId = DrawRandomCreature();
 
@@ -382,7 +382,7 @@ public class GameManager
             _characters[newChar.UniqueId] = newChar;
             Managers.Debug.Log($"[Gacha] 고양이 보관함에 저장됨: {newChar.DataId}",Define.EDebugType.AI);
             SaveGame();
-            return null;
+            return newChar;
         }
 
         newChar.InMainScene = true;
@@ -399,7 +399,7 @@ public class GameManager
         Managers.AI.Register(aiChar);
         _characters[newChar.UniqueId] = newChar;
 
-        return aiChar;
+        return newChar;
     }
 
     public void ApplyRandomStat(Character newChar)
@@ -433,6 +433,7 @@ public class GameManager
         var gachaEntries = Managers.Data.GachaTableDataDic.Values.
             Where(item => item.Grade == grade).ToList();
 
+        UI_CheckOutRewardPopup popup = Managers.UI.ShowPopupUI<UI_CheckOutRewardPopup>();
 
         for(int i = 1; i <= count; i++)
         {
@@ -443,6 +444,8 @@ public class GameManager
             {
                 equipments.Add(Managers.Equipment.AddEquipment(key));
             }
+
+            popup.SetInfo(Managers.Equipment.AddEquipment(key));
         }
   
 
@@ -451,9 +454,12 @@ public class GameManager
 
     public List<Character> DoCharacterGacha(int count)
     {
+
+        UI_CheckOutRewardPopup popup = Managers.UI.ShowPopupUI<UI_CheckOutRewardPopup>();
         for(int i = 1; i <= count; i++)
         {
-            SpawnRandomGachaCharacter();
+            Character character = SpawnRandomGachaCharacter();
+            popup.SetInfo(character);
         }
 
         OnCharacterChanged?.Invoke();

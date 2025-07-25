@@ -51,10 +51,14 @@ public class UI_EquipSlot : UI_Base
     }
 
 
-    public void SetInfo(Equipment equipment)
+    public void SetInfo(Equipment equipment, bool isReward = false)
     {
         if (equipment == null)
             return;
+
+        if (isReward)
+            GetImage((int)Images.CharacterOwnerImage).gameObject.SetActive(false);
+
 
         _equipment = null;
 
