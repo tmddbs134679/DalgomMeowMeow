@@ -32,9 +32,9 @@ namespace Scripts.Contents.AI.FSM.State
         public override void OnUpdate(float deltaTime)
         {
             base.OnUpdate(deltaTime);
-            if (elapsedTime > 2 && !isArrived)
+            if (elapsedTime >= 0.5 && !isArrived)
             {
-                character.UseStamina(2f);
+                character.UseStamina(0.5f);
                 targetPosition = character.Controller.FindNearestBuilding(state) - new Vector3(1.5f, 0, 1.5f);
                 character.Controller.Move(targetPosition );
                 elapsedTime = 0f; 
