@@ -83,6 +83,7 @@ public class UI_EditSettingPopup : UI_Popup
 
     private void OnClickSoundOnButton()
     {
+        Managers.Sound.PlayButtonClick();
         Managers.Game.EffectSoundOn = true;
         GetButton((int)Buttons.SoundEffectOnButton).gameObject.SetActive(true);
         GetButton((int)Buttons.SoundEffectOffButton).gameObject.SetActive(false);
@@ -90,7 +91,8 @@ public class UI_EditSettingPopup : UI_Popup
 
     private void OnClickSoundOffButton()
     {
-        Managers.Game.EffectSoundOn = true;
+        Managers.Sound.PlayButtonClick();
+        Managers.Game.EffectSoundOn = false;
         GetButton((int)Buttons.SoundEffectOnButton).gameObject.SetActive(false);
         GetButton((int)Buttons.SoundEffectOffButton).gameObject.SetActive(true);
     }
@@ -99,11 +101,13 @@ public class UI_EditSettingPopup : UI_Popup
 
     private void OnClickBackgroundButton()
     {
+        Managers.Sound.PlayButtonClick();
         gameObject.SetActive(false);
     }
 
     private void OnClickBgmOnButton()
     {
+        Managers.Sound.PlayButtonClick();
         Managers.Game.BGMOn = true;
         GetButton((int)Buttons.BgmEffectOnButton).gameObject.SetActive(true);
         GetButton((int)Buttons.BgmEffectOffButton).gameObject.SetActive(false);
@@ -111,6 +115,7 @@ public class UI_EditSettingPopup : UI_Popup
 
     private void OnClickBgmOffButton()
     {
+        Managers.Sound.PlayButtonClick();
         Managers.Game.BGMOn = false;
         GetButton((int)Buttons.BgmEffectOnButton).gameObject.SetActive(false);
         GetButton((int)Buttons.BgmEffectOffButton).gameObject.SetActive(true);
