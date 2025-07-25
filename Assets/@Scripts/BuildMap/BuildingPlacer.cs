@@ -326,6 +326,7 @@ public class BuildingPlacer : MonoBehaviour
             buildMap.LoadBuild(); //오브젝트 갱신
             surface.BuildNavMesh(); //네브매쉬 깔기
             isLongPressAcceptBuild = false;
+                       buildMap.ColliderAllOn();
             OnBuildingAccepted?.Invoke(_saveBuildingSO);
             QuestManager.Instance.NotifyBuildingConstructed(buildType);
         }
