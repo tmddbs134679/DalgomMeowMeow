@@ -20,7 +20,7 @@ public class UI_ChapterSlot : UI_Base
     public void SetCondition(UnlockCondition condition,string contentId)
     {
         string title = "";
-        Color CompleteCheckColor = Color.red;
+        Color CompleteCheckColor = Color.clear;
 
         // ✅ 이미 해금된 콘텐츠라면 무조건 초록색 처리
         bool isContentUnlocked = QuestManager.Instance.IsUnlocked(contentId);
@@ -46,7 +46,7 @@ public class UI_ChapterSlot : UI_Base
                     break;
             }
 
-            CompleteCheckColor = Color.green;
+            CompleteCheckColor = Color.white;
         }
         else
         {
@@ -56,7 +56,7 @@ public class UI_ChapterSlot : UI_Base
                 case UnlockConditionType.Gold:
                     float currentGold = Managers.Game.Gold;
                     title = $"골드 조건 {condition.RequiredGold}";
-                    CompleteCheckColor = currentGold >= condition.RequiredGold ? Color.green : Color.red;
+                    CompleteCheckColor = currentGold >= condition.RequiredGold ? Color.white : Color.clear;
                     break;
 
                 case UnlockConditionType.Quest:
@@ -71,7 +71,7 @@ public class UI_ChapterSlot : UI_Base
                         title = "퀘스트 완료";
                     }
 
-                    CompleteCheckColor = isCompleted ? Color.green : Color.red;
+                    CompleteCheckColor = isCompleted ? Color.white : Color.clear;
                     break;
             }
         }

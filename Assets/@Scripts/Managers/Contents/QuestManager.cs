@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class QuestManager : MonoBehaviour
@@ -9,7 +10,6 @@ public class QuestManager : MonoBehaviour
     
     private Dictionary<string, Quest> _quests = new();
     private Dictionary<(Define.EQuestConditionType, Define.ETargetType), List<Quest>> _questIndex = new();
-    private List<string> _unlockedContentIds = new();
 
     public event Action OnQuestUpdated;
 
@@ -115,7 +115,7 @@ public class QuestManager : MonoBehaviour
             };
         }
 
-        data.unlockedContentIds = new List<string>(_unlockedContentIds);
+        data.unlockedContentIds = UnlockedContent.ToList(); // 저장
         return data;
     }
     
@@ -131,7 +131,7 @@ public class QuestManager : MonoBehaviour
             }
         }
 
-        _unlockedContentIds = new List<string>(data.unlockedContentIds);
+        UnlockedContent = new HashSet<string>(data.unlockedContentIds); 
     }
     
     public List<Quest> DailyQuests

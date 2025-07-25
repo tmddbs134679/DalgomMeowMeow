@@ -23,6 +23,8 @@ public class UI_ChapterPopup : UI_Popup
     enum Texts
     {
         UnlockText1,
+        UnlockText2,
+        UnlockText3,
     }
 
     private string _currentChapterId = "Chapter1";
@@ -49,6 +51,7 @@ public class UI_ChapterPopup : UI_Popup
     private void OnClickUnlockButton()
     {
         QuestManager.Instance.TryUnlockContent(_currentChapterId);
+        Managers.UI.ShowToast("해금완료");
     }
 
     private void OnClickChapter4Button()
