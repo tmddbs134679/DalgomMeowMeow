@@ -300,21 +300,14 @@ if (BuildingPlacer.Instance == null || !BuildingPlacer.Instance.isAI)LongPressCl
             Managers.Sound.Play(Define.ESound.Effect, randomCatSound);
         }
            
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit))
-            {
-                if (hit.collider.gameObject == this.gameObject &&
+                if (gameObject == this.gameObject &&
                     Controller.CurrentState() is not CharacterHelloState)
                 {
                     clickStartTime = 0;
                     isClicked = !isClicked;
 
                 }
-            }
-        }
+
     }
 
     private void LongPressClick()

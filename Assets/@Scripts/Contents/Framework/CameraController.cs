@@ -59,7 +59,7 @@ public class CameraController : MonoBehaviour
         }
         else if (Input.GetMouseButtonUp(0))
         {
-            if(!isDragging&&!isCatTouch) ClickBuilding(Input.mousePosition); //건물일때만
+            if(!isDragging) ClickBuilding(Input.mousePosition); //건물일때만
             if (_startedOnUI)
             {
                 _startedOnUI = false; // 다시 초기화
@@ -126,61 +126,43 @@ public class CameraController : MonoBehaviour
         transform.position = newPos;
     }
 
-    void ClickObject(Vector2 screenPos)
-    {
-        if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
-            return;
-        Ray ray = _cam.ScreenPointToRay(screenPos);
-        if (Physics.Raycast(ray, out RaycastHit hit, 100f, layerMask))
-        {
-            // 여기에서 충돌한 오브젝트의 레이어를 확인해야 함
-            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Player"))
-            {
-                isAI = true;
-            }
+void ClickCat(Vector2 screenPos)
+{
+    if (EventSystem.current.IsPointerOverGameObject()) return;
 
-            Managers.Debug.Log($" Click on:  {hit.collider.name}", Define.EDebugType.None);
+    Ray ray = _cam.ScreenPointToRay(screenPos);
+    RaycastHit[] hits = Physics.RaycastAll(ray, 100f, layerMask);
+
+    foreach (var hit in hits)
+    {
+        if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Player"))
+        {
+            isAI = true;
+            Managers.Debug.Log($" ClickCat:Cat Clicked: {hit.collider.name}", Define.EDebugType.None);
             var clickable = hit.collider.GetComponent<BaseObject>();
-
-
-            //고양이일때와 건물일때 구별
-            if (clickable != null)
-                clickable.OnClick();
-        }
-
-    }
-
-    void ClickCat(Vector2 screenPos)
-    {
-        if (EventSystem.current.IsPointerOverGameObject()) return;
-        Ray ray = _cam.ScreenPointToRay(screenPos);
-        if (Physics.Raycast(ray, out RaycastHit hit, 100f, layerMask))
-        {
-            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Player"))
-            {
-                isAI = true;
-                Managers.Debug.Log($" Cat Clicked: {hit.collider.name}", Define.EDebugType.None);
-                var clickable = hit.collider.GetComponent<BaseObject>();
-                clickable?.OnClick();
-            }
+            clickable?.OnClick();
             isCatTouch = true;
+            break; // 가장 가까운 Player만 처리하고 끝냄
         }
     }
+}
 
 void ClickBuilding(Vector2 screenPos)
 {
     if (EventSystem.current.IsPointerOverGameObject()) return;
 
     Ray ray = _cam.ScreenPointToRay(screenPos);
-    if (Physics.Raycast(ray, out RaycastHit hit, 100f, layerMask))
+    RaycastHit[] hits = Physics.RaycastAll(ray, 100f, layerMask);
+
+    foreach (var hit in hits)
     {
         if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Building"))
         {
-            Managers.Debug.Log($" Building Clicked: {hit.collider.name}", Define.EDebugType.None);
+            Managers.Debug.Log($" ClickBuilding:Building Clicked: {hit.collider.name}", Define.EDebugType.None);
             var clickable = hit.collider.GetComponent<BaseObject>();
             clickable?.OnClick();
+            break; // 가장 가까운 Building만 처리
         }
-        
     }
 }
 
