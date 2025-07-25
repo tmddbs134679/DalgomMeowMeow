@@ -53,6 +53,8 @@ public class AICharacter : BaseObject
     private Transform head;
     [HideInInspector]
     public Camera _camera;
+    private float tempCameraSize = 0;
+    private Vector3 tempCameraPos = Vector3.zero;
     [HideInInspector]
     public float tempSpeed;
     [HideInInspector]
@@ -309,6 +311,19 @@ if (BuildingPlacer.Instance == null || !BuildingPlacer.Instance.isAI)LongPressCl
                 if (hit.collider.gameObject == this.gameObject &&
                     Controller.CurrentState() is not CharacterHelloState)
                 {
+                    if (!isClicked)
+                    {
+                        tempCameraPos = _camera.transform.position;
+                        tempCameraSize = _camera.orthographicSize;
+                    }
+                    if (isClicked)
+                    {
+                        _camera.orthographicSize = tempCameraSize;
+                        _camera.transform.position = tempCameraPos;
+                    }
+
+
+
                     clickStartTime = 0;
                     isClicked = !isClicked;
 
@@ -359,22 +374,24 @@ if (BuildingPlacer.Instance == null || !BuildingPlacer.Instance.isAI)LongPressCl
 
             }
         }
-        if (Input.GetMouseButtonUp(0)  && isFollowing)
+        if (Input.GetMouseButtonUp(0))
         {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit))
+                if (clickStartTime <= 0.2f && hit.collider.gameObject == this.gameObject && isClicked)
+            {
+                _camera.orthographicSize = 2f;
+                _camera.transform.position = new Vector3(transform.position.x - 20.3f, 30.5f, transform.position.z - 20.6f);
+            }
             if (isFollowing)
             {
                 nav.enabled = true;
                 this.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
                 Managers.AI.ValidateNavMeshPosition(this);
             }
+            //_camera.orthographicSize = 2f;
+            //_camera.transform.position = new Vector3(transform.position.x - 20.3f, 30.5f, transform.position.z - 20.6f);
             isFollowing = false;
-            //nav.ResetPath();
-            if (Controller.CurrentState() is CharacterMoveToState)
-                SetSpeed(Data.WalkSpeed);
-            //else if (Controller.CurrentState() is CharacterDeliverState)
-            //    SetSpeed(Data.MoveSpeed / 2);
-            //else
-            //    SetSpeed(Data.MoveSpeed);
             SetAnimation(CurrentAnimation);
             clickStartTime = 0f;
         }
@@ -383,9 +400,6 @@ if (BuildingPlacer.Instance == null || !BuildingPlacer.Instance.isAI)LongPressCl
     {
         if (isClicked)
         {
-
-
-
             SetSpeed(0);
             this.gameObject.transform.rotation = Quaternion.Euler(0, _camera.transform.eulerAngles.y + 180, 0);
             head.transform.localRotation = quaternion.Euler(0, 0, -12);
