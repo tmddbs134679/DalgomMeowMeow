@@ -69,7 +69,9 @@ public class UI_EquipItem : UI_Base
         GetText((int)Texts.CostumeText).gameObject.SetActive(!hasEquip);
         GetText((int)Texts.NameText).gameObject.SetActive(hasEquip);
         GetText((int)Texts.DescriptionText).gameObject.SetActive(hasEquip);
-
-
     }
+
+
+
+
 }

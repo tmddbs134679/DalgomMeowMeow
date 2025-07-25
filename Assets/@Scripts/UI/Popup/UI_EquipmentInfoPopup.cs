@@ -31,7 +31,7 @@ public class UI_EquipmentInfoPopup : UI_Popup
     {
         EquipmentImage,
         EquippedCharacterImage,
-        UnEquipCharacterImage
+        UnEquipCharacterbackground
 
     }
     #endregion
@@ -105,7 +105,7 @@ public class UI_EquipmentInfoPopup : UI_Popup
     {
         // 장비가 착용된 상태
         GetObject((int)GameObjects.EquippedObject).gameObject.SetActive(isEquipped);
-        GetImage((int)Images.UnEquipCharacterImage).gameObject.SetActive(!isEquipped);
+        GetImage((int)Images.UnEquipCharacterbackground).gameObject.SetActive(!isEquipped);
         GetImage((int)Images.EquippedCharacterImage).gameObject.SetActive(isEquipped);
 
         if (isEquipped)
