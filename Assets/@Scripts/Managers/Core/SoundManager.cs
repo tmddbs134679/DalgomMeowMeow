@@ -122,7 +122,7 @@ public class SoundManager
 
     public void PlayButtonClick()
     {
-        Play(Define.ESound.Effect, "Click_CommonButton");
+        Play(Define.ESound.Effect, "Click2");
     }
 
     public void PlayPopupClose()

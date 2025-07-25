@@ -292,6 +292,15 @@ if (BuildingPlacer.Instance == null || !BuildingPlacer.Instance.isAI)LongPressCl
     {
         if (EventSystem.current.IsPointerOverGameObject())
             return;
+
+        if(!isClicked)
+        {
+            System.Random random = new System.Random();
+            string randomCatSound = Define.CAT_SOUNDS[random.Next(Define.CAT_SOUNDS.Length)];
+            Managers.Sound.Play(Define.ESound.Effect, randomCatSound);
+        }
+           
+
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -374,6 +383,9 @@ if (BuildingPlacer.Instance == null || !BuildingPlacer.Instance.isAI)LongPressCl
     {
         if (isClicked)
         {
+
+
+
             SetSpeed(0);
             this.gameObject.transform.rotation = Quaternion.Euler(0, _camera.transform.eulerAngles.y + 180, 0);
             head.transform.localRotation = quaternion.Euler(0, 0, -12);
