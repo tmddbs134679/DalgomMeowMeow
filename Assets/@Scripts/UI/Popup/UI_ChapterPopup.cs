@@ -23,6 +23,16 @@ public class UI_ChapterPopup : UI_Popup
     enum Texts
     {
         UnlockText1,
+        UnlockText2,
+        UnlockText3,
+    }
+
+    enum Images
+    {
+        Chapter1SelectImage,
+        Chapter2SelectImage,
+        Chapter3SelectImage,
+        Chapter4SelectImage,
     }
 
     private string _currentChapterId = "Chapter1";
@@ -33,6 +43,7 @@ public class UI_ChapterPopup : UI_Popup
         BindObject(typeof(GameObjects));
         BindButton(typeof(Buttons));
         BindText(typeof(Texts));
+        BindImage(typeof(Images));
 
         GetButton((int)Buttons.BackgroundButton).gameObject.BindEvent(OnClickBackgroundButton);
         GetButton((int)Buttons.UnlockButton).gameObject.BindEvent(OnClickUnlockButton);
@@ -42,6 +53,9 @@ public class UI_ChapterPopup : UI_Popup
         GetButton((int)Buttons.Chapter4Button).gameObject.BindEvent(OnClickChapter4Button);
 
 
+        GetImage((int)Images.Chapter2SelectImage).gameObject.SetActive(false);
+        GetImage((int)Images.Chapter3SelectImage).gameObject.SetActive(false);
+        GetImage((int)Images.Chapter4SelectImage).gameObject.SetActive(false);
         CreateChapterSlot("Chapter1");
         return true;
     }
@@ -49,29 +63,46 @@ public class UI_ChapterPopup : UI_Popup
     private void OnClickUnlockButton()
     {
         QuestManager.Instance.TryUnlockContent(_currentChapterId);
+        Managers.UI.ShowToast("해금완료");
     }
 
     private void OnClickChapter4Button()
     {
         _currentChapterId = "Chapter4";
+        GetImage((int)Images.Chapter1SelectImage).gameObject.SetActive(false);
+        GetImage((int)Images.Chapter2SelectImage).gameObject.SetActive(false);
+        GetImage((int)Images.Chapter3SelectImage).gameObject.SetActive(false);
+        GetImage((int)Images.Chapter4SelectImage).gameObject.SetActive(true);
         CreateChapterSlot(_currentChapterId); 
     }
 
     private void OnClickChapter3Button()
     {
         _currentChapterId = "Chapter3";
+        GetImage((int)Images.Chapter1SelectImage).gameObject.SetActive(false);
+        GetImage((int)Images.Chapter2SelectImage).gameObject.SetActive(false);
+        GetImage((int)Images.Chapter3SelectImage).gameObject.SetActive(true);
+        GetImage((int)Images.Chapter4SelectImage).gameObject.SetActive(false);
         CreateChapterSlot(_currentChapterId);   
     }
 
     private void OnClickChapter2Button()
     {
         _currentChapterId = "Chapter2";
+        GetImage((int)Images.Chapter1SelectImage).gameObject.SetActive(false);
+        GetImage((int)Images.Chapter2SelectImage).gameObject.SetActive(true);
+        GetImage((int)Images.Chapter3SelectImage).gameObject.SetActive(false);
+        GetImage((int)Images.Chapter4SelectImage).gameObject.SetActive(false);
         CreateChapterSlot(_currentChapterId); 
     }
 
     private void OnClickChapter1Button()
     {
         _currentChapterId = "Chapter1";
+        GetImage((int)Images.Chapter1SelectImage).gameObject.SetActive(true);
+        GetImage((int)Images.Chapter2SelectImage).gameObject.SetActive(false);
+        GetImage((int)Images.Chapter3SelectImage).gameObject.SetActive(false);
+        GetImage((int)Images.Chapter4SelectImage).gameObject.SetActive(false);
         CreateChapterSlot(_currentChapterId); 
     }
 
