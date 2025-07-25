@@ -51,6 +51,7 @@ public class UI_QuestSlot : UI_Base
 
         bool canClaim = quest.State == QuestProgressState.Completed;
         GetButton((int)Buttons.RewardButton).interactable = canClaim;
+        GetImage((int)Images.RewardImage).gameObject.SetActive(canClaim);
     }
 
     void OnClickRewardButton()
@@ -91,7 +92,7 @@ public class UI_QuestSlot : UI_Base
         GetImage((int)Images.ProgressBarFill).fillAmount = percent;
 
         // 완료되었으면 버튼 활성화
-        GetButton((int)Buttons.RewardButton).interactable = _quest.State == QuestProgressState.Completed;
         GetImage((int)Images.RewardImage).gameObject.SetActive(_quest.State == QuestProgressState.Completed);
+        GetButton((int)Buttons.RewardButton).interactable = _quest.State == QuestProgressState.Completed;
     }
 }
