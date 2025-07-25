@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using DG.Tweening;
 using Scripts.Contents.AI.FSM.State;
 using Unity.Mathematics;
 using Unity.VisualScripting;
@@ -322,8 +323,6 @@ if (BuildingPlacer.Instance == null || !BuildingPlacer.Instance.isAI)LongPressCl
                         _camera.transform.position = tempCameraPos;
                     }
 
-
-
                     clickStartTime = 0;
                     isClicked = !isClicked;
 
@@ -378,12 +377,19 @@ if (BuildingPlacer.Instance == null || !BuildingPlacer.Instance.isAI)LongPressCl
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit))
-                if (clickStartTime <= 0.2f && hit.collider.gameObject == this.gameObject && isClicked)
             {
-                _camera.orthographicSize = 2f;
-                _camera.transform.position = new Vector3(transform.position.x - 20.3f, 30.5f, transform.position.z - 20.6f);
+                if (clickStartTime <= 0.2f && hit.collider.gameObject == this.gameObject && isClicked)
+                {
+                    // 부드럽게 줌인
+                    _camera.DOOrthoSize(2f, 1f); // 1초 동안 줌인
+
+                    // 부드럽게 위치 이동
+                    Vector3 targetPos = new Vector3(transform.position.x - 20.3f, 30.5f, transform.position.z - 20.6f);
+                    _camera.transform.DOMove(targetPos, 1f); // 1초 동안 이동
+                }
             }
-            if (isFollowing)
+        
+        if (isFollowing)
             {
                 nav.enabled = true;
                 this.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
