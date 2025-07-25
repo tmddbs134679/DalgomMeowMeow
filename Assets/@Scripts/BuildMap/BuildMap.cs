@@ -41,6 +41,7 @@ public class BuildMap : MonoBehaviour
                 buildingBase.SetBuildMap(this);
             }
 
+            if(go.GetComponent<DraggableObject>()!=null)
             go.GetComponent<DraggableObject>().buildMap = gameObject.GetComponent<BuildMap>();
             if (go.TryGetComponent(out ForestRegion region))
             {

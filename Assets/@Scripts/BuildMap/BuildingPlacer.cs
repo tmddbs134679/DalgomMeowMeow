@@ -258,10 +258,11 @@ public class BuildingPlacer : MonoBehaviour
     /// </summary>
     public void AcceptSequenceBuild()
     {
+        
         isAI = false;
         isSelect = false;
         CanPlaceBuilding();
-
+OnBuildingCancel?.Invoke();//buildaction에서 분기처리가 잘 안되어서 여기서 처리
 
 
             foreach (var a in _roadPosArray)
