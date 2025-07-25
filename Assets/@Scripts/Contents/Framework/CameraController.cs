@@ -36,7 +36,6 @@ public class CameraController : MonoBehaviour
             if (_startedOnUI) return;
 
             ClickCat(Input.mousePosition); //고양이일때만
-            if (isCatTouch) return;
             _dragOrigin = Input.mousePosition;
             _touchStartPos = _dragOrigin;
             isDragging = false;
@@ -60,7 +59,7 @@ public class CameraController : MonoBehaviour
         }
         else if (Input.GetMouseButtonUp(0))
         {
-            if(!isDragging) ClickBuilding(Input.mousePosition); //건물일때만
+            if(!isDragging&&!isCatTouch) ClickBuilding(Input.mousePosition); //건물일때만
             if (_startedOnUI)
             {
                 _startedOnUI = false; // 다시 초기화
@@ -154,7 +153,6 @@ public class CameraController : MonoBehaviour
     void ClickCat(Vector2 screenPos)
     {
         if (EventSystem.current.IsPointerOverGameObject()) return;
-        isCatTouch = false;
         Ray ray = _cam.ScreenPointToRay(screenPos);
         if (Physics.Raycast(ray, out RaycastHit hit, 100f, layerMask))
         {
