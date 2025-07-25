@@ -25,6 +25,8 @@ public class DraggableObject : MonoBehaviour, IDraggable
     [SerializeField] private Vector2 buildSize = new Vector2(1f, 1f); // 건축물 밑면 크기 (x, z)
     [SerializeField] private LayerMask tileLayer;
 
+    public float x=2f;
+    public float y=2f;
     void Start()
     {
         _isBuildColor = GetComponent<IsBuildColor>();
@@ -127,9 +129,10 @@ public void OnDrag(Vector3 groundPos)
     //건물밑 타일 판별후 정보전달
     public void CheckTilesUnderBuilding()
     {
-
+  _offsetx = (buildSize.x % 2 == 0) ? (gridSize / 2f) : 0f;
+   _offsety = (buildSize.y % 2 == 0) ? (gridSize / 2f) : 0f;
         Vector3 center = transform.position + Vector3.down * 0.5f;
-        Vector3 halfExtents = new Vector3(buildSize.x / 2.5f, 0.1f, buildSize.y / 2.5f);
+        Vector3 halfExtents = new Vector3(buildSize.x /2f,0.1f, buildSize.y /2f);
 
         Collider[] hitColliders = Physics.OverlapBox(center, halfExtents, Quaternion.identity, tileLayer);
 
@@ -151,7 +154,7 @@ public void OnDrag(Vector3 groundPos)
     public void SetTileIsBuild()
     {
         Vector3 center = transform.position + Vector3.down * 0.5f;
-        Vector3 halfExtents = new Vector3(buildSize.x / 2.5f, 0.1f, buildSize.y / 2.5f);
+        Vector3 halfExtents = new Vector3(buildSize.x /2.5f, 0.1f, buildSize.y /2.5f);
 
         Collider[] hitColliders = Physics.OverlapBox(center, halfExtents, Quaternion.identity, tileLayer);
         foreach (Collider col in hitColliders)
@@ -180,9 +183,11 @@ public void OnDrag(Vector3 groundPos)
     //씬에서 기즈모 보여주기용
     void OnDrawGizmosSelected()
     {
+          _offsetx = (buildSize.x % 2 == 0) ? (gridSize / 2f) : 0f;
+   _offsety = (buildSize.y % 2 == 0) ? (gridSize / 2f) : 0f;
         Vector3 center = transform.position + Vector3.down * 0.5f;
-        Vector3 halfExtents = new Vector3(buildSize.x / 2f, 0.1f, buildSize.y / 2f);
-        Gizmos.color = Color.green;
+        Vector3 halfExtents = new Vector3(buildSize.x / 3f, 0.1f, buildSize.y / 3f);
+        Gizmos.color = Color.magenta;
         Gizmos.DrawWireCube(center, halfExtents * 2f);
     }
     
