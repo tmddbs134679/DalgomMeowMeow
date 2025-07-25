@@ -176,7 +176,7 @@ public class QuestManager : MonoBehaviour
             if (!hasRelatedQuest)
                 continue;
 
-            TryUnlockContent(kvp.Key); // 모든 조건 재검사
+            //TryUnlockContent(kvp.Key); // 모든 조건 재검사
         }
     }
     

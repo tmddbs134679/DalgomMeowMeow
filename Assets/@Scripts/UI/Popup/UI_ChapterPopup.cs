@@ -23,8 +23,6 @@ public class UI_ChapterPopup : UI_Popup
     enum Texts
     {
         UnlockText1,
-        UnlockText2,
-        UnlockText3,
     }
 
     private string _currentChapterId = "Chapter1";
