@@ -139,21 +139,26 @@ public class UI_GameScene : UI_Scene
 
     private void OnClickNoticeButton()
     {
+        Managers.Sound.PlayButtonClick();
         _uiNotiPopup.gameObject.SetActive(true);
     }
 
     private void OnClickEditSettingButton()
     {
+        Managers.Sound.PlayButtonClick();
         _editSettingPopupUI.gameObject.SetActive(true);
     }
 
     private void OnClickShopButton()
     {
+        Managers.Sound.PlayButtonClick();
+
         if (!QuestManager.Instance.IsUnlocked("Content_AnimalAdoption"))
         {
             Managers.UI.ShowToast("아직 열리지 않았습니다");
             return;
         }
+
         _shopPopupUI.gameObject.SetActive(true);
     }
 
@@ -165,6 +170,7 @@ public class UI_GameScene : UI_Scene
             return;
         }
 
+        Managers.Sound.PlayButtonClick();
         _checkOutPopupUI.SetInfo(Managers.Time.AttendanceDay);
         _checkOutPopupUI.gameObject.SetActive(true);
 
@@ -172,6 +178,7 @@ public class UI_GameScene : UI_Scene
 
     private void OnClickBuildButton()
     {
+        Managers.Sound.PlayButtonClick();
         BuildingPlacer.Instance.buildMap.ColliderAllOff();
         Managers.UI.ShowPopupUI<UI_BuildPopup>();
         gameObject.SetActive(false);
@@ -179,6 +186,7 @@ public class UI_GameScene : UI_Scene
 
     private void OnClickQuickButton()
     {
+        Managers.Sound.PlayButtonClick();
         _quickMenuPopupUI.gameObject.SetActive(true);
     }
 
@@ -281,6 +289,7 @@ public class UI_GameScene : UI_Scene
     #region Quest
     private void OnClickQuestButton()
     {
+        Managers.Sound.PlayButtonClick();
         Managers.UI.ShowPopupUI<UI_QuestPopup>();
     }
     #endregion
