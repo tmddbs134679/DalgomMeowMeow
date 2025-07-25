@@ -105,6 +105,7 @@ public class DragController : MonoBehaviour
             if (isDragging)
             {
                 isDelay = false;
+                
                 if (Physics.Raycast(ray, out var groundHit, 1000f, groundLayer))
                 {
                     currentTarget.OnDrag(groundHit.point);

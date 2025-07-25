@@ -60,7 +60,8 @@ MeshRenderer:
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
-  m_Materials: []
+  m_Materials:
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -142,6 +143,8 @@ MonoBehaviour:
   tileLayer:
     serializedVersion: 2
     m_Bits: 64
+  testx: 2.1
+  testy: 2.1
 --- !u!65 &-4140315742466721826
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -161,8 +164,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3, y: 1, z: 3}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 3, y: 2.38, z: 3}
+  m_Center: {x: 0, y: 0.47, z: 0}
 --- !u!114 &2812442089450277432
 MonoBehaviour:
   m_ObjectHideFlags: 0

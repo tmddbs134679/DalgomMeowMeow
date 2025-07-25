@@ -18,6 +18,7 @@ public class CameraController : MonoBehaviour
     public LayerMask layerMask;
     private bool isAI;
 
+    private bool isCatTouch;
     void Start()
     {
         _cam = Camera.main;
@@ -34,7 +35,8 @@ public class CameraController : MonoBehaviour
             _startedOnUI = IsPointerOverUI(); //  UI 위에서 눌렀는지 기록
             if (_startedOnUI) return;
 
-ClickCat(Input.mousePosition); //고양이일때만
+            ClickCat(Input.mousePosition); //고양이일때만
+            if (isCatTouch) return;
             _dragOrigin = Input.mousePosition;
             _touchStartPos = _dragOrigin;
             isDragging = false;
@@ -152,7 +154,7 @@ ClickCat(Input.mousePosition); //고양이일때만
     void ClickCat(Vector2 screenPos)
     {
         if (EventSystem.current.IsPointerOverGameObject()) return;
-
+        isCatTouch = false;
         Ray ray = _cam.ScreenPointToRay(screenPos);
         if (Physics.Raycast(ray, out RaycastHit hit, 100f, layerMask))
         {
@@ -163,6 +165,7 @@ ClickCat(Input.mousePosition); //고양이일때만
                 var clickable = hit.collider.GetComponent<BaseObject>();
                 clickable?.OnClick();
             }
+            isCatTouch = true;
         }
     }
 
