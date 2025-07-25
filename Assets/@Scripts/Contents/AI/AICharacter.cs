@@ -306,10 +306,7 @@ if (BuildingPlacer.Instance == null || !BuildingPlacer.Instance.isAI)LongPressCl
 
         if (Input.GetMouseButtonDown(0))
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit))
-            {
-                if (hit.collider.gameObject == this.gameObject &&
+                if (gameObject == gameObject &&
                     Controller.CurrentState() is not CharacterHelloState)
                 {
                     if (!isClicked)
@@ -329,7 +326,6 @@ if (BuildingPlacer.Instance == null || !BuildingPlacer.Instance.isAI)LongPressCl
                 }
             }
         }
-    }
 
     private void LongPressClick()
     {
