@@ -512,9 +512,9 @@ public class GameManager
             }
             else
             {
-                string name = "Bgm_Lobby";
+                string name = "BGM1";
                 if (Managers.Scene.CurrentScene.SceneType == Define.EScene.GameScene)
-                    name = "Bgm_Game";
+                    name = "BGM1";
 
                 Managers.Sound.Play(Define.ESound.Bgm, name);
             }
