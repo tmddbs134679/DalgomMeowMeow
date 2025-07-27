@@ -8,12 +8,15 @@ public class DayNightCycleManager : MonoBehaviour
     [SerializeField] private Gradient lightColorGradient;
     [SerializeField] private AnimationCurve intensityCurve;
     [SerializeField] private float _dayDurationInSeconds;
-        public float DayDurationInSeconds { get => _dayDurationInSeconds; set =>_dayDurationInSeconds = value; }
+    public float DayDurationInSeconds { get => _dayDurationInSeconds; set => _dayDurationInSeconds = value; }
     [SerializeField, Range(0f, 1f)] private float dayRatio;
 
     [SerializeField] private float _adjustedNormalizedTime;
     public float AdjustedNormalizedTime { get => _adjustedNormalizedTime; set => _adjustedNormalizedTime = value; }
     public static DayNightCycleManager Instance;
+
+    [SerializeField] private bool isNight = false;
+    [SerializeField] private bool isDay = false;
     private void Awake()
     {
         if (Instance == null)
@@ -38,9 +41,20 @@ public class DayNightCycleManager : MonoBehaviour
 
     void Update()
     {
+        if (isNight)
+        {
+            ApplyFixedTime(0.15f); 
+            return;
+        }
+        if (isDay)
+        {
+            ApplyFixedTime(0.75f); 
+            return;
+        }
         TimeSpan elapsed = DateTime.Now - Managers.Time.LastDayNightCheckTime;
         float cycleTimer = (float)(elapsed.TotalSeconds % _dayDurationInSeconds);
         SunCycleCalculate(cycleTimer);
+
     }
 
     void SunCycleCalculate(float cycleTimer)
@@ -58,4 +72,10 @@ public class DayNightCycleManager : MonoBehaviour
         directionalLight.color = lightColorGradient.Evaluate(AdjustedNormalizedTime);
         directionalLight.intensity = Mathf.Max(intensityCurve.Evaluate(AdjustedNormalizedTime), 0.001f);
     }
+    
+    void ApplyFixedTime(float normalizedTime)
+{
+    float cycleTimer = normalizedTime * _dayDurationInSeconds;
+    SunCycleCalculate(cycleTimer);
+}
 }
