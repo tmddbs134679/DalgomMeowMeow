@@ -45,7 +45,7 @@ public class CameraController : MonoBehaviour
             if (_startedOnUI) return; //  UI 위에서 시작했으면 아예 이동 막기
                                       // if (buildingplacer.tempDraggleOBJ.isLongPress) return;  // 드래그 입력 중이면 카메라 이동 아예 금지
             if (buildingplacer==null) return;
-                if (buildingplacer.isSelect) return;
+                if (buildingplacer.isSelect) return; //
             if (isAI) return;
             Vector3 delta = Input.mousePosition - _dragOrigin;
             float dist = Vector2.Distance(Input.mousePosition, _touchStartPos);
