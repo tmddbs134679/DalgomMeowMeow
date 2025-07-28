@@ -89,6 +89,8 @@ public class UI_CharacterInfo : UI_Base
 
     private void OnClickObjectButton()
     {
+        Managers.Sound.PlayButtonClick();
+
         UI_ProfilePopup profile = Managers.UI.ShowPopupUI<UI_ProfilePopup>();
         profile.SetInfo(_character);
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class UI_QuestSlot : UI_Base
@@ -29,6 +30,7 @@ public class UI_QuestSlot : UI_Base
         BindImage(typeof(Images));
 
         GetButton((int)Buttons.RewardButton).gameObject.BindEvent(OnClickRewardButton);
+        GetButton((int)Buttons.RewardButton).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
         GetImage((int)Images.RewardImage).gameObject.SetActive(false);
         return true;
     }
@@ -56,6 +58,8 @@ public class UI_QuestSlot : UI_Base
 
     void OnClickRewardButton()
     {
+        Managers.Sound.PlayButtonClick();
+
         if (_quest.State == QuestProgressState.Completed)
         {
             QuestManager.Instance.GiveReward(_quest.QuestData.QuestId);

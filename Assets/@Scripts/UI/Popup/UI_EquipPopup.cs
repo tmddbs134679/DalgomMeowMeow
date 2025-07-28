@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 using static Define;
 public class UI_EquipPopup : UI_Popup
 {
@@ -10,7 +11,8 @@ public class UI_EquipPopup : UI_Popup
     enum GameObjects
     {
         ContentObject,
-        EquipGroupObject
+        EquipGroupObject,
+        EquipmentScrollGroup
     }
 
     enum Buttons
@@ -32,6 +34,7 @@ public class UI_EquipPopup : UI_Popup
     }
     #endregion
 
+    ScrollRect _scrollRect;
     EEquipmentType _currentType;
     private void Awake()
     {
@@ -69,13 +72,7 @@ public class UI_EquipPopup : UI_Popup
         GetToggle((int)Toggles.AccessoryToggle).gameObject.BindEvent(() => OnClickTypeToggle(EEquipmentType.Accessory));
         GetToggle((int)Toggles.BagToggle).gameObject.BindEvent(() => OnClickTypeToggle(EEquipmentType.Bag));
 
-        GetButton((int)Buttons.ExitButton).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
-        GetToggle((int)Toggles.AllToggle).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
-        GetToggle((int)Toggles.HatToggle).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
-        GetToggle((int)Toggles.AccessoryToggle).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
-        GetToggle((int)Toggles.BagToggle).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
-
-
+        _scrollRect = GetObject((int)GameObjects.EquipmentScrollGroup).GetComponent<ScrollRect>();
         return true;
     }
 
@@ -117,7 +114,7 @@ public class UI_EquipPopup : UI_Popup
                 continue;
 
             UI_EquipSlot slot = Managers.UI.MakeSubItem<UI_EquipSlot>(GetObject((int)GameObjects.EquipGroupObject).transform);
-            slot.SetInfo(equipment);
+            slot.SetInfo(equipment, false, _scrollRect);
         }
 
     }

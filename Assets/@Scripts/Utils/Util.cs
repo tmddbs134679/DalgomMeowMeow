@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -103,5 +104,14 @@ public static class Util
             SetLayerRecursively(child.gameObject, layer);
         }
     }
+    public static void PlayNotifyEffect(GameObject obj)
+    {
+        // 초기 상태: 작게 시작
+        obj.transform.localScale = Vector3.zero;
 
+        // 스케일 업 효과 (팡 하고 커지는 느낌)
+        obj.transform
+            .DOScale(Vector3.one, 0.6f)
+            .SetEase(Ease.OutBack);
+    }
 }

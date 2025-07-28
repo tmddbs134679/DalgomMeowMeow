@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -117,6 +118,16 @@ public class UI_TravelCheckPopup : UI_Popup
 
     private void Refresh()
     {
+        //캐릭터 이미지 
+        var travelingCharacter = Managers.Game.CharacterInMainScene.Values.FirstOrDefault(c => c.Data.IsTravelMode);
+
+        if(travelingCharacter != null)
+            GetImage((int)Images.TravelImage).sprite = Managers.Resource.Load<Sprite>(travelingCharacter.Data.Data.IconLabel);
+        else
+            GetImage((int)Images.TravelImage).sprite = Managers.Resource.Load<Sprite>("AlphaBackground.sprite");
+        //
+
+
         TimeSpan duration = Managers.Time.TravelDuration;
         GetText((int)Texts.TravelTimeText).text = string.Format("{0:D2}:{1:D2}:{2:D2}", duration.Hours, duration.Minutes, duration.Seconds);
         //여행시간 다 지났을 경우

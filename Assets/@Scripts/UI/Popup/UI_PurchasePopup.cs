@@ -89,6 +89,7 @@ public class UI_PurchasePopup : UI_Popup
 
     private void OnClickPurchaseButton()
     {
+        Managers.Sound.PlayButtonClick();
 
         switch (_type)
         {

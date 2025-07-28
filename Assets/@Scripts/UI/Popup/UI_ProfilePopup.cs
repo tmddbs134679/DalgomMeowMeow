@@ -152,7 +152,7 @@ public class UI_ProfilePopup : UI_Popup
 
     private void OnClickChangeButton(int dir)
     {
-
+        Managers.Sound.PlayButtonClick();
         // Todo : 다음 캐릭터, 이전 캐릭터
         List<Character> characterList = Managers.Game.Characters;
 

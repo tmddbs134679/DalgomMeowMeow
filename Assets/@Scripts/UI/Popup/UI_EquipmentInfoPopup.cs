@@ -74,10 +74,10 @@ public class UI_EquipmentInfoPopup : UI_Popup
     }
     private void OnCilckEquipButton()
     {
+        Managers.Sound.PlayButtonClick();
+
         UI_EquipmentTypePopup popUp = Managers.UI.ShowPopupUI<UI_EquipmentTypePopup>();
          popUp.SetInfo(_equipment);
-        
-
     }
 
     public void SetInfo(Equipment equipment)
