@@ -1,5 +1,4 @@
 using Data;
-using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.AI;
@@ -9,8 +8,8 @@ public class TeamManager : MonoBehaviour
 {
     [SerializeField] private CreatureData[] _creatureData; // 캐릭터 데이터
     [SerializeField] private BattleCharacter[] _battleCharacters; // 전투 캐릭터 배열
-    [SerializeField] private AnimatorController _catAnim;
-    [SerializeField] private AnimatorController _bearAnim;
+    [SerializeField] private RuntimeAnimatorController _catAnim;
+    [SerializeField] private RuntimeAnimatorController _bearAnim;
 
     [SerializeField] private EffectManager[] _effectManager; // 이펙트 매니저
     public string[] CatDataKey;     // 선택된 고양이 어드레서블 키(프리펩 이름)ID
@@ -37,7 +36,7 @@ public class TeamManager : MonoBehaviour
             _battleCharacters[k].CharID = StageDataManager.Instance.PlayerCharacter[k].DataId;
         }
 
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < _battleCharacters.Length; i++)
         {
             _creatureData[i] = Managers.Data.CreatureDic[CatDataKey[i]];    //id별 데이터 등록
             LoadPrefab(i, _creatureData[i].PrefabLabel);//임시로 달아준 값 데이터 넘겨받을것
