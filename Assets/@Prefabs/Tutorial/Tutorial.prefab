@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1862639142888227}
   - component: {fileID: 2636831832402792932}
   - component: {fileID: 5709076795637005448}
+  - component: {fileID: 3480431085898990976}
   m_Layer: 0
   m_Name: trigger
   m_TagString: Untagged
@@ -95,6 +96,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: da111ef2cb052a441810167022a33526, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3480431085898990976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1733691765119865347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f52d6bd12630a2438b796ef622ef9dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2822908468648774363
@@ -253,20 +266,10 @@ MonoBehaviour:
     OnComplete:
       m_PersistentCalls:
         m_Calls: []
-  - Title: "\uBC30\uCD94\uB18D\uC7A5"
+  - Title: "\uBC30\uCD94\uB18D\uC7A5\uBC84\uD2BC"
     Description: "\uBC30\uCD94\uB18D\uC7A5\uC744 \uAC74\uC124\uD558\uC138\uC694"
     HighlightTarget: {fileID: 0}
-    HighlightTargetKey: CookBox
-    OnStart:
-      m_PersistentCalls:
-        m_Calls: []
-    OnComplete:
-      m_PersistentCalls:
-        m_Calls: []
-  - Title: "\uBE4C\uB4DC\uCE94\uC2AC"
-    Description: "\uD29C\uD1A0\uB9AC\uC5BC \uC644\uB8CC"
-    HighlightTarget: {fileID: 0}
-    HighlightTargetKey: CancleButton
+    HighlightTargetKey: CabbageButton
     OnStart:
       m_PersistentCalls:
         m_Calls: []
