@@ -1,7 +1,6 @@
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
-using static Define;
 
 public class UI_Skill : UI_Popup   //어드레서블에 프리펩 넣기
 {
