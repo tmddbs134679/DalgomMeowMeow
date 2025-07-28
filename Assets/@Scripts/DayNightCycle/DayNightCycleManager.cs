@@ -15,8 +15,8 @@ public class DayNightCycleManager : MonoBehaviour
     public float AdjustedNormalizedTime { get => _adjustedNormalizedTime; set => _adjustedNormalizedTime = value; }
     public static DayNightCycleManager Instance;
 
-    [SerializeField] private bool isNight = false;
     [SerializeField] private bool isDay = false;
+    [SerializeField] private bool isNight = false;
         private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -57,7 +57,7 @@ public class DayNightCycleManager : MonoBehaviour
 
     void Update()
     {
-        if (isNight)
+        if (isDay)
         {
             ApplyFixedTime(0.15f); 
             return;
