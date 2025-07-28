@@ -126,14 +126,18 @@ public class DragController : MonoBehaviour
             currentTarget = null;
         }
     }
-    private void OnLongPress()
-    {
+private void OnLongPress()
+{
+    if (currentTarget == null) return;
 
-        if (currentTarget != null)
-        {
-            currentTarget.OnLongPress();
-        }
+    // 현재 타겟이 Stage 레이어면 롱프레스 동작 무시
+    if (currentTarget is MonoBehaviour mb && mb.gameObject.layer == LayerMask.NameToLayer("Stage"))
+    {
+        return; // Stage일 땐 롱프레스 동작 안 함
     }
+
+    currentTarget.OnLongPress();
+}
 
     public void ChangeTarget(IDraggable draggable)
     {

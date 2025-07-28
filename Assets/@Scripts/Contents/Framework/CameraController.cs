@@ -157,7 +157,7 @@ void ClickBuilding(Vector2 screenPos)
 
     foreach (var hit in hits)
     {
-        if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Building"))
+        if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Building")||hit.collider.gameObject.layer == LayerMask.NameToLayer("Stage"))
         {
             Managers.Debug.Log($" ClickBuilding:Building Clicked: {hit.collider.name}", Define.EDebugType.None);
             var clickable = hit.collider.GetComponent<BaseObject>();
