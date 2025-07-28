@@ -74,6 +74,7 @@ public class UI_QuickMenu : UI_Popup
 
     private void OnClickChapterButtonButton()
     {
+        Managers.Sound.PlayButtonClick();
         Managers.UI.ShowPopupUI<UI_ChapterPopup>();
         gameObject.SetActive(false);
     }
@@ -81,18 +82,21 @@ public class UI_QuickMenu : UI_Popup
 
     private void OnClickCharacterEquipmentButton()
     {
+        Managers.Sound.PlayButtonClick();
         _EquipPopupUI.gameObject.SetActive(true);
         gameObject.SetActive(false);
     }
 
     private void OnClickCharacterInfoButton()
     {
+        Managers.Sound.PlayButtonClick();
         _characterPopupUI.gameObject.SetActive(true);
         gameObject.SetActive(false);
     }
 
     private void OnClickCharacterStoreSceneButton()
     {
+        Managers.Sound.PlayButtonClick();
         Managers.Scene.LoadScene(Define.EScene.CharacterStoreScene, transform);
     }
 
