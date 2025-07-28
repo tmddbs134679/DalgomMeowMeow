@@ -8,9 +8,6 @@ using UnityEngine.AI;
 
 public class ObjectManager 
 {
-    public HashSet<AICharacter> Characters { get; } = new HashSet<AICharacter>();
-
-    public HashSet<BuildingBase> Buildings { get; } = new HashSet<BuildingBase>();
 
     public Transform CharacterTransform
     {
@@ -46,59 +43,8 @@ public class ObjectManager
 
     public void Clear()
     {
-        Characters.Clear();
-        Buildings.Clear();
+
     }
-
-    //public T Spawn<T>(Vector3 position, string templateID, bool isReplica = false, string prefabName = "") where T : BaseObject
-    //{
-    //    System.Type type = typeof(T);
-
-    //    if (type == typeof(AICharacter))
-    //    {
-    //        GameObject go = Managers.Resource.Instantiate(Managers.Data.CreatureDic[templateID].PrefabLabel, pooling: true);
-    //        go.transform.position = position;
-    //        AICharacter pc = go.GetOrAddComponent<AICharacter>();
-    //        if (isReplica)
-    //        {
-    //            pc.GetComponent<NavMeshAgent>().enabled = false;
-    //            pc.IsReplica = true;    
-    //        }
-    //        return pc as T;
-    //    }
-    //    else if(type == typeof(EquipmentController))
-    //    {
-    //        GameObject go = Managers.Resource.Instantiate(Managers.Data.EquipmentDic[templateID].Name, pooling: true);
-    //        go.transform.position = position;
-            
-    //    }
-       
-    //        return null;
-    //}
-
-    //public T Spawn<T>(Vector3 position, string templateID, Transform parent) where T : BaseObject
-    //{
-    //    System.Type type = typeof(T);
-    //    GameObject go;
-
-    //    // 부모가 있으면 parent 기준으로 생성
-    //    if (parent != null)
-    //    {
-    //        go = Managers.Resource.Instantiate(Managers.Data.CreatureDic[templateID].PrefabLabel, parent, false);
-    //        go.transform.localPosition = Vector3.zero;
-    //    }
-    //    else
-    //    {
-    //        go = Managers.Resource.Instantiate(Managers.Data.CreatureDic[templateID].PrefabLabel);
-    //        go.transform.position = position;
-    //    }
-
-    //    if (type == typeof(AICharacter))
-    //        return go.GetOrAddComponent<AICharacter>() as T;
-
-    //    return null;
-    //}
-
 
     public T Spawn<T>(Vector3 position, string templateID, Transform parent = null, bool isReplica = false, string prefabName = "") where T : BaseObject
     {
