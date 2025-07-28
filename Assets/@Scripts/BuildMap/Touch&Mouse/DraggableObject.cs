@@ -153,6 +153,8 @@ public void OnDrag(Vector3 groundPos)
     //타일에 isLoadBuild값 전달후 SetTile()호출해 arrayMapPos맵데이터 갱신
     public void SetTileIsBuild()
     {
+          _offsetx = (buildSize.x % 2 == 0) ? (gridSize / 2f) : 0f;
+   _offsety = (buildSize.y % 2 == 0) ? (gridSize / 2f) : 0f;
         Vector3 center = transform.position + Vector3.down * 0.5f;
         Vector3 halfExtents = new Vector3(buildSize.x /testx, 0.1f, buildSize.y /testy);
 
@@ -172,6 +174,8 @@ public void OnDrag(Vector3 groundPos)
     //현재 오브젝트,그 밑 타일 정보 받기
     public void CurrentTileAndOBJ()
     {
+                  _offsetx = (buildSize.x % 2 == 0) ? (gridSize / 2f) : 0f;
+   _offsety = (buildSize.y % 2 == 0) ? (gridSize / 2f) : 0f;
         Vector3 center = transform.position + Vector3.down * 0.5f;
         Vector3 halfExtents = new Vector3(buildSize.x /testx, 0.1f, buildSize.y /testy);
 

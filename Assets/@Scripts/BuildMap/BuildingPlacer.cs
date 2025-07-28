@@ -163,6 +163,7 @@ public class BuildingPlacer : MonoBehaviour
     /// </summary>
     public void SetRefOBJ(GameObject OriginOBJ)
     {
+        isSelect = false;
         _saveBuildingSO = OriginOBJ.GetComponent<BuildingBase>()?.BuildingData;
         uniqueId = OriginOBJ.GetComponent<BuildingBase>().UniqueId;
         LV = OriginOBJ.GetComponent<BuildingBase>().CurrentLevel;

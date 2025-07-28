@@ -100,5 +100,5 @@ public class ResourceManager
             }
         };
     }
-    #endregion
-}
+} 
+#endregion
