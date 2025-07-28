@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -60,9 +61,12 @@ public class UI_QuickMenu : UI_Popup
         _EquipPopupUI.gameObject.SetActive(false);
 
         GetButton((int)Buttons.CharacterInfoButton).gameObject.BindEvent(OnClickCharacterInfoButton);
+        GetButton((int)Buttons.CharacterInfoButton).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
         GetButton((int)Buttons.CharacterEquipmentButton).gameObject.BindEvent(OnClickCharacterEquipmentButton);
+        GetButton((int)Buttons.CharacterEquipmentButton).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
         GetButton((int)Buttons.BackgroundButton).gameObject.BindEvent(OnClickBackgroundButton);
         GetButton((int)Buttons.CharacterStoreSceneButton).gameObject.BindEvent(OnClickCharacterStoreSceneButton);
+        GetButton((int)Buttons.CharacterStoreSceneButton).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
         GetButton((int)Buttons.ChapterButton).gameObject.BindEvent(OnClickChapterButtonButton);
 
         return true;
