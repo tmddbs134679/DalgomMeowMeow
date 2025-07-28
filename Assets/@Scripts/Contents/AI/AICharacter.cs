@@ -359,10 +359,10 @@ public class AICharacter : BaseObject
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
 
-                if(clickStartTime <= 0.2f && hit.collider.gameObject == this.gameObject &&
+                if (clickStartTime <= 0.2f && hit.collider.gameObject == this.gameObject &&
                     Controller.CurrentState() is not CharacterHelloState &&
                     Managers.Scene.CurrentScene is GameScene)
-{
+                {
                     if (isClicked)
                     {
                         // 확대 전 상태 저장
@@ -374,7 +374,7 @@ public class AICharacter : BaseObject
                         Vector3 targetPos = new Vector3(transform.position.x - 20.3f, 30.5f, transform.position.z - 20.6f);
                         _camera.transform.DOMove(targetPos, 1f);
                     }
-                    else if(!isClicked)
+                    else if (!isClicked)
                     {
                         // 부드럽게 원래대로 복귀
                         Vector3 targetPos = new Vector3(tempCameraPos.x, 26.35f, tempCameraPos.z);
