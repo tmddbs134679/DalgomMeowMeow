@@ -353,14 +353,15 @@ public class AICharacter : BaseObject
 
             }
         }
-        if (Input.GetMouseButtonUp(0) && Managers.Scene.CurrentScene is GameScene)
+        if (Input.GetMouseButtonUp(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
 
                 if(clickStartTime <= 0.2f && hit.collider.gameObject == this.gameObject &&
-                    Controller.CurrentState() is not CharacterHelloState)
+                    Controller.CurrentState() is not CharacterHelloState &&
+                    Managers.Scene.CurrentScene is GameScene)
 {
                     if (isClicked)
                     {
