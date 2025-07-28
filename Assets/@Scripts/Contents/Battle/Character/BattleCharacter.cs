@@ -290,7 +290,18 @@ public class BattleCharacter : BaseObject
         Agent.isStopped = true;
 
         Animator.SetInteger(AnimationHash, 0); // 죽음 애니메이션 출력
+    }
 
+    public void BaseDie()
+    {
+        if (IsDead) return;
+        IsDead = true;
+
+        foreach (var col in GetComponentsInChildren<Collider>())
+            col.enabled = false; // ← 탐지 방지
+
+        OnCharacterDied?.Invoke(this);
+        Agent.isStopped = true;
     }
 
     public void SetOff()

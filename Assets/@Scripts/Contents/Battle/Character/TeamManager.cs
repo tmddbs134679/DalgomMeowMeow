@@ -1,4 +1,5 @@
 using Data;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.AI;
@@ -10,7 +11,7 @@ public class TeamManager : MonoBehaviour
     [SerializeField] private BattleCharacter[] _battleCharacters; // 전투 캐릭터 배열
     [SerializeField] private RuntimeAnimatorController _catAnim;
     [SerializeField] private RuntimeAnimatorController _bearAnim;
-
+    [SerializeField] private BattleManager _battleManager; // 배틀 매니저
     [SerializeField] private EffectManager[] _effectManager; // 이펙트 매니저
     public string[] CatDataKey;     // 선택된 고양이 어드레서블 키(프리펩 이름)ID
 
@@ -22,32 +23,48 @@ public class TeamManager : MonoBehaviour
     {
         _effectManager = GetComponentsInChildren<EffectManager>();
         _battleCharacters = GetComponentsInChildren<BattleCharacter>();
+
+        // 3슬롯 고정
         _creatureData = new CreatureData[3];
-        for (int k = 0; k < _creatureData.Length; k++)
-            CatDataKey[k] = StageDataManager.Instance.PlayerCharacter[k].DataId;
+        CatDataKey = new string[3];
 
+        int playerCount = StageDataManager.Instance.PlayerCharacter?.Length ?? 0;
 
-        for (int k = 0; k < _battleCharacters.Length; k++)
+        for (int k = 0; k < 3; k++)
         {
-            _battleCharacters[k].AttackDamage = StageDataManager.Instance.PlayerCharacter[k].Atk;
-            _battleCharacters[k].MaxHP = StageDataManager.Instance.PlayerCharacter[k].Hp;
-            _battleCharacters[k].MoveSpeed = StageDataManager.Instance.PlayerCharacter[k].MoveSpeed;
-            _battleCharacters[k].SkillID = StageDataManager.Instance.PlayerCharacter[k].Data.SkillID.Replace(".sprite", "");
-            _battleCharacters[k].CharID = StageDataManager.Instance.PlayerCharacter[k].DataId;
-        }
+            if (k < playerCount && StageDataManager.Instance.PlayerCharacter[k] != null)
+            {
+                var playerData = StageDataManager.Instance.PlayerCharacter[k];
 
-        for (int i = 0; i < _battleCharacters.Length; i++)
-        {
-            _creatureData[i] = Managers.Data.CreatureDic[CatDataKey[i]];    //id별 데이터 등록
-            LoadPrefab(i, _creatureData[i].PrefabLabel);//임시로 달아준 값 데이터 넘겨받을것
-        }
+                CatDataKey[k] = playerData.DataId;
 
+                _battleCharacters[k].AttackDamage = playerData.Atk;
+                _battleCharacters[k].MaxHP = playerData.Hp;
+                _battleCharacters[k].MoveSpeed = 3.5f;
+                _battleCharacters[k].SkillID = playerData.Data.SkillID.Replace(".sprite", "");
+                _battleCharacters[k].CharID = playerData.DataId;
+
+                _creatureData[k] = Managers.Data.CreatureDic[CatDataKey[k]];
+                LoadPrefab(k, _creatureData[k].PrefabLabel);
+            }
+            else
+            {
+                // 데이터가 없으면 비활성화
+                if (_battleCharacters.Length > k)
+                {
+                    _battleCharacters[k].BaseDie();
+                    _battleCharacters[k].gameObject.SetActive(false);
+                }
+            }
+        }
     }
     private void Start()
     {
-        for (int i = 0; i < 3; i++)
+        int count = Mathf.Min(_battleCharacters.Length, EffectHandler.Instance.effectManagers.Length);
+        for (int i = 0; i < count; i++)
         {
-            _battleCharacters[i]._effectManager = EffectHandler.Instance.effectManagers[i]; //이펙트 매니저 등록
+            if (_battleCharacters[i].gameObject.activeSelf)
+                _battleCharacters[i]._effectManager = EffectHandler.Instance.effectManagers[i];
         }
     }
 
