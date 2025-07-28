@@ -64,6 +64,8 @@ public class UI_QuestPopup : UI_Popup
 
     private void DailyButton()
     {
+        Managers.Sound.PlayButtonClick();
+
         _currentTab =  Define.EQuestType.Daily;
         GetImage((int)Images.DailySelectedImage).gameObject.SetActive(true);
         GetImage((int)Images.AchievementSelectedImage).gameObject.SetActive(false);
@@ -72,6 +74,8 @@ public class UI_QuestPopup : UI_Popup
 
     private void AchievementButton()
     {
+        Managers.Sound.PlayButtonClick();
+
         _currentTab =  Define.EQuestType.Achievement;
         GetImage((int)Images.AchievementSelectedImage).gameObject.SetActive(true);
         GetImage((int)Images.DailySelectedImage).gameObject.SetActive(false);

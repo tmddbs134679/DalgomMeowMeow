@@ -62,12 +62,14 @@ public class UI_ChapterPopup : UI_Popup
 
     private void OnClickUnlockButton()
     {
+        Managers.Sound.PlayButtonClick();
         QuestManager.Instance.TryUnlockContent(_currentChapterId);
         Managers.UI.ShowToast("해금완료");
     }
 
     private void OnClickChapter4Button()
     {
+        Managers.Sound.PlayButtonClick();
         _currentChapterId = "Chapter4";
         GetImage((int)Images.Chapter1SelectImage).gameObject.SetActive(false);
         GetImage((int)Images.Chapter2SelectImage).gameObject.SetActive(false);
@@ -78,6 +80,7 @@ public class UI_ChapterPopup : UI_Popup
 
     private void OnClickChapter3Button()
     {
+        Managers.Sound.PlayButtonClick();
         _currentChapterId = "Chapter3";
         GetImage((int)Images.Chapter1SelectImage).gameObject.SetActive(false);
         GetImage((int)Images.Chapter2SelectImage).gameObject.SetActive(false);
@@ -88,6 +91,7 @@ public class UI_ChapterPopup : UI_Popup
 
     private void OnClickChapter2Button()
     {
+        Managers.Sound.PlayButtonClick();
         _currentChapterId = "Chapter2";
         GetImage((int)Images.Chapter1SelectImage).gameObject.SetActive(false);
         GetImage((int)Images.Chapter2SelectImage).gameObject.SetActive(true);
@@ -98,6 +102,7 @@ public class UI_ChapterPopup : UI_Popup
 
     private void OnClickChapter1Button()
     {
+        Managers.Sound.PlayButtonClick();
         _currentChapterId = "Chapter1";
         GetImage((int)Images.Chapter1SelectImage).gameObject.SetActive(true);
         GetImage((int)Images.Chapter2SelectImage).gameObject.SetActive(false);

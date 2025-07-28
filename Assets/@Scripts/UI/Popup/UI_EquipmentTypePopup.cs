@@ -79,6 +79,7 @@ public class UI_EquipmentTypePopup : UI_Popup
 
     private void OnClickUnEquipButton()
     {
+        Managers.Sound.PlayButtonClick();
         Clear();
         Managers.Equipment.UnEquipItem(_character, _equipment);
         Managers.UI.ClosePopupUI(this);
@@ -92,7 +93,7 @@ public class UI_EquipmentTypePopup : UI_Popup
 
     private void OnClickEquipButton()
     {
-      
+        Managers.Sound.PlayButtonClick();
         Clear();
         Managers.Equipment.EquipItem(_character, _equipment);
 

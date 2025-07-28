@@ -68,10 +68,10 @@ public class UI_ExchangeShopPopup : UI_Popup
 
     private void OnClickAdsButton()
     {
-        if(Managers.Game.AdvancedGachaOpenCount >= 1)
-        {
-     
+        Managers.Sound.PlayButtonClick();
 
+        if (Managers.Game.AdvancedGachaOpenCount >= 1)
+        {
             Managers.Ads.ShowRewardedAd(() =>
             {
                 Managers.Game.AdvancedGachaOpenCount--;
@@ -89,6 +89,7 @@ public class UI_ExchangeShopPopup : UI_Popup
 
     private void OnClickExchange(Define.EExchangeType type)
     {
+        Managers.Sound.PlayButtonClick();
 
         if (type == Define.EExchangeType.None)
             return;

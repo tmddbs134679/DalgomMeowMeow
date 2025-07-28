@@ -81,6 +81,8 @@ public class UI_TravelPopup : UI_Popup
         GetButton((int)Buttons.AdTravelButton).GetOrAddComponent<UI_ButtonAnimation>();
         GetButton((int)Buttons.TravelButton).GetOrAddComponent<UI_ButtonAnimation>();
 
+
+        GetImage((int)Images.CharacterImage).sprite = Managers.Resource.Load<Sprite>("AlphaBackground.sprite");
         Refresh();
 
         return true;

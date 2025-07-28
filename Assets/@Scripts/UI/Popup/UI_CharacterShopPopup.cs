@@ -75,11 +75,15 @@ public class UI_CharacterShopPopup : UI_Popup
 
     private void OnClickGachaTableButon()
     {
+        Managers.Sound.PlayButtonClick();
+
         _gachaTablePopup.gameObject.SetActive(true);
     }
 
     private void OnClickOneTimeGachaButton()
     {
+        Managers.Sound.PlayButtonClick();
+
         if (Managers.Game.Ticket >= 1)
         {
             Managers.Game.RemoveTicket(1);
@@ -92,6 +96,8 @@ public class UI_CharacterShopPopup : UI_Popup
     }
     private void OnClickFiveTimeGachaButton()
     {
+        Managers.Sound.PlayButtonClick();
+
         if (Managers.Game.Ticket >= 5)
         {
             Managers.Game.RemoveTicket(5);

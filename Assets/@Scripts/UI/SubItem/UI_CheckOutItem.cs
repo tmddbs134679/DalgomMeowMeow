@@ -65,11 +65,14 @@ public class UI_CheckOutItem : UI_Base
         if (!_isCanClick)
             return;
 
+
         if (Managers.Game.AttendanceReceived[_dayCount - 1] == true)
         {
             Managers.Debug.Log("이미 보상을 받았습니다.", Define.EDebugType.UI);
             return;
         }
+
+        Managers.Sound.Play(Define.ESound.Effect, "Money");
 
         Managers.Game.AttendanceReceived[_dayCount - 1] = true;
 

@@ -237,7 +237,7 @@ public class UI_GameScene : UI_Scene
         LayoutRebuilder.ForceRebuildLayoutImmediate(layout.transform as RectTransform);
     }
 
-    //Slot �ʺ� ���ϴ� �Լ� 
+    //Slot 크기
     float GetSlotWidth()
     {
         GameObject obj = GetObject((int)GameObjects.StorageObject);

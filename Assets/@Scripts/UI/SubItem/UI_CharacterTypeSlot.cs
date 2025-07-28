@@ -59,6 +59,8 @@ public class UI_CharacterTypeSlot : UI_Base
 
     void OnClickObject()
     {
+        Managers.Sound.PlayButtonClick();
+
         Managers.Debug.Log("클릭했음", EDebugType.UI);
         Managers.UI.OnCharacterChange?.Invoke(_character);
     }

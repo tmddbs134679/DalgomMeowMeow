@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using Data;
+using static Define;
+
 public class UI_FoodItem : UI_Base
 {
     #region Enum
@@ -55,8 +57,8 @@ public class UI_FoodItem : UI_Base
     
     void OnClickFoodItemButton()
     {
-       // Debug.Log(name);
-        //누르면 GameManager의 돈으로 바꿈.
+        Managers.Sound.Play(ESound.Effect, "Money");
+
         Managers.Game.Gold += _food.FoodData.Price;
         Managers.Food.Cancel(_food);
 

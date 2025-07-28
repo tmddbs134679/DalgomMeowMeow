@@ -31,6 +31,7 @@ public class FoodManager
             var first = _foodList.First;
             if (first != null)
             {
+
                 Food soldFood = first.Value;
                 Cancel(soldFood);
                 OnFoodSold?.Invoke(soldFood);

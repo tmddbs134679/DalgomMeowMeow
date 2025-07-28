@@ -130,6 +130,8 @@ public class UI_ShopPopup : UI_Popup
 
     private void OnExchangeShopButton()
     {
+        Managers.Sound.PlayButtonClick();
+
         GetObject((int)GameObjects.DiaObject).SetActive(true);
         GetObject((int)GameObjects.GoldObject).SetActive(true);
 
@@ -142,6 +144,8 @@ public class UI_ShopPopup : UI_Popup
 
     void OnClickEquipmentPopupButton()
     {
+        Managers.Sound.PlayButtonClick();
+
         GetObject((int)GameObjects.DiaObject).SetActive(false);
         GetObject((int)GameObjects.GoldObject).SetActive(false);
 
@@ -153,6 +157,7 @@ public class UI_ShopPopup : UI_Popup
 
     void OnClickCharacterGachaButton()
     {
+        Managers.Sound.PlayButtonClick();
 
         GetObject((int)GameObjects.DiaObject).SetActive(false);
         GetObject((int)GameObjects.GoldObject).SetActive(false);
