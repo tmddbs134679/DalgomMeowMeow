@@ -296,7 +296,7 @@ public class AICharacter : BaseObject
         if (EventSystem.current.IsPointerOverGameObject())
             return;
 
-        if (!isClicked)
+        if (!isClicked && Controller.CurrentState() is not CharacterHelloState)
         {
             System.Random random = new System.Random();
             string randomCatSound = Define.CAT_SOUNDS[random.Next(Define.CAT_SOUNDS.Length)];
@@ -359,7 +359,8 @@ public class AICharacter : BaseObject
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
 
-                if(clickStartTime <= 0.2f && hit.collider.gameObject == this.gameObject)
+                if(clickStartTime <= 0.2f && hit.collider.gameObject == this.gameObject &&
+                    Controller.CurrentState() is not CharacterHelloState)
 {
                     if (isClicked)
                     {
@@ -372,11 +373,12 @@ public class AICharacter : BaseObject
                         Vector3 targetPos = new Vector3(transform.position.x - 20.3f, 30.5f, transform.position.z - 20.6f);
                         _camera.transform.DOMove(targetPos, 1f);
                     }
-                    else
+                    else if(!isClicked)
                     {
                         // 부드럽게 원래대로 복귀
-                        _camera.DOOrthoSize(tempCameraSize, 1f);
-                        _camera.transform.DOMove(tempCameraPos, 1f);
+                        Vector3 targetPos = new Vector3(tempCameraPos.x, 26.35f, tempCameraPos.z);
+                        _camera.DOOrthoSize(7, 1f);
+                        _camera.transform.DOMove(targetPos, 1f);
                     }
 
                 }
