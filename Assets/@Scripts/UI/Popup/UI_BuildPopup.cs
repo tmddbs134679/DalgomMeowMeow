@@ -207,7 +207,9 @@ public class UI_BuildPopup : UI_Popup
         BuildingPlacer.Instance.SelectBuildingType(type);
         if (BuildingPlacer.Instance.isGold)
         {
+            
             BuildingPlacer.Instance.uI_BuildAction.transform.position = this.transform.position;
+            if(type!=Define.EBuildingType.Road)
             BuildingPlacer.Instance.uI_BuildAction.SetActive(true);
         }
         else

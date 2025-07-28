@@ -28,7 +28,8 @@ public class UI_GameScene : UI_Scene
         QuickButton,
         ShopButton,
         BuildButton,
-        EditPosButton
+        EditPosButton,
+        RoadButton,
     }
 
     enum Texts
@@ -92,6 +93,9 @@ public class UI_GameScene : UI_Scene
         GetButton((int)Buttons.NoticeButton).GetOrAddComponent<UI_ButtonAnimation>();
 
         GetButton((int)Buttons.EditPosButton).gameObject.SetActive(false);
+
+        GetButton((int)Buttons.RoadButton).gameObject.BindEvent(OnClickRoadButton);
+        GetButton((int)Buttons.RoadButton).GetOrAddComponent<UI_ButtonAnimation>();
 
         #region Action 추가
         Managers.Game.OnResourcesChagned += Refresh;
@@ -181,6 +185,14 @@ public class UI_GameScene : UI_Scene
         Managers.Sound.PlayButtonClick();
         BuildingPlacer.Instance.buildMap.ColliderAllOff();
         Managers.UI.ShowPopupUI<UI_BuildPopup>();
+        gameObject.SetActive(false);
+    }
+
+        private void OnClickRoadButton()
+    {
+        Managers.Sound.PlayButtonClick();
+        BuildingPlacer.Instance.buildMap.ColliderAllOff();
+        Managers.UI.ShowPopupUI<UI_Road>();
         gameObject.SetActive(false);
     }
 

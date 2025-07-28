@@ -44,8 +44,8 @@ public class CameraController : MonoBehaviour
         {
             if (_startedOnUI) return; //  UI 위에서 시작했으면 아예 이동 막기
                                       // if (buildingplacer.tempDraggleOBJ.isLongPress) return;  // 드래그 입력 중이면 카메라 이동 아예 금지
-            if (buildingplacer==null) return;
-                if (buildingplacer.isSelect) return; //
+            if (buildingplacer == null) return;
+            if (buildingplacer.isSelect) return; //
             if (isAI) return;
             Vector3 delta = Input.mousePosition - _dragOrigin;
             float dist = Vector2.Distance(Input.mousePosition, _touchStartPos);
@@ -59,7 +59,7 @@ public class CameraController : MonoBehaviour
         }
         else if (Input.GetMouseButtonUp(0))
         {
-            if(!isDragging&&!isCatTouch) ClickBuilding(Input.mousePosition); //건물일때만
+            if (!isDragging && !isCatTouch) ClickBuilding(Input.mousePosition); //건물일때만
             isCatTouch = false;
             if (_startedOnUI)
             {
@@ -127,33 +127,33 @@ public class CameraController : MonoBehaviour
         transform.position = newPos;
     }
 
-void ClickCat(Vector2 screenPos)
-{
-    if (EventSystem.current.IsPointerOverGameObject()) return;
-
-    Ray ray = _cam.ScreenPointToRay(screenPos);
-    RaycastHit[] hits = Physics.RaycastAll(ray, 100f, layerMask);
-
-    foreach (var hit in hits)
+    void ClickCat(Vector2 screenPos)
     {
-        if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Player"))
+        if (EventSystem.current.IsPointerOverGameObject()) return;
+
+        Ray ray = _cam.ScreenPointToRay(screenPos);
+        RaycastHit[] hits = Physics.RaycastAll(ray, 100f, layerMask);
+
+        foreach (var hit in hits)
         {
-            isAI = true;
-            Managers.Debug.Log($" ClickCat:Cat Clicked: {hit.collider.name}", Define.EDebugType.None);
-            var clickable = hit.collider.GetComponent<BaseObject>();
-            clickable?.OnClick();
-            isCatTouch = true;
-            break; // 가장 가까운 Player만 처리하고 끝냄
+            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Player"))
+            {
+                isAI = true;
+                Managers.Debug.Log($" ClickCat:Cat Clicked: {hit.collider.name}", Define.EDebugType.None);
+                var clickable = hit.collider.GetComponent<BaseObject>();
+                clickable?.OnClick();
+                isCatTouch = true;
+                break; // 가장 가까운 Player만 처리하고 끝냄
+            }
         }
     }
-}
 
-void ClickBuilding(Vector2 screenPos)
-{
-    if (EventSystem.current.IsPointerOverGameObject()) return;
+    void ClickBuilding(Vector2 screenPos)
+    {
+        if (EventSystem.current.IsPointerOverGameObject()) return;
 
-    Ray ray = _cam.ScreenPointToRay(screenPos);
-    RaycastHit[] hits = Physics.RaycastAll(ray, 100f, layerMask);
+        Ray ray = _cam.ScreenPointToRay(screenPos);
+        RaycastHit[] hits = Physics.RaycastAll(ray, 100f, layerMask);
 
         foreach (var hit in hits)
         {//||hit.collider.gameObject.layer == LayerMask.NameToLayer("Stage")
@@ -164,15 +164,15 @@ void ClickBuilding(Vector2 screenPos)
                 clickable?.OnClick();
                 break; // 가장 가까운 Building만 처리
             }
-                if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Stage"))
-        {
-            Managers.Debug.Log($" ClickBuilding:Building Clicked: {hit.collider.name}", Define.EDebugType.None);
-            var clickable = hit.collider.GetComponent<BaseObject>();
-            clickable?.OnClick();
-            break; // 가장 가까운 Building만 처리
+            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Stage"))
+            {
+                Managers.Debug.Log($" ClickBuilding:Building Clicked: {hit.collider.name}", Define.EDebugType.None);
+                var clickable = hit.collider.GetComponent<BaseObject>();
+                clickable?.OnClick();
+                break; // 가장 가까운 Building만 처리
+            }
         }
     }
-}
 
     bool IsPointerOverUI(int fingerId = -1)
     {

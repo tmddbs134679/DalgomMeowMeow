@@ -25,8 +25,8 @@ public class DraggableObject : MonoBehaviour, IDraggable
     [SerializeField] private Vector2 buildSize = new Vector2(1f, 1f); // 건축물 밑면 크기 (x, z)
     [SerializeField] private LayerMask tileLayer;
 
-    public float testx = 2.1f;
-    public float testy = 2.1f;
+    public readonly float testx = 2.1f;
+    public readonly float testy = 2.1f;
     void Start()
     {
         _isBuildColor = GetComponent<IsBuildColor>();

@@ -74,6 +74,14 @@ public class DragController : MonoBehaviour
             isDelay = true;
             pointerDownTimer = 0f;
 
+
+
+            // 빈 땅 터치 감지
+    if (Physics.Raycast(ray, out var groundHit, 1000f, groundLayer))
+    {
+        BuildingPlacer.Instance.OnGroundTouched(groundHit.point);
+    }
+    
             if (Physics.Raycast(ray, out var hit, exceptPlayer))
             {
                 var draggable = hit.collider.GetComponent<IDraggable>();

@@ -135,27 +135,43 @@ public class BuildingPlacer : MonoBehaviour
         isSelect = false;
         buildMap.ColliderAllOff();
         tempTypeNum = (int)type;
-        Camera cam = Camera.main;
-        Vector3 screenCenter = new Vector3(Screen.width / 2f, Screen.height / 2f, cam.nearClipPlane);
-        Ray ray = Camera.main.ScreenPointToRay(screenCenter);
-
-        if (Physics.Raycast(ray, out var groundHit, 1000f, groundLayer))
-        {
             _saveBuildingSO = buildingSO[(int)type];
+        // Camera cam = Camera.main;
+        // Vector3 screenCenter = new Vector3(Screen.width / 2f, Screen.height / 2f, cam.nearClipPlane);
+        // Ray ray = Camera.main.ScreenPointToRay(screenCenter);
 
-            _PreviewOBJ = Instantiate(buildingSO[(int)type].previewOBJ,
-                new Vector3(groundHit.point.x, groundHit.point.y + _heightOffset, groundHit.point.z),
-                Quaternion.identity);
+        // if (Physics.Raycast(ray, out var groundHit, 1000f, groundLayer))
+        // {
 
-            tempDraggleOBJ = _PreviewOBJ.GetComponent<DraggableObject>();
-            tempDraggleOBJ.SnapToGrid(new Vector3(groundHit.point.x, groundHit.point.y - _heightOffset, groundHit.point.z));
-            tempDraggleOBJ.isDrag = true;
-            tempDraggleOBJ.isLongPress = false;
-        }
+        //     _PreviewOBJ = Instantiate(buildingSO[(int)type].previewOBJ,
+        //         new Vector3(groundHit.point.x, groundHit.point.y + _heightOffset, groundHit.point.z),
+        //         Quaternion.identity);
 
-
+        //     tempDraggleOBJ = _PreviewOBJ.GetComponent<DraggableObject>();
+        //     tempDraggleOBJ.SnapToGrid(new Vector3(groundHit.point.x, groundHit.point.y - _heightOffset, groundHit.point.z));
+        //     tempDraggleOBJ.isDrag = true;
+        //     tempDraggleOBJ.isLongPress = false;
+        // }
         return true;
     }
+
+public void OnGroundTouched(Vector3 point)
+{
+    if (!isSequenceBuild || _PreviewOBJ != null)
+        return; // 조건이 안 맞으면 무시
+    Instance.uI_BuildAction.SetActive(true);
+    
+    // 프리뷰 생성
+    _PreviewOBJ = Instantiate(_saveBuildingSO.previewOBJ,
+        new Vector3(point.x, point.y + _heightOffset, point.z),
+        Quaternion.identity);
+
+    tempDraggleOBJ = _PreviewOBJ.GetComponent<DraggableObject>();
+    tempDraggleOBJ.SnapToGrid(new Vector3(point.x, point.y - _heightOffset, point.z));
+    tempDraggleOBJ.isDrag = true;
+    tempDraggleOBJ.isLongPress = false;
+}
+
 
     /// <summary>
     /// DraggableObject에서 LongPress가 호출 될 시 현상태의 오브젝트 가져오기
@@ -412,9 +428,19 @@ public class BuildingPlacer : MonoBehaviour
         buildMap.LoadBuild(); //오브젝트 갱신
         surface.BuildNavMesh(); //네브매쉬 깔기
         Managers.AI.AllRelocateToNearestNavMesh();
+        buildMap.ColliderAllOn();
+        isLongPressAcceptBuild = false;
+        OriginTempOBJ = null;
+        _PreviewOBJ = null;
         OnAutoSave?.Invoke();
+
     }
 
+
+    public void RemoveRoad()
+    {
+        Debug.Log("RemoveRoad()");
+}
     /// <summary>
     /// 해당 오브젝트 아래 타일 초기화
     /// </summary>
