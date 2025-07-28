@@ -20,9 +20,14 @@ public class PlayerCharacter : BattleCharacter
     }
     protected override void Start()
     {
+        
         base.Start();
         _battleManager = GetComponentInParent<BattleManager>();
         _originalPosition = transform.localPosition;
+        if (IsDead)
+        {
+            return; // 이미 죽은 상태라면 Start를 실행하지 않음
+        }
         string numberPart = SkillID.Replace("K","").Replace(".sprite",""); // 시작하면 숫자 파싱
         Skillnum = int.Parse(numberPart);
     }

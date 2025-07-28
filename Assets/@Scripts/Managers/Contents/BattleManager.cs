@@ -10,6 +10,7 @@ public class BattleManager : MonoBehaviour
     public bool Lose = false;
     private int _enemyLayer;
     private int _playerLayer;
+    private BattleCharacter[] allCharacters;
 
     private void Awake()
     {
@@ -18,7 +19,13 @@ public class BattleManager : MonoBehaviour
         _teamCameraController = GetComponentInChildren<TeamCameraController>();
         _teamController = GetComponentInChildren<TeamController>();
 
-        BattleCharacter[] allCharacters = GetComponentsInChildren<BattleCharacter>();
+        
+        
+    }
+
+    private void Start()
+    {
+        allCharacters = GetComponentsInChildren<BattleCharacter>();
 
         EnemyCount = 0;
 
@@ -36,8 +43,8 @@ public class BattleManager : MonoBehaviour
                 PlayerCount++;
         }
     }
-    
-    
+
+
 
     private void Update()
     {
