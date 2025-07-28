@@ -353,7 +353,7 @@ public class AICharacter : BaseObject
 
             }
         }
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0) && Managers.Scene.CurrentScene is GameScene)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit))
