@@ -77,6 +77,10 @@ public class UI_CharacterTypeSlot : UI_Base
             {
                 GetImage((int)Images.EquipImage).sprite = Managers.Resource.Load<Sprite>(equipment.EquipmentData.SpriteName);
             }
+            else
+            {
+                GetImage((int)Images.EquipImage).sprite = Managers.Resource.Load<Sprite>("AlphaBackground.sprite");
+            }
         }
 
        //리소스 없음 아직
