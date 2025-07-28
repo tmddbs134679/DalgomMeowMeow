@@ -121,7 +121,7 @@ public class UI_CharacterInfo : UI_Base
             {
                 // 장비 없으면 기본 슬롯 이미지
 
-                 icon = Managers.Resource.Load<Sprite>("Empty.sprite"); // 이건 상황에 맞게 수정
+                 icon = Managers.Resource.Load<Sprite>("AlphaBackground.sprite"); // 이건 상황에 맞게 수정
             }
 
             // 슬롯에 맞게 이미지 넣기
