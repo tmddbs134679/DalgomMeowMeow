@@ -1,3 +1,4 @@
+using Data;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,7 +15,7 @@ public class UI_BuildingPopup : UI_Popup
         BackgroundCloseButton,
         UpgreadeButton,
     }
-    enum Texts { CurrentLevelText, NextLevelText, LevelUpCost }
+    enum Texts { CurrentLevelText, NextLevelText, LevelUpCost,CurrentlLevelCookPrice, NextLevelCookPrice }
     enum Images { Building }
 
     private BuildingBase _targetBuilding;
@@ -85,7 +86,12 @@ public class UI_BuildingPopup : UI_Popup
 
     public void SetInfo()
     {
-        
+        FoodData recipe = Managers.Data.FoodDic["F0001"];
+        float basePrice = recipe.Price;
+        float crrentCookingmultiplier = 1.0f + ((_targetBuilding.CurrentLevel - 1) * 0.15f);
+        float nextCookingmultiplier = 1.0f + ((_targetBuilding.CurrentLevel ) * 0.15f);
+        float currentPrice = recipe.Price * crrentCookingmultiplier;
+        float nextPrice = recipe.Price * nextCookingmultiplier;
         if (_targetBuilding == null) return;
 
         int nextLevel = _targetBuilding.CurrentLevel + 1;
@@ -94,6 +100,21 @@ public class UI_BuildingPopup : UI_Popup
         {
             GetText((int)Texts.LevelUpCost).text = $"{levelData.UpgradeCost}";
             GetText((int)Texts.NextLevelText).text = (_targetBuilding.CurrentLevel + 1).ToString();
+            if (_targetBuilding is CookingBuilding)
+            {
+                GetText((int)Texts.CurrentlLevelCookPrice).text = (currentPrice).ToString();
+                GetText((int)Texts.NextLevelCookPrice).text = (nextPrice).ToString();
+            }
+            else if (_targetBuilding is FarmBuilding)
+            {
+                GetText((int)Texts.CurrentlLevelCookPrice).text = $"X {(1.0f + ((_targetBuilding.CurrentLevel - 1) * 0.1f)).ToString()}";
+                GetText((int)Texts.NextLevelCookPrice).text = (1.0f + ((_targetBuilding.CurrentLevel) * 0.1f)).ToString();
+                GetText((int)Texts.NextLevelCookPrice).text =
+                    $"X {(1.0f + ((_targetBuilding.CurrentLevel) * 0.1f)).ToString()}";
+            }
+            
+            
+            
         }
         else
         {
