@@ -155,9 +155,16 @@ void ClickBuilding(Vector2 screenPos)
     Ray ray = _cam.ScreenPointToRay(screenPos);
     RaycastHit[] hits = Physics.RaycastAll(ray, 100f, layerMask);
 
-    foreach (var hit in hits)
-    {
-        if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Building")||hit.collider.gameObject.layer == LayerMask.NameToLayer("Stage"))
+        foreach (var hit in hits)
+        {//||hit.collider.gameObject.layer == LayerMask.NameToLayer("Stage")
+            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Building"))
+            {
+                Managers.Debug.Log($" ClickBuilding:Building Clicked: {hit.collider.name}", Define.EDebugType.None);
+                var clickable = hit.collider.GetComponent<BaseObject>();
+                clickable?.OnClick();
+                break; // 가장 가까운 Building만 처리
+            }
+                if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Stage"))
         {
             Managers.Debug.Log($" ClickBuilding:Building Clicked: {hit.collider.name}", Define.EDebugType.None);
             var clickable = hit.collider.GetComponent<BaseObject>();

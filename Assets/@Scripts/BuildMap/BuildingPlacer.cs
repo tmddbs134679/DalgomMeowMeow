@@ -97,7 +97,7 @@ public class BuildingPlacer : MonoBehaviour
         tempTypeNum = (int)type;
         if (!CheckBuildGold(type))
         {
-                            Managers.UI.ShowToast("돈이 부족합니다.");
+            Managers.UI.ShowToast("돈이 부족합니다.");
             return;
         }
         if (SequenceSelectBuildingType(type)) return;
@@ -195,8 +195,8 @@ public class BuildingPlacer : MonoBehaviour
     bool CheckBuildGold(Define.EBuildingType Type)
     {
         buildType = Type.ToString();
-        
-  if (buildType == "Road") // 도로일 땐 else 처리,임시땜빵,나중에는 모든게 엑셀 데이터를 받아와서 계산해야함
+
+        if (buildType == "Road") // 도로일 땐 else 처리,임시땜빵,나중에는 모든게 엑셀 데이터를 받아와서 계산해야함
         {
             BuyMoney = buildingSO[tempTypeNum].BuyMoney;
         }
@@ -238,8 +238,8 @@ public class BuildingPlacer : MonoBehaviour
             PreviewOBJ.GetComponent<Collider>().enabled = false;
             _tempPreviewObjs.Add(PreviewOBJ);
 
-                Vector3 temp = _PreviewOBJ.transform.position;
-                _roadPosArray.Add(pos, temp); // 값은 placeholder로 true 사용
+            Vector3 temp = _PreviewOBJ.transform.position;
+            _roadPosArray.Add(pos, temp); // 값은 placeholder로 true 사용
 
         }
     }
@@ -259,40 +259,40 @@ public class BuildingPlacer : MonoBehaviour
     /// </summary>
     public void AcceptSequenceBuild()
     {
-        
+
         isAI = false;
         isSelect = false;
         CanPlaceBuilding();
-OnBuildingCancel?.Invoke();//buildaction에서 분기처리가 잘 안되어서 여기서 처리
+        OnBuildingCancel?.Invoke();//buildaction에서 분기처리가 잘 안되어서 여기서 처리
 
 
-            foreach (var a in _roadPosArray)
+        foreach (var a in _roadPosArray)
+        {
+            int hash = Guid.NewGuid().GetHashCode();
+            _buildData = new BuildData
             {
-                int hash = Guid.NewGuid().GetHashCode();
-                _buildData = new BuildData
-                {
-                    posX = a.Key.x,
-                    posZ = a.Key.y,
-                    testBaseBuilding = _saveBuildingSO,
-                    UniqueId = hash,
-                    LV = 0,
-                };
+                posX = a.Key.x,
+                posZ = a.Key.y,
+                testBaseBuilding = _saveBuildingSO,
+                UniqueId = hash,
+                LV = 0,
+            };
 
-                _arrayBuildPos.GetBuildData(_buildData);//설치할 오브젝트
-                _PreviewOBJ.transform.position = a.Value;
-                _PreviewOBJ.GetComponent<DraggableObject>().SetTileIsBuild();//새롭게 설치할 오브젝트의 타일
-            }
-            ClearTempPreviewObjects();
-                        Destroy(_PreviewOBJ);
-            gridMap.LoadMap(); //맵갱신
-            buildMap.LoadBuild(); //오브젝트 갱신
-            surface.BuildNavMesh(); //네브매쉬 깔기
-            isLongPressAcceptBuild = false;
+            _arrayBuildPos.GetBuildData(_buildData);//설치할 오브젝트
+            _PreviewOBJ.transform.position = a.Value;
+            _PreviewOBJ.GetComponent<DraggableObject>().SetTileIsBuild();//새롭게 설치할 오브젝트의 타일
+        }
+        ClearTempPreviewObjects();
+        Destroy(_PreviewOBJ);
+        gridMap.LoadMap(); //맵갱신
+        buildMap.LoadBuild(); //오브젝트 갱신
+        surface.BuildNavMesh(); //네브매쉬 깔기
+        isLongPressAcceptBuild = false;
 
-            buildMap.ColliderAllOn();
-            OnBuildingAccepted?.Invoke(_saveBuildingSO);
-            QuestManager.Instance.NotifyBuildingConstructed(((Define.EBuildingType)tempTypeNum).ToString());
-        
+        buildMap.ColliderAllOn();
+        OnBuildingAccepted?.Invoke(_saveBuildingSO);
+        QuestManager.Instance.NotifyBuildingConstructed(((Define.EBuildingType)tempTypeNum).ToString());
+
         OnAutoSave?.Invoke();
     }
 
@@ -306,7 +306,7 @@ OnBuildingCancel?.Invoke();//buildaction에서 분기처리가 잘 안되어서 
         CanPlaceBuilding();
 
 
-        if ( _isBuild)
+        if (_isBuild)
         {
 
             Managers.Game.Gold -= buyMoney;
@@ -323,12 +323,12 @@ OnBuildingCancel?.Invoke();//buildaction에서 분기처리가 잘 안되어서 
 
             _arrayBuildPos.GetBuildData(_buildData);//설치할 오브젝트
             _PreviewOBJ.GetComponent<DraggableObject>().SetTileIsBuild();//새롭게 설치할 오브젝트의 타일
-                        Destroy(_PreviewOBJ);
+            Destroy(_PreviewOBJ);
             gridMap.LoadMap(); //맵갱신
             buildMap.LoadBuild(); //오브젝트 갱신
             surface.BuildNavMesh(); //네브매쉬 깔기
             isLongPressAcceptBuild = false;
-                       buildMap.ColliderAllOn();
+            buildMap.ColliderAllOn();
             OnBuildingAccepted?.Invoke(_saveBuildingSO);
             QuestManager.Instance.NotifyBuildingConstructed(buildType);
         }
@@ -398,7 +398,7 @@ OnBuildingCancel?.Invoke();//buildaction에서 분기처리가 잘 안되어서 
         }
         buildMap.ColliderAllOn();
         isLongPressAcceptBuild = false;
-                ClearTempPreviewObjects();
+        ClearTempPreviewObjects();
     }
 
     public void RemoveBuild()
@@ -412,7 +412,7 @@ OnBuildingCancel?.Invoke();//buildaction에서 분기처리가 잘 안되어서 
         buildMap.LoadBuild(); //오브젝트 갱신
         surface.BuildNavMesh(); //네브매쉬 깔기
         Managers.AI.AllRelocateToNearestNavMesh();
-                OnAutoSave?.Invoke();
+        OnAutoSave?.Invoke();
     }
 
     /// <summary>

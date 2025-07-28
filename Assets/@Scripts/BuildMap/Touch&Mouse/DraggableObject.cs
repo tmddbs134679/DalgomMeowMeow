@@ -25,8 +25,8 @@ public class DraggableObject : MonoBehaviour, IDraggable
     [SerializeField] private Vector2 buildSize = new Vector2(1f, 1f); // 건축물 밑면 크기 (x, z)
     [SerializeField] private LayerMask tileLayer;
 
-    public float testx=2.1f;
-    public float testy=2.1f;
+    public float testx = 2.1f;
+    public float testy = 2.1f;
     void Start()
     {
         _isBuildColor = GetComponent<IsBuildColor>();
@@ -39,39 +39,39 @@ public class DraggableObject : MonoBehaviour, IDraggable
         _offsetx = (buildSize.x % 2 == 0) ? (gridSize / 2f) : 0f;
         _offsety = (buildSize.y % 2 == 0) ? (gridSize / 2f) : 0f;
         CheckTilesUnderBuilding();
-
+     // if (BuildingPlacer.Instance.isSequenceBuild) BuildingPlacer.Instance.SaveandRemoveRoad();
     }
 
     //드래그
-   private Vector3Int _prevGridPos = Vector3Int.zero;
+    private Vector3Int _prevGridPos = Vector3Int.zero;
 
-public void OnDrag(Vector3 groundPos)
-{
-    if (isDrag)
+    public void OnDrag(Vector3 groundPos)
     {
-        Vector3 snappedPos = GetSnappedPosition(groundPos);
-        transform.position = snappedPos;
+        if (isDrag)
+        {
+            Vector3 snappedPos = GetSnappedPosition(groundPos);
+            transform.position = snappedPos;
 
-        // 현재 그리드 기준 위치 계산
-        Vector3Int currentGridPos = new Vector3Int(
-            Mathf.RoundToInt(transform.position.x / gridSize),
-            0,
-            Mathf.RoundToInt(transform.position.z / gridSize)
-        );
+            // 현재 그리드 기준 위치 계산
+            Vector3Int currentGridPos = new Vector3Int(
+                Mathf.RoundToInt(transform.position.x / gridSize),
+                0,
+                Mathf.RoundToInt(transform.position.z / gridSize)
+            );
 
-                CheckTilesUnderBuilding();
+            CheckTilesUnderBuilding();
             // 이전과 다를 때만 처리
             if (currentGridPos != _prevGridPos)
             {
                 _prevGridPos = currentGridPos;
-                                if (BuildingPlacer.Instance.isSequenceBuild) BuildingPlacer.Instance.SaveandRemoveRoad();
-        }
+                if (BuildingPlacer.Instance.isSequenceBuild) BuildingPlacer.Instance.SaveandRemoveRoad();
+            }
 
-        Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.main, transform.position);
-        if (_uI_BuildAction != null)
-            _uI_BuildAction.transform.position = screenPos;
+            Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.main, transform.position);
+            if (_uI_BuildAction != null)
+                _uI_BuildAction.transform.position = screenPos;
+        }
     }
-}
     //드래그 드롭
     public void OnDragEnd() { }
 
@@ -129,10 +129,10 @@ public void OnDrag(Vector3 groundPos)
     //건물밑 타일 판별후 정보전달
     public void CheckTilesUnderBuilding()
     {
-  _offsetx = (buildSize.x % 2 == 0) ? (gridSize / 2f) : 0f;
-   _offsety = (buildSize.y % 2 == 0) ? (gridSize / 2f) : 0f;
+        _offsetx = (buildSize.x % 2 == 0) ? (gridSize / 2f) : 0f;
+        _offsety = (buildSize.y % 2 == 0) ? (gridSize / 2f) : 0f;
         Vector3 center = transform.position + Vector3.down * 0.5f;
-        Vector3 halfExtents = new Vector3(buildSize.x /testx, 0.1f, buildSize.y /testy);
+        Vector3 halfExtents = new Vector3(buildSize.x / testx, 0.1f, buildSize.y / testy);
 
         Collider[] hitColliders = Physics.OverlapBox(center, halfExtents, Quaternion.identity, tileLayer);
 
@@ -153,10 +153,10 @@ public void OnDrag(Vector3 groundPos)
     //타일에 isLoadBuild값 전달후 SetTile()호출해 arrayMapPos맵데이터 갱신
     public void SetTileIsBuild()
     {
-          _offsetx = (buildSize.x % 2 == 0) ? (gridSize / 2f) : 0f;
-   _offsety = (buildSize.y % 2 == 0) ? (gridSize / 2f) : 0f;
+        _offsetx = (buildSize.x % 2 == 0) ? (gridSize / 2f) : 0f;
+        _offsety = (buildSize.y % 2 == 0) ? (gridSize / 2f) : 0f;
         Vector3 center = transform.position + Vector3.down * 0.5f;
-        Vector3 halfExtents = new Vector3(buildSize.x /testx, 0.1f, buildSize.y /testy);
+        Vector3 halfExtents = new Vector3(buildSize.x / testx, 0.1f, buildSize.y / testy);
 
         Collider[] hitColliders = Physics.OverlapBox(center, halfExtents, Quaternion.identity, tileLayer);
         foreach (Collider col in hitColliders)
@@ -174,10 +174,10 @@ public void OnDrag(Vector3 groundPos)
     //현재 오브젝트,그 밑 타일 정보 받기
     public void CurrentTileAndOBJ()
     {
-                  _offsetx = (buildSize.x % 2 == 0) ? (gridSize / 2f) : 0f;
-   _offsety = (buildSize.y % 2 == 0) ? (gridSize / 2f) : 0f;
+        _offsetx = (buildSize.x % 2 == 0) ? (gridSize / 2f) : 0f;
+        _offsety = (buildSize.y % 2 == 0) ? (gridSize / 2f) : 0f;
         Vector3 center = transform.position + Vector3.down * 0.5f;
-        Vector3 halfExtents = new Vector3(buildSize.x /testx, 0.1f, buildSize.y /testy);
+        Vector3 halfExtents = new Vector3(buildSize.x / testx, 0.1f, buildSize.y / testy);
 
         Collider[] hitColliders = Physics.OverlapBox(center, halfExtents, Quaternion.identity, tileLayer);
         BuildingPlacer.Instance.TempCollider = hitColliders.ToArray();
@@ -187,19 +187,19 @@ public void OnDrag(Vector3 groundPos)
     //씬에서 기즈모 보여주기용
     void OnDrawGizmosSelected()
     {
-          _offsetx = (buildSize.x % 2 == 0) ? (gridSize / 2f) : 0f;
-   _offsety = (buildSize.y % 2 == 0) ? (gridSize / 2f) : 0f;
+        _offsetx = (buildSize.x % 2 == 0) ? (gridSize / 2f) : 0f;
+        _offsety = (buildSize.y % 2 == 0) ? (gridSize / 2f) : 0f;
         Vector3 center = transform.position + Vector3.down * 0.5f;
-        Vector3 halfExtents = new Vector3(buildSize.x /testx, 0.1f, buildSize.y /testy);
+        Vector3 halfExtents = new Vector3(buildSize.x / testx, 0.1f, buildSize.y / testy);
         Gizmos.color = Color.magenta;
         Gizmos.DrawWireCube(center, halfExtents * 2f);
     }
-    
+
     public void SnapToGrid(Vector3 targetPos)
-{
-    Vector3 snappedPos = GetSnappedPosition(targetPos);
-    transform.position = snappedPos;
-    CheckTilesUnderBuilding();
-}
+    {
+        Vector3 snappedPos = GetSnappedPosition(targetPos);
+        transform.position = snappedPos;
+        CheckTilesUnderBuilding();
+    }
 
 }

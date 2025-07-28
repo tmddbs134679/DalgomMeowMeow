@@ -105,7 +105,7 @@ public class DragController : MonoBehaviour
             if (isDragging)
             {
                 isDelay = false;
-                
+
                 if (Physics.Raycast(ray, out var groundHit, 1000f, groundLayer))
                 {
                     currentTarget.OnDrag(groundHit.point);
@@ -126,18 +126,19 @@ public class DragController : MonoBehaviour
             currentTarget = null;
         }
     }
-private void OnLongPress()
-{
-    if (currentTarget == null) return;
-
-    // 현재 타겟이 Stage 레이어면 롱프레스 동작 무시
-    if (currentTarget is MonoBehaviour mb && mb.gameObject.layer == LayerMask.NameToLayer("Stage"))
+    private void OnLongPress()
     {
-        return; // Stage일 땐 롱프레스 동작 안 함
-    }
 
-    currentTarget.OnLongPress();
-}
+        // 현재 타겟이 Stage 레이어면 롱프레스 동작 무시
+        if (currentTarget is MonoBehaviour mb && mb.gameObject.layer == LayerMask.NameToLayer("Stage"))
+        {
+            return; // Stage일 땐 롱프레스 동작 안 함
+        }
+        if (currentTarget != null)
+        {
+            currentTarget.OnLongPress();
+        }
+    }
 
     public void ChangeTarget(IDraggable draggable)
     {
