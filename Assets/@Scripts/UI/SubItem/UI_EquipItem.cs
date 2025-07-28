@@ -63,7 +63,7 @@ public class UI_EquipItem : UI_Base
         }
         else
         {
-            GetImage((int)Images.Image).sprite = null;
+            GetImage((int)Images.Image).sprite = Managers.Resource.Load<Sprite>("AlphaBackground.sprite");
         }
 
         GetText((int)Texts.CostumeText).gameObject.SetActive(!hasEquip);

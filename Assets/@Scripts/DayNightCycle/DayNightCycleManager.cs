@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class DayNightCycleManager : MonoBehaviour
 {
     [SerializeField] private Light directionalLight;
@@ -15,19 +15,35 @@ public class DayNightCycleManager : MonoBehaviour
     public float AdjustedNormalizedTime { get => _adjustedNormalizedTime; set => _adjustedNormalizedTime = value; }
     public static DayNightCycleManager Instance;
 
-    [SerializeField] private bool isNight = false;
     [SerializeField] private bool isDay = false;
-    private void Awake()
+    [SerializeField] private bool isNight = false;
+        private void Awake()
     {
-        if (Instance == null)
+        if (Instance != null && Instance != this)
         {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
             Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+
+        // 씬 로드 시 콜백 등록
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
+    private void OnDestroy()
+    {
+        // 씬 로드 콜백 해제
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // 씬이 새로 로드될 때 호출됨
+        // 예: directionalLight 다시 찾기
+        directionalLight =  GameObject.FindWithTag("Sun")?.GetComponent<Light>();
+    }
     void Start()
     {
         InvokeRepeating(nameof(SaveCurrentTime), 0f, 5f);
@@ -41,7 +57,7 @@ public class DayNightCycleManager : MonoBehaviour
 
     void Update()
     {
-        if (isNight)
+        if (isDay)
         {
             ApplyFixedTime(0.15f); 
             return;
@@ -67,6 +83,7 @@ public class DayNightCycleManager : MonoBehaviour
 
         sunAngle %= 360f;
 
+        if (directionalLight == null) return;
         directionalLight.transform.rotation = Quaternion.Euler(sunAngle, 0f, 0f);
         AdjustedNormalizedTime = sunAngle / 360f;
         directionalLight.color = lightColorGradient.Evaluate(AdjustedNormalizedTime);

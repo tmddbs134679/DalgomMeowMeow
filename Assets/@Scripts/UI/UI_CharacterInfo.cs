@@ -29,6 +29,10 @@ public class UI_CharacterInfo : UI_Base
 
     enum Images
     {
+        CharacterImageBackground,
+        HatImageObject,
+        AccessorymageObject,
+        BagImageObject,
         CharacterImage,
         HatImage,
         AccessoryImage,
@@ -107,6 +111,22 @@ public class UI_CharacterInfo : UI_Base
         // Notify 체크
         CheckNotify();
 
+        // 캐릭터 종류별 배경 변경
+        if (_character.UniqueId[0] == 'B')
+        {
+            GetImage((int)Images.CharacterImageBackground).sprite = Managers.Resource.Load<Sprite>("UI_CharacterBackground1.sprite");
+            GetImage((int)Images.AccessorymageObject).sprite = Managers.Resource.Load<Sprite>("UI_CharacterBackground1.sprite");
+            GetImage((int)Images.BagImageObject).sprite = Managers.Resource.Load<Sprite>("UI_CharacterBackground1.sprite");
+            GetImage((int)Images.HatImageObject).sprite = Managers.Resource.Load<Sprite>("UI_CharacterBackground1.sprite");
+        }
+        else
+        {
+            GetImage((int)Images.CharacterImageBackground).sprite = Managers.Resource.Load<Sprite>("UI_CharacterBackground4.sprite");
+            GetImage((int)Images.AccessorymageObject).sprite = Managers.Resource.Load<Sprite>("UI_CharacterBackground4.sprite");
+            GetImage((int)Images.BagImageObject).sprite = Managers.Resource.Load<Sprite>("UI_CharacterBackground4.sprite");
+            GetImage((int)Images.HatImageObject).sprite = Managers.Resource.Load<Sprite>("UI_CharacterBackground4.sprite");
+        }
+
         // 장비 이미지 초기화
         foreach (EEquipmentType type in displayOrder)
         {
@@ -121,7 +141,7 @@ public class UI_CharacterInfo : UI_Base
             {
                 // 장비 없으면 기본 슬롯 이미지
 
-                 icon = Managers.Resource.Load<Sprite>("Empty.sprite"); // 이건 상황에 맞게 수정
+                 icon = Managers.Resource.Load<Sprite>("AlphaBackground.sprite"); // 이건 상황에 맞게 수정
             }
 
             // 슬롯에 맞게 이미지 넣기

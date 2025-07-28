@@ -86,7 +86,7 @@ public class UI_EquipSlot : UI_Base
         }
         else
         {
-            GetImage((int)Images.CharacterOwnerImage).sprite = null;
+            GetImage((int)Images.CharacterOwnerImage).sprite = Managers.Resource.Load<Sprite>("AlphaBackground.sprite");
         }
     }
 
