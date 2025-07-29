@@ -104,6 +104,10 @@ public class AICharacter : BaseObject
     public Action<AICharacter> AnimalDelivered;
     public Action<int> CharacterGainExp;
     public Action<float> Levelup;
+
+
+
+
     #endregion
 
     private GameObject infoButton;
@@ -185,15 +189,31 @@ public class AICharacter : BaseObject
         _controller = new AIController(new CharacterResetState(), this, Define.EAIState.None);
         _controller.RegisterState(new CharacterIdleState(), this, Define.EAIState.Idle);
         _controller.RegisterState(new CharacterBuildingState(), this, Define.EAIState.Build);
-        _controller.RegisterState(new CharacterCookState(), this, Define.EAIState.Cook); ;
-        _controller.RegisterState(new CharacterFarmingState(), this, Define.EAIState.Farm);
+        _controller.RegisterState(new CharacterCookState(), this, Define.EAIState.Cook);
+        _controller.RegisterState(new CharacterCabbageFarmingState(), this, Define.EAIState.CabbageFarm);
+        _controller.RegisterState(new CharacterOnionFarmingState(), this, Define.EAIState.OnionFarm);
+        _controller.RegisterState(new CharacterPotatoFarmingState(), this, Define.EAIState.PotatoFarm);
+        _controller.RegisterState(new CharacterPumpkinFarmingState(), this, Define.EAIState.PumpkinFarm);
+        _controller.RegisterState(new CharacterCarrotFarmingState(), this, Define.EAIState.CarrotFarm);
         _controller.RegisterState(new CharacterPlayState(), this, Define.EAIState.Play);
         _controller.RegisterState(new CharacterRestState(), this, Define.EAIState.Rest);
         _controller.RegisterState(new CharacterMoveToState(), this, Define.EAIState.MoveTo);
         _controller.RegisterState(new CharacterDeliverState(), this, Define.EAIState.Deliver);
         _controller.RegisterState(new CharacterHelloState(), this, Define.EAIState.Hello);
         _controller.RegisterState(new CharacterFishingState(), this, Define.EAIState.Fishing);
+
     }
+
+    public Dictionary<Define.EBuildingType, Define.EAIState> farmActions = new()
+{
+    { Define.EBuildingType.CabbageFarm, Define.EAIState.CabbageFarm },
+    { Define.EBuildingType.OnionFarm,   Define.EAIState.OnionFarm },
+    { Define.EBuildingType.PotatoFarm,  Define.EAIState.PotatoFarm },
+    { Define.EBuildingType.PumpkinFarm, Define.EAIState.PumpkinFarm },
+    { Define.EBuildingType.CarrotFarm,  Define.EAIState.CarrotFarm },
+};
+
+
     #endregion
 
     #region 건물 상호작용
@@ -254,7 +274,7 @@ public class AICharacter : BaseObject
 
     public void RecoverStamina(float amount)
     {
-        Data.CurrentStamina = Mathf.Min(100, Data.CurrentStamina + amount);
+        Data.CurrentStamina = Mathf.Min(Data.MaxStamina, Data.CurrentStamina + amount);
         //Managers.Debug.Log($"스태미나 회복 : {amount}, 현재: {CharacterData.CurrentStamina}", Define.EDebugType.AI);
     }
     #endregion
@@ -376,7 +396,7 @@ public class AICharacter : BaseObject
                         _camera.DOOrthoSize(2f, 0.7f);
                         _camera.transform.DOMove(targetPos, 0.7f).OnComplete(() => isTweening = false);
                     }
-                    else if(!isClicked && !isTweening)
+                    else if (!isClicked && !isTweening)
                     {
                         isTweening = true;
 

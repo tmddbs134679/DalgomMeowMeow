@@ -59,10 +59,12 @@ public class UI_ChangeCharacterSlot : UI_Base
     }
 
     Character _character;
+    ScrollRect _scrollRect;
 
-    public void SetInfo(Character character)
+    public void SetInfo(Character character, ScrollRect scrollRect)
     {
         _character = character;
+        _scrollRect = scrollRect;
 
         GetImage((int)Images.CharacterIcon).sprite = Managers.Resource.Load<Sprite>(_character.Data.IconLabel);
         var outLine = GetImage((int)Images.CharacterIcon).GetComponent<Outline>();
