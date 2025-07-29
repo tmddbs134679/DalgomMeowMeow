@@ -531,8 +531,6 @@ public class GameManager
 
     public void StartTravel(Character character, TimeSpan duration)
     {
-        character.IsTravelMode = true;
-
         Managers.Time.TravelStartTime = DateTime.Now;
         Managers.Time.TravelDuration = duration;
 
