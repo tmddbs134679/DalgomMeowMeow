@@ -99,7 +99,6 @@ public class Stop_MiniGameManager : MonoBehaviour
         IsGameOver = true;
         StopAllCoroutines(); // 현재 진행 중인 코루틴 모두 중지
         _image.DOKill(); // DOTween 트윈도 정리
-        //보상
     }
     
     IEnumerator GameStartCoroutine(float time)

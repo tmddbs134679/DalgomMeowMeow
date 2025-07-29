@@ -248,7 +248,9 @@ public class BattleCharacter : BaseObject
 
         Health -= Damage; // 공격력만큼 체력 감소
         if (Damage >= 0)
-        { 
+        {
+            int rand = UnityEngine.Random.Range(1, 5);
+            Managers.Sound.Play(Define.ESound.Effect, $"Hit{rand}"); // 피격 사운드 재생
             if (_damageFlashCoroutine != null)
                 StopCoroutine(_damageFlashCoroutine);
             _damageFlashCoroutine = StartCoroutine(DamageFlash());
