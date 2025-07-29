@@ -23,7 +23,6 @@ public class CloneActivity : MonoBehaviour
     private float _attacktimer = 1f; // 공격 딜레이 타이머
     private int _animationHash; // 애니메이션 해시
 
-
     public float Health
     {
         get => _currentHP;
@@ -44,8 +43,6 @@ public class CloneActivity : MonoBehaviour
             }
         }
     }
-
-
 
     private void Awake()
     {
@@ -105,7 +102,6 @@ public class CloneActivity : MonoBehaviour
         }
     }
 
-
     public void Init(float maxhp, float atk, float moveSpeed, float range, Transform parent)
     {
         _maxHP = maxhp;
@@ -123,9 +119,6 @@ public class CloneActivity : MonoBehaviour
         Vector3 pos = new Vector3(parent.position.x, parent.position.y, parent.position.z - 2);
         _parent.position = pos; // 부모 위치 설정
     }
-
-
-
 
     #region FindTarget
     private Transform FindClosestEnemyInRange(float range)      //오버랩 스피어를 통해 적 탐지

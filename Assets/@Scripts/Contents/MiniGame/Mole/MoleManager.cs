@@ -56,34 +56,14 @@ public class MoleManager : MonoBehaviour
         StartCoroutine(TimerCoroutine());
     }
 
-    
-    private IEnumerator SpawnLoop()
+    public void GameOver()
     {
-        _spawnInterval = 1.0f;
+        isGameStarted = false; // 게임 루프 멈추는 기준
+        StopAllCoroutines(); // 모든 코루틴 중지
+        _textUI.SetActive(false); // 게임 오버 UI 활성화
 
-        while (isGameStarted)
-        {
-            int count = Random.Range(1, 4); // 동시 등장 수
-
-            for (int i = 0; i < count; i++)
-                TryPopMole();
-
-            yield return new WaitForSeconds(_spawnInterval);
-
-            _spawnInterval = Mathf.Max(0.3f, _spawnInterval - 0.02f);
-        }
-    }
-
-    private IEnumerator TimerCoroutine()
-    {
-        while (_elapsedTime < gameTime)
-        {
-            _elapsedTime += Time.deltaTime;
-            UpdateTimerUI();
-            yield return null; // 매 프레임마다 갱신
-        }
-
-        GameOver(); // 시간이 다 되면 게임 종료
+        _scoreUI.GetComponentInChildren<TextMeshProUGUI>().text = $"Score\n{_score}";
+        _scoreUI.SetActive(true); // 점수 UI 활성화
     }
 
     private void UpdateTimerUI()
@@ -108,6 +88,51 @@ public class MoleManager : MonoBehaviour
         StartCoroutine(CharacterRoutine(index));
     }
 
+    private void OnClickMole(int index)
+    {
+        var mole = buttons[index].GetComponent<Mole_Onclick>();
+        if (mole.isClicked) return;
+
+        mole.Clicked();
+
+        if (buttons[index].image.sprite == _cat)
+            Score -= 500;
+        else
+            Score += 200;
+    }
+
+    private void RenewText()
+    {
+        _scoreText.text = $"{Score}";
+    }
+
+    private IEnumerator SpawnLoop()
+    {
+        _spawnInterval = 1.0f;
+
+        while (isGameStarted)
+        {
+            int count = Random.Range(1, 4); // 동시 등장 수
+
+            for (int i = 0; i < count; i++)
+                TryPopMole();
+
+            yield return new WaitForSeconds(_spawnInterval);
+
+            _spawnInterval = Mathf.Max(0.3f, _spawnInterval - 0.02f);
+        }
+    }
+    private IEnumerator TimerCoroutine()
+    {
+        while (_elapsedTime < gameTime)
+        {
+            _elapsedTime += Time.deltaTime;
+            UpdateTimerUI();
+            yield return null; // 매 프레임마다 갱신
+        }
+
+        GameOver(); // 시간이 다 되면 게임 종료
+    }
     private IEnumerator CharacterRoutine(int index)
     {
         isActive[index] = true;
@@ -137,33 +162,5 @@ public class MoleManager : MonoBehaviour
         yield return btn.transform.DOLocalMoveY(0, 0.2f).SetEase(Ease.InBack).WaitForCompletion();
         btn.interactable = false;
         isActive[index] = false;
-    }
-
-    private void OnClickMole(int index)
-    {
-        var mole = buttons[index].GetComponent<Mole_Onclick>();
-        if (mole.isClicked) return;
-
-        mole.Clicked();
-
-        if (buttons[index].image.sprite == _cat)
-            Score -= 500;
-        else
-            Score += 200;
-    }
-
-    private void RenewText()
-    {
-        _scoreText.text = $"{Score}";
-    }
-
-    public void GameOver()
-    {
-        isGameStarted = false; // 게임 루프 멈추는 기준
-        StopAllCoroutines(); // 모든 코루틴 중지
-        _textUI.SetActive(false); // 게임 오버 UI 활성화
-
-        _scoreUI.GetComponentInChildren<TextMeshProUGUI>().text = $"Score\n{_score}";
-        _scoreUI.SetActive(true); // 점수 UI 활성화
     }
 }

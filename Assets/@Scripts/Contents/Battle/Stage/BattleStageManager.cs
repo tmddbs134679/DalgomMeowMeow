@@ -50,23 +50,14 @@ public class BattleStageManager : BaseObject
                 currentDum += EnemySpawnRate[i];
                 if (randomValue <= currentDum)
                 {
-                    
                     Managers.Object.Spawn<BattleCharacter>(Vector3.zero, stages.EnemyID[i], _parent[k].transform);
-                     
-                    /*
-                    GameObject enemy = Managers.Resource.Instantiate(Managers.Data.CreatureDic[stages[currentStageIndex].EnemyID[i]].PrefabLabel, _parent[k].transform , false); //적 생성
-                    enemy.transform.SetParent(_parent[k].transform, false); //부모 오브젝트 설정
-                    */
-                    _parent[k].GetComponent<BattleCharacter>().Init(Managers.Data.CreatureDic[stages.EnemyID[i]]); //적 캐릭터 초기화
+                    _parent[k].GetComponent<BattleCharacter>().Init(Managers.Data.CreatureDic[stages.EnemyID[i]]);
 
                     break;
                 }
             }
         }
     }
-
-
-    
     
 
     public override void OnClick()

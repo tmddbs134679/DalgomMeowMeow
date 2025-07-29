@@ -1,7 +1,5 @@
 using DG.Tweening;
-using JetBrains.Annotations;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,10 +19,9 @@ public class Stop_MiniGameManager : MonoBehaviour
     public float time;
 
     public bool IsGameOver = true;
-    
-
 
     private Image _image;
+
     private void Awake()
     {
         _image = GetComponent<Image>();
@@ -53,18 +50,9 @@ public class Stop_MiniGameManager : MonoBehaviour
 
     public void GameStart()
     {
-
         Flip(); // 좌우 반전(앞에봄)
         float time = RandomTiming();
         StartCoroutine(GameStartCoroutine(time));
-    }
-
-    IEnumerator GameStartCoroutine(float time)
-    {
-        if (time > 1f)
-            yield return new WaitForSeconds(time - 1f); // 깜빡임 시작까지 대기
-
-        StartBlinkEffect(1f); // 1초 동안 깜빡임
     }
 
     void StartBlinkEffect(float duration)
@@ -99,7 +87,6 @@ public class Stop_MiniGameManager : MonoBehaviour
         transform.localScale = scale;
     }
 
-
     public void GameOver()
     {
         IsGameOver = true;
@@ -114,6 +101,12 @@ public class Stop_MiniGameManager : MonoBehaviour
         _image.DOKill(); // DOTween 트윈도 정리
         //보상
     }
+    
+    IEnumerator GameStartCoroutine(float time)
+    {
+        if (time > 1f)
+            yield return new WaitForSeconds(time - 1f); // 깜빡임 시작까지 대기
 
-
+        StartBlinkEffect(1f); // 1초 동안 깜빡임
+    }
 }

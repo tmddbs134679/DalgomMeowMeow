@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class EffectManager : MonoBehaviour
 {
-
     public GameObject FireHandPrefab;
     public GameObject YellowShieldPrefab;
     public GameObject RainAreaPrefab;
@@ -13,7 +12,6 @@ public class EffectManager : MonoBehaviour
     public GameObject BuffPrefab;
 
     public ParticleSystem[] BuffEffect;
-
 
     public Color AtkUp = new Color(255 / 255f, 231 / 255f, 83 / 255f);
     public Color speedUp = new Color(95 / 255f, 253 / 255f, 255 / 255f);
@@ -195,5 +193,4 @@ public class EffectManager : MonoBehaviour
         }
     }
     #endregion Buff
-
 }

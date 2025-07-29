@@ -14,23 +14,21 @@ public class BattleCharacter : BaseObject
     [SerializeField] private float _flashDuration = 0.05f;
     [SerializeField] protected SkinnedMeshRenderer[] _characterRenderer; // 캐릭터 렌더러
     [SerializeField] protected Vector3 _originalPosition; // 원래 위치 저장
+
     public EffectManager _effectManager; // 이펙트 매니저
     public CloneActivity _clone; // 클론 액티비티 (적용 여부는 캐릭터에 따라 다름)
-
-
+    public HealthBarUI _hpBar;
+    public GameObject damageTextPrefab; // 피격 시 데미지 텍스트 프리팹
 
     public NavMeshAgent Agent { get; private set; } // NavMeshAgent 컴포넌트
     public Animator Animator; // 애니메이터 컴포넌트
-    public Transform TargetLocation;
 
+    public Transform TargetLocation;
     public Transform LeftHandPivot;
     public Transform RightHandPivot;
     public Transform HeadPivot;
+    public Transform CharacterObject;
 
-    public Transform CharacterObject; // 캐릭터 오브젝트 (프리팹)
-
-    public HealthBarUI _hpBar;
-    public GameObject damageTextPrefab; // 피격 시 데미지 텍스트 프리팹
 
     #region Stats
     public string CharID;
@@ -51,7 +49,6 @@ public class BattleCharacter : BaseObject
     public int AnimationHash;
     public int SkillTrigger;
     public int SkillHash;
-    
 
     public bool HasLookedForward = true; // 전방을 바라봤는지 여부 (아군 전용 로직)
     public bool Stunned = false; // 스턴 상태 여부
@@ -69,7 +66,6 @@ public class BattleCharacter : BaseObject
             }
         }
     }
-
     public string TargetLayer = "Enemy"; // 타겟 태그
     
     private BattleCharacter _targetCharacter; // 현재 타겟 캐릭터
@@ -224,10 +220,6 @@ public class BattleCharacter : BaseObject
     }
     #endregion
 
-
-
-
-
     #region DealDamage
     public void TryAttack()
     {
@@ -347,12 +339,6 @@ public class BattleCharacter : BaseObject
             return;
         _skillLibrary.UseSkill(this.Skillnum, this); // 스킬 라이브러리에서 스킬 사용
     }
-       
-
-    public override void OnClick()
-    {
-        throw new NotImplementedException();
-    }
 
     public void SetAnimation()
     {
@@ -367,5 +353,12 @@ public class BattleCharacter : BaseObject
         LeftHandPivot = CharacterObject.transform.Find("root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/Hand_l_equipment");
         RightHandPivot = CharacterObject.transform.Find("root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/Hand_r_equipment");
         HeadPivot = CharacterObject.transform.Find("root/pelvis/spine_01/spine_02/spine_03/neck_01/head/Head_equipment");
+    }
+
+
+
+    public override void OnClick()
+    {
+        throw new NotImplementedException();
     }
 }
