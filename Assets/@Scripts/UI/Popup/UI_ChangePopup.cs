@@ -78,9 +78,9 @@ public class UI_ChangePopup : UI_Popup
     {
         int i = Managers.Game.Characters.Count(ch => ch.InMainScene);
 
-        if (i > Managers.Game._gameData.MaxCountInScene)
+        if (i > Managers.Game.MaxCountInScene)
         {
-            Managers.UI.ShowToast("메인 씬에 캐릭터는 최대 " + Managers.Game._gameData.MaxCountInScene + "명까지 가능합니다.");
+            Managers.UI.ShowToast("메인 씬에 캐릭터는 최대 " + Managers.Game.MaxCountInScene + "명까지 가능합니다.");
             return;
         }
         //foreach (var ch in Managers.Game.Characters.Where(c => !c.InMainScene))
@@ -121,12 +121,6 @@ public class UI_ChangePopup : UI_Popup
             slot.SetInfo(ch);
         }
     }
-
-   
-
-
-    
-
     #endregion 
 
 }

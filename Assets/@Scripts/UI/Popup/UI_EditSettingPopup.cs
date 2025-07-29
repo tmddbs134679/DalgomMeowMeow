@@ -101,7 +101,7 @@ public class UI_EditSettingPopup : UI_Popup
 
     private void OnClickBackgroundButton()
     {
-        Managers.Sound.PlayButtonClick();
+
         gameObject.SetActive(false);
     }
 
