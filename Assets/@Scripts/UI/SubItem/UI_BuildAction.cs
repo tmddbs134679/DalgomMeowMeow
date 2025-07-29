@@ -47,6 +47,7 @@ public class UI_BuildAction : UI_Popup
         GetButton((int)Buttons.CancelButton).gameObject.BindEvent(CancelBuild);
         GetButton((int)Buttons.RemoveButton).gameObject.BindEvent(RemoveBuild);
 
+        GetButton((int)Buttons.RemoveButton).gameObject.SetActive(false);
         return true;
     }
     private void AcceptBuild()
@@ -102,6 +103,7 @@ public class UI_BuildAction : UI_Popup
     {
         if (BuildingPlacer.Instance.isLongPressAcceptBuild)
         {
+            GetButton((int)Buttons.RemoveButton).gameObject.SetActive(true);
             BuildingPlacer.Instance.OnBuildingCancel?.Invoke();
             BuildingPlacer.Instance.uI_BuildAction.SetActive(false);
             BuildingPlacer.Instance.RemoveBuild();
