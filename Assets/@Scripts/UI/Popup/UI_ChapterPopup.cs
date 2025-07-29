@@ -33,6 +33,7 @@ public class UI_ChapterPopup : UI_Popup
         Chapter2SelectImage,
         Chapter3SelectImage,
         Chapter4SelectImage,
+        CompleteImage,
     }
 
     private string _currentChapterId = "Chapter1";
@@ -56,6 +57,7 @@ public class UI_ChapterPopup : UI_Popup
         GetImage((int)Images.Chapter2SelectImage).gameObject.SetActive(false);
         GetImage((int)Images.Chapter3SelectImage).gameObject.SetActive(false);
         GetImage((int)Images.Chapter4SelectImage).gameObject.SetActive(false);
+        GetImage((int)Images.CompleteImage).gameObject.SetActive(QuestManager.Instance.IsUnlocked(_currentChapterId));
         CreateChapterSlot("Chapter1");
         return true;
     }
@@ -63,7 +65,11 @@ public class UI_ChapterPopup : UI_Popup
     private void OnClickUnlockButton()
     {
         Managers.Sound.PlayButtonClick();
-        QuestManager.Instance.TryUnlockContent(_currentChapterId);
+        if (!QuestManager.Instance.IsUnlocked(_currentChapterId))
+        {
+            QuestManager.Instance.TryUnlockContent(_currentChapterId);
+
+        }
     }
 
     private void OnClickChapter4Button()
@@ -141,5 +147,6 @@ public class UI_ChapterPopup : UI_Popup
 
             GetText((int)Texts.UnlockText1 + i).text = string.IsNullOrEmpty(desc) ? "" : $"- {desc}";
         }
+        GetImage((int)Images.CompleteImage).gameObject.SetActive(QuestManager.Instance.IsUnlocked(_currentChapterId));
     }
 }
