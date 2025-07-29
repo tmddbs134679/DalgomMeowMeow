@@ -46,7 +46,6 @@ public class BuildingPlacer : MonoBehaviour
     public Action OnBuildingAccept; //사용 안하는중
     public event Action OnAutoSave;
 
-    public event Action OnLayerOff;
     //Int값
     public int tempTypeNum;
     public int BuyMoney { get => buyMoney; set => buyMoney = value; }
@@ -106,7 +105,6 @@ public class BuildingPlacer : MonoBehaviour
         if (SequenceSelectBuildingType(type)) return;
         isAI = true;
         buildMap.ColliderAllOff();
-        OnLayerOff.Invoke();
         Camera cam = Camera.main;
         Vector3 screenCenter = new Vector3(Screen.width / 2f, Screen.height / 2f, cam.nearClipPlane);
         Ray ray = Camera.main.ScreenPointToRay(screenCenter);
@@ -553,8 +551,6 @@ public class BuildingPlacer : MonoBehaviour
     void OnApplicationQuit()//유니티 내장 맨마지막에 불려지는 함수
     {
                 OnAutoSave?.Invoke();
-        Debug.Log("게임 종료 감지됨 - 맵 타일 데이터 저장");
-
     }
 
 

@@ -71,8 +71,6 @@ public class ArrayMapPos : ScriptableObject
 
         string json = JsonConvert.SerializeObject(saveData, Formatting.Indented);
         File.WriteAllText(path, json);
-
-        Debug.Log("맵 타일 데이터 저장 완료!");
     }
 #if UNITY_EDITOR
     public void EditorLoadMapTileData()

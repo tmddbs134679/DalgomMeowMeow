@@ -50,12 +50,8 @@ public class RestBuilding : BuildingBase
     }
     public override void Produce()
     {
-        Debug.Log("휴식 완료");
-
-
         // 상태 전이
         CurrentState = BuildingState.Producing;
-
     }
     public void Collect()
     {
