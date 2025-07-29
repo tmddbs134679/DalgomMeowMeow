@@ -108,11 +108,12 @@ public class QuestManager : MonoBehaviour
 
         foreach (var pair in _quests)
         {
-            data.questRecords[pair.Key] = new QuestRecord
+            data.questRecords.Add(new QuestRecordWrapper
             {
+                QuestId = pair.Key,
                 Progress = pair.Value.Progress,
                 State = pair.Value.State
-            };
+            });
         }
 
         data.unlockedContentIds = UnlockedContent.ToList(); // 저장
@@ -122,12 +123,12 @@ public class QuestManager : MonoBehaviour
 
     public void LoadFromSaveData(QuestSaveData data)
     {
-        foreach (var pair in data.questRecords)
+        foreach (var record in data.questRecords)
         {
-            if (_quests.TryGetValue(pair.Key, out var quest))
+            if (_quests.TryGetValue(record.QuestId, out var quest))
             {
-                quest.Progress = pair.Value.Progress;
-                quest.State = pair.Value.State;
+                quest.Progress = record.Progress;
+                quest.State = record.State;
             }
         }
 
@@ -250,7 +251,8 @@ public class QuestManager : MonoBehaviour
         if (allMet)
         {
             // Debug.Log($"[해금 조건 달성] 콘텐츠: {contentId}");
-            Unlock(contentId);
+            Unlock(contentId);  
+            Managers.UI.ShowToast("해금완료");
         }
     }
     public bool IsQuestCompleted(string questId)

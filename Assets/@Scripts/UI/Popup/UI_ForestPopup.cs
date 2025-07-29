@@ -43,12 +43,16 @@ public class UI_ForestPopup : UI_Popup
         FirstEnemy,
         SecondEnemy,
         ThirdEnemy,
+        Frame1,
+        Frame2,
+        Frame3,
     }
     #endregion
 
 
     Character _character;
-    
+    private const string DefaultCatIcon = "Cat.sprite";
+    private const string DefaultSkillIcon = "UI_CharacterBackground4.sprite";
 
     private StageSO stagedata;
     private Character[] _selectedCharacters = new Character[3];
@@ -106,7 +110,7 @@ public class UI_ForestPopup : UI_Popup
             case 2:
                 GetImage((int)Images.FirstEnemy).sprite = Managers.Resource.Load <Sprite>(stagedata.EnemyID[0]);
                 GetImage((int)Images.SecondEnemy).sprite = Managers.Resource.Load<Sprite>(stagedata.EnemyID[1]);
-                GetImage((int)Images.ThirdEnemy).gameObject.SetActive(false);
+                GetImage((int)Images.Frame3).gameObject.SetActive(false);
                 break;
             case 3:
                 GetImage((int)Images.FirstEnemy).sprite = Managers.Resource.Load<Sprite>(stagedata.EnemyID[0]);
@@ -157,8 +161,8 @@ public class UI_ForestPopup : UI_Popup
         // 1) 슬롯 초기화
         for (int i = 0; i < 3; i++)
         {
-            GetImage((int)Images.Select1 + i).sprite = null;
-            GetImage((int)Images.SkillIcon1 + i).sprite = null;
+            GetImage((int)Images.Select1 + i).sprite = Managers.Resource.Load<Sprite>(DefaultCatIcon);
+            GetImage((int)Images.SkillIcon1 + i).sprite = Managers.Resource.Load<Sprite>(DefaultSkillIcon);
             GetText((int)Texts.SkillText1 + i).text = string.Empty; 
             GetText((int)Texts.SkillName1 + i).text = string.Empty;
             GetButton((int)Buttons.Select1 + i).gameObject.BindEvent(() => { });

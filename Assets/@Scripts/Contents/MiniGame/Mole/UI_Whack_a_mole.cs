@@ -3,27 +3,28 @@ using UnityEngine.UI;
 
 public class UI_Whack_a_mole : UI_Popup
 {
+    #region Enums
     enum GameObjects
     {
         Mole_Manager,
         ScoreUI,
         TextUI,
     }
-    
     enum Buttons
     {
         Start,
         CloseBtn,
     }
+    #endregion
 
     public Button Startbtn;
     public Button Closebtn;
-
 
     private void Awake()
     {
         Init();
     }
+
     public override bool Init()
     {
         if (!base.Init()) return false;

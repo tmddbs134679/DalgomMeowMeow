@@ -1,12 +1,11 @@
 using DG.Tweening;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_MiniGame : UI_Popup
+public class UI_StopMiniGame : UI_Popup
 {
+    #region enums
     enum GameObjects
     {
         Player,
@@ -22,17 +21,19 @@ public class UI_MiniGame : UI_Popup
         Start,
         Title,
     }
+    #endregion
 
     private Stop_MiniGameManager _gameManager;
     private GameObject _player;
 
     public bool LookBack = false;
+    public float _time = 45;
+
     public Button TitleButton;
     public Button StartButton;
+
     public GameObject RewardUI;
     public TextMeshProUGUI Timer;
-
-    public float _time = 45;
 
     public override bool Init()
     {
@@ -57,6 +58,7 @@ public class UI_MiniGame : UI_Popup
         CharacterSet();
         return true;
     }
+
     private void FixedUpdate()
     {
         if (_gameManager.IsGameOver)
@@ -76,7 +78,6 @@ public class UI_MiniGame : UI_Popup
     public void StartGame()
     {
         _gameManager.IsGameOver = false;
-
 
         GetButton((int)Buttons.ScreenTouch).gameObject.BindEvent(OnTouchScreen);
         _gameManager.GameStart();

@@ -1,6 +1,6 @@
 public class UI_Victory : UI_Popup   //어드레서블에 프리펩 넣기
 {
-    #region Enum
+    #region Enums
     enum Buttons
     {
         TitleButton,
@@ -12,12 +12,9 @@ public class UI_Victory : UI_Popup   //어드레서블에 프리펩 넣기
     }
     #endregion
 
-    private UI_BattleScene battleUI;
-
     private void Awake()
     {
         Init();
-                                                             //배틀 UI 비활성화
     }
 
 
@@ -35,9 +32,6 @@ public class UI_Victory : UI_Popup   //어드레서블에 프리펩 넣기
         string exp = StageDataManager.Instance.PendingExpReward.ToString();
         GetText((int)Texts.Gold).text = $"Gold +{gold}";
         GetText((int)Texts.Exp).text = $"Exp +{exp}";
-
-        
-
 
         return true;
     }

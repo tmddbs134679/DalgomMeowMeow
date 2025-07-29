@@ -179,6 +179,7 @@ public void OnGroundTouched(Vector3 point)
     /// </summary>
     public void SetRefOBJ(GameObject OriginOBJ)
     {
+
         isSelect = false;
         _saveBuildingSO = OriginOBJ.GetComponent<BuildingBase>()?.BuildingData;
         uniqueId = OriginOBJ.GetComponent<BuildingBase>().UniqueId;
