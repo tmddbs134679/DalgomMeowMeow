@@ -11,6 +11,7 @@ public class BuildingPlacer : MonoBehaviour
 {
     public static BuildingPlacer Instance;
 
+
     [Header("설치 관련 설정")]
     public BaseBuildingSO[] buildingSO;
     public LayerMask groundLayer;
@@ -54,12 +55,12 @@ public class BuildingPlacer : MonoBehaviour
     private int buyMoney;
 
     //Bool값
-    public bool _isBuild;
-    public bool isSelect = false;
-    public bool isLongPressAcceptBuild = false;
-    public bool isAI = false;
-    public bool islimitBuildCount = true;
-    public bool isSequenceBuild;
+    public bool _isBuild;//건설이 가능한 곳일 때 true
+    public bool isSelect;//프리뷰 드래그,맵드래그가 동시에 눌리는거 방지
+    public bool isLongPressAcceptBuild = false; //롱프레스일때 true
+    public bool isAI = false;//건물 선택중일때는 true,캐릭터 상호작용 금지
+    public bool islimitBuildCount = true;//건설갯수제한
+    public bool isSequenceBuild;//연속건설일경우 true
 
     public bool isGold;
     private string buildType;
@@ -102,7 +103,6 @@ public class BuildingPlacer : MonoBehaviour
         }
         if (SequenceSelectBuildingType(type)) return;
         isAI = true;
-        isSelect = false;
         buildMap.ColliderAllOff();
         Camera cam = Camera.main;
         Vector3 screenCenter = new Vector3(Screen.width / 2f, Screen.height / 2f, cam.nearClipPlane);
@@ -132,7 +132,7 @@ public class BuildingPlacer : MonoBehaviour
 
         isSequenceBuild = true;
         isAI = true;
-        isSelect = false;
+        isSelect =true;
         buildMap.ColliderAllOff();
         tempTypeNum = (int)type;
             _saveBuildingSO = buildingSO[(int)type];
@@ -180,7 +180,7 @@ public void OnGroundTouched(Vector3 point)
     public void SetRefOBJ(GameObject OriginOBJ)
     {
 
-        isSelect = false;
+        isSelect = true;
         _saveBuildingSO = OriginOBJ.GetComponent<BuildingBase>()?.BuildingData;
         uniqueId = OriginOBJ.GetComponent<BuildingBase>().UniqueId;
         LV = OriginOBJ.GetComponent<BuildingBase>().CurrentLevel;
@@ -278,7 +278,6 @@ public void OnGroundTouched(Vector3 point)
     {
 
         isAI = false;
-        isSelect = false;
         CanPlaceBuilding();
         OnBuildingCancel?.Invoke();//buildaction에서 분기처리가 잘 안되어서 여기서 처리
         (Managers.UI.SceneUI as UI_GameScene).gameObject.SetActive(true);
@@ -319,7 +318,6 @@ public void OnGroundTouched(Vector3 point)
     public void AcceptBuild()
     {
         isAI = false;
-        isSelect = false;
         CanPlaceBuilding();
 
 
@@ -357,7 +355,6 @@ public void OnGroundTouched(Vector3 point)
     public void AcceptLongPressBuild()
     {
         isAI = false;
-        isSelect = false;
         CanPlaceBuilding();
         if (_isBuild)
         {
@@ -401,7 +398,6 @@ public void OnGroundTouched(Vector3 point)
     public void CancelBuild()
     {
         isAI = false;
-        isSelect = false;
         if (isLongPressAcceptBuild && OriginTempOBJ != null)
         {
             OriginTempOBJ.SetActive(true);
@@ -475,6 +471,7 @@ public void OnGroundTouched(Vector3 point)
         gridMap.LoadMap(); //맵갱신
         buildMap.LoadBuild(); //오브젝트 갱신
         surface.BuildNavMesh(); //네브매쉬 깔기
+                OnAutoSave?.Invoke();
     }
 
     //건물 갯수 제한 코드 구간

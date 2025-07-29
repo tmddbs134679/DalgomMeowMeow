@@ -45,20 +45,17 @@ public class UI_Road : UI_Popup
     private void OnClickRoadBuildButton()
     {
         BuildingPlacer.Instance.SelectBuildingType(Define.EBuildingType.Road);
-        Managers.UI.ClosePopupUI(this);
-
+        this.gameObject.SetActive(false);
     }
 
     private void OnClickRoadRemoveButton()
     {
         BuildingPlacer.Instance.RemoveRoad();
-                Managers.UI.ClosePopupUI(this);
-
+        this.gameObject.SetActive(false);
     }
 
     private void OnClickCancelBuildButton()
     {
-                Debug.Log("폯파!");
         BuildingPlacer.Instance.buildMap.ColliderAllOn();
         Managers.UI.ClosePopupUI(this);
         (Managers.UI.SceneUI as UI_GameScene).gameObject.SetActive(true);
