@@ -28,7 +28,7 @@ namespace Scripts.Contents.AI.FSM.State
             character.transform.position = sleepPos; // 수면 위치 조정
 
             base.OnUpdate(deltaTime);
-            if (character.Data.CurrentStamina == character.Data.MaxStamina)
+            if (character.Data.CurrentStamina >= character.Data.MaxStamina)
             {
                 character.characterAction.Idle();
                 return;

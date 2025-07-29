@@ -149,10 +149,12 @@ public class UI_TravelPopup : UI_Popup
         List<Character> characters = Managers.Game.Characters;
         foreach (Character ch in characters)
         {
+            if (!ch.InMainScene)
+                continue;
+
             UI_TravelCharacterSlot slot = Managers.UI.MakeSubItem<UI_TravelCharacterSlot>(GetObject((int)GameObjects.CharacterScrollContentObject).transform);
             slot.SetInfo(ch, _scrollrect);
             _slots.Add(slot);
-
         }
     }
 

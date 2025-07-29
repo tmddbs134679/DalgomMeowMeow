@@ -31,40 +31,11 @@ namespace Scripts.Contents.AI.FSM.State
             base.OnUpdate(deltaTime);
 
 
-            if (elapsedTime > randomPlayTime &&
-                character.Controller.FindAvailableBuilding(Define.EBuildingType.Playing))
-            {
-                character.characterAction.Play();
-                return;
-            }
-
-            if (character.Data.CurrentStamina <= 19f && 
-                character.Controller.FindAvailableBuilding(Define.EBuildingType.Resting) != null)
-            {
-                character.characterAction.Rest();
-                return;
-            }
-
-            if (character.Data.CurrentStamina >= 20 && 
-                character.Controller.FindAvailableBuilding(Define.EBuildingType.Cooking) != null)
-            {
-                character.characterAction.Cook();
-                return;
-            }
-
-            if (character.Data.CurrentStamina >= 25f && 
-                character.Controller.FindAvailableBuilding(Define.EBuildingType.CabbageFarm))
-            {
-                character.characterAction.Farm(); 
-                return;
-            }
-
-            if(character.Data.CurrentStamina >= 100f &&
-              character.Controller.FindAvailableBuilding(Define.EBuildingType.Fishing))
-            {
-                character.characterAction.Fishing();
-                return;
-            }
+            if (elapsedTime > randomPlayTime && character.Controller.TryPlay()) return;
+            if (character.Controller.TryRest()) return;
+            if (character.Controller.TryCook()) return;
+            if (character.Controller.TryFarm()) return;
+            if (character.Controller.TryFish()) return;
 
 
 
