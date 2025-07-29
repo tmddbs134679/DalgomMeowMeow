@@ -85,13 +85,6 @@ public class UI_BuildAction : UI_Popup
     }
     private void CancelBuild()
     {
-        if (BuildingPlacer.Instance.OnBuildingCancel != null)
-        {
-            // foreach (var d in BuildingPlacer.Instance.OnBuildingCancel.GetInvocationList())
-            // {
-            //     Debug.Log($"구독자: {d.Method.Name}, 소유 클래스: {d.Target}");
-            // }
-        }
         BuildingPlacer.Instance.isSequenceBuild = false;
         BuildingPlacer.Instance.OnBuildingCancel?.Invoke();
         BuildingPlacer.Instance.CancelBuild();
@@ -100,6 +93,7 @@ public class UI_BuildAction : UI_Popup
 
     private void RemoveBuild()
     {
+        //롱프레스일때만 버튼 클릭하게 하였지만 애초에 버튼이 안보이면 좋겠음
         if (BuildingPlacer.Instance.isLongPressAcceptBuild)
         {
             BuildingPlacer.Instance.OnBuildingCancel?.Invoke();

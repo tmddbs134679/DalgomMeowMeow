@@ -22,6 +22,7 @@ public class CameraController : MonoBehaviour
     void Start()
     {
         _cam = Camera.main;
+        BuildingPlacer.Instance.OnLayerOff += LayerOff;
     }
 
     private bool _startedOnUI = false;
@@ -182,5 +183,10 @@ public class CameraController : MonoBehaviour
 #else
         return EventSystem.current.IsPointerOverGameObject(fingerId);
 #endif
+    }
+    
+        void LayerOff()
+    {
+
     }
 }

@@ -23,6 +23,7 @@ public class DragController : MonoBehaviour
     void Awake()
     {
         BuildingPlacer.Instance.dragController = this;
+        BuildingPlacer.Instance.OnLayerOff += LayerOff;
     }
     void Update()
     {
@@ -77,11 +78,11 @@ public class DragController : MonoBehaviour
 
 
             // 빈 땅 터치 감지
-    if (Physics.Raycast(ray, out var groundHit, 1000f, groundLayer))
-    {
-        BuildingPlacer.Instance.OnGroundTouched(groundHit.point);
-    }
-    
+            if (Physics.Raycast(ray, out var groundHit, 1000f, groundLayer))
+            {
+                BuildingPlacer.Instance.OnGroundTouched(groundHit.point);
+            }
+
             if (Physics.Raycast(ray, out var hit, exceptPlayer))
             {
                 var draggable = hit.collider.GetComponent<IDraggable>();
@@ -151,5 +152,11 @@ public class DragController : MonoBehaviour
     public void ChangeTarget(IDraggable draggable)
     {
         currentTarget = draggable;
+    }
+    
+
+            void LayerOff()
+    {
+
     }
 }

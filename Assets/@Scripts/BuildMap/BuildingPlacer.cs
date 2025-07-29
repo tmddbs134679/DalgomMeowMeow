@@ -11,6 +11,7 @@ public class BuildingPlacer : MonoBehaviour
 {
     public static BuildingPlacer Instance;
 
+
     [Header("설치 관련 설정")]
     public BaseBuildingSO[] buildingSO;
     public LayerMask groundLayer;
@@ -45,6 +46,7 @@ public class BuildingPlacer : MonoBehaviour
     public Action OnBuildingAccept; //사용 안하는중
     public event Action OnAutoSave;
 
+    public event Action OnLayerOff;
     //Int값
     public int tempTypeNum;
     public int BuyMoney { get => buyMoney; set => buyMoney = value; }
@@ -54,12 +56,12 @@ public class BuildingPlacer : MonoBehaviour
     private int buyMoney;
 
     //Bool값
-    public bool _isBuild;
-    public bool isSelect = false;
-    public bool isLongPressAcceptBuild = false;
-    public bool isAI = false;
-    public bool islimitBuildCount = true;
-    public bool isSequenceBuild;
+    public bool _isBuild;//건설이 가능한 곳일 때 true
+    public bool isSelect;//프리뷰 드래그,맵드래그가 동시에 눌리는거 방지
+    public bool isLongPressAcceptBuild = false; //롱프레스일때 true
+    public bool isAI = false;//건물 선택중일때는 true,캐릭터 상호작용 금지
+    public bool islimitBuildCount = true;//건설갯수제한
+    public bool isSequenceBuild;//연속건설일경우 true
 
     public bool isGold;
     private string buildType;
@@ -102,8 +104,8 @@ public class BuildingPlacer : MonoBehaviour
         }
         if (SequenceSelectBuildingType(type)) return;
         isAI = true;
-        isSelect = false;
-        buildMap.ColliderAllOff();
+        //  buildMap.ColliderAllOff();
+        OnLayerOff.Invoke();
         Camera cam = Camera.main;
         Vector3 screenCenter = new Vector3(Screen.width / 2f, Screen.height / 2f, cam.nearClipPlane);
         Ray ray = Camera.main.ScreenPointToRay(screenCenter);
@@ -129,13 +131,12 @@ public class BuildingPlacer : MonoBehaviour
     private bool SequenceSelectBuildingType(Define.EBuildingType type)
     {
         if (type != Define.EBuildingType.Road) return false;
-
         isSequenceBuild = true;
         isAI = true;
-        isSelect = false;
+        isSelect = true;
         buildMap.ColliderAllOff();
         tempTypeNum = (int)type;
-            _saveBuildingSO = buildingSO[(int)type];
+        _saveBuildingSO = buildingSO[(int)type];
         // Camera cam = Camera.main;
         // Vector3 screenCenter = new Vector3(Screen.width / 2f, Screen.height / 2f, cam.nearClipPlane);
         // Ray ray = Camera.main.ScreenPointToRay(screenCenter);
@@ -155,22 +156,23 @@ public class BuildingPlacer : MonoBehaviour
         return true;
     }
 
-public void OnGroundTouched(Vector3 point)
-{
-    if (!isSequenceBuild || _PreviewOBJ != null)
-        return; // 조건이 안 맞으면 무시
-    Instance.uI_BuildAction.SetActive(true);
-    
-    // 프리뷰 생성
-    _PreviewOBJ = Instantiate(_saveBuildingSO.previewOBJ,
-        new Vector3(point.x, point.y + _heightOffset, point.z),
-        Quaternion.identity);
+    //위에 주석처리된 카메라 중심 프리뷰 생성에서 터치한곳을 중심으로 프리뷰생성
+    public void OnGroundTouched(Vector3 point)
+    {
+        if (!isSequenceBuild || _PreviewOBJ != null)
+            return; // 조건이 안 맞으면 무시
+        Instance.uI_BuildAction.SetActive(true);
 
-    tempDraggleOBJ = _PreviewOBJ.GetComponent<DraggableObject>();
-    tempDraggleOBJ.SnapToGrid(new Vector3(point.x, point.y - _heightOffset, point.z));
-    tempDraggleOBJ.isDrag = true;
-    tempDraggleOBJ.isLongPress = false;
-}
+        // 프리뷰 생성
+        _PreviewOBJ = Instantiate(_saveBuildingSO.previewOBJ,
+            new Vector3(point.x, point.y + _heightOffset, point.z),
+            Quaternion.identity);
+
+        tempDraggleOBJ = _PreviewOBJ.GetComponent<DraggableObject>();
+        tempDraggleOBJ.SnapToGrid(new Vector3(point.x, point.y - _heightOffset, point.z));
+        tempDraggleOBJ.isDrag = true;
+        tempDraggleOBJ.isLongPress = false;
+    }
 
 
     /// <summary>
@@ -180,7 +182,7 @@ public void OnGroundTouched(Vector3 point)
     public void SetRefOBJ(GameObject OriginOBJ)
     {
 
-        isSelect = false;
+        isSelect = true;
         _saveBuildingSO = OriginOBJ.GetComponent<BuildingBase>()?.BuildingData;
         uniqueId = OriginOBJ.GetComponent<BuildingBase>().UniqueId;
         LV = OriginOBJ.GetComponent<BuildingBase>().CurrentLevel;
@@ -261,6 +263,44 @@ public void OnGroundTouched(Vector3 point)
         }
     }
 
+    // public void RemoveOverlappingRoads()
+    // {
+    //     Vector3 center = _PreviewOBJ.transform.position;
+    //     Vector3 halfExtents = new Vector3(0.5f, 1f, 0.5f); // 도로 크기에 맞춰서 조절
+    //     Quaternion rotation = Quaternion.identity;
+
+    //    Collider[] hits = Physics.OverlapBox(center, halfExtents, rotation, _roadLayer);
+
+    //     foreach (var hit in hits)
+    //     {
+    //         GameObject obj = hit.gameObject;
+
+    //         // 도로 오브젝트가 맞는지 확인 (태그, 컴포넌트 등으로 필터링 가능)
+    //         if (obj.CompareTag("Road")) // 또는 obj.GetComponent<Road>() != null
+    //         {
+    //             Vector2Int pos = new Vector2Int(
+    //                 Mathf.RoundToInt(obj.transform.position.x),
+    //                 Mathf.RoundToInt(obj.transform.position.z)
+    //             );
+
+    //             // Dictionary에서 삭제
+    //             if (_roadPosArray.ContainsKey(pos))
+    //             {
+    //                 _roadPosArray.Remove(pos);
+    //             }
+
+    //             // 프리뷰 리스트에서도 삭제
+    //             _tempPreviewObjs.Remove(obj);
+
+    //             Destroy(obj); // 오브젝트 삭제
+    //             Debug.Log($"도로 삭제됨: {obj.name} at {pos}");
+    //         }
+    //     }
+    // }
+
+
+
+
     public void ClearTempPreviewObjects()
     {
         foreach (var obj in _tempPreviewObjs)
@@ -278,7 +318,6 @@ public void OnGroundTouched(Vector3 point)
     {
 
         isAI = false;
-        isSelect = false;
         CanPlaceBuilding();
         OnBuildingCancel?.Invoke();//buildaction에서 분기처리가 잘 안되어서 여기서 처리
         (Managers.UI.SceneUI as UI_GameScene).gameObject.SetActive(true);
@@ -319,7 +358,6 @@ public void OnGroundTouched(Vector3 point)
     public void AcceptBuild()
     {
         isAI = false;
-        isSelect = false;
         CanPlaceBuilding();
 
 
@@ -357,7 +395,6 @@ public void OnGroundTouched(Vector3 point)
     public void AcceptLongPressBuild()
     {
         isAI = false;
-        isSelect = false;
         CanPlaceBuilding();
         if (_isBuild)
         {
@@ -401,7 +438,6 @@ public void OnGroundTouched(Vector3 point)
     public void CancelBuild()
     {
         isAI = false;
-        isSelect = false;
         if (isLongPressAcceptBuild && OriginTempOBJ != null)
         {
             OriginTempOBJ.SetActive(true);
@@ -441,7 +477,7 @@ public void OnGroundTouched(Vector3 point)
     public void RemoveRoad()
     {
         Debug.Log("RemoveRoad()");
-}
+    }
     /// <summary>
     /// 해당 오브젝트 아래 타일 초기화
     /// </summary>
@@ -475,9 +511,19 @@ public void OnGroundTouched(Vector3 point)
         gridMap.LoadMap(); //맵갱신
         buildMap.LoadBuild(); //오브젝트 갱신
         surface.BuildNavMesh(); //네브매쉬 깔기
+        OnAutoSave?.Invoke();
     }
+    //autosave rapping
+    public void AutoSave()
+    {
+        OnAutoSave?.Invoke();
+    }
+    void OnApplicationQuit()//유니티 내장 맨마지막에 불려지는 함수
+    {
+                OnAutoSave?.Invoke();
+        Debug.Log("게임 종료 감지됨 - 맵 타일 데이터 저장");
 
-    //건물 갯수 제한 코드 구간
+    }
 
 
     Vector2Int GridKey(float x, float z)
