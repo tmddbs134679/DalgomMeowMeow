@@ -247,7 +247,7 @@ public void OnGroundTouched(Vector3 point)
             {
                 return;
             }
-            GameObject PreviewOBJ = Instantiate(buildingSO[tempTypeNum].buildOBJ,
+            GameObject PreviewOBJ = Instantiate(buildingSO[tempTypeNum].previewOBJ,
                    new Vector3(_PreviewOBJ.transform.position.x, _PreviewOBJ.transform.position.y + _heightOffset, _PreviewOBJ.transform.position.z),
                    Quaternion.identity);
             PreviewOBJ.GetComponent<DraggableObject>().SnapToGrid(new Vector3(_PreviewOBJ.transform.position.x, _PreviewOBJ.transform.position.y - _heightOffset, _PreviewOBJ.transform.position.z));
@@ -280,7 +280,7 @@ public void OnGroundTouched(Vector3 point)
         isSelect = false;
         CanPlaceBuilding();
         OnBuildingCancel?.Invoke();//buildaction에서 분기처리가 잘 안되어서 여기서 처리
-
+        (Managers.UI.SceneUI as UI_GameScene).gameObject.SetActive(true);
 
         foreach (var a in _roadPosArray)
         {

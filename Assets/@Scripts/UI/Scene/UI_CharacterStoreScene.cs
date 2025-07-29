@@ -32,7 +32,6 @@ public class UI_CharacterStoreScene : UI_Scene
         UnLockButton,
         Yes,
         No,
-        RoomReset,
     }
 
     enum Texts
@@ -96,7 +95,6 @@ public class UI_CharacterStoreScene : UI_Scene
         GetButton((int)Buttons.UnLockButton).gameObject.BindEvent(OnClickUnLockButton);
         GetButton((int)Buttons.Yes).gameObject.BindEvent(OnClickYes);
         GetButton((int)Buttons.No).gameObject.BindEvent(OnClickNo);
-        //GetButton((int)Buttons.RoomReset).gameObject.BindEvent(OnClickRoomReset);
 
 
         #region Action 추가
@@ -176,10 +174,6 @@ public class UI_CharacterStoreScene : UI_Scene
 
     }
 
-    private void OnClickRoomReset()
-    {
-        PlayerPrefs.DeleteKey("UnLockRoom");
-    }
 
 
     private void OnClickCheckOutButton()
