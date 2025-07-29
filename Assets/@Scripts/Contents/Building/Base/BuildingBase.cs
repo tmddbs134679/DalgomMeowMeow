@@ -1,6 +1,5 @@
 using Data;
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public enum BuildingState
@@ -36,7 +35,7 @@ public abstract class BuildingBase : BaseObject
     //TextAnimation
     [SerializeField]protected UI_TextAnimation _textAnim;
 
-
+    public Action OnAutoSave;
 
     protected virtual void Start()
     {
@@ -134,6 +133,7 @@ public abstract class BuildingBase : BaseObject
         CurrentLevel++;
         _buildMap.UpdateBuildLevel(UniqueId, CurrentLevel);
         ApplyLevel();
+        
         return true;
     }
     protected virtual void ApplyLevel()
