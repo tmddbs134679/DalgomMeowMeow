@@ -25,6 +25,15 @@ public class MoleManager : MonoBehaviour
     private bool isGameStarted = false;
 
     private int _score;
+    private int HighScore
+    {
+        get => PlayerPrefs.GetInt("HighScore", 0);
+        set
+        {
+            PlayerPrefs.SetInt("HighScore", value);
+            PlayerPrefs.Save();
+        }
+    }
     private int Score
     {
         get => _score;
@@ -61,8 +70,12 @@ public class MoleManager : MonoBehaviour
         isGameStarted = false; // 게임 루프 멈추는 기준
         StopAllCoroutines(); // 모든 코루틴 중지
         _textUI.SetActive(false); // 게임 오버 UI 활성화
-
-        _scoreUI.GetComponentInChildren<TextMeshProUGUI>().text = $"Score\n{_score}";
+        if(_score > HighScore)
+        {
+            HighScore = _score; // 새로운 최고 점수 갱신
+        }
+        _scoreUI.GetComponentInChildren<TextMeshProUGUI>().text = $"HighScore\n{HighScore}\nScore\n{_score}";
+        _scoreUI.transform.Find("Reward").GetComponent<TextMeshProUGUI>().text = $"Reward\n{HighScore * 5} 골드"; // 보상 텍스트 갱신
         _scoreUI.SetActive(true); // 점수 UI 활성화
     }
 
@@ -96,9 +109,16 @@ public class MoleManager : MonoBehaviour
         mole.Clicked();
 
         if (buttons[index].image.sprite == _cat)
+        {
             Score -= 500;
+            Managers.Sound.Play(Define.ESound.Effect, "Cat1");
+        }
         else
+        {
             Score += 200;
+            Managers.Sound.Play(Define.ESound.Effect, "Click3");
+        }
+
     }
 
     private void RenewText()

@@ -62,6 +62,7 @@ public class UI_BattleScene : UI_Scene
 
     private void OnClickPauseButton()
     {
+        Managers.Sound.PlayButtonClick();
         Time.timeScale = 0f;
         _pausePopup = Managers.UI.ShowPopupUI<UI_PausePopup>();
         _pausePopup.gameObject.SetActive(true);
@@ -71,9 +72,17 @@ public class UI_BattleScene : UI_Scene
     {
         BattleCharacter character = _playerCharacters[index];
         if (character.IsDead) return;
-
         _skill.SetImage(Managers.Resource.Load<Sprite>($"{character.CharID}_S"));
-        StartCoroutine(SkillCutScene());
+        //추가 사운드 이펙트
+        if (character.name.Contains("Cat"))
+        {
+            Managers.Sound.Play(Define.ESound.Effect, "Cat2");
+        }
+        else
+        {
+            Managers.Sound.Play(Define.ESound.Effect, "BearGrowl");
+        }
+            StartCoroutine(SkillCutScene());
         character.ActiveSkill();
         _skillButtons[index].SkillActive(character.SkillCooldown, character.IsDead);
     }

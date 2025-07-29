@@ -49,6 +49,7 @@ public class UI_Whack_a_mole : UI_Popup
 
     private void StartGame()
     {
+        Managers.Sound.PlayButtonClick();
         GetObject((int)GameObjects.Mole_Manager).GetComponent<MoleManager>().StartGame();
         Startbtn.gameObject.SetActive(false);
     }
@@ -56,7 +57,7 @@ public class UI_Whack_a_mole : UI_Popup
     
     public void PopupClose()
     {
-        Debug.Log("PopupClose");
+        Managers.Sound.PlayPopupClose();
         Managers.UI.ClosePopupUI(this);
     }
 }
