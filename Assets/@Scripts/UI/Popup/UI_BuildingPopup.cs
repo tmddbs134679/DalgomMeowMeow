@@ -102,8 +102,8 @@ public class UI_BuildingPopup : UI_Popup
             GetText((int)Texts.NextLevelText).text = (_targetBuilding.CurrentLevel + 1).ToString();
             if (_targetBuilding is CookingBuilding)
             {
-                GetText((int)Texts.CurrentlLevelCookPrice).text = (currentPrice).ToString();
-                GetText((int)Texts.NextLevelCookPrice).text = (nextPrice).ToString();
+                GetText((int)Texts.CurrentlLevelCookPrice).text = (currentPrice).ToString("F1");
+                GetText((int)Texts.NextLevelCookPrice).text = (nextPrice).ToString("F1");
             }
             else if (_targetBuilding is FarmBuilding)
             {

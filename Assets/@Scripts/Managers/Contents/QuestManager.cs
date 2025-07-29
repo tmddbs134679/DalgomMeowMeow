@@ -259,7 +259,7 @@ public class QuestManager : MonoBehaviour
     public bool IsQuestCompleted(string questId)
     {
         return _quests.TryGetValue(questId, out var quest) &&
-               quest.State == QuestProgressState.Completed;
+               quest.State == QuestProgressState.Completed || quest.State == QuestProgressState.Rewarded;
     }
     
     
