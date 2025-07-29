@@ -64,6 +64,7 @@ public class UI_PausePopup : UI_Popup   //어드레서블에 프리펩 넣기
     {
         Managers.UI.ClosePopupUI(this);
         Time.timeScale = 1f; 
+        Managers.Sound.PlayPopupClose();
         Managers.Scene.LoadScene(Define.EScene.GameScene);
     }
 
