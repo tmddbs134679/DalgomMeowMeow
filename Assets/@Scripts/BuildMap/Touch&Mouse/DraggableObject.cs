@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using System.Linq;
 using System.Collections;
+using UnityEngine.EventSystems;
 /// <summary>
 /// 건물 드래그앤드롭,그리드 스냅,건물 밑 타일 정보 반영
 /// </summary>
@@ -78,6 +79,9 @@ public class DraggableObject : MonoBehaviour, IDraggable
 
     public void OnLongPress()
     {
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
+
         //버그수정중
         if (isLongPress)
         {
