@@ -81,8 +81,7 @@ public class DraggableObject : MonoBehaviour, IDraggable
     {
         if (EventSystem.current.IsPointerOverGameObject())
             return;
-        if (this.GetComponent<BuildingBase>().CurrentState == BuildingState.Producing) return;
-        //버그수정중
+      if (this.GetComponent<BuildingBase>().CurrentState == BuildingState.Producing) return;
         if (isLongPress)
         {
             CheckTilesUnderBuilding();
