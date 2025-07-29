@@ -12,15 +12,11 @@ public class PlayerCharacter : BattleCharacter
     protected override void Awake()
     {
         base.Awake();
-        
         _characterRenderer = GetComponentsInChildren<SkinnedMeshRenderer>();
-        
-
-        
     }
+
     protected override void Start()
     {
-        
         base.Start();
         _battleManager = GetComponentInParent<BattleManager>();
         _originalPosition = transform.localPosition;
@@ -49,6 +45,13 @@ public class PlayerCharacter : BattleCharacter
         Agent.speed = MoveSpeed * 3;
     }
 
+    public override void Die()
+    {
+        _battleManager.PlayerCount--;
+        base.Die();
+    }
+
+    #region rotation
     public void SmoothLookForward(Vector3 direction, float duration = 0.3f)
     {
         StartCoroutine(RotateSmoothly(direction, duration));
@@ -68,10 +71,6 @@ public class PlayerCharacter : BattleCharacter
         }
         transform.rotation = targetRot;
     }
+    #endregion
 
-    public override void Die()
-    {
-        _battleManager.PlayerCount--;
-        base.Die();
-    }
 }

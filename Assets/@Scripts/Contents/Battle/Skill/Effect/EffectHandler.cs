@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EffectHandler : MonoBehaviour
@@ -20,13 +18,4 @@ public class EffectHandler : MonoBehaviour
         }
         effectManagers = GetComponentsInChildren<EffectManager>();
     }
-    
-
-
-    void Start()
-    {
-        
-    }
-
-    
 }
