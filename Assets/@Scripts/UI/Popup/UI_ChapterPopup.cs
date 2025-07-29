@@ -64,7 +64,6 @@ public class UI_ChapterPopup : UI_Popup
     {
         Managers.Sound.PlayButtonClick();
         QuestManager.Instance.TryUnlockContent(_currentChapterId);
-        Managers.UI.ShowToast("해금완료");
     }
 
     private void OnClickChapter4Button()
