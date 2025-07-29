@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public class UI_ForestPopup : UI_Popup
@@ -11,6 +12,7 @@ public class UI_ForestPopup : UI_Popup
     {
         Content,
         ContentGroup,
+        CharacterSelectPanel
     }
 
     enum Buttons
@@ -48,7 +50,7 @@ public class UI_ForestPopup : UI_Popup
         Frame3,
     }
     #endregion
-
+    
 
     Character _character;
     private const string DefaultCatIcon = "Cat.sprite";
@@ -56,6 +58,8 @@ public class UI_ForestPopup : UI_Popup
 
     private StageSO stagedata;
     private Character[] _selectedCharacters = new Character[3];
+
+    ScrollRect CharacterSelectPanel;
 
     //List<Character> _selectedCharacters = new List<Character>();
 
@@ -79,8 +83,12 @@ public class UI_ForestPopup : UI_Popup
         BindButton(typeof(Buttons));
         BindImage(typeof(Images));
 
+        CharacterSelectPanel = GetObject((int)GameObjects.CharacterSelectPanel).GetComponent<ScrollRect>();
+
         GetButton((int)Buttons.BattleButton).gameObject.BindEvent(OnClickBattleButton);
         GetButton((int)Buttons.Background).gameObject.BindEvent(OnClickBackgroundButton);
+
+
         
 
         GetCharacterInfo();
@@ -127,7 +135,7 @@ public class UI_ForestPopup : UI_Popup
         foreach (Character ch in characters)
         {
             UI_BattleCharacterSlot slot = Managers.UI.MakeSubItem<UI_BattleCharacterSlot>(GetObject((int)GameObjects.Content).transform);
-            slot.SetInfo(ch);
+            slot.SetInfo(ch , CharacterSelectPanel);
         }
     }
 

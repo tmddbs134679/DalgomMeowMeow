@@ -35,7 +35,6 @@ public class UI_ChangePopup : UI_Popup
     Character _character;
 
     ScrollRect _scrollRect;
-    bool _isDrag = false;
 
     private void Awake()
     {
@@ -62,9 +61,7 @@ public class UI_ChangePopup : UI_Popup
 
         _scrollRect = GetObject((int)GameObjects.ScrollView).GetComponent<ScrollRect>();
 
-        gameObject.BindEvent(null, OnDrag, Define.EUIEvent.Drag);
-        gameObject.BindEvent(null, OnBeginDrag, Define.EUIEvent.BeginDrag);
-        gameObject.BindEvent(null, OnEndDrag, Define.EUIEvent.EndDrag);
+        
 
         GetButton((int)Buttons.Background).gameObject.BindEvent(OnClickBackgroundButton);
         GetButton((int)Buttons.AcceptButton).gameObject.BindEvent(OnClickAcceptButton);
@@ -125,32 +122,6 @@ public class UI_ChangePopup : UI_Popup
             slot.SetInfo(ch , _scrollRect);
         }
     }
-
-    public void OnDrag(BaseEventData baseEventData)
-    {
-        _isDrag = true;
-        PointerEventData pointerEventData = baseEventData as PointerEventData;
-        _scrollRect.OnDrag(pointerEventData);
-    }
-
-    public void OnBeginDrag(BaseEventData baseEventData)
-    {
-        _isDrag = true;
-        PointerEventData pointerEventData = baseEventData as PointerEventData;
-        _scrollRect.OnBeginDrag(pointerEventData);
-    }
-
-    public void OnEndDrag(BaseEventData baseEventData)
-    {
-        _isDrag = false;
-        PointerEventData pointerEventData = baseEventData as PointerEventData;
-        _scrollRect.OnEndDrag(pointerEventData);
-    }
-
-
-
-
-
 
     #endregion
 
