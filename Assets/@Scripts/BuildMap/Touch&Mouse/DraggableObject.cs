@@ -40,7 +40,7 @@ public class DraggableObject : MonoBehaviour, IDraggable
         _offsetx = (buildSize.x % 2 == 0) ? (gridSize / 2f) : 0f;
         _offsety = (buildSize.y % 2 == 0) ? (gridSize / 2f) : 0f;
         CheckTilesUnderBuilding();
-     // if (BuildingPlacer.Instance.isSequenceBuild) BuildingPlacer.Instance.SaveandRemoveRoad();
+        // if (BuildingPlacer.Instance.isSequenceBuild) BuildingPlacer.Instance.SaveandRemoveRoad();
     }
 
     //드래그
@@ -74,14 +74,17 @@ public class DraggableObject : MonoBehaviour, IDraggable
         }
     }
     //드래그 드롭
-    public void OnDragEnd() { }
+    public void OnDragEnd()
+    {
+        BuildingPlacer.Instance.isSelect = false; 
+    }
 
 
     public void OnLongPress()
     {
         if (EventSystem.current.IsPointerOverGameObject())
             return;
-      if (this.GetComponent<BuildingBase>().CurrentState == BuildingState.Producing) return;
+        if (this.GetComponent<BuildingBase>().CurrentState == BuildingState.Producing) return;
         if (isLongPress)
         {
             CheckTilesUnderBuilding();
@@ -89,7 +92,6 @@ public class DraggableObject : MonoBehaviour, IDraggable
             // BuildingPlacer.Instance.tempDraggleOBJ = this;
             BuildingPlacer.Instance.isLongPressAcceptBuild = true;
             isLongPress = false;
-            BuildingPlacer.Instance.isSelect = true;
             isDrag = true;
             Managers.Debug.Log($"{this}+롱프레스 감지!", Define.EDebugType.Drag);
 
