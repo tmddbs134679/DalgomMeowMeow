@@ -177,13 +177,19 @@ public class AIController : BaseController<AICharacter>
         character.DistinguishCrops(farm.CropType);
 
         // 2. 배달할 곳이 있는지 확인
-        bool hasDeliverTarget = character.Controller.FindNearestBuilding(Define.EAIState.Deliver) != null;
+        bool hasDeliverTarget = FindNearestBuilding(Define.EAIState.Deliver) != null;
 
         // 3. 상태 전환
         if (hasDeliverTarget)
+        {
             character.characterAction.Deliver();
+            return;
+        }
         else
+        {
             character.characterAction.Idle();
+            return;
+        }
     }
 
 
@@ -192,7 +198,7 @@ public class AIController : BaseController<AICharacter>
 
     #endregion
 
-    #region 건물 탐색
+        #region 건물 탐색
 
     public Vector3 FindNearestBuilding(Define.EAIState action)
     {

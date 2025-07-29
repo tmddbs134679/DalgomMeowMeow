@@ -270,7 +270,7 @@ public class GameManager
                 continue;
 
             if (ai == null)
-                return;
+                continue;
 
             if (Managers.Scene.CurrentScene is GameScene)
             {

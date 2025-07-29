@@ -28,8 +28,8 @@ public class CharacterStoreScene : BaseScene
 
             ai.Data = ch;
             ai.Init();
-            ai.ControllerRegister();
             ai.transform.position = ch.RoomPos.ToVector3();
+            ai.ControllerRegister();
 
             Managers.Game.CharacterInMainScene[ch.UniqueId] = ai;
             Managers.Equipment.SetInitEquipment(Managers.Game.CharacterInMainScene[ch.UniqueId]);

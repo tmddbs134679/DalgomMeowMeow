@@ -26,7 +26,6 @@ public class  Character
     public Data.CreatureData Data;
 
     public string UniqueId { get; set; }              //고유 식별
-    public int UniqueRoomNumber { get; set; } // 방 번호
     public string Name { get; set; }    
     public string DataId { get; set; }  
     public float Level { get; set; }
@@ -65,7 +64,6 @@ public class  Character
         CurrentStamina = MaxStamina;
         MoveSpeed =  Data?.MoveSpeed ?? 3f;
         WalkSpeed = Data?.WalkSpeed ?? 1.5f;
-        UniqueRoomNumber = UnityEngine.Random.Range(1, 4);
 
         EquippedItemIds = new();
     }

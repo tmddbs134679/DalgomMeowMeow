@@ -274,7 +274,7 @@ public class AICharacter : BaseObject
 
     public void RecoverStamina(float amount)
     {
-        Data.CurrentStamina = Mathf.Min(100, Data.CurrentStamina + amount);
+        Data.CurrentStamina = Mathf.Min(Data.MaxStamina, Data.CurrentStamina + amount);
         //Managers.Debug.Log($"스태미나 회복 : {amount}, 현재: {CharacterData.CurrentStamina}", Define.EDebugType.AI);
     }
     #endregion
