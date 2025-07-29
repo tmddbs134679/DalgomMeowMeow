@@ -251,7 +251,8 @@ public class QuestManager : MonoBehaviour
         if (allMet)
         {
             // Debug.Log($"[해금 조건 달성] 콘텐츠: {contentId}");
-            Unlock(contentId);  
+            Unlock(contentId);
+            Managers.Game.IncreaseMaxCountInScene++;
             Managers.UI.ShowToast("해금완료");
         }
     }

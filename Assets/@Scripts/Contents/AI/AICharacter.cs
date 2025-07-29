@@ -55,7 +55,7 @@ public class AICharacter : BaseObject
     [HideInInspector]
     public Camera _camera;
     private float tempCameraSize = 0;
-    private Vector3 tempCameraPos = Vector3.zero;
+    private Vector3 tempCameraPos = new Vector3(21.2f, 26.35f, 9.3f); // 초기 카메라 위치
     [HideInInspector]
     public float tempSpeed;
     [HideInInspector]
@@ -110,6 +110,7 @@ public class AICharacter : BaseObject
     private float clickStartTime = 0f;
     private float longPressThreshold = 0.2f;
     private LayerMask groundLayer;
+    private bool isTweening;
 
     private void Awake()
     {
@@ -361,7 +362,8 @@ public class AICharacter : BaseObject
 
                 if (clickStartTime <= 0.2f && hit.collider.gameObject == this.gameObject &&
                     Controller.CurrentState() is not CharacterHelloState &&
-                    Managers.Scene.CurrentScene is GameScene)
+                    Managers.Scene.CurrentScene is GameScene &&
+                    !isFollowing)
                 {
                     if (isClicked)
                     {
@@ -370,16 +372,17 @@ public class AICharacter : BaseObject
                         tempCameraPos = _camera.transform.position;
 
                         // 부드럽게 줌인
-                        _camera.DOOrthoSize(2f, 1f);
                         Vector3 targetPos = new Vector3(transform.position.x - 20.3f, 30.5f, transform.position.z - 20.6f);
-                        _camera.transform.DOMove(targetPos, 1f);
+                        _camera.DOOrthoSize(2f, 0.5f);
+                        _camera.transform.DOMove(targetPos, 0.5f).OnComplete(() => isTweening = false);
                     }
-                    else if (!isClicked)
+                    else if(!isClicked && !isTweening)
                     {
-                        // 부드럽게 원래대로 복귀
+                        isTweening = true;
+
                         Vector3 targetPos = new Vector3(tempCameraPos.x, 26.35f, tempCameraPos.z);
-                        _camera.DOOrthoSize(7, 1f);
-                        _camera.transform.DOMove(targetPos, 1f);
+                        _camera.DOOrthoSize(7, 0.5f);
+                        _camera.transform.DOMove(targetPos, 0.5f).OnComplete(() => isTweening = false);
                     }
 
                 }

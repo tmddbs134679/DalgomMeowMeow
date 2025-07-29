@@ -32,6 +32,8 @@ public class GameData
     public bool BGMOn = true;
     public bool EffectSoundOn = true;
 
+    public int MaxCountInScene = 3;
+
     public bool[] AttendanceReceived = new bool[30];
     public int AdvancedGachaOpenCount = 0;
     public int offineRewardGold = 0;
@@ -56,7 +58,7 @@ public class GameManager
 
     public bool IsLoaded = false;
 
-    public int MaxCountInScene = 5; // 씬에 존재하는 최대 캐릭터 수, 5명으로 제한
+    // 씬에 존재하는 최대 캐릭터 수, 5명으로 제한
     public int MainSceneCount = 0; // 메인 씬에 존재하는 캐릭터 수
 
     #region Action
@@ -136,6 +138,17 @@ public class GameManager
         set
         {
             _gameData.AdvancedGachaOpenCount = value;
+        }
+    }
+
+    public int IncreaseMaxCountInScene
+    {
+        get { return _gameData.MaxCountInScene; }
+        set
+        {
+            _gameData.MaxCountInScene = value;
+            Managers.UI.ShowToast($"최대 캐릭터 수가 {_gameData.MaxCountInScene}명으로 증가했습니다.");
+            SaveGame();
         }
     }
 
@@ -304,14 +317,14 @@ public class GameManager
             if (ai == null)
                 return;
 
-            if(Managers.Scene.CurrentScene is GameScene)
+            if (Managers.Scene.CurrentScene is GameScene)
             {
                 character.Pos = new Vector3Data(ai.transform.position);
                 character.CurrentState = ai.Data.CurrentState;
                 character.CurrentStamina = ai.Data.CurrentStamina;
             }
 
-            if(Managers.Scene.CurrentScene is CharacterStoreScene)
+            if (Managers.Scene.CurrentScene is CharacterStoreScene)
             {
                 character.RoomPos = new Vector3Data(ai.transform.position);
             }
@@ -361,7 +374,7 @@ public class GameManager
     {
         string creatureId = DrawRandomCreature();
 
-        QuestManager.Instance.UpdateQuestProgress(Define.EQuestConditionType.Collect,Define.ETargetType.Animal);
+        QuestManager.Instance.UpdateQuestProgress(Define.EQuestConditionType.Collect, Define.ETargetType.Animal);
 
         if (!Managers.Data.CreatureDic.TryGetValue(creatureId, out var creatureData))
         {
@@ -369,25 +382,25 @@ public class GameManager
         }
 
         Character newChar = new Character();
-        newChar.Init(creatureId, new Vector3(39f,1,27f)); // 위치 초기값
+        newChar.Init(creatureId, new Vector3(39f, 1, 27f)); // 위치 초기값
         newChar.SetInfo(creatureData);
-       
+
         ApplyRandomStat(newChar);
-        
+
         int currentInScene = Characters.Count(c => c.InMainScene);
-        
-        if (currentInScene >= MaxCountInScene)
+
+        if (currentInScene >= IncreaseMaxCountInScene)
         {
             newChar.InMainScene = false;
             _characters[newChar.UniqueId] = newChar;
-            Managers.Debug.Log($"[Gacha] 고양이 보관함에 저장됨: {newChar.DataId}",Define.EDebugType.AI);
+            Managers.Debug.Log($"[Gacha] 고양이 보관함에 저장됨: {newChar.DataId}", Define.EDebugType.AI);
             SaveGame();
             return newChar;
         }
 
         newChar.InMainScene = true;
         AICharacter aiChar = Managers.Object.Spawn<AICharacter>(new Vector3(39f, 1, 27f), creatureId, isReplica: false);
-            
+
         if (aiChar == null)
         {
             return null;
@@ -395,7 +408,7 @@ public class GameManager
         aiChar.Init();
         aiChar.SetInfo(newChar);
 
-        
+
         Managers.AI.Register(aiChar);
         _characters[newChar.UniqueId] = newChar;
 
@@ -435,7 +448,7 @@ public class GameManager
 
         UI_CheckOutRewardPopup popup = Managers.UI.ShowPopupUI<UI_CheckOutRewardPopup>();
 
-        for(int i = 1; i <= count; i++)
+        for (int i = 1; i <= count; i++)
         {
             int index = UnityEngine.Random.Range(0, gachaEntries.Count);
             string key = gachaEntries[index].EquipmentID;
@@ -447,7 +460,7 @@ public class GameManager
 
             popup.SetInfo(Managers.Equipment.AddEquipment(key));
         }
-  
+
 
         return equipments;
     }
@@ -456,7 +469,7 @@ public class GameManager
     {
 
         UI_CheckOutRewardPopup popup = Managers.UI.ShowPopupUI<UI_CheckOutRewardPopup>();
-        for(int i = 1; i <= count; i++)
+        for (int i = 1; i <= count; i++)
         {
             Character character = SpawnRandomGachaCharacter();
             popup.SetInfo(character);
@@ -465,7 +478,7 @@ public class GameManager
         OnCharacterChanged?.Invoke();
         SaveGame();
 
-    
+
         return null;
 
     }
@@ -535,7 +548,7 @@ public class GameManager
 
 
     #endregion
-     
+
     #region Reward
 
     public void RewardMaterial(int rewardId, int count)
@@ -546,7 +559,7 @@ public class GameManager
         {
             case EMaterialType.Gold:
                 Gold += count;
-            break;
+                break;
             case EMaterialType.Dia:
                 Dia += count;
                 break;
@@ -640,7 +653,7 @@ public class GameManager
                     break;
             }
         }
-        
+
         //마지막 쉼표 지우기
         if (rewardMessage.Length >= 2)
             rewardMessage.Length -= 2;
