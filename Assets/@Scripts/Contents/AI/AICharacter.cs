@@ -373,16 +373,16 @@ public class AICharacter : BaseObject
 
                         // 부드럽게 줌인
                         Vector3 targetPos = new Vector3(transform.position.x - 20.3f, 30.5f, transform.position.z - 20.6f);
-                        _camera.DOOrthoSize(2f, 0.5f);
-                        _camera.transform.DOMove(targetPos, 0.5f).OnComplete(() => isTweening = false);
+                        _camera.DOOrthoSize(2f, 0.7f);
+                        _camera.transform.DOMove(targetPos, 0.7f).OnComplete(() => isTweening = false);
                     }
                     else if(!isClicked && !isTweening)
                     {
                         isTweening = true;
 
                         Vector3 targetPos = new Vector3(tempCameraPos.x, 26.35f, tempCameraPos.z);
-                        _camera.DOOrthoSize(7, 0.5f);
-                        _camera.transform.DOMove(targetPos, 0.5f).OnComplete(() => isTweening = false);
+                        _camera.DOOrthoSize(7, 0.7f);
+                        _camera.transform.DOMove(targetPos, 0.7f).OnComplete(() => isTweening = false);
                     }
 
                 }
