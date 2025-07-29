@@ -22,7 +22,8 @@ public class PlaygroundBuilding : BuildingBase
 
     private void OnDestroy()
     {
-        _textAnim.gameObject.SetActive(false);
+        if (_textAnim != null)
+            _textAnim.gameObject.SetActive(false);
     }
     public override void ConnectToAnimal(AICharacter animal)
     {
@@ -35,7 +36,8 @@ public class PlaygroundBuilding : BuildingBase
     {
         base.DisconnectAnimal();
 
-        _textAnim.gameObject.SetActive(false);
+       
+
     }
 
 

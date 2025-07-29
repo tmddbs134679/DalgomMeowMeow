@@ -49,7 +49,7 @@ public class UI_FoodItem : UI_Base
 
         Sprite spr = Managers.Resource.Load<Sprite>(_food.FoodData.SpriteName);
         GetImage((int)Images.FoodImage).sprite = spr;
-        GetText((int)Texts.FoodPriceText).text = _food.FoodData.Price.ToString();
+        GetText((int)Texts.FoodPriceText).text = _food.CalculatedPrice.ToString();
        
     }
 
@@ -59,7 +59,7 @@ public class UI_FoodItem : UI_Base
     {
         Managers.Sound.Play(ESound.Effect, "Money");
 
-        Managers.Game.Gold += _food.FoodData.Price;
+        Managers.Game.Gold += _food.CalculatedPrice;
         Managers.Food.Cancel(_food);
 
         (Managers.UI.SceneUI as UI_GameScene).RemoveSlotAnimated(this);
