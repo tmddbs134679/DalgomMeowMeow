@@ -5,12 +5,12 @@ using UnityEngine.TextCore.Text;
 
 namespace Scripts.Contents.AI.FSM.State
 {
-    public class CharacterFarmingState : AIState
+    public class CharacterPotatoFarmingState : AIState
     {
         public override void Init(AICharacter owner)
         {
             base.Init(owner);
-            state = Define.EAIState.Farm;
+            state = Define.EAIState.PotatoFarm;
         }
 
         public override void OnEnter()
@@ -26,19 +26,10 @@ namespace Scripts.Contents.AI.FSM.State
         public override void OnUpdate(float deltaTime)
         {
             base.OnUpdate(deltaTime);
-            if (elapsedTime >= character.currentBuilding.BuildingData.Interval)
-            {
-                FarmBuilding farm = character.currentBuilding as FarmBuilding;
-                character.DistinguishCrops(farm.CropType);
-
-                if(character.Controller.FindNearestBuilding(Define.EAIState.Deliver) == null)
-                {
-                    character.characterAction.Idle();
-                    return;
-                }
-                character.characterAction.Deliver();
+            if (elapsedTime < character.currentBuilding.BuildingData.Interval)
                 return;
-            }
+
+            character.Controller.ProcessHarvestAndDelivery();
 
         }
 

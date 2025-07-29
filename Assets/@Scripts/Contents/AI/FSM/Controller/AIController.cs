@@ -6,6 +6,7 @@ using Scripts.Contents.AI.FSM.State;
 using System.Collections;
 using Unity.VisualScripting;
 using System.Threading.Tasks;
+using UnityEditor;
 
 public class AIController : BaseController<AICharacter>
 {
@@ -99,6 +100,98 @@ public class AIController : BaseController<AICharacter>
 
     #endregion
 
+    #region 상태 변경
+
+    public bool TryRest()
+    {
+        if (character.Data.CurrentStamina <= 19f &&
+            FindAvailableBuilding(Define.EBuildingType.Resting) != null)
+        {
+            character.characterAction.Rest();
+            return true;
+        }
+        return false;
+    }
+
+    public bool TryCook()
+    {
+        if (character.Data.CurrentStamina >= 20f &&
+            FindAvailableBuilding(Define.EBuildingType.Cooking) != null)
+        {
+            character.characterAction.Cook();
+            return true;
+        }
+        return false;
+    }
+
+    public bool TryFish()
+    {
+        if (character.Data.CurrentStamina >= 100f &&
+            FindAvailableBuilding(Define.EBuildingType.Fishing))
+        {
+            character.characterAction.Fishing();
+            return true;
+        }
+        return false;
+    }
+
+    public bool TryFarm()
+    {
+        if (character.Data.CurrentStamina < 40f)
+            return false;
+
+
+
+        foreach (var (type, action) in character.farmActions)
+        {
+            if (FindAvailableBuilding(type))
+            {
+                character.characterAction.TryState(action);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public bool TryPlay()
+    {
+        if (FindAvailableBuilding(Define.EBuildingType.Playing))
+        {
+            character.characterAction.Play();
+            return true;
+        }
+
+        return false;
+    }
+
+    public void ProcessHarvestAndDelivery()
+    {
+        if (character.currentBuilding is not FarmBuilding farm)
+        {
+            Debug.LogWarning("Current building is not a FarmBuilding.");
+            return;
+        }
+
+        // 1. 수확 처리
+        character.DistinguishCrops(farm.CropType);
+
+        // 2. 배달할 곳이 있는지 확인
+        bool hasDeliverTarget = character.Controller.FindNearestBuilding(Define.EAIState.Deliver) != null;
+
+        // 3. 상태 전환
+        if (hasDeliverTarget)
+            character.characterAction.Deliver();
+        else
+            character.characterAction.Idle();
+    }
+
+
+
+
+
+    #endregion
+
     #region 건물 탐색
 
     public Vector3 FindNearestBuilding(Define.EAIState action)
@@ -156,7 +249,11 @@ public class AIController : BaseController<AICharacter>
         return action switch
         {
             Define.EAIState.Cook => Define.EBuildingType.Cooking,
-            Define.EAIState.Farm => Define.EBuildingType.CabbageFarm,
+            Define.EAIState.CabbageFarm => Define.EBuildingType.CabbageFarm,
+            Define.EAIState.OnionFarm => Define.EBuildingType.OnionFarm,
+            Define.EAIState.PotatoFarm => Define.EBuildingType.PotatoFarm,
+            Define.EAIState.PumpkinFarm => Define.EBuildingType.PumpkinFarm,
+            Define.EAIState.CarrotFarm => Define.EBuildingType.CarrotFarm,
             Define.EAIState.Rest => Define.EBuildingType.Resting,
             Define.EAIState.Play => Define.EBuildingType.Playing,
             Define.EAIState.Deliver => Define.EBuildingType.Cooking,
