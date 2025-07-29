@@ -13,7 +13,6 @@ public class BaseBuildingSO : ScriptableObject
 {
     [SerializeField] private GameObject _buildOBJ;
     [SerializeField] private GameObject _previweOBJ;
-    [SerializeField] private Define.EBuildingType _eType;
     [SerializeField] private int _sizeWidth;
     [SerializeField] private int _sizeHeight;
 
@@ -27,7 +26,6 @@ public class BaseBuildingSO : ScriptableObject
 
     public GameObject buildOBJ { get => _buildOBJ; set => _buildOBJ = value; }
     public GameObject previewOBJ { get => _previweOBJ; set => _previweOBJ = value; }
-    public Define.EBuildingType eType { get => _eType; set => _eType = value; }
     public int sizeWidth { get => _sizeWidth; set => _sizeWidth = value; }
     public int sizeHeight { get => _sizeHeight; set => _sizeHeight = value; }
 
