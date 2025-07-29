@@ -112,7 +112,7 @@ public class UI_StopMiniGame : UI_Popup
 
         if (_player.transform.localPosition.x > 830)
         {
-            Lefttime = 60f - Time; // 남은 시간 저장
+            Lefttime = 60f - Time; // 걸린시간
             if(Lefttime < FastestTime)
             {
                 FastestTime = Lefttime; // 가장 빠른 시간 갱신
@@ -145,7 +145,7 @@ public class UI_StopMiniGame : UI_Popup
     {
         HighScoreTxt.text = $"현재 기록: {Lefttime:F2}s\n최단 기록: {FastestTime:F2}s";
         RewardUI.SetActive(true);
-        int money =(int)Lefttime*100;
+        int money =(60 - (int)Lefttime)*100;    //남은시간 비례 돈
         RewardUI.GetComponentInChildren<TextMeshProUGUI>().text = "Reward\n" + money + "골드";
 
         //돈 입금

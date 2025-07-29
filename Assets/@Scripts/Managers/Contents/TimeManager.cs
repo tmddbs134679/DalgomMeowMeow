@@ -317,17 +317,22 @@ public DateTime LastDayNightCheckTime
 
         if (lastReset < todayResetTime && now >= todayResetTime)
         {
-        
             ResetDailyCounts();
             LastResetTime = now; 
         }
-
     }
 
     private void ResetDailyCounts()
     {
         Managers.Game.AdvancedGachaOpenCount = 3;
         _claimedThisSession = false;
+        Managers.Game.DailyMiniGameReward();
+    }
+
+    [ContextMenu("RewardTest")]
+    public void Test()
+    {
+        Managers.Game.DailyMiniGameReward();
     }
 
     public int CalculateOfflineGold()
@@ -340,6 +345,5 @@ public DateTime LastDayNightCheckTime
 
         return totalGold;
     }
-
 
 }

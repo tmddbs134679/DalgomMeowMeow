@@ -320,7 +320,6 @@ public class GameManager
 
     #endregion
 
-
     #region Gacha
 
     public string DrawRandomCreature()
@@ -649,5 +648,20 @@ public class GameManager
     }
     #endregion
 
+    #region MiniGameReward
+    public void DailyMiniGameReward()
+    {
+        float Score = PlayerPrefs.GetFloat("HighScore", 0);
+        float time = PlayerPrefs.GetFloat("FastestTime", 60f);
+        Managers.Game.Gold += (int)(Score * 0.5f) + ((60-(int)time) * 100); // 점수와 시간에 따라 골드 보상
+
+        Managers.UI.ShowPopupUI<UI_MiniGameReward>();
+
+        PlayerPrefs.SetFloat("HighScore", 0); // 점수 초기화
+        PlayerPrefs.SetFloat("FastestTime", 60f); // 시간 초기화
+        //Add other reward
+    }
+
+    #endregion
 }
 
