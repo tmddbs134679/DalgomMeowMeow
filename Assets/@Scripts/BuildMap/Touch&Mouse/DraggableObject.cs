@@ -76,7 +76,7 @@ public class DraggableObject : MonoBehaviour, IDraggable
     //드래그 드롭
     public void OnDragEnd()
     {
-        BuildingPlacer.Instance.isSelect = false; 
+        BuildingPlacer.Instance.isSelect = false;
     }
 
 
@@ -99,7 +99,7 @@ public class DraggableObject : MonoBehaviour, IDraggable
             {
                 Managers.UI.OnLongPress.Invoke();
             }
-            Managers.UI.ShowPopupUI<UI_SaveMoveBuild>();
+            //Managers.UI.ShowPopupUI<UI_SaveMoveBuild>();//건물 저장 꺼내기 기능 생기면 쓰기
             StartCoroutine(WaitAndSetup());
             //건물설치함수 불러오기
             BuildingPlacer.Instance.SetRefOBJ(gameObject);
@@ -206,5 +206,4 @@ public class DraggableObject : MonoBehaviour, IDraggable
         transform.position = snappedPos;
         CheckTilesUnderBuilding();
     }
-
 }
