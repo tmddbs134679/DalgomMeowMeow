@@ -62,7 +62,7 @@ public class DayNightCycleManager : MonoBehaviour
             ApplyFixedTime(0.15f); 
             return;
         }
-        if (isDay)
+        if (isNight)
         {
             ApplyFixedTime(0.75f); 
             return;

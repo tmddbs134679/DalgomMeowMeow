@@ -23,7 +23,6 @@ public class DragController : MonoBehaviour
     void Awake()
     {
         BuildingPlacer.Instance.dragController = this;
-        BuildingPlacer.Instance.OnLayerOff += LayerOff;
     }
     void Update()
     {
@@ -81,6 +80,11 @@ public class DragController : MonoBehaviour
             if (Physics.Raycast(ray, out var groundHit, 1000f, groundLayer))
             {
                 BuildingPlacer.Instance.OnGroundTouched(groundHit.point);
+            }
+
+            if (Physics.Raycast(ray, out var groundHit2, 1000f, groundLayer))
+            {
+                BuildingPlacer.Instance.OnGroundTouchedSecond(groundHit2.point);
             }
 
             if (Physics.Raycast(ray, out var hit, exceptPlayer))
@@ -153,10 +157,6 @@ public class DragController : MonoBehaviour
     {
         currentTarget = draggable;
     }
-    
 
-            void LayerOff()
-    {
 
-    }
 }

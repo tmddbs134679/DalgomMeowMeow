@@ -63,6 +63,7 @@ public class BuildingPlacer : MonoBehaviour
     public bool islimitBuildCount = true;//건설갯수제한
     public bool isSequenceBuild;//연속건설일경우 true
 
+    public bool isSequenceRemove;//연속삭제일경우 true
     public bool isGold;
     private string buildType;
     private void Awake()
@@ -104,7 +105,7 @@ public class BuildingPlacer : MonoBehaviour
         }
         if (SequenceSelectBuildingType(type)) return;
         isAI = true;
-        //  buildMap.ColliderAllOff();
+        buildMap.ColliderAllOff();
         OnLayerOff.Invoke();
         Camera cam = Camera.main;
         Vector3 screenCenter = new Vector3(Screen.width / 2f, Screen.height / 2f, cam.nearClipPlane);
@@ -206,6 +207,80 @@ public class BuildingPlacer : MonoBehaviour
 
     }
 
+    Collider[] hits;
+    //카메라 중심 프리뷰 생성에서 터치한곳을 중심으로 프리뷰생성
+    public void OnGroundTouchedSecond(Vector3 point)
+    {
+        if (!isSequenceRemove || _PreviewOBJ != null)
+            return; // 조건이 안 맞으면 무시
+        buildMap.ColliderAllOff();
+        Instance.uI_BuildAction.SetActive(true);
+
+        _PreviewOBJ = Instantiate(buildingSO[(int)Define.EBuildingType.None].previewOBJ,
+       new Vector3(point.x, point.y + _heightOffset, point.z),
+       Quaternion.identity);
+
+        // 프리뷰 오브젝트에서 감지기 가져오기
+        PreviewColliderSensor sensor = _PreviewOBJ.GetComponent<PreviewColliderSensor>();
+
+        if (sensor == null)
+            sensor = _PreviewOBJ.AddComponent<PreviewColliderSensor>();
+
+        sensor.currentHits.Clear();
+        tempDraggleOBJ = _PreviewOBJ.GetComponent<DraggableObject>();
+        tempDraggleOBJ.SnapToGrid(new Vector3(point.x, point.y - _heightOffset, point.z));
+        tempDraggleOBJ.isDrag = true;
+        tempDraggleOBJ.isLongPress = false;
+    }
+    public void RemoveRoad()
+    {
+        Debug.Log("RemoveRoad()");
+
+        hits = _PreviewOBJ.GetComponent<PreviewColliderSensor>()?.GetCurrentHits();
+
+        if (hits == null || hits.Length == 0)
+        {
+            Debug.Log("제거할 도로 없음");
+            return;
+        }
+
+        // foreach (var hit in hits)
+        // {
+        //     GameObject obj = hit.gameObject;
+        //     BuildingBase buildBase;
+        //     if (obj.layer == LayerMask.NameToLayer("Road"))
+        //     {
+        //         buildBase = obj.GetComponent<BuildingBase>();
+        //     }
+
+        //     if (buildBase != null)
+        //     {
+        //         _CurBuildData = new BuildData
+        //         {
+        //             posX = obj.transform.position.x,
+        //             posZ = obj.transform.position.z,
+        //             UniqueId = buildBase.UniqueId
+        //         };
+        //         _arrayBuildPos.RemoveBuildData(_CurBuildData);
+        //         buildMap.Remove(buildBase.UniqueId);
+        //     }
+        // }
+    
+
+    ClearTile();
+    gridMap.LoadMap();
+    buildMap.LoadBuild();
+    surface.BuildNavMesh();
+    Managers.AI.AllRelocateToNearestNavMesh();
+    buildMap.ColliderAllOn();
+    isLongPressAcceptBuild = false;
+    Destroy(OriginTempOBJ);
+    Destroy(_PreviewOBJ);
+    OriginTempOBJ = null;
+    _PreviewOBJ = null;
+    OnAutoSave?.Invoke();
+}
+
 
 
     /// <summary>
@@ -262,44 +337,6 @@ public class BuildingPlacer : MonoBehaviour
 
         }
     }
-
-    // public void RemoveOverlappingRoads()
-    // {
-    //     Vector3 center = _PreviewOBJ.transform.position;
-    //     Vector3 halfExtents = new Vector3(0.5f, 1f, 0.5f); // 도로 크기에 맞춰서 조절
-    //     Quaternion rotation = Quaternion.identity;
-
-    //    Collider[] hits = Physics.OverlapBox(center, halfExtents, rotation, _roadLayer);
-
-    //     foreach (var hit in hits)
-    //     {
-    //         GameObject obj = hit.gameObject;
-
-    //         // 도로 오브젝트가 맞는지 확인 (태그, 컴포넌트 등으로 필터링 가능)
-    //         if (obj.CompareTag("Road")) // 또는 obj.GetComponent<Road>() != null
-    //         {
-    //             Vector2Int pos = new Vector2Int(
-    //                 Mathf.RoundToInt(obj.transform.position.x),
-    //                 Mathf.RoundToInt(obj.transform.position.z)
-    //             );
-
-    //             // Dictionary에서 삭제
-    //             if (_roadPosArray.ContainsKey(pos))
-    //             {
-    //                 _roadPosArray.Remove(pos);
-    //             }
-
-    //             // 프리뷰 리스트에서도 삭제
-    //             _tempPreviewObjs.Remove(obj);
-
-    //             Destroy(obj); // 오브젝트 삭제
-    //             Debug.Log($"도로 삭제됨: {obj.name} at {pos}");
-    //         }
-    //     }
-    // }
-
-
-
 
     public void ClearTempPreviewObjects()
     {
@@ -470,14 +507,9 @@ public class BuildingPlacer : MonoBehaviour
         OriginTempOBJ = null;
         _PreviewOBJ = null;
         OnAutoSave?.Invoke();
-
     }
 
 
-    public void RemoveRoad()
-    {
-        Debug.Log("RemoveRoad()");
-    }
     /// <summary>
     /// 해당 오브젝트 아래 타일 초기화
     /// </summary>

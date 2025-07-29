@@ -40,7 +40,6 @@ public class DraggableObject : MonoBehaviour, IDraggable
         _offsetx = (buildSize.x % 2 == 0) ? (gridSize / 2f) : 0f;
         _offsety = (buildSize.y % 2 == 0) ? (gridSize / 2f) : 0f;
         CheckTilesUnderBuilding();
-        // if (BuildingPlacer.Instance.isSequenceBuild) BuildingPlacer.Instance.SaveandRemoveRoad();
     }
 
     //드래그
@@ -76,6 +75,7 @@ public class DraggableObject : MonoBehaviour, IDraggable
     //드래그 드롭
     public void OnDragEnd()
     {
+        if(BuildingPlacer.Instance.isLongPressAcceptBuild==true||BuildingPlacer.Instance.isSequenceBuild==true)
         BuildingPlacer.Instance.isSelect = false;
     }
 
@@ -100,6 +100,7 @@ public class DraggableObject : MonoBehaviour, IDraggable
                 Managers.UI.OnLongPress.Invoke();
             }
             //Managers.UI.ShowPopupUI<UI_SaveMoveBuild>();//건물 저장 꺼내기 기능 생기면 쓰기
+            BuildingPlacer.Instance.uI_BuildAction.SetActive(true);
             StartCoroutine(WaitAndSetup());
             //건물설치함수 불러오기
             BuildingPlacer.Instance.SetRefOBJ(gameObject);
