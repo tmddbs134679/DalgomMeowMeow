@@ -31,6 +31,7 @@ public class RestBuilding : BuildingBase
         base.ConnectToAnimal(animal);
 
         _textAnim.gameObject.SetActive(true);
+        CurrentState = BuildingState.Producing;
     }
 
     public override void DisconnectAnimal()
@@ -38,13 +39,13 @@ public class RestBuilding : BuildingBase
         base.DisconnectAnimal();
 
         _textAnim.gameObject.SetActive(false);
+        CurrentState = BuildingState.Idle;
     }
 
 
     public override bool Init()
     {
         base.Init();
-        // collectIcon.SetActive(false);
         return true;
     }
     public override void Produce()
@@ -53,23 +54,17 @@ public class RestBuilding : BuildingBase
 
 
         // 상태 전이
-        CurrentState = BuildingState.ReadyToCollect;
+        CurrentState = BuildingState.Producing;
 
     }
     public void Collect()
     {
-        if (CurrentState != BuildingState.ReadyToCollect) return;
 
-        //스테미나 회복
-        Debug.Log("스테미나 회복");
-        CurrentState = BuildingState.Producing;
-        // collectIcon.SetActive(false);
 
     }
     public override void OnClick()
     {
-        if (CurrentState == BuildingState.ReadyToCollect)
-            Collect();
-    }
 
+    }
+    
 }

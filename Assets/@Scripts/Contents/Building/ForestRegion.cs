@@ -14,7 +14,6 @@ public class ForestRegion : BaseObject
     public bool IsUnlocked { get; private set; }
 
     [SerializeField] private GameObject lockOverlay; // 잠김 표시용 UI/이펙트
-    private string requiredContentId = "Content_Battle";
 
     private void Start()
     {
@@ -63,11 +62,11 @@ public class ForestRegion : BaseObject
     public override void OnClick()
     {
             if (EventSystem.current.IsPointerOverGameObject()) return;
-        // if (!QuestManager.Instance.IsUnlocked(requiredContentId))
-        // {
-        //     Managers.UI.ShowToast("챕터에서 숲 전투를 먼저 해금하세요.");
-        //     return;
-        // }
+        if (!QuestManager.Instance.IsUnlocked("Content_Battle"))
+        {
+            Managers.UI.ShowToast("아직 열리지 않았습니다");
+            return;
+        }
         if (IsUnlocked)
         {
             Managers.Debug.Log($"{Id}해제된 지역", Define.EDebugType.Building);

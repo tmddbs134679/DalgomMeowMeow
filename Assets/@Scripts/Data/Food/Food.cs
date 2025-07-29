@@ -7,9 +7,10 @@ public class Food
     public string key = "";
 
     public Data.FoodData FoodData;
-    public Food(FoodData data)
+    public int CalculatedPrice;
+    public Food(FoodData data, int calculatedPrice)
     {
-        FoodData = data; 
-
+        FoodData = data;
+        CalculatedPrice = calculatedPrice;
     }
 }

@@ -22,7 +22,9 @@ public class UI_QuickMenu : UI_Popup
         CharacterInfoButton,
         CharacterEquipmentButton,
         CharacterStoreSceneButton,
-        ChapterButton
+        ChapterButton,
+        Stop_MinigameButton,
+        Whack_a_moleButton,
     }
 
     enum Texts
@@ -68,6 +70,9 @@ public class UI_QuickMenu : UI_Popup
         GetButton((int)Buttons.CharacterStoreSceneButton).gameObject.BindEvent(OnClickCharacterStoreSceneButton);
         GetButton((int)Buttons.CharacterStoreSceneButton).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
         GetButton((int)Buttons.ChapterButton).gameObject.BindEvent(OnClickChapterButtonButton);
+        GetButton((int)Buttons.Stop_MinigameButton).gameObject.BindEvent(OnClickStopminigameButton);
+        GetButton((int)Buttons.Whack_a_moleButton).gameObject.BindEvent(OnClickWhack_a_moleButton);
+
 
         return true;
     }
@@ -104,6 +109,18 @@ public class UI_QuickMenu : UI_Popup
     private void OnClickBackgroundButton()
     {
         gameObject.SetActive(false);
+    }
+
+    private void OnClickStopminigameButton()
+    {
+        Managers.Sound.PlayButtonClick();
+        Managers.UI.ShowPopupUI<UI_StopMiniGame>();
+    }
+
+    private void OnClickWhack_a_moleButton()
+    {
+        Managers.Sound.PlayButtonClick();
+        Managers.UI.ShowPopupUI<UI_Whack_a_mole>();
     }
 
     private void CheckNotify()

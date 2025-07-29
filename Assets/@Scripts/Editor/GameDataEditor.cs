@@ -20,7 +20,7 @@ public class GameDataEditor : EditorWindow
 
     private void OnEnable()
     {
-        _savePath = Application.persistentDataPath + "/SaveData.json";
+        _savePath = Application.persistentDataPath;
     }
 
     private void OnGUI()
@@ -43,14 +43,23 @@ public class GameDataEditor : EditorWindow
 
     private void DeleteSaveFile()
     {
-        if(File.Exists(_savePath))
+        if (Directory.Exists(_savePath))
         {
-            File.Delete(_savePath);
-            Debug.Log("파일 삭제");
+            // 폴더 내 모든 파일 삭제
+            string[] files = Directory.GetFiles(_savePath);
+            foreach (var file in files)
+            {
+                File.Delete(file);
+                Debug.Log($"파일 삭제: {file}");
+            }
+
+            // 폴더 삭제
+            Directory.Delete(_savePath);
+            Debug.Log("폴더 삭제 완료");
         }
         else
         {
-            Debug.LogWarning("파일이 없음");
+            Debug.LogWarning("파일이나 폴더가 존재하지 않습니다.");
         }
     }
 

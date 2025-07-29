@@ -35,7 +35,7 @@ public class FoodManager
                 Food soldFood = first.Value;
                 Cancel(soldFood);
                 OnFoodSold?.Invoke(soldFood);
-                int discountPrice = Mathf.FloorToInt(soldFood.FoodData.Price * 0.5f);
+                int discountPrice = Mathf.FloorToInt(soldFood.CalculatedPrice * 0.5f);
                 Managers.Game.Gold += discountPrice;
             }
         }
@@ -56,34 +56,44 @@ public class FoodManager
 
     public void MakeFood(IngredientSet ingredients, int buildingLevel)
     {
+        // 음식 레시피 가져오기
         FoodData recipe = Managers.Data.FoodDic.Values
-                 .FirstOrDefault(fd =>
-                     fd.Cabbage == ingredients.Ingredients.Exists(i => i.Type == Define.ECropType.Cabbage) &&
-                     fd.Carrot == ingredients.Ingredients.Exists(i => i.Type == Define.ECropType.Carrot) &&
-                     fd.Pumpkin == ingredients.Ingredients.Exists(i => i.Type == Define.ECropType.Pumpkin) &&
-                     fd.Potato == ingredients.Ingredients.Exists(i => i.Type == Define.ECropType.Potato) &&
-                     fd.Onion == ingredients.Ingredients.Exists(i => i.Type == Define.ECropType.Onion));
+            .FirstOrDefault(fd =>
+                fd.Cabbage == ingredients.Ingredients.Exists(i => i.Type == Define.ECropType.Cabbage) &&
+                fd.Carrot == ingredients.Ingredients.Exists(i => i.Type == Define.ECropType.Carrot) &&
+                fd.Pumpkin == ingredients.Ingredients.Exists(i => i.Type == Define.ECropType.Pumpkin) &&
+                fd.Potato == ingredients.Ingredients.Exists(i => i.Type == Define.ECropType.Potato) &&
+                fd.Onion == ingredients.Ingredients.Exists(i => i.Type == Define.ECropType.Onion));
 
-        //요리가 없으면 기본요리 생산
+        // 요리가 없으면 기본 요리로 설정
         if (recipe == null)
         {
             recipe = Managers.Data.FoodDic["F0001"];
         }
 
-        // 가격 계산
+        // 기본 가격
         float basePrice = recipe.Price;
-        float ingredientBonus = 0.1f; // 재료 1개당 +10%
+
+        // 재료 1개당 +10% 추가 보너스
+        float ingredientBonus = 0.1f;
+
+        // 밭 레벨에 따른 곱셈
         float fieldMultiplier = ingredients.GetAvgFieldLevelMultiplier();
-        float cookingMultiplier = 1.0f + ((buildingLevel - 1) * 0.15f); // Lv1=1.0, Lv2=1.15, Lv3=1.3
 
+        // 건물 레벨에 따른 곱셈 (레벨업 시에만 적용)
+        float cookingMultiplier = 1.0f + ((buildingLevel - 1) * 0.15f); // 건물 레벨이 증가할 때마다 가격이 증가
+
+        // 최종 가격 계산
         float finalPrice = basePrice * (1 + ingredients.TotalCount * ingredientBonus)
-                                     * fieldMultiplier
-                                     * cookingMultiplier;
+                                         * fieldMultiplier
+                                         * cookingMultiplier;
 
-        recipe.Price = Mathf.FloorToInt(finalPrice);
+        // 여기서는 recipe.Price를 덮어쓰지 않고, 최종 계산된 가격을 그냥 사용함
+        int calculatedPrice = Mathf.FloorToInt(finalPrice);
 
         // 요리 생성
-        Food food = new Food(recipe);
+        Food food = new Food(recipe, calculatedPrice);
+
         Enqueue(food);
     }
 

@@ -12,7 +12,8 @@ public class UI_TravelPopup : UI_Popup
     enum GameObjects
     {
         ContentObject,
-        CharacterScrollContentObject
+        CharacterScrollContentObject,
+        CharacterScrollGroup
     }
 
     enum Buttons
@@ -81,8 +82,9 @@ public class UI_TravelPopup : UI_Popup
         GetButton((int)Buttons.AdTravelButton).GetOrAddComponent<UI_ButtonAnimation>();
         GetButton((int)Buttons.TravelButton).GetOrAddComponent<UI_ButtonAnimation>();
 
-
         GetImage((int)Images.CharacterImage).sprite = Managers.Resource.Load<Sprite>("AlphaBackground.sprite");
+
+        _scrollrect = GetObject((int)GameObjects.CharacterScrollGroup).GetComponent<ScrollRect>();
         Refresh();
 
         return true;
@@ -105,10 +107,9 @@ public class UI_TravelPopup : UI_Popup
 
         TimeSpan travelTime = TimeSpan.FromHours(Define.TRAVEL_TIME);
 
-        TimeSpan travelTimetest = TimeSpan.FromSeconds(10);
 
         //테스트중
-        Managers.Game.StartTravel(_character, travelTimetest);
+        Managers.Game.StartTravel(_character, travelTime);
         Managers.UI.ClosePopupUI(this);
     }
 

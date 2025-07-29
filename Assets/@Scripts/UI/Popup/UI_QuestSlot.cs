@@ -47,7 +47,7 @@ public class UI_QuestSlot : UI_Base
 
         GetText((int)Texts.QuestTitleText).text = quest.QuestData.Title;
         GetText((int)Texts.ProgressText).text = $"{quest.Progress}/{quest.QuestData.GoalCount}";
-        GetText((int)Texts.RewardButtonText).text = $"완료보상\n{quest.QuestData.Reward}";
+        GetText((int)Texts.RewardButtonText).text = $"{quest.QuestData.Reward}";
         GetImage((int)Images.ProgressBarFill).fillAmount = percent;
 
 
