@@ -24,7 +24,8 @@ public class FishingBuilding : BuildingBase
 
     private void OnDestroy()
     {
-        _textAnim.gameObject.SetActive(false);
+        if(_textAnim != null)
+            _textAnim.gameObject.SetActive(false);
     }
     protected override void Start()
     {

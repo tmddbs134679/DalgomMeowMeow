@@ -119,10 +119,10 @@ public class UI_TravelCheckPopup : UI_Popup
     private void Refresh()
     {
         //캐릭터 이미지 
-        var travelingCharacter = Managers.Game.CharacterInMainScene.Values.FirstOrDefault(c => c.Data.IsTravelMode);
+        var travelingCharacter = Managers.Game.Characters.FirstOrDefault(c => c.IsTravelMode);
 
         if(travelingCharacter != null)
-            GetImage((int)Images.TravelImage).sprite = Managers.Resource.Load<Sprite>(travelingCharacter.Data.Data.IconLabel);
+            GetImage((int)Images.TravelImage).sprite = Managers.Resource.Load<Sprite>(travelingCharacter.Data.IconLabel);
         else
             GetImage((int)Images.TravelImage).sprite = Managers.Resource.Load<Sprite>("AlphaBackground.sprite");
         //

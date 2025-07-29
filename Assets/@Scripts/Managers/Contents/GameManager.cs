@@ -205,7 +205,7 @@ public class GameManager
 
         #endregion
 
-        Gold += 500;
+        Gold += 111500;
 
         SaveGame();
         IsLoaded = true;
@@ -525,6 +525,7 @@ public class GameManager
 
         if (Managers.Game.CharacterInMainScene.TryGetValue(character.UniqueId, out AICharacter aiCharacter))
         {
+            aiCharacter.Data.IsTravelMode = true;
             //일단 false;
             aiCharacter.gameObject.SetActive(false);
         }

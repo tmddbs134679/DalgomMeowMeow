@@ -62,7 +62,7 @@ public class UI_ExchangeShopPopup : UI_Popup
         GetObject((int)GameObjects.ExchangeTicketObject).BindEvent(() => OnClickExchange(Define.EExchangeType.Ticket));
         GetObject((int)GameObjects.ExchangeDiaObject).BindEvent(() => OnClickExchange(Define.EExchangeType.Dia));
 
-
+        Refresh();
         return true;
     }
 
@@ -78,6 +78,7 @@ public class UI_ExchangeShopPopup : UI_Popup
                 Managers.Game.Gold += 1000;
                 GetText((int)Texts.AdsText).text = Managers.Game.AdvancedGachaOpenCount.ToString();
                 Managers.UI.ShowToast("보상 획득");
+                Refresh();
             });
 
         }
@@ -124,5 +125,8 @@ public class UI_ExchangeShopPopup : UI_Popup
         _purchasePopup.SetInfo(type);
     }
 
-
+    void Refresh()
+    {
+        GetText((int)Texts.AdsText).text = Managers.Game.AdvancedGachaOpenCount.ToString();
+    }
 }

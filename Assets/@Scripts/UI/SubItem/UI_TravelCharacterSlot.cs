@@ -59,6 +59,10 @@ public class UI_TravelCharacterSlot : UI_Base
         _outline = GetComponent<Outline>();
         gameObject.BindEvent(OnClickSlot);
 
+        gameObject.BindEvent(null, OnDrag, Define.EUIEvent.Drag);
+        gameObject.BindEvent(null, OnBeginDrag, Define.EUIEvent.BeginDrag);
+        gameObject.BindEvent(null, OnEndDrag, Define.EUIEvent.EndDrag);
+
         return true;
     }
 
