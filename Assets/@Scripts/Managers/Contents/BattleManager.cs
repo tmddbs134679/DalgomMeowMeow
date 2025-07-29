@@ -18,17 +18,13 @@ public class BattleManager : MonoBehaviour
         _playerLayer = LayerMask.NameToLayer("Player");
         _teamCameraController = GetComponentInChildren<TeamCameraController>();
         _teamController = GetComponentInChildren<TeamController>();
-
-        
-        
     }
 
     private void Start()
     {
         allCharacters = GetComponentsInChildren<BattleCharacter>();
-
+        
         EnemyCount = 0;
-
         foreach (var character in allCharacters)
         {
             if (character.gameObject.layer == _enemyLayer)
@@ -36,7 +32,6 @@ public class BattleManager : MonoBehaviour
         }
 
         PlayerCount = 0;
-
         foreach (var character in allCharacters)
         {
             if (character.gameObject.layer == _playerLayer)
@@ -53,25 +48,25 @@ public class BattleManager : MonoBehaviour
             Victory = true;
             _teamController._members.ForEach(m => { m.AttackRange = 1; m.Agent.stoppingDistance = 1; });
             _teamController._members.ForEach(m => m.CharacterObject.transform.localScale = new Vector3(1, 1, 1));
-            _teamController._members.ForEach(m => m.victory = true); // 승리 머티리얼 적용
-            _teamController._members.ForEach(m => m.SetOutline()); // 승리 머티리얼 적용
-
+            _teamController._members.ForEach(m => m.victory = true); 
+            _teamController._members.ForEach(m => m.SetOutline()); 
 
             _teamCameraController.Victory();
 
-            Reward(); //보상 지급
+            Reward();
             if (StageDataManager.Instance.CurrentStageNumber + 1< StageDataManager.Instance.stages.Count)
-                StageDataManager.Instance.StageClear(); //스테이지 넘버 증가
-            ForestBattleContext.IsVictory = true; //숲에 승리
+                StageDataManager.Instance.StageClear(); 
+            ForestBattleContext.IsVictory = true; 
         }
 
         if(PlayerCount == 0 && !Lose)
         {
             Lose = true;
-            Time.timeScale = 0f; //게임 일시정지
+            Time.timeScale = 0f; 
             Managers.UI.ShowPopupUI<UI_Lose>();
         }
     }
+
     public void BackToGame()
     {
         Managers.Scene.LoadScene(Define.EScene.GameScene);
