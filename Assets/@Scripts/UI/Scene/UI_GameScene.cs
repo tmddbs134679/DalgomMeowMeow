@@ -159,7 +159,7 @@ public class UI_GameScene : UI_Scene
 
         if (!QuestManager.Instance.IsUnlocked("Content_AnimalAdoption"))
         {
-            Managers.UI.ShowToast("아직 열리지 않았습니다");
+            Managers.UI.ShowToast("챕터(1)를 해금하면 이용할 수 있습니다!");
             return;
         }
 

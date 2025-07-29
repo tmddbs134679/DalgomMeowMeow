@@ -203,54 +203,9 @@ public class GameManager
 
         AdvancedGachaOpenCount = 3;
 
-        //var newChar2 = new Character();
-        //newChar2.Init("A10003", new Vector3(38f, 0, 27)); // 위치 초기값
-        //newChar2.SetInfo(Managers.Data.CreatureDic["A10003"]);
-        //_characters[newChar2.UniqueId] = newChar2;
-
-        //var newChar3 = new Character();
-        //newChar3.Init("A10001", new Vector3(38f, 0, 27)); // 위치 초기값
-        //newChar3.SetInfo(Managers.Data.CreatureDic["A10001"]);
-        //_characters[newChar3.UniqueId] = newChar3;
-
-        //// 초기 장비 생성
-        //Equipment eq1 = new Equipment("E0001");
-        //Equipment eq2 = new Equipment("E0002");
-        //Equipment eq3 = new Equipment("E0003");
-        //Equipment eq4 = new Equipment("E0004");
-        //Equipment eq5 = new Equipment("E0005");
-        //Equipment eq6 = new Equipment("E0006");
-        //Equipment eq7 = new Equipment("E0007");
-        //Equipment eq8 = new Equipment("E0101");
-        //Equipment eq9 = new Equipment("E0102");
-        //Equipment eq10 = new Equipment("E0201");
-        //Equipment eq11 = new Equipment("E0202");
-        //Equipment eq12 = new Equipment("E0203");
-        //Equipment eq13 = new Equipment("E0205");
-        //Equipment eq14 = new Equipment("E0207");
-        //Equipment eq15 = new Equipment("E0001");
-        //Equipment eq16 = new Equipment("E0001");
-
-        //OwnedEquipments.Add(eq1);
-        //OwnedEquipments.Add(eq2);
-        //OwnedEquipments.Add(eq3);
-        //OwnedEquipments.Add(eq4);
-        //OwnedEquipments.Add(eq5);
-        //OwnedEquipments.Add(eq6);
-        //OwnedEquipments.Add(eq7);
-        //OwnedEquipments.Add(eq8);
-        //OwnedEquipments.Add(eq9);
-        //OwnedEquipments.Add(eq10);
-        //OwnedEquipments.Add(eq11);
-        //OwnedEquipments.Add(eq12);
-        //OwnedEquipments.Add(eq13);
-        //OwnedEquipments.Add(eq14);
-        //OwnedEquipments.Add(eq15);
-        //OwnedEquipments.Add(eq16);
-
         #endregion
 
-        Gold += 100050;
+        Gold += 500;
 
         SaveGame();
         IsLoaded = true;
