@@ -48,6 +48,7 @@ public class PlayerCharacter : BattleCharacter
     public override void Die()
     {
         _battleManager.PlayerCount--;
+        Managers.Sound.Play(Define.ESound.Effect, "Cat1");
         base.Die();
     }
 
