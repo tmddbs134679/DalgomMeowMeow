@@ -41,7 +41,7 @@ public class PreviewColliderSensor : MonoBehaviour
     //         currentHits.Remove(other);
     //     }
     // }
-
+//나중에 사용할 수도 있음
     public Collider[] GetCurrentHits()
     {
         return currentHits.ToArray();

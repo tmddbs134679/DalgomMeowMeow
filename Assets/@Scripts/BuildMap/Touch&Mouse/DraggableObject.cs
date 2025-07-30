@@ -33,6 +33,7 @@ public class DraggableObject : MonoBehaviour, IDraggable
         _isBuildColor = GetComponent<IsBuildColor>();
         CheckTilesUnderBuilding();
     }
+    #region IDraggable
     //드래그 스타트
     public void OnDragStart(Vector3 hitPos)
     {
@@ -75,11 +76,16 @@ public class DraggableObject : MonoBehaviour, IDraggable
     //드래그 드롭
     public void OnDragEnd()
     {
-        if(BuildingPlacer.Instance.isLongPressAcceptBuild==true||BuildingPlacer.Instance.isSequenceBuild==true)
-        BuildingPlacer.Instance.isSelect = false;
+        if (BuildingPlacer.Instance.isLongPressAcceptBuild == true || BuildingPlacer.Instance.isSequenceBuild == true)
+            BuildingPlacer.Instance.isSelect = false;
     }
-
-
+    //드래그 하지않고 눌렀다 떼기
+    public void OnClickRelease()
+    {
+        if (BuildingPlacer.Instance.isLongPressAcceptBuild == true || BuildingPlacer.Instance.isSequenceBuild == true)
+            BuildingPlacer.Instance.isSelect = false;
+    }
+    //꾹누르기
     public void OnLongPress()
     {
         if (EventSystem.current.IsPointerOverGameObject())
@@ -109,7 +115,6 @@ public class DraggableObject : MonoBehaviour, IDraggable
             CurrentTileAndOBJ();
         }
     }
-
     IEnumerator WaitAndSetup()
     {
         yield return null; // 1프레임 대기
@@ -121,6 +126,7 @@ public class DraggableObject : MonoBehaviour, IDraggable
             _uI_BuildAction.transform.position = screenPos;
         }
     }
+    #endregion
     //그리드 적용 스냅
     private Vector3 GetSnappedPosition(Vector3 targetPos)
     {
@@ -131,7 +137,7 @@ public class DraggableObject : MonoBehaviour, IDraggable
         return new Vector3(x, y, z);
     }
 
-
+    #region 타일 판별 
     //건물밑 타일 판별후 정보전달
     public void CheckTilesUnderBuilding()
     {
@@ -189,7 +195,14 @@ public class DraggableObject : MonoBehaviour, IDraggable
         BuildingPlacer.Instance.TempCollider = hitColliders.ToArray();
         TempOBJ = gameObject;
     }
-
+    public void SnapToGrid(Vector3 targetPos)
+    {
+        Vector3 snappedPos = GetSnappedPosition(targetPos);
+        transform.position = snappedPos;
+        CheckTilesUnderBuilding();
+    }
+    #endregion
+    #region 기즈모
     //씬에서 기즈모 보여주기용
     void OnDrawGizmosSelected()
     {
@@ -200,11 +213,5 @@ public class DraggableObject : MonoBehaviour, IDraggable
         Gizmos.color = Color.magenta;
         Gizmos.DrawWireCube(center, halfExtents * 2f);
     }
-
-    public void SnapToGrid(Vector3 targetPos)
-    {
-        Vector3 snappedPos = GetSnappedPosition(targetPos);
-        transform.position = snappedPos;
-        CheckTilesUnderBuilding();
-    }
+    #endregion
 }

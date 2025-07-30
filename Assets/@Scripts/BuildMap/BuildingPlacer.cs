@@ -199,7 +199,7 @@ public class BuildingPlacer : MonoBehaviour
         isSequenceRemove = true;
         isAI = true;
         isSelect = true;
-        buildMap.ColliderAllOff();
+      //  buildMap.ColliderAllOff();
         tempTypeNum = (int)type;
         _saveBuildingSO = buildingSO[(int)type];
         return true;
@@ -212,8 +212,8 @@ public class BuildingPlacer : MonoBehaviour
     {
         if (!isSequenceBuild || _PreviewOBJ != null)
             return; // 조건이 안 맞으면 무시
-        Instance.uI_BuildAction.SetActive(true);
-
+        uI_BuildAction.SetActive(true);
+        uI_BuildAction.ButtonSetAtive();
         // 프리뷰 생성
         _PreviewOBJ = Instantiate(_saveBuildingSO.previewOBJ,
             new Vector3(point.x, point.y + _heightOffset, point.z),
@@ -233,10 +233,10 @@ public class BuildingPlacer : MonoBehaviour
     {
         if (!isSequenceRemove || _PreviewOBJ != null)
             return; // 조건이 안 맞으면 무시
-        buildMap.ColliderAllOff();
-        Instance.uI_BuildAction.SetActive(true);
-
-        _PreviewOBJ = Instantiate(buildingSO[16].previewOBJ,
+      //  buildMap.ColliderAllOff();
+        uI_BuildAction.SetActive(true);
+        uI_BuildAction.ButtonSetAtive();
+        _PreviewOBJ = Instantiate(buildingSO[(int)Define.EBuildingType.RemoveRoad].previewOBJ, //수정필요1355
        new Vector3(point.x, point.y + _heightOffset, point.z),
        Quaternion.identity);
 
@@ -261,6 +261,10 @@ public class BuildingPlacer : MonoBehaviour
         if (hits == null || hits.Length == 0)
         {
             Debug.Log("제거할 도로 없음");
+                    Destroy(OriginTempOBJ);
+        Destroy(_PreviewOBJ);
+                OriginTempOBJ = null;
+        _PreviewOBJ = null;
             return;
         }
 
@@ -283,27 +287,35 @@ public class BuildingPlacer : MonoBehaviour
                 };
                 _arrayBuildPos.RemoveBuildData(_CurBuildData);
                 buildMap.Remove(buildBase.UniqueId);
-                        ClearTile();
+                Destroy(obj);
+                ClearTile();
             }
             buildBase = null;
+            
+            
         }
 
 
+        Destroy(OriginTempOBJ);
+        Destroy(_PreviewOBJ);
 
         gridMap.LoadMap();
         buildMap.LoadBuild();
-        surface.BuildNavMesh();
+StartCoroutine(RebuildNavMeshAfterDestroy());
         Managers.AI.AllRelocateToNearestNavMesh();
         buildMap.ColliderAllOn();
         isLongPressAcceptBuild = false;
-        Destroy(OriginTempOBJ);
-        Destroy(_PreviewOBJ);
         OriginTempOBJ = null;
         _PreviewOBJ = null;
         OnAutoSave?.Invoke();
     }
 
-
+//여러개 삭제시에는 프레임이느려져서 네브매쉬가 destroy가 제대로 안된 상태에서 재생성 할 수 있음
+IEnumerator RebuildNavMeshAfterDestroy()
+{
+    yield return null; // 다음 프레임까지 기다림
+    surface.BuildNavMesh(); // 이제 완전히 제거된 후 갱신
+}
 
     /// <summary>
     /// 설치 재료(돈) 판별

@@ -191,7 +191,6 @@ public class UI_GameScene : UI_Scene
         private void OnClickRoadButton()
     {
         Managers.Sound.PlayButtonClick();
-        BuildingPlacer.Instance.buildMap.ColliderAllOff(); //이거 중복호출중
         Managers.UI.ShowPopupUI<UI_Road>();
         gameObject.SetActive(false);
     }

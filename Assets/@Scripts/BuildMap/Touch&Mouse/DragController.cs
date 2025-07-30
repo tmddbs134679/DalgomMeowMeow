@@ -130,10 +130,15 @@ public class DragController : MonoBehaviour
             isDelay = false;
             isPointerDown = false;
 
-            if (isDragging)
-            {
-                currentTarget.OnDragEnd();
-            }
+    if (isDragging)
+    {
+        currentTarget.OnDragEnd();
+    }
+    else
+    {
+        // 클릭만 하고 뗀 경우 처리
+        currentTarget.OnClickRelease(); // <- 이걸 인터페이스에 추가하거나 적절히 구현
+    }
 
             isDragging = false;
             currentTarget = null;
