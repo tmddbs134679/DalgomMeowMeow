@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using Scripts.Contents.AI.FSM.State;
@@ -9,7 +8,6 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.EventSystems;
 using static Define;
-using static Unity.Burst.Intrinsics.X86.Avx;
 
 public class AICharacter : BaseObject
 {
@@ -19,19 +17,13 @@ public class AICharacter : BaseObject
     public List<string> EquippedItemIds { get; set; } = new();
     public Character Data { get; set; }
 
+    private AICharacterLevelEffectHandler levelEffectHandler;
+
     [Header("AI 캐릭터 현재 상태")]
     public Define.EAIState CurrentState;
 
     [Header("AI 캐릭터 배정된 건물")]
     public BuildingBase currentBuilding;
-
-    //[Header("캐릭터 스탯")]
-    //public float Stamina;
-    //public float MaxStamina;
-    //public float Atk;
-    //public float Hp;
-    //public float MoveSpeed;
-
     
     #region Bone
     [SerializeField] private Transform hatBone;
@@ -96,8 +88,6 @@ public class AICharacter : BaseObject
     [HideInInspector]
     public ECropType _ecropType;
 
-    [HideInInspector]
-    private ParticleSystem particle;
 
     #endregion
 
@@ -116,8 +106,6 @@ public class AICharacter : BaseObject
 
     #region WorldSpace
     private GameObject infoButton;
-    private GameObject levelCanvas;
-    private TextMeshProUGUI levelUPText;
     private TextMeshProUGUI nameText;
     #endregion
 
@@ -137,13 +125,11 @@ public class AICharacter : BaseObject
     private void Start()
     {
         _camera = Camera.main;
-        levelCanvas = transform.Find("Level").gameObject;
         infoButton = transform.Find("Canvas").gameObject;
         head = transform.Find("root/pelvis/spine_01/spine_02/spine_03/neck_01");
-        particle = transform.Find("Particle").GetComponent<ParticleSystem>();
-        levelUPText = transform.Find("Level/LevelUpText").GetComponent<TextMeshProUGUI>();
         nameText = transform.Find("Canvas/Name").GetComponent<TextMeshProUGUI>();
         nameText.text = Data.Name;
+        
     }
 
     private void Update()
@@ -175,12 +161,14 @@ public class AICharacter : BaseObject
     #region 생성 시 초기화 및 불러오기
     public override bool Init()
     {
+        levelEffectHandler = GetComponentInChildren<AICharacterLevelEffectHandler>();
         nav = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         skinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
         characterAction = GetComponent<CharacterAction>();
         groundLayer = LayerMask.GetMask("Ground");
         currentEmo = skinnedMeshRenderer.materials[1];
+
         return true;
     }
 
@@ -196,6 +184,8 @@ public class AICharacter : BaseObject
 
         // TODO : FSM 등 상태 적용
         ControllerRegister();
+        levelEffectHandler.Init();
+
     }
     #endregion
 
@@ -265,29 +255,11 @@ public class AICharacter : BaseObject
         Data.Atk += 2f; // 레벨업 시 공격력 증가
         Data.MaxStamina += 5f; // 레벨업 시 최대 스태미너 증가
         Data.Level++;
-        //이펙트
-        particle.Stop();
-        particle.Play();
-        levelCanvas.SetActive(true);
-        levelCanvas.transform.LookAt(levelCanvas.transform.position + _camera.transform.forward);
-        levelCanvas.transform.forward = -_camera.transform.forward;
-        Sequence seq = DOTween.Sequence();
-        seq.Append(levelUPText.transform.DOMoveY(levelUPText.transform.position.y + 1f, 3f)); // 위로 상승
-        seq.Join(levelUPText.DOFade(0f, 3f)); // 동시에 투명도 감소
-        StartCoroutine(SetActiveFalse());
+
+        levelEffectHandler.PlayLevelUpEffect(_camera);
 
         Levelup?.Invoke(Data.Level);
     }
-
-    IEnumerator SetActiveFalse()
-    {
-        yield return new WaitForSeconds(3.1f);
-        levelUPText.transform.localPosition = new Vector3(0, 2, 0);
-        levelUPText.color = Color.green; // 투명도 초기화
-        levelCanvas.gameObject.SetActive(false);
-
-    }
-
 
     public void GainExp(int value)
     {
