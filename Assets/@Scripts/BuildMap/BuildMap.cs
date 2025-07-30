@@ -22,6 +22,8 @@ public class BuildMap : MonoBehaviour
     void Awake()
     {
         _arrayBuildPos.LoadMapData();
+                surface.BuildNavMesh(); // 이제 완전히 제거된 후 갱신
+                        Managers.AI.AllRelocateToNearestNavMesh();
     }
     void Start()
     {

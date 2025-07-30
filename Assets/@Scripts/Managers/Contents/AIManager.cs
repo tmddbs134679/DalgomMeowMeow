@@ -30,7 +30,7 @@ public class AIManager
 
     private void RelocateToNearestNavMesh(AICharacter character)
     {
-        if (!NavMesh.SamplePosition(character.transform.position, out NavMeshHit hit,500f, NavMesh.AllAreas))
+        if (!NavMesh.SamplePosition(character.transform.position, out NavMeshHit hit,50f, NavMesh.AllAreas))
             return;
 
         character.transform.position = hit.position;

@@ -304,20 +304,22 @@ public class BuildingPlacer : MonoBehaviour
 
         gridMap.LoadMap();
         buildMap.LoadBuild();
+        StartCoroutine(RebuildNavMeshAfterDestroy());
+
+
         buildMap.ColliderAllOn();
         isLongPressAcceptBuild = false;
         OriginTempOBJ = null;
         _PreviewOBJ = null;
         OnAutoSave?.Invoke();
-        StartCoroutine(RebuildNavMeshAfterDestroy());
     }
 
     //여러개 삭제시에는 프레임이느려져서 네브매쉬가 destroy가 제대로 안된 상태에서 재생성 할 수 있음
     IEnumerator RebuildNavMeshAfterDestroy()
     {
-        yield return new WaitForSeconds(0.2f); // 다음 프레임까지 기다림
+        yield return null; // 다음 프레임까지 기다림
         surface.BuildNavMesh(); // 이제 완전히 제거된 후 갱신
-        //Managers.AI.ValidateNavMeshPosition()
+                        Managers.AI.AllRelocateToNearestNavMesh();
     }
 
     /// <summary>
@@ -422,6 +424,7 @@ public class BuildingPlacer : MonoBehaviour
         isLongPressAcceptBuild = false;
 
         buildMap.ColliderAllOn();
+        Managers.AI.AllRelocateToNearestNavMesh();
         OnBuildingAccepted?.Invoke(_saveBuildingSO);
         QuestManager.Instance.NotifyBuildingConstructed(((Define.EBuildingType)tempTypeNum).ToString());
 
@@ -460,6 +463,7 @@ public class BuildingPlacer : MonoBehaviour
             surface.BuildNavMesh(); //네브매쉬 깔기
             isLongPressAcceptBuild = false;
             buildMap.ColliderAllOn();
+            Managers.AI.AllRelocateToNearestNavMesh();
             OnBuildingAccepted?.Invoke(_saveBuildingSO);
             QuestManager.Instance.NotifyBuildingConstructed(buildType);
         }
@@ -489,8 +493,8 @@ public class BuildingPlacer : MonoBehaviour
             ClearTile();//기존에 있던 오브젝트의 타일 제거
             _PreviewOBJ.GetComponent<DraggableObject>().isLongPress = true;
             // _PreviewOBJ.GetComponent<BuildingBase>().SerialID
-            Destroy(_PreviewOBJ);
             Destroy(OriginTempOBJ);
+            Destroy(_PreviewOBJ);
             gridMap.LoadMap(); //맵갱신
             buildMap.LoadBuild(); //오브젝트 갱신
             surface.BuildNavMesh(); //네브매쉬 깔기
