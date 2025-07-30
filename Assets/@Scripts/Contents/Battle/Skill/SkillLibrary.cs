@@ -93,6 +93,7 @@ public class SkillLibrary : MonoBehaviour
             Collider[] hits = Physics.OverlapSphere(battleCharacter.TargetLocation.position, 2.5f, LayerMask.GetMask("Enemy")); // 적 캐릭터 레이어 마스크 사용
             foreach (var hit in hits)
             {
+                if(hit == null) continue; // hit가 null인 경우를 방지
                 if (hit.TryGetComponent<BattleCharacter>(out var targetCharacter))
                 {
                     targetCharacter.HpControl(battleCharacter.AttackDamage*5);

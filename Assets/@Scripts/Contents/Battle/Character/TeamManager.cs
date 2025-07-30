@@ -79,16 +79,14 @@ public class TeamManager : MonoBehaviour
                 GameObject modelInstance = Instantiate(prefab, _battleCharacters[index].transform, false);  //생성
                 modelInstance.name = prefab.name.Replace("(Clone)", "");
 
+                var aicharacter = modelInstance.GetComponent<AICharacter>(); //컴포넌트 제거
+                if (aicharacter != null) aicharacter.enabled = false;
 
                 var agent = modelInstance.GetComponent<NavMeshAgent>();//컴포넌트 제거
                 if (agent != null) agent.enabled = false;
 
                 var collider = modelInstance.GetComponent<Collider>();//컴포넌트 제거
                 if (collider != null) collider.enabled = false;
-
-                var ai = modelInstance.GetComponent<MonoBehaviour>(); //컴포넌트 제거
-                if (ai != null) ai.enabled = false;
-
 
                 _battleCharacters[index].CharacterObject = modelInstance.transform;//값 세팅
                 _battleCharacters[index].PivotSet(); //피벗 설정 (손, 머리 등)

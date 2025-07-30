@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 public enum FishingResult
 {
@@ -10,6 +11,7 @@ public enum FishingResult
 public class FishingBuilding : BuildingBase
 {
     [SerializeField] private Renderer buildingRenderer;
+    private FishingText _fishingText;
 
     public GameObject collectIcon;
     
@@ -19,7 +21,7 @@ public class FishingBuilding : BuildingBase
     private void Awake()
     {
         _textAnim = Managers.UI.ShowPopupUI<UI_TextAnimation>();
-
+        _fishingText = GetComponentInChildren<FishingText>();
     }
 
     private void OnDestroy()
@@ -62,15 +64,18 @@ public class FishingBuilding : BuildingBase
         {
             case FishingResult.Jackpot:
                 Debug.Log("월척 희귀한 물고기 획득!");
+                _fishingText.PlayResult(FishingResult.Jackpot);
                 StoredCount++; // 월척도 카운트에 포함
                 break;
 
             case FishingResult.Normal:
                 Debug.Log(" 평범한 물고기 획득");
+                _fishingText.PlayResult(FishingResult.Normal);
                 StoredCount++;
                 break;
 
             case FishingResult.Miss:
+                _fishingText.PlayResult(FishingResult.Miss);
                 Debug.Log(" 놓침");
                 break;
         }
@@ -108,6 +113,11 @@ public class FishingBuilding : BuildingBase
         {
             Collect();
         }
+    }
+
+    public void FishingText()
+    {
+
     }
 
 }
