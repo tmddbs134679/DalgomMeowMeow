@@ -17,19 +17,13 @@ public class AICharacter : BaseObject
     public List<string> EquippedItemIds { get; set; } = new();
     public Character Data { get; set; }
 
+    private AICharacterLevelEffectHandler levelEffectHandler;
+
     [Header("AI 캐릭터 현재 상태")]
     public Define.EAIState CurrentState;
 
     [Header("AI 캐릭터 배정된 건물")]
     public BuildingBase currentBuilding;
-
-    //[Header("캐릭터 스탯")]
-    //public float Stamina;
-    //public float MaxStamina;
-    //public float Atk;
-    //public float Hp;
-    //public float MoveSpeed;
-
     
     #region Bone
     [SerializeField] private Transform hatBone;
@@ -94,6 +88,7 @@ public class AICharacter : BaseObject
     [HideInInspector]
     public ECropType _ecropType;
 
+
     #endregion
 
 
@@ -130,10 +125,11 @@ public class AICharacter : BaseObject
     private void Start()
     {
         _camera = Camera.main;
+        infoButton = transform.Find("Canvas").gameObject;
         head = transform.Find("root/pelvis/spine_01/spine_02/spine_03/neck_01");
         nameText = transform.Find("Canvas/Name").GetComponent<TextMeshProUGUI>();
         nameText.text = Data.Name;
-        infoButton = transform.Find("Canvas").gameObject;
+        
     }
 
     private void Update()
@@ -165,12 +161,14 @@ public class AICharacter : BaseObject
     #region 생성 시 초기화 및 불러오기
     public override bool Init()
     {
+        levelEffectHandler = GetComponentInChildren<AICharacterLevelEffectHandler>();
         nav = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         skinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
         characterAction = GetComponent<CharacterAction>();
         groundLayer = LayerMask.GetMask("Ground");
         currentEmo = skinnedMeshRenderer.materials[1];
+
         return true;
     }
 
@@ -186,6 +184,8 @@ public class AICharacter : BaseObject
 
         // TODO : FSM 등 상태 적용
         ControllerRegister();
+        levelEffectHandler.Init();
+
     }
     #endregion
 
@@ -248,13 +248,16 @@ public class AICharacter : BaseObject
     #region 캐릭터 스탯 관련
     public void OnLevelUp()
     {
+        //스탯
         Data.MoveSpeed += 0.5f; // 레벨업 시 이동 속도 증가
         Data.MoveSpeed = MathF.Min(6, Data.MoveSpeed);
         Data.MaxExp *= 1.3f; // 레벨업 시 최대 경험치 증가
         Data.Atk += 2f; // 레벨업 시 공격력 증가
         Data.MaxStamina += 5f; // 레벨업 시 최대 스태미너 증가
         Data.Level++;
-        Managers.Debug.Log($"레벨업! 현재 레벨: {Data.Level}", Define.EDebugType.AI);
+
+        levelEffectHandler.PlayLevelUpEffect(_camera);
+
         Levelup?.Invoke(Data.Level);
     }
 
@@ -266,7 +269,6 @@ public class AICharacter : BaseObject
             Data.CurrentExp -= Data.MaxExp;
             OnLevelUp();
         }
-        Managers.Debug.Log($"경험치 획득: {value}, 현재 경험치: {Data.CurrentExp}, 최대 경험치: {Data.MaxExp}", Define.EDebugType.AI);
         CharacterGainExp?.Invoke(value);
     }
 
