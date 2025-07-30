@@ -304,20 +304,20 @@ public class BuildingPlacer : MonoBehaviour
 
         gridMap.LoadMap();
         buildMap.LoadBuild();
-        StartCoroutine(RebuildNavMeshAfterDestroy());
-        Managers.AI.AllRelocateToNearestNavMesh();
         buildMap.ColliderAllOn();
         isLongPressAcceptBuild = false;
         OriginTempOBJ = null;
         _PreviewOBJ = null;
         OnAutoSave?.Invoke();
+        StartCoroutine(RebuildNavMeshAfterDestroy());
     }
 
     //여러개 삭제시에는 프레임이느려져서 네브매쉬가 destroy가 제대로 안된 상태에서 재생성 할 수 있음
     IEnumerator RebuildNavMeshAfterDestroy()
     {
-        yield return null; // 다음 프레임까지 기다림
+        yield return new WaitForSeconds(0.2f); // 다음 프레임까지 기다림
         surface.BuildNavMesh(); // 이제 완전히 제거된 후 갱신
+        //Managers.AI.ValidateNavMeshPosition()
     }
 
     /// <summary>
@@ -541,12 +541,12 @@ public class BuildingPlacer : MonoBehaviour
         gridMap.LoadMap(); //맵갱신
         buildMap.LoadBuild(); //오브젝트 갱신
         surface.BuildNavMesh(); //네브매쉬 깔기
-        Managers.AI.AllRelocateToNearestNavMesh();
         buildMap.ColliderAllOn();
         isLongPressAcceptBuild = false;
         OriginTempOBJ = null;
         _PreviewOBJ = null;
         OnAutoSave?.Invoke();
+        Managers.AI.AllRelocateToNearestNavMesh();
     }
 
 

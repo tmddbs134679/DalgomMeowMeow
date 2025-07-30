@@ -76,13 +76,13 @@ public class DraggableObject : MonoBehaviour, IDraggable
     //드래그 드롭
     public void OnDragEnd()
     {
-        if (BuildingPlacer.Instance.isLongPressAcceptBuild == true || BuildingPlacer.Instance.isSequenceBuild == true)
+        if (BuildingPlacer.Instance.isLongPressAcceptBuild == true || BuildingPlacer.Instance.isSequenceBuild == true||BuildingPlacer.Instance.isSequenceRemove)
             BuildingPlacer.Instance.isSelect = false;
     }
     //드래그 하지않고 눌렀다 떼기
     public void OnClickRelease()
     {
-        if (BuildingPlacer.Instance.isLongPressAcceptBuild == true || BuildingPlacer.Instance.isSequenceBuild == true)
+        if (BuildingPlacer.Instance.isLongPressAcceptBuild == true || BuildingPlacer.Instance.isSequenceBuild == true||BuildingPlacer.Instance.isSequenceRemove)
             BuildingPlacer.Instance.isSelect = false;
     }
     //꾹누르기
