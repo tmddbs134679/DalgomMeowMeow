@@ -23,6 +23,7 @@ public class GameData
 
     public bool BGMOn = true;
     public bool EffectSoundOn = true;
+    
 
     public int MaxCountInScene = 3;
 
@@ -49,7 +50,7 @@ public class GameManager
     public Dictionary<string, AICharacter> CharacterInStoreScene = new();
 
     public bool IsLoaded = false;
-
+    public bool RewardMinigame = false;
     // 씬에 존재하는 최대 캐릭터 수, 5명으로 제한
     public int MainSceneCount = 0; // 메인 씬에 존재하는 캐릭터 수
 
