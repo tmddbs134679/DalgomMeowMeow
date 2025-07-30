@@ -133,6 +133,7 @@ public class Define
         Pot,
         Travel,
         UnLockStage,
+        Remove,
     }
 
     public enum EEquipmentType

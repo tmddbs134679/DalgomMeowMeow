@@ -16,6 +16,7 @@ public class UI_BuildAction : UI_Popup
         AcceptButton,
         CancelButton,
         RemoveButton,
+        RemoveRoadButton,
     }
 
     enum Texts
@@ -46,6 +47,7 @@ public class UI_BuildAction : UI_Popup
         GetButton((int)Buttons.AcceptButton).gameObject.BindEvent(AcceptBuild);
         GetButton((int)Buttons.CancelButton).gameObject.BindEvent(CancelBuild);
         GetButton((int)Buttons.RemoveButton).gameObject.BindEvent(RemoveBuild);
+        GetButton((int)Buttons.RemoveRoadButton).gameObject.BindEvent(RemoveRoadBuild);
         return true;
     }
 
@@ -81,11 +83,12 @@ public class UI_BuildAction : UI_Popup
 
         }
         BuildingPlacer.Instance.isSequenceBuild = false;
-
+        BuildingPlacer.Instance.isSequenceRemove = false;
     }
     private void CancelBuild()
     {
         BuildingPlacer.Instance.isSequenceBuild = false;
+        BuildingPlacer.Instance.isSequenceRemove = false;
         BuildingPlacer.Instance.OnBuildingCancel?.Invoke();
         BuildingPlacer.Instance.CancelBuild();
         BuildingPlacer.Instance.uI_BuildAction.SetActive(false);
@@ -100,6 +103,12 @@ public class UI_BuildAction : UI_Popup
             BuildingPlacer.Instance.uI_BuildAction.SetActive(false);
             BuildingPlacer.Instance.RemoveBuild();
         }
+    }
+    private void RemoveRoadBuild()
+    {
+        BuildingPlacer.Instance.OnBuildingCancel?.Invoke();
+        BuildingPlacer.Instance.uI_BuildAction.SetActive(false);
+        BuildingPlacer.Instance.RemoveRoad();
     }
     private void Update()
     {
