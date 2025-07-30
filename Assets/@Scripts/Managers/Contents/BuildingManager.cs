@@ -38,6 +38,11 @@ public class BuildingManager : MonoBehaviour
         float deltaTime = Time.deltaTime;
         foreach (var building in _buildings.ToArray())
         {
+            if (building == null)
+            {
+                _buildings.Remove(building); // null 제거
+                continue;
+            }
             building.Tick(deltaTime);
         }
     }

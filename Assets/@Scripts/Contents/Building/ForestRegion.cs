@@ -69,15 +69,11 @@ public class ForestRegion : BaseObject
         }
         if (IsUnlocked)
         {
-            Managers.Debug.Log($"{Id}해제된 지역", Define.EDebugType.Building);
-            // Debug.Log($"{Id}해제된 지역"); 
             return;
         }
         if (!IsUnlocked)
         {
             ForestBattleContext.PendingUnlockForestId = Id;
-            Managers.Debug.Log($"[TEST] Forest {Id} 클릭됨 → BattleScene 이동",Define.EDebugType.Building);
-            // Debug.Log($"[TEST] Forest {Id} 클릭됨 → BattleScene 이동");
             UI_ForestPopup popup = Managers.UI.ShowPopupUI<UI_ForestPopup>();
             //전투 씬 이동
         }
