@@ -1,4 +1,3 @@
-
 public class AIState : BaseState<AICharacter>
 {
     protected Define.EAIState state;

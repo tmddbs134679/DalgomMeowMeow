@@ -1,8 +1,5 @@
 using System;
-using System.Collections;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
 namespace Scripts.Contents.AI.FSM.State
 {
     public class CharacterMoveToState : AIState

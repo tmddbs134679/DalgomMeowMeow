@@ -3,8 +3,6 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 using Scripts.Contents.AI.FSM.State;
-using System.Collections;
-using Unity.VisualScripting;
 using System.Threading.Tasks;
 using UnityEditor;
 
@@ -198,7 +196,7 @@ public class AIController : BaseController<AICharacter>
 
     #endregion
 
-        #region 건물 탐색
+    #region 건물 탐색
 
     public Vector3 FindNearestBuilding(Define.EAIState action)
     {
@@ -352,25 +350,11 @@ public class AIController : BaseController<AICharacter>
                 Random.Range(-range.z, range.z)
             );
 
-            //if (IsNearWorkBuilding(randomPoint))
-            //    continue;
-
             if (NavMesh.SamplePosition(randomPoint, out var hit, 1f, NavMesh.AllAreas))
                 return hit.position;
         }
 
         return origin;
-    }
-
-    private bool IsNearWorkBuilding(Vector3 point)
-    {
-        foreach (var building in BuildingManager.Instance._buildings)
-        {
-            float distance = Vector3.Distance(building.transform.position, point);
-            if (distance < 2f)
-                return true;
-        }
-        return false;
     }
 
     #endregion

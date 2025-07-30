@@ -1,7 +1,3 @@
-using TMPro;
-using Unity.PlasticSCM.Editor.WebApi;
-using UnityEngine;
-using UnityEngine.TextCore.Text;
 
 namespace Scripts.Contents.AI.FSM.State
 {

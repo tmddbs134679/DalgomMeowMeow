@@ -2,15 +2,12 @@ using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using Scripts.Contents.AI.FSM.State;
+using TMPro;
 using Unity.Mathematics;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.EventSystems;
-using UnityEngine.TextCore.Text;
-using UnityEngine.UIElements;
 using static Define;
-using static UnityEditor.MaterialProperty;
 
 public class AICharacter : BaseObject
 {
@@ -33,10 +30,7 @@ public class AICharacter : BaseObject
     //public float Hp;
     //public float MoveSpeed;
 
-    [Header("캐릭터 현재 위치")]
-    public bool inMain = false; // 캐릭터가 메인 안에 있는지 여부
-
-    public ECropType _ecropType;
+    
     #region Bone
     [SerializeField] private Transform hatBone;
     [SerializeField] private Transform bagBone;
@@ -95,6 +89,11 @@ public class AICharacter : BaseObject
     [HideInInspector]
     public bool IsReplica = false;
 
+    [HideInInspector]
+    public bool inMain = false; // 캐릭터가 메인 안에 있는지 여부
+    [HideInInspector]
+    public ECropType _ecropType;
+
     #endregion
 
 
@@ -110,11 +109,17 @@ public class AICharacter : BaseObject
 
     #endregion
 
+    #region WorldSpace
     private GameObject infoButton;
+    private TextMeshProUGUI nameText;
+    #endregion
+
+    #region OnClickCharacter
     private float clickStartTime = 0f;
     private float longPressThreshold = 0.2f;
     private LayerMask groundLayer;
     private bool isTweening;
+    #endregion
 
     private void Awake()
     {
@@ -126,8 +131,9 @@ public class AICharacter : BaseObject
     {
         _camera = Camera.main;
         head = transform.Find("root/pelvis/spine_01/spine_02/spine_03/neck_01");
+        nameText = transform.Find("Canvas/Name").GetComponent<TextMeshProUGUI>();
+        nameText.text = Data.Name;
         infoButton = transform.Find("Canvas").gameObject;
-
     }
 
     private void Update()
@@ -245,6 +251,8 @@ public class AICharacter : BaseObject
         Data.MoveSpeed += 0.5f; // 레벨업 시 이동 속도 증가
         Data.MoveSpeed = MathF.Min(6, Data.MoveSpeed);
         Data.MaxExp *= 1.3f; // 레벨업 시 최대 경험치 증가
+        Data.Atk += 2f; // 레벨업 시 공격력 증가
+        Data.MaxStamina += 5f; // 레벨업 시 최대 스태미너 증가
         Data.Level++;
         Managers.Debug.Log($"레벨업! 현재 레벨: {Data.Level}", Define.EDebugType.AI);
         Levelup?.Invoke(Data.Level);
@@ -269,13 +277,11 @@ public class AICharacter : BaseObject
             return;
         }
         Data.CurrentStamina = Mathf.Max(0, Data.CurrentStamina - amount);
-        //Managers.Debug.Log($"스태미나 사용 : {amount}, 남은 스태미나: {CharacterData.CurrentStamina}", Define.EDebugType.AI);
     }
 
     public void RecoverStamina(float amount)
     {
         Data.CurrentStamina = Mathf.Min(Data.MaxStamina, Data.CurrentStamina + amount);
-        //Managers.Debug.Log($"스태미나 회복 : {amount}, 현재: {CharacterData.CurrentStamina}", Define.EDebugType.AI);
     }
     #endregion
 
@@ -414,8 +420,6 @@ public class AICharacter : BaseObject
                 this.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
                 Managers.AI.ValidateNavMeshPosition(this);
             }
-            //_camera.orthographicSize = 2f;
-            //_camera.transform.position = new Vector3(transform.position.x - 20.3f, 30.5f, transform.position.z - 20.6f);
             isFollowing = false;
             SetAnimation(CurrentAnimation);
             clickStartTime = 0f;
@@ -460,7 +464,6 @@ public class AICharacter : BaseObject
 
     public void ReplicaSetting(Character character)
     {
-        // Managers.Game.EquipCharacterVisual(this, character);
         Data = character;
 
         Managers.Equipment.ApplyEquipmentPreview(this, character);

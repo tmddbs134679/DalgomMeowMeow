@@ -16,16 +16,5 @@ public class Room : MonoBehaviour
         isLocked = locked;
     }
 
-    private void OnMouseDown()
-    {
-        if (isLocked)
-        {
-            Debug.Log($"Room {GridPosition} is locked.");
-        }
-        else
-        {
-            Debug.Log($"Room {GridPosition} entered!");
-            //Managers.Room.UnlockFrom(this, 0);
-        }
-    }
+    
 }
