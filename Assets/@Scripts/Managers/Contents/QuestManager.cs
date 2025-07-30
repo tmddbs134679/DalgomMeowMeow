@@ -255,9 +255,10 @@ public class QuestManager : MonoBehaviour
     }
     public bool IsQuestCompleted(string questId)
     {
-        // return _quests.TryGetValue(questId, out var quest) &&
-        //        quest.State == QuestProgressState.Completed || quest.State == QuestProgressState.Rewarded;
-        return true;
+        if (!_quests.TryGetValue(questId, out var quest) || quest == null)
+            return false;
+
+        return quest.State == QuestProgressState.Completed || quest.State == QuestProgressState.Rewarded;
     }
     
     
@@ -297,8 +298,10 @@ public class QuestManager : MonoBehaviour
 
         if (!UnlockedContent.Contains(contentId))
         {
-            UnlockedContent.Add(contentId);          
-            //  콘텐츠 목록에 연결된 추가 해금 항목도 처리
+            UnlockedContent.Add(contentId);
+
+            
+            // 🟢 콘텐츠 목록에 연결된 추가 해금 항목도 처리
             if (Managers.Data.UnlockContentDic.TryGetValue(contentId, out var unlockData))
             {
                 foreach (var item in unlockData.Items)
