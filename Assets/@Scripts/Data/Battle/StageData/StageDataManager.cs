@@ -67,7 +67,6 @@ public class StageDataManager : MonoBehaviour
             { 
                 PlayerCharacter[k].CurrentExp += manager.PendingExpReward;
             }
-            Managers.Debug.Log($"Stage Clear! Gold: {manager.PendingGoldReward}, Exp: {manager.PendingExpReward}",Define.EDebugType.AI);
             manager.ClearReward();
         }
     }

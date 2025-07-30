@@ -14,7 +14,6 @@ public class CabbageButtonTrigger : MonoBehaviour
 
         if (cookButton == null)
         {
-            Debug.LogError("cookButton not found!");
             return;
         }
 

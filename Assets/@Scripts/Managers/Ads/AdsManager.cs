@@ -30,7 +30,6 @@ public class AdsManager : IUnityAdsInitializationListener, IUnityAdsLoadListener
     // 초기화 콜백
     public void OnInitializationComplete()
     {
-        Managers.Debug.Log("광고 초기화 완료",Define.EDebugType.AD);
         Advertisement.Load(interstitialAdUnitId, this); // 광고 미리 로드
     }
 
@@ -40,7 +39,6 @@ public class AdsManager : IUnityAdsInitializationListener, IUnityAdsLoadListener
         if (placementId == interstitialAdUnitId)
         {
             _isAdLoaded = true;
-            Managers.Debug.Log("광고 로딩 완료!", Define.EDebugType.AD);
         }
     }
 
@@ -54,7 +52,6 @@ public class AdsManager : IUnityAdsInitializationListener, IUnityAdsLoadListener
         }
         else
         {
-            Managers.Debug.Log("광고 아직 로딩 안됨, 로딩 후 재시도 필요", Define.EDebugType.AD);
             Advertisement.Load(interstitialAdUnitId, this);
         }
     }
@@ -67,14 +64,12 @@ public class AdsManager : IUnityAdsInitializationListener, IUnityAdsLoadListener
         {
             if (showCompletionState == UnityAdsShowCompletionState.COMPLETED)
             {
-                Managers.Debug.Log("보상형 광고 시청 완료 - 보상 지급", Define.EDebugType.AD);
                 _onRewardedCallback?.Invoke(); // 보상 콜백 실행
                 Advertisement.Load(rewardedAdUnitId, this); // 다음 광고 로드
                 _isAdLoaded = true;
             }
             else
             {
-                Managers.Debug.Log("광고 스킵됨 - 보상 지급 안됨", Define.EDebugType.AD);
             }
 
             _onRewardedCallback = null; // 콜백 해제
