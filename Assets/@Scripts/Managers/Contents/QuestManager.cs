@@ -220,7 +220,6 @@ public class QuestManager : MonoBehaviour
 
             if (allMet)
             {
-                Debug.Log($"[해금 검사] 콘텐츠: {contentId}");
                 Unlock(contentId); // 해금 실행
             }
         }
@@ -250,7 +249,6 @@ public class QuestManager : MonoBehaviour
 
         if (allMet)
         {
-            // Debug.Log($"[해금 조건 달성] 콘텐츠: {contentId}");
             Unlock(contentId);
             Managers.Game.IncreaseMaxCountInScene++;
             Managers.UI.ShowToast("해금완료");
@@ -258,8 +256,10 @@ public class QuestManager : MonoBehaviour
     }
     public bool IsQuestCompleted(string questId)
     {
-        return _quests.TryGetValue(questId, out var quest) &&
-               quest.State == QuestProgressState.Completed || quest.State == QuestProgressState.Rewarded;
+        if (!_quests.TryGetValue(questId, out var quest) || quest == null)
+            return false;
+
+        return quest.State == QuestProgressState.Completed || quest.State == QuestProgressState.Rewarded;
     }
     
     
@@ -301,7 +301,6 @@ public class QuestManager : MonoBehaviour
         {
             UnlockedContent.Add(contentId);
 
-            Debug.Log($"해금 완료: {contentId}");
             
             // 🟢 콘텐츠 목록에 연결된 추가 해금 항목도 처리
             if (Managers.Data.UnlockContentDic.TryGetValue(contentId, out var unlockData))
