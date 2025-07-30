@@ -14,6 +14,6 @@ public class BattleScene : BaseScene
 
     public override void Clear()
     {
-      
+        Managers.Game.SaveGame();
     }
 }

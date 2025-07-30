@@ -138,7 +138,6 @@ public abstract class BuildingBase : BaseObject
     }
     protected virtual void ApplyLevel()
     {
-        Managers.Debug.Log($"[CookingBuilding] 업그레이드 완료 → Lv.{CurrentLevel}",Define.EDebugType.Building);
         //Debug.Log($"[CookingBuilding] 업그레이드 완료 → Lv.{CurrentLevel}, 생산 요리: {LevelData.ProducedFood.Name}");
         // 외형 변경, 사운드 등도 여기에
     }

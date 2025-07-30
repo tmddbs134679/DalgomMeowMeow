@@ -54,6 +54,7 @@ public class  Character
             UniqueId = $"{dataid}_UID_{Guid.NewGuid().ToString().Substring(0, 8)}";
 
         DataId = dataid;
+        Level = 1; // 초기 레벨 설정
         Pos = new Vector3Data(position);
         RoomPos = new Vector3Data(Vector3.zero);
         Hp = Data?.MaxHp ?? 100f; 

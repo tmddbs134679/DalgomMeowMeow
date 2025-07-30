@@ -30,7 +30,7 @@ public class BuildingPlacer : MonoBehaviour
     [SerializeField] private float _heightOffset = 0.5f;
     public Collider[] TempCollider;
     public UI_BuildAction uI_BuildAction;
-
+    public UI_LongPressGauge uI_LongPressGauge;
     public GameObject OriginTempOBJ; //롱프레스쪽 임시저장 오브젝트
     public static event Action<BaseBuildingSO> OnBuildingAccepted;
     public DragController dragController;
@@ -66,7 +66,7 @@ public class BuildingPlacer : MonoBehaviour
     public bool isSequenceRemove;//연속삭제일경우 true
     public bool isGold;
     private string buildType;
-            BuildingBase buildBase;
+    BuildingBase buildBase;
 
     #endregion
     #region 클래스 선언,초기화
@@ -86,6 +86,9 @@ public class BuildingPlacer : MonoBehaviour
         InitializeMaps();
         uI_BuildAction = (Managers.UI.SceneUI as UI_GameScene)._uI_BuildAction;
         uI_BuildAction.SetActive(false);
+      //  uI_LongPressGauge = (Managers.UI.SceneUI as UI_GameScene)._uI_LongPressGauge;
+      //  uI_LongPressGauge.SetActive(false);
+
     }
 
     void InitializeMaps()
@@ -199,7 +202,7 @@ public class BuildingPlacer : MonoBehaviour
         isSequenceRemove = true;
         isAI = true;
         isSelect = true;
-        buildMap.ColliderAllOff();
+        //  buildMap.ColliderAllOff();
         tempTypeNum = (int)type;
         _saveBuildingSO = buildingSO[(int)type];
         return true;
@@ -212,8 +215,8 @@ public class BuildingPlacer : MonoBehaviour
     {
         if (!isSequenceBuild || _PreviewOBJ != null)
             return; // 조건이 안 맞으면 무시
-        Instance.uI_BuildAction.SetActive(true);
-
+        uI_BuildAction.SetActive(true);
+        uI_BuildAction.ButtonSetAtive();
         // 프리뷰 생성
         _PreviewOBJ = Instantiate(_saveBuildingSO.previewOBJ,
             new Vector3(point.x, point.y + _heightOffset, point.z),
@@ -233,10 +236,10 @@ public class BuildingPlacer : MonoBehaviour
     {
         if (!isSequenceRemove || _PreviewOBJ != null)
             return; // 조건이 안 맞으면 무시
-        buildMap.ColliderAllOff();
-        Instance.uI_BuildAction.SetActive(true);
-
-        _PreviewOBJ = Instantiate(buildingSO[16].previewOBJ,
+                    //  buildMap.ColliderAllOff();
+        uI_BuildAction.SetActive(true);
+        uI_BuildAction.ButtonSetAtive();
+        _PreviewOBJ = Instantiate(buildingSO[(int)Define.EBuildingType.RemoveRoad].previewOBJ, //수정필요1355
        new Vector3(point.x, point.y + _heightOffset, point.z),
        Quaternion.identity);
 
@@ -261,6 +264,10 @@ public class BuildingPlacer : MonoBehaviour
         if (hits == null || hits.Length == 0)
         {
             Debug.Log("제거할 도로 없음");
+            Destroy(OriginTempOBJ);
+            Destroy(_PreviewOBJ);
+            OriginTempOBJ = null;
+            _PreviewOBJ = null;
             return;
         }
 
@@ -283,27 +290,35 @@ public class BuildingPlacer : MonoBehaviour
                 };
                 _arrayBuildPos.RemoveBuildData(_CurBuildData);
                 buildMap.Remove(buildBase.UniqueId);
-                        ClearTile();
+                Destroy(obj);
+                ClearTile();
             }
             buildBase = null;
+
+
         }
 
 
+        Destroy(OriginTempOBJ);
+        Destroy(_PreviewOBJ);
 
         gridMap.LoadMap();
         buildMap.LoadBuild();
-        surface.BuildNavMesh();
-        Managers.AI.AllRelocateToNearestNavMesh();
         buildMap.ColliderAllOn();
         isLongPressAcceptBuild = false;
-        Destroy(OriginTempOBJ);
-        Destroy(_PreviewOBJ);
         OriginTempOBJ = null;
         _PreviewOBJ = null;
         OnAutoSave?.Invoke();
+        StartCoroutine(RebuildNavMeshAfterDestroy());
     }
 
-
+    //여러개 삭제시에는 프레임이느려져서 네브매쉬가 destroy가 제대로 안된 상태에서 재생성 할 수 있음
+    IEnumerator RebuildNavMeshAfterDestroy()
+    {
+        yield return new WaitForSeconds(0.2f); // 다음 프레임까지 기다림
+        surface.BuildNavMesh(); // 이제 완전히 제거된 후 갱신
+        //Managers.AI.ValidateNavMeshPosition()
+    }
 
     /// <summary>
     /// 설치 재료(돈) 판별
@@ -526,12 +541,12 @@ public class BuildingPlacer : MonoBehaviour
         gridMap.LoadMap(); //맵갱신
         buildMap.LoadBuild(); //오브젝트 갱신
         surface.BuildNavMesh(); //네브매쉬 깔기
-        Managers.AI.AllRelocateToNearestNavMesh();
         buildMap.ColliderAllOn();
         isLongPressAcceptBuild = false;
         OriginTempOBJ = null;
         _PreviewOBJ = null;
         OnAutoSave?.Invoke();
+        Managers.AI.AllRelocateToNearestNavMesh();
     }
 
 

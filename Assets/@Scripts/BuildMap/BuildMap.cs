@@ -59,6 +59,7 @@ public class BuildMap : MonoBehaviour
 
     public void LoadBuild()
     {
+        
         foreach (BuildData data in _arrayBuildPos.baseBuilding)
         {
             int key = data.UniqueId;
@@ -116,7 +117,6 @@ public class BuildMap : MonoBehaviour
         }
                 _spawnedBuilds.Remove(key);
     }
-
 public void ColliderAllOn()
 {
     foreach (BuildData data in _arrayBuildPos.baseBuilding)
@@ -127,9 +127,7 @@ public void ColliderAllOn()
             Collider col = obj.GetComponent<Collider>();
             if (col != null)
             {
-                col.layerOverridePriority = 0; // 비활성화
-                col.excludeLayers = 0;         // 레이어 제외 없음
-                col.includeLayers = 0;         // 레이어 포함 없음 (기본 동작)
+                col.enabled = true; //  콜라이더 켜기
             }
             else
             {
@@ -149,8 +147,7 @@ public void ColliderAllOff()
             Collider col = obj.GetComponent<Collider>();
             if (col != null)
             {
-                col.layerOverridePriority = 1;
-                col.excludeLayers = LayerMask.GetMask("Default"); // 예: Default 레이어를 무시
+                col.enabled = false; //  콜라이더 끄기
             }
             else
             {

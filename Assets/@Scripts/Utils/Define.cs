@@ -113,7 +113,7 @@ public class Define
         CharacterStoreScene,
     }
 
-    //BuildSo의 넘버링과 순서가 동일해야함
+    //BuildSo의 넘버링과 순서가 동일해야함,SO 닉네임을 정할 때 앞에 번호를 붙여주면 해결
     public enum EBuildingType
     {
         None,
@@ -132,8 +132,8 @@ public class Define
         CarrotFarm,
         Pot,
         Travel,
+        RemoveRoad,
         UnLockStage,
-        Remove,
     }
 
     public enum EEquipmentType

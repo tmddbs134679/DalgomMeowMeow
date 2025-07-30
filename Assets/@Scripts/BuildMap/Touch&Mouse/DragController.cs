@@ -15,7 +15,8 @@ public class DragController : MonoBehaviour
 
     private IDraggable currentTarget = null;
     private bool isPointerDown = false;
-    private float pointerDownTimer = 0f;
+    public bool IsPointDown{ get => isPointerDown; set => isPointerDown = value; }
+    public float pointerDownTimer = 0f;
     private bool isDelay = false;
     private float delayTime = 0f;
     private Vector3 dragStartPos;   // 클릭한 화면상의 위치
@@ -40,6 +41,7 @@ public class DragController : MonoBehaviour
 
         if (isPointerDown)
         {
+                        //BuildingPlacer.Instance.uI_LongPressGauge.SetActive(true);
             pointerDownTimer += Time.deltaTime;
 
             if (pointerDownTimer >= longPressThreshold)
@@ -130,10 +132,15 @@ public class DragController : MonoBehaviour
             isDelay = false;
             isPointerDown = false;
 
-            if (isDragging)
-            {
-                currentTarget.OnDragEnd();
-            }
+    if (isDragging)
+    {
+        currentTarget.OnDragEnd();
+    }
+    else
+    {
+        // 클릭만 하고 뗀 경우 처리
+        currentTarget.OnClickRelease(); // <- 이걸 인터페이스에 추가하거나 적절히 구현
+    }
 
             isDragging = false;
             currentTarget = null;
