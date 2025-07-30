@@ -29,22 +29,6 @@ public class RoomManager
         new Vector3(0,1,-1),
     };
 
-
-    //public void UnlockRoom(Vector2Int from, int directionIndex)
-    //{
-    //    Vector2Int newPos = from + directions[directionIndex];
-    //    if (rooms.ContainsKey(newPos)) return;
-
-    //    Room room = CreateRoom(newPos);
-    //    room.SetLocked(false);
-    //}
-
-    //public void UnlockFrom(Room room, int directionIndex)
-    //{
-    //    UnlockRoom(room.GridPosition, directionIndex);
-    //}
-    
-
     public Room CreateRoom(Vector3 gridPos)
     {
         if(rooms.ContainsKey(gridPos))

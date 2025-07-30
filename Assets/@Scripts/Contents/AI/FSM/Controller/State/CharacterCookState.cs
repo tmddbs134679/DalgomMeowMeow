@@ -1,6 +1,3 @@
-using UnityEngine;
-using UnityEngine.TextCore.Text;
-
 namespace Scripts.Contents.AI.FSM.State
 {
     public class CharacterCookState : AIState

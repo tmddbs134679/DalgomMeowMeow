@@ -46,7 +46,6 @@ namespace Scripts.Contents.AI.FSM.State
         {
             base.OnExit();
             character.currentBuilding.DisconnectAnimal();
-            character.transform.position -= new Vector3(0, 0.5284f, -0.34f); // 약간 위로 올려서 수면 위치 조정
 
             character.SetEmotion(Random.Range(0,character.emo.EmotionMaterials.Length)); // Reset emotion to a random value
             if (character.currentBuilding != null)
