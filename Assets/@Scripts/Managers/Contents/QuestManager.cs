@@ -97,7 +97,6 @@ public class QuestManager : MonoBehaviour
             {
                 quest.State = QuestProgressState.InProgress;
                 quest.SetProgress(carriedProgress); //  누적 진행도 반영
-                Debug.Log($"[퀘스트 시작] {quest.QuestData.Title} (진행도: {quest.Progress}/{quest.QuestData.GoalCount})");
             }
         }
     }
