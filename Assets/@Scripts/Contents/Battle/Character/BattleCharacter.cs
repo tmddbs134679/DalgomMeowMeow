@@ -251,6 +251,7 @@ public class BattleCharacter : BaseObject
         {
             int rand = UnityEngine.Random.Range(1, 5);
             Managers.Sound.Play(Define.ESound.Effect, $"Hit{rand}"); // 피격 사운드 재생
+
             if (_damageFlashCoroutine != null)
                 StopCoroutine(_damageFlashCoroutine);
             _damageFlashCoroutine = StartCoroutine(DamageFlash());
@@ -265,8 +266,10 @@ public class BattleCharacter : BaseObject
 
     public void Effect(Color color)
     {
+        _heal.transform.position = this.transform.position;
         var particle = _heal.main; // 힐 파티클 색상 변경
         particle.startColor = color;
+
         _heal.Play(); // 힐 파티클 재생
     }
 
