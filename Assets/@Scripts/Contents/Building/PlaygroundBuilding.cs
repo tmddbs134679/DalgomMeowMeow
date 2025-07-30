@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 public class PlaygroundBuilding : BuildingBase
 {
@@ -36,7 +37,7 @@ public class PlaygroundBuilding : BuildingBase
     {
         base.DisconnectAnimal();
 
-       
+        _textAnim.gameObject.SetActive(false);
 
     }
 
