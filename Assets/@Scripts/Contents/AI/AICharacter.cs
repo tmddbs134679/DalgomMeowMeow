@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using Scripts.Contents.AI.FSM.State;
@@ -8,6 +9,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.EventSystems;
 using static Define;
+using static Unity.Burst.Intrinsics.X86.Avx;
 
 public class AICharacter : BaseObject
 {
@@ -94,6 +96,9 @@ public class AICharacter : BaseObject
     [HideInInspector]
     public ECropType _ecropType;
 
+    [HideInInspector]
+    private ParticleSystem particle;
+
     #endregion
 
 
@@ -111,6 +116,8 @@ public class AICharacter : BaseObject
 
     #region WorldSpace
     private GameObject infoButton;
+    private GameObject levelCanvas;
+    private TextMeshProUGUI levelUPText;
     private TextMeshProUGUI nameText;
     #endregion
 
@@ -130,10 +137,13 @@ public class AICharacter : BaseObject
     private void Start()
     {
         _camera = Camera.main;
+        levelCanvas = transform.Find("Level").gameObject;
+        infoButton = transform.Find("Canvas").gameObject;
         head = transform.Find("root/pelvis/spine_01/spine_02/spine_03/neck_01");
+        particle = transform.Find("Particle").GetComponent<ParticleSystem>();
+        levelUPText = transform.Find("Level/LevelUpText").GetComponent<TextMeshProUGUI>();
         nameText = transform.Find("Canvas/Name").GetComponent<TextMeshProUGUI>();
         nameText.text = Data.Name;
-        infoButton = transform.Find("Canvas").gameObject;
     }
 
     private void Update()
@@ -248,15 +258,36 @@ public class AICharacter : BaseObject
     #region 캐릭터 스탯 관련
     public void OnLevelUp()
     {
+        //스탯
         Data.MoveSpeed += 0.5f; // 레벨업 시 이동 속도 증가
         Data.MoveSpeed = MathF.Min(6, Data.MoveSpeed);
         Data.MaxExp *= 1.3f; // 레벨업 시 최대 경험치 증가
         Data.Atk += 2f; // 레벨업 시 공격력 증가
         Data.MaxStamina += 5f; // 레벨업 시 최대 스태미너 증가
         Data.Level++;
-        Managers.Debug.Log($"레벨업! 현재 레벨: {Data.Level}", Define.EDebugType.AI);
+        //이펙트
+        particle.Stop();
+        particle.Play();
+        levelCanvas.SetActive(true);
+        levelCanvas.transform.LookAt(levelCanvas.transform.position + _camera.transform.forward);
+        levelCanvas.transform.forward = -_camera.transform.forward;
+        Sequence seq = DOTween.Sequence();
+        seq.Append(levelUPText.transform.DOMoveY(levelUPText.transform.position.y + 1f, 3f)); // 위로 상승
+        seq.Join(levelUPText.DOFade(0f, 3f)); // 동시에 투명도 감소
+        StartCoroutine(SetActiveFalse());
+
         Levelup?.Invoke(Data.Level);
     }
+
+    IEnumerator SetActiveFalse()
+    {
+        yield return new WaitForSeconds(3.1f);
+        levelUPText.transform.localPosition = new Vector3(0, 2, 0);
+        levelUPText.color = Color.green; // 투명도 초기화
+        levelCanvas.gameObject.SetActive(false);
+
+    }
+
 
     public void GainExp(int value)
     {
@@ -266,7 +297,6 @@ public class AICharacter : BaseObject
             Data.CurrentExp -= Data.MaxExp;
             OnLevelUp();
         }
-        Managers.Debug.Log($"경험치 획득: {value}, 현재 경험치: {Data.CurrentExp}, 최대 경험치: {Data.MaxExp}", Define.EDebugType.AI);
         CharacterGainExp?.Invoke(value);
     }
 
