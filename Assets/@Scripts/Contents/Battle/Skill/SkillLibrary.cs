@@ -35,7 +35,6 @@ public class SkillLibrary : MonoBehaviour
     {
         if (targetCharacter.UsingSkill == true) // 이미 스킬을 사용중이면 실행하지 않음
         {
-            Managers.Debug.LogWarning("이미 스킬을 사용중입니다.", Define.EDebugType.AI);
             return;
         }
         if (_skillMap.TryGetValue(skillNum, out var coroutineFunc))
@@ -46,7 +45,7 @@ public class SkillLibrary : MonoBehaviour
         }
         else
         {
-            Managers.Debug.LogError($"Skill number {skillNum} not found in skill map.", Define.EDebugType.AI);
+            return; // 스킬 번호가 유효하지 않으면 아무 작업도 하지 않음
         }
     }
 

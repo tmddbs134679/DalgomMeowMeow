@@ -88,7 +88,6 @@ public class ArrayBuildPos : ScriptableObject
 
         string json = JsonConvert.SerializeObject(saveData, Formatting.Indented);
         File.WriteAllText(path, json);
-        Debug.Log("건물 데이터 저장 완료!");
     }
 
 

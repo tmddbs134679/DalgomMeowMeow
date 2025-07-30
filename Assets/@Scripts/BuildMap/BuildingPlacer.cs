@@ -9,6 +9,7 @@ using TMPro;
 /// </summary>
 public class BuildingPlacer : MonoBehaviour
 {
+    #region 변수 
     public static BuildingPlacer Instance;
 
 
@@ -46,7 +47,6 @@ public class BuildingPlacer : MonoBehaviour
     public Action OnBuildingAccept; //사용 안하는중
     public event Action OnAutoSave;
 
-    public event Action OnLayerOff;
     //Int값
     public int tempTypeNum;
     public int BuyMoney { get => buyMoney; set => buyMoney = value; }
@@ -66,6 +66,10 @@ public class BuildingPlacer : MonoBehaviour
     public bool isSequenceRemove;//연속삭제일경우 true
     public bool isGold;
     private string buildType;
+            BuildingBase buildBase;
+
+    #endregion
+    #region 클래스 선언,초기화
     private void Awake()
     {
         if (Instance == null)
@@ -91,7 +95,8 @@ public class BuildingPlacer : MonoBehaviour
         _arrayBuildPos.BindEvent();
         _arrayMapPos.BindEvent();
     }
-
+    #endregion
+    #region 건물 선택
     /// <summary>
     /// 건물 종류 선택 시 호출
     /// </summary>
@@ -103,10 +108,10 @@ public class BuildingPlacer : MonoBehaviour
             Managers.UI.ShowToast("돈이 부족합니다.");
             return;
         }
+        if (RemoveRoadSelectBuildingType(type)) return;
         if (SequenceSelectBuildingType(type)) return;
         isAI = true;
         buildMap.ColliderAllOff();
-        OnLayerOff.Invoke();
         Camera cam = Camera.main;
         Vector3 screenCenter = new Vector3(Screen.width / 2f, Screen.height / 2f, cam.nearClipPlane);
         Ray ray = Camera.main.ScreenPointToRay(screenCenter);
@@ -125,56 +130,6 @@ public class BuildingPlacer : MonoBehaviour
             tempDraggleOBJ.isLongPress = false;
         }
     }
-
-    /// <summary>
-    ///  연속 설치 건물 종류 선택 시 호출
-    /// </summary>
-    private bool SequenceSelectBuildingType(Define.EBuildingType type)
-    {
-        if (type != Define.EBuildingType.Road) return false;
-        isSequenceBuild = true;
-        isAI = true;
-        isSelect = true;
-        buildMap.ColliderAllOff();
-        tempTypeNum = (int)type;
-        _saveBuildingSO = buildingSO[(int)type];
-        // Camera cam = Camera.main;
-        // Vector3 screenCenter = new Vector3(Screen.width / 2f, Screen.height / 2f, cam.nearClipPlane);
-        // Ray ray = Camera.main.ScreenPointToRay(screenCenter);
-
-        // if (Physics.Raycast(ray, out var groundHit, 1000f, groundLayer))
-        // {
-
-        //     _PreviewOBJ = Instantiate(buildingSO[(int)type].previewOBJ,
-        //         new Vector3(groundHit.point.x, groundHit.point.y + _heightOffset, groundHit.point.z),
-        //         Quaternion.identity);
-
-        //     tempDraggleOBJ = _PreviewOBJ.GetComponent<DraggableObject>();
-        //     tempDraggleOBJ.SnapToGrid(new Vector3(groundHit.point.x, groundHit.point.y - _heightOffset, groundHit.point.z));
-        //     tempDraggleOBJ.isDrag = true;
-        //     tempDraggleOBJ.isLongPress = false;
-        // }
-        return true;
-    }
-
-    //위에 주석처리된 카메라 중심 프리뷰 생성에서 터치한곳을 중심으로 프리뷰생성
-    public void OnGroundTouched(Vector3 point)
-    {
-        if (!isSequenceBuild || _PreviewOBJ != null)
-            return; // 조건이 안 맞으면 무시
-        Instance.uI_BuildAction.SetActive(true);
-
-        // 프리뷰 생성
-        _PreviewOBJ = Instantiate(_saveBuildingSO.previewOBJ,
-            new Vector3(point.x, point.y + _heightOffset, point.z),
-            Quaternion.identity);
-
-        tempDraggleOBJ = _PreviewOBJ.GetComponent<DraggableObject>();
-        tempDraggleOBJ.SnapToGrid(new Vector3(point.x, point.y - _heightOffset, point.z));
-        tempDraggleOBJ.isDrag = true;
-        tempDraggleOBJ.isLongPress = false;
-    }
-
 
     /// <summary>
     /// DraggableObject에서 LongPress가 호출 될 시 현상태의 오브젝트 가져오기
@@ -206,6 +161,71 @@ public class BuildingPlacer : MonoBehaviour
         };
 
     }
+    /// <summary>
+    ///  연속 설치 건물 종류 선택 시 호출
+    /// </summary>
+    private bool SequenceSelectBuildingType(Define.EBuildingType type)
+    {
+        if (type != Define.EBuildingType.Road) return false;
+        isSequenceBuild = true;
+        isAI = true;
+        isSelect = true;
+        buildMap.ColliderAllOff();
+        tempTypeNum = (int)type;
+        _saveBuildingSO = buildingSO[(int)type];
+        // Camera cam = Camera.main;
+        // Vector3 screenCenter = new Vector3(Screen.width / 2f, Screen.height / 2f, cam.nearClipPlane);
+        // Ray ray = Camera.main.ScreenPointToRay(screenCenter);
+
+        // if (Physics.Raycast(ray, out var groundHit, 1000f, groundLayer))
+        // {
+
+        //     _PreviewOBJ = Instantiate(buildingSO[(int)type].previewOBJ,
+        //         new Vector3(groundHit.point.x, groundHit.point.y + _heightOffset, groundHit.point.z),
+        //         Quaternion.identity);
+
+        //     tempDraggleOBJ = _PreviewOBJ.GetComponent<DraggableObject>();
+        //     tempDraggleOBJ.SnapToGrid(new Vector3(groundHit.point.x, groundHit.point.y - _heightOffset, groundHit.point.z));
+        //     tempDraggleOBJ.isDrag = true;
+        //     tempDraggleOBJ.isLongPress = false;
+        // }
+        return true;
+    }
+
+
+    private bool RemoveRoadSelectBuildingType(Define.EBuildingType type)
+    {
+        if (type != Define.EBuildingType.None) return false;
+        isSequenceRemove = true;
+        isAI = true;
+        isSelect = true;
+        buildMap.ColliderAllOff();
+        tempTypeNum = (int)type;
+        _saveBuildingSO = buildingSO[(int)type];
+        return true;
+    }
+    #endregion
+
+    #region 도로관련 선택및 설치
+    //위에 주석처리된 카메라 중심 프리뷰 생성에서 터치한곳을 중심으로 프리뷰생성
+    public void OnGroundTouched(Vector3 point)
+    {
+        if (!isSequenceBuild || _PreviewOBJ != null)
+            return; // 조건이 안 맞으면 무시
+        Instance.uI_BuildAction.SetActive(true);
+
+        // 프리뷰 생성
+        _PreviewOBJ = Instantiate(_saveBuildingSO.previewOBJ,
+            new Vector3(point.x, point.y + _heightOffset, point.z),
+            Quaternion.identity);
+
+        tempDraggleOBJ = _PreviewOBJ.GetComponent<DraggableObject>();
+        tempDraggleOBJ.SnapToGrid(new Vector3(point.x, point.y - _heightOffset, point.z));
+        tempDraggleOBJ.isDrag = true;
+        tempDraggleOBJ.isLongPress = false;
+    }
+
+
 
     Collider[] hits;
     //카메라 중심 프리뷰 생성에서 터치한곳을 중심으로 프리뷰생성
@@ -216,7 +236,7 @@ public class BuildingPlacer : MonoBehaviour
         buildMap.ColliderAllOff();
         Instance.uI_BuildAction.SetActive(true);
 
-        _PreviewOBJ = Instantiate(buildingSO[(int)Define.EBuildingType.None].previewOBJ,
+        _PreviewOBJ = Instantiate(buildingSO[16].previewOBJ,
        new Vector3(point.x, point.y + _heightOffset, point.z),
        Quaternion.identity);
 
@@ -244,42 +264,44 @@ public class BuildingPlacer : MonoBehaviour
             return;
         }
 
-        // foreach (var hit in hits)
-        // {
-        //     GameObject obj = hit.gameObject;
-        //     BuildingBase buildBase;
-        //     if (obj.layer == LayerMask.NameToLayer("Road"))
-        //     {
-        //         buildBase = obj.GetComponent<BuildingBase>();
-        //     }
+        foreach (var hit in hits)
+        {
+            GameObject obj = hit.gameObject;
+            obj.GetComponent<DraggableObject>().CurrentTileAndOBJ();
+            if (obj.layer == LayerMask.NameToLayer("Road"))
+            {
+                buildBase = obj.GetComponent<BuildingBase>();
+            }
 
-        //     if (buildBase != null)
-        //     {
-        //         _CurBuildData = new BuildData
-        //         {
-        //             posX = obj.transform.position.x,
-        //             posZ = obj.transform.position.z,
-        //             UniqueId = buildBase.UniqueId
-        //         };
-        //         _arrayBuildPos.RemoveBuildData(_CurBuildData);
-        //         buildMap.Remove(buildBase.UniqueId);
-        //     }
-        // }
-    
+            if (buildBase != null)
+            {
+                _CurBuildData = new BuildData
+                {
+                    posX = obj.transform.position.x,
+                    posZ = obj.transform.position.z,
+                    UniqueId = buildBase.UniqueId
+                };
+                _arrayBuildPos.RemoveBuildData(_CurBuildData);
+                buildMap.Remove(buildBase.UniqueId);
+                        ClearTile();
+            }
+            buildBase = null;
+        }
 
-    ClearTile();
-    gridMap.LoadMap();
-    buildMap.LoadBuild();
-    surface.BuildNavMesh();
-    Managers.AI.AllRelocateToNearestNavMesh();
-    buildMap.ColliderAllOn();
-    isLongPressAcceptBuild = false;
-    Destroy(OriginTempOBJ);
-    Destroy(_PreviewOBJ);
-    OriginTempOBJ = null;
-    _PreviewOBJ = null;
-    OnAutoSave?.Invoke();
-}
+
+
+        gridMap.LoadMap();
+        buildMap.LoadBuild();
+        surface.BuildNavMesh();
+        Managers.AI.AllRelocateToNearestNavMesh();
+        buildMap.ColliderAllOn();
+        isLongPressAcceptBuild = false;
+        Destroy(OriginTempOBJ);
+        Destroy(_PreviewOBJ);
+        OriginTempOBJ = null;
+        _PreviewOBJ = null;
+        OnAutoSave?.Invoke();
+    }
 
 
 
@@ -348,6 +370,8 @@ public class BuildingPlacer : MonoBehaviour
         _tempPreviewObjs.Clear();
         _roadPosArray.Clear();
     }
+    #endregion
+    #region 건물 설치
     /// <summary>
     /// 연속 건물 설치 확정
     /// </summary>
@@ -468,7 +492,8 @@ public class BuildingPlacer : MonoBehaviour
         }
         OnAutoSave?.Invoke();
     }
-
+    #endregion
+    #region 건물 취소 및 삭제
     /// <summary>
     /// 건물 설치 취소
     /// </summary>
@@ -545,6 +570,8 @@ public class BuildingPlacer : MonoBehaviour
         surface.BuildNavMesh(); //네브매쉬 깔기
         OnAutoSave?.Invoke();
     }
+    #endregion
+    #region 저장 및 기타
     //autosave rapping
     public void AutoSave()
     {
@@ -552,9 +579,7 @@ public class BuildingPlacer : MonoBehaviour
     }
     void OnApplicationQuit()//유니티 내장 맨마지막에 불려지는 함수
     {
-                OnAutoSave?.Invoke();
-        Debug.Log("게임 종료 감지됨 - 맵 타일 데이터 저장");
-
+        OnAutoSave?.Invoke();
     }
 
 
@@ -566,4 +591,5 @@ public class BuildingPlacer : MonoBehaviour
             Mathf.RoundToInt(z / gridSize)
         );
     }
+    #endregion
 }

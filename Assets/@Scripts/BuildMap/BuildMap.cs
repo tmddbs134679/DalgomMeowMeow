@@ -117,41 +117,48 @@ public class BuildMap : MonoBehaviour
                 _spawnedBuilds.Remove(key);
     }
 
-    public void ColliderAllOn()
+public void ColliderAllOn()
+{
+    foreach (BuildData data in _arrayBuildPos.baseBuilding)
     {
-        foreach (BuildData data in _arrayBuildPos.baseBuilding)
+        int key = data.UniqueId;
+        if (_spawnedBuilds.TryGetValue(key, out GameObject obj) && obj != null)
         {
-            int key = data.UniqueId;
-
-            if (_spawnedBuilds.TryGetValue(key, out GameObject obj) && obj != null)
+            Collider col = obj.GetComponent<Collider>();
+            if (col != null)
             {
-                Collider col = obj.GetComponent<Collider>();
-                if (col != null)
-                    col.enabled = true;
-                else
-                    Managers.Debug.Log($"ColliderAllOn null 발생", Define.EDebugType.Building);
+                col.layerOverridePriority = 0; // 비활성화
+                col.excludeLayers = 0;         // 레이어 제외 없음
+                col.includeLayers = 0;         // 레이어 포함 없음 (기본 동작)
             }
-
-        }
-
-
-    }
-    public void ColliderAllOff()
-    {
-        foreach (BuildData data in _arrayBuildPos.baseBuilding)
-        {
-            int key = data.UniqueId;
-            if (_spawnedBuilds.TryGetValue(key, out GameObject obj) && obj != null)
+            else
             {
-                Collider col = obj.GetComponent<Collider>();
-                if (col != null)
-                    col.enabled = false;
-                else
-                    Managers.Debug.Log($"ColliderAllOn null 발생", Define.EDebugType.Building);
+                Managers.Debug.Log("ColliderAllOn null 발생", Define.EDebugType.Building);
             }
         }
     }
+}
 
+public void ColliderAllOff()
+{
+    foreach (BuildData data in _arrayBuildPos.baseBuilding)
+    {
+        int key = data.UniqueId;
+        if (_spawnedBuilds.TryGetValue(key, out GameObject obj) && obj != null)
+        {
+            Collider col = obj.GetComponent<Collider>();
+            if (col != null)
+            {
+                col.layerOverridePriority = 1;
+                col.excludeLayers = LayerMask.GetMask("Default"); // 예: Default 레이어를 무시
+            }
+            else
+            {
+                Managers.Debug.Log("ColliderAllOff null 발생", Define.EDebugType.Building);
+            }
+        }
+    }
+}
 
 
     public void UpdateBuildLevel(int uniqueId, int newLevel)

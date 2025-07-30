@@ -52,7 +52,6 @@ public class RestBuilding : BuildingBase
     {
         // 상태 전이
         CurrentState = BuildingState.Producing;
-
     }
     public void Collect()
     {

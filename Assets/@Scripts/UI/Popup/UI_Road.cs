@@ -50,7 +50,7 @@ public class UI_Road : UI_Popup
 
     private void OnClickRoadRemoveButton()
     {
-        BuildingPlacer.Instance.RemoveRoad();
+        BuildingPlacer.Instance.SelectBuildingType(Define.EBuildingType.None);
         this.gameObject.SetActive(false);
     }
 

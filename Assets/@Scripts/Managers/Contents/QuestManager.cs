@@ -295,7 +295,7 @@ public class QuestManager : MonoBehaviour
 
     public void Unlock(string contentId)
     {
-        Debug.Log(!UnlockedContent.Contains(contentId));
+
         if (!UnlockedContent.Contains(contentId))
         {
             UnlockedContent.Add(contentId);

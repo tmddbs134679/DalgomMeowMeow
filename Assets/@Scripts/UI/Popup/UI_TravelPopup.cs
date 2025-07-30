@@ -115,7 +115,7 @@ public class UI_TravelPopup : UI_Popup
 
     private void OnClickRewardCheckButton()
     {
-
+        Managers.UI.ShowToast("골드, 다이아, 티켓 중 랜덤 보상 !!");
     }
 
     private void OnClickAdTravelButton()

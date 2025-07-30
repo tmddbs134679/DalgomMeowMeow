@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 1548136951684325931}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.16, z: 0}
+  m_LocalPosition: {x: 0, y: -0.648, z: 0}
   m_LocalScale: {x: 1.02, y: 0.747, z: 1.02}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -95,6 +95,7 @@ GameObject:
   - component: {fileID: -1302948204190783537}
   - component: {fileID: 8118418135074648521}
   - component: {fileID: 9094126059004014775}
+  - component: {fileID: 4348893114844042734}
   m_Layer: 8
   m_Name: Pre_Remove
   m_TagString: Untagged
@@ -157,11 +158,11 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 0.91, z: 1}
+  m_Size: {x: 0.9, y: 2.24, z: 0.9}
   m_Center: {x: 0, y: -0.15, z: 0}
 --- !u!114 &9094126059004014775
 MonoBehaviour:
@@ -178,3 +179,30 @@ MonoBehaviour:
   isbuild: {fileID: 1548136951684325931}
   green: {fileID: 2100000, guid: d9637e8ed397d6b4498841099b6a5e71, type: 2}
   red: {fileID: 2100000, guid: 8b222d01e8e294e4493f4c0752b6e6f9, type: 2}
+--- !u!54 &4348893114844042734
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2151607497520685126}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0

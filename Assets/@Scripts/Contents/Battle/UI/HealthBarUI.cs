@@ -17,7 +17,6 @@ public class HealthBarUI : MonoBehaviour
     private void Start()
     {
         HpBar = transform.Find("HPbar").GetComponent<Image>();
-        Managers.Debug.Log($"HealthBarUI Start: {BattleCharacter.Health} / {BattleCharacter.MaxHP}", Define.EDebugType.UI);
     }
 
     private void Update()
