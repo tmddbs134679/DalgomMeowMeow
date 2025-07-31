@@ -8,7 +8,7 @@ public class BattleScene : BaseScene
     {
         base.Init();
         SceneType = Define.EScene.BattleScene;
-        Managers.Sound.Play(Define.ESound.Bgm, "TempBattle");
+        Managers.Sound.Play(Define.ESound.Bgm, "Battle");
 
 
     }
