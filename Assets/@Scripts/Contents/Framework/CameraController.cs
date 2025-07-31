@@ -3,7 +3,7 @@ using UnityEngine.EventSystems;
 
 public class CameraController : MonoBehaviour
 {
-    private float _dragSpeed = 2f;
+    private float _dragSpeed;
     public Vector2 minLimit = new Vector2(-10, -10);
     public Vector2 maxLimit = new Vector2(10, 10);
     public float _clickThreshold = 10f; // 	클릭 or 미세한 움직임 판단범위
@@ -22,7 +22,7 @@ public class CameraController : MonoBehaviour
     void Start()
     {
         _cam = Camera.main;
-        _dragSpeed = 2f;
+        _dragSpeed = 3f;
     }
 
     private bool _startedOnUI = false;
