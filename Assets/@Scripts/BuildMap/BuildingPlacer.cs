@@ -49,12 +49,13 @@ public class BuildingPlacer : MonoBehaviour
 
     //Int값
     public int tempTypeNum;
-    public int BuyMoney { get => buyMoney; set => buyMoney = value; }
+    public int BuyMoney { get => _buyMoney; set => _buyMoney = value; }
     public int uniqueId;
     public int LV;
 
-    private int buyMoney;
+    private int _buyMoney;
 
+        private int _sumBuyMoney;
     //Bool값
     public bool _isBuild;//건설이 가능한 곳일 때 true
     public bool isSelect;//프리뷰 드래그,맵드래그가 동시에 눌리는거 방지
@@ -111,6 +112,8 @@ public class BuildingPlacer : MonoBehaviour
             Managers.UI.ShowToast("돈이 부족합니다.");
             return;
         }
+                    _sumBuyMoney += BuyMoney;
+                                uI_BuildAction.CountGold(_sumBuyMoney);
         if (RemoveRoadSelectBuildingType(type)) return;
         if (SequenceSelectBuildingType(type)) return;
         isAI = true;
@@ -257,13 +260,10 @@ public class BuildingPlacer : MonoBehaviour
     }
     public void RemoveRoad()
     {
-        Debug.Log("RemoveRoad()");
-
         hits = _PreviewOBJ.GetComponent<PreviewColliderSensor>()?.GetCurrentHits();
 
-        if (hits == null || hits.Length == 0)
+        if (hits == null || hits.Length == 0)//설치할 도로 없을 시
         {
-            Debug.Log("제거할 도로 없음");
             Destroy(OriginTempOBJ);
             Destroy(_PreviewOBJ);
             OriginTempOBJ = null;
@@ -341,7 +341,8 @@ public class BuildingPlacer : MonoBehaviour
         {
             BuyMoney = buildingSO[tempTypeNum].BuyMoney;
         }
-        isGold = Managers.Game.Gold > buyMoney;
+        
+        isGold = Managers.Game.Gold >= _buyMoney;
         return isGold;
     }
 
@@ -373,7 +374,8 @@ public class BuildingPlacer : MonoBehaviour
 
             Vector3 temp = _PreviewOBJ.transform.position;
             _roadPosArray.Add(pos, temp); // 값은 placeholder로 true 사용
-
+            _sumBuyMoney += BuyMoney;
+            uI_BuildAction.CountGold(_sumBuyMoney);
         }
     }
 
@@ -416,6 +418,9 @@ public class BuildingPlacer : MonoBehaviour
             _PreviewOBJ.transform.position = a.Value;
             _PreviewOBJ.GetComponent<DraggableObject>().SetTileIsBuild();//새롭게 설치할 오브젝트의 타일
         }
+                        Managers.Game.Gold -=_sumBuyMoney;
+        _sumBuyMoney = 0;
+                    uI_BuildAction.CountGold(_sumBuyMoney);
         ClearTempPreviewObjects();
         Destroy(_PreviewOBJ);
         gridMap.LoadMap(); //맵갱신
@@ -443,8 +448,9 @@ public class BuildingPlacer : MonoBehaviour
         if (_isBuild)
         {
 
-            Managers.Game.Gold -= buyMoney;
-
+            Managers.Game.Gold -= _buyMoney;
+        _sumBuyMoney = 0;
+                    uI_BuildAction.CountGold(_sumBuyMoney);
             int hash = Guid.NewGuid().GetHashCode();
             _buildData = new BuildData
             {
@@ -518,6 +524,7 @@ public class BuildingPlacer : MonoBehaviour
     /// </summary>
     public void CancelBuild()
     {
+
         isAI = false;
         if (isLongPressAcceptBuild && OriginTempOBJ != null)
         {
@@ -527,9 +534,12 @@ public class BuildingPlacer : MonoBehaviour
         }
         if (_PreviewOBJ != null)
         {
+                                _PreviewOBJ.GetComponent<PreviewColliderSensor>().CancelPreview();
             _PreviewOBJ.GetComponent<DraggableObject>().isDrag = false;
             Destroy(_PreviewOBJ);
         }
+                _sumBuyMoney = 0;
+                    uI_BuildAction.CountGold(_sumBuyMoney);
         buildMap.ColliderAllOn();
         isLongPressAcceptBuild = false;
         ClearTempPreviewObjects();

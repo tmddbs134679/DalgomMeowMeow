@@ -11,6 +11,7 @@ public class LoadBuilding : BuildingBase
 
     public override void OnClick()
     {
-        
+
     }
+    
 }

@@ -95,8 +95,14 @@ public class DragController : MonoBehaviour
                 if (draggable != null)
                 {
                     currentTarget = draggable;
-                    currentTarget.OnDragStart(hit.point);
-
+                    if (!BuildingPlacer.Instance.isSequenceRemove)
+                    {
+                        currentTarget.OnDragStart(hit.point);
+                    }
+                    else
+                    {
+                        BuildingPlacer.Instance.isSelect = true;
+                     }
                     // 클릭 위치 저장
                     dragStartPos = inputPos;
                     isDragging = false;
