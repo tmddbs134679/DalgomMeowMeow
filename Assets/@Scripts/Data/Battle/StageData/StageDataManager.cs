@@ -69,9 +69,9 @@ public class StageDataManager : MonoBehaviour
             { 
                 foreach (var character in Managers.Game.CharacterInMainScene)
                 {
-                    if (character.Value.Data.UniqueId == PlayerCharacter[k].UniqueId)
+                    if (character.Value.Stat.data.UniqueId == PlayerCharacter[k].UniqueId)
                     {
-                        character.Value.GainExp(manager.PendingExpReward);
+                        character.Value.Stat.GainExp(manager.PendingExpReward);
                     }
                 }
             }
