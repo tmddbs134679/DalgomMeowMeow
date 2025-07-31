@@ -66,6 +66,10 @@ public class UI_BuildPopup : UI_Popup
 
     enum Images
     {
+        SlotLockImage,
+        ShopLockImage,
+        PotLockImage,
+        TravelLockImage,
 
     }
     #endregion
@@ -90,6 +94,7 @@ public class UI_BuildPopup : UI_Popup
         BindObject(typeof(GameObjects));
         BindButton(typeof(Buttons));
         BindText(typeof(Texts));
+        BindImage(typeof(Images));
 
         _scrollRect = GetObject((int)GameObjects.BuildScrollObject).GetComponent<ScrollRect>();
 
@@ -224,8 +229,16 @@ public class UI_BuildPopup : UI_Popup
         if (type == Define.EBuildingType.SlotMachine)
         {
             if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(Define.EBuildingType.SlotMachine.ToString(), out int count) && count >= 1)
+            {
                 BuildingPlacer.Instance.islimitBuildCount = false;
-            return;
+                GetText((int)Texts.SlotMachineGoldText).gameObject.SetActive(false);
+                GetImage((int)Images.SlotLockImage).gameObject.SetActive(true);
+                return;
+            }
+            else
+            {
+                                    GetImage((int)Images.SlotLockImage).gameObject.SetActive(false);
+            }
         }
         if (type == Define.EBuildingType.Shop)
         {
