@@ -75,7 +75,7 @@ public class UI_BattleScene : UI_Scene
         _skill.SetImage(Managers.Resource.Load<Sprite>($"{character.CharID}_S"));
 
         //추가 사운드 이펙트
-        Managers.Sound.Play(Define.ESound.Effect, "Cat2");
+        Managers.Sound.Play(Define.ESound.Effect, "SkillActive");
 
         StartCoroutine(SkillCutScene());
         character.ActiveSkill();
