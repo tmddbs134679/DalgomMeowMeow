@@ -29,6 +29,7 @@ public class UI_InfoBuild : UI_Popup
     enum Images
     {
         EquipmentImage,
+        EquipmentBackgroundImage
     }
     #endregion
     private BuildingBase _targetBuilding;
@@ -67,5 +68,6 @@ public class UI_InfoBuild : UI_Popup
         _targetBuilding = building;
         GetText((int)Texts.EquipmentText).text = building.BuildingData.BuildingName;
         GetText((int)Texts.EquipmentDescriptionText).text = building.BuildingData.Description;
+        GetImage((int)Images.EquipmentImage).sprite = building.BuildingData.BuildingImage;
     }
 }

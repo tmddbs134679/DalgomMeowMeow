@@ -8,6 +8,7 @@ public class DebugManager
 {
     public DebugSettings debugSettings;
 
+    [System.Diagnostics.Conditional("UNITY_EDITOR"), System.Diagnostics.Conditional("DEVELOPMENT_BUILD")]
     public void Log(string message, EDebugType type)
     {
         if (IsEnabled(type))
@@ -16,6 +17,7 @@ public class DebugManager
         }
     }
 
+    [System.Diagnostics.Conditional("UNITY_EDITOR"), System.Diagnostics.Conditional("DEVELOPMENT_BUILD")]
     public void LogWarning(string message, EDebugType type)
     {
         if (IsEnabled(type))
@@ -24,6 +26,7 @@ public class DebugManager
         }
     }
 
+    [System.Diagnostics.Conditional("UNITY_EDITOR"), System.Diagnostics.Conditional("DEVELOPMENT_BUILD")]
     public void LogError(string message, EDebugType type)
     {
         if (IsEnabled(type))
