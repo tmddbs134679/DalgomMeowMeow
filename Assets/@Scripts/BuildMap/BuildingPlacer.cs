@@ -599,6 +599,7 @@ public class BuildingPlacer : MonoBehaviour
     void OnApplicationQuit()//유니티 내장 맨마지막에 불려지는 함수
     {
         OnAutoSave?.Invoke();
+        Managers.Game.SaveGame();
     }
 
 
