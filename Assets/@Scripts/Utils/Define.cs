@@ -212,6 +212,7 @@ public class Define
         CarrotFarm,
         PotatoFarm,
         PumpkinFarm,
+        SlotMachine,
     }
 
     public static readonly float[] COMMON_GACHA_GRADE = new float[]

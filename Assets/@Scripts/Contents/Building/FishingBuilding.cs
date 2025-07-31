@@ -65,11 +65,13 @@ public class FishingBuilding : BuildingBase
             case FishingResult.Jackpot:
                 _fishingText.PlayResult(FishingResult.Jackpot);
                 StoredCount++; // 월척도 카운트에 포함
+                QuestManager.Instance.UpdateQuestProgress(Define.EQuestConditionType.Collect,Define.ETargetType.Fishing);
                 break;
 
             case FishingResult.Normal:
                 _fishingText.PlayResult(FishingResult.Normal);
                 StoredCount++;
+                QuestManager.Instance.UpdateQuestProgress(Define.EQuestConditionType.Collect,Define.ETargetType.Fishing);
                 break;
 
             case FishingResult.Miss:

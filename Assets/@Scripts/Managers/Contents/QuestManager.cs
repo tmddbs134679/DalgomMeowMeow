@@ -266,6 +266,7 @@ public class QuestManager : MonoBehaviour
     
     public void NotifyBuildingConstructed(string type)
     {
+        UpdateQuestProgress(Define.EQuestConditionType.Build, Define.ETargetType.Build);
         // string → ETargetType 변환
         if (!Enum.TryParse(type, out Define.ETargetType targetType))
         {

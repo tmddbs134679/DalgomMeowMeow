@@ -147,7 +147,6 @@ public class SlotMachineBuilding : BuildingBase
         {
             Managers.Debug.Log("😢 꽝!", Define.EDebugType.Building);
         }
-
         // if (_currentResult[0] == "고양이" && _currentResult[1] == "고양이" && _currentResult[2] == "고양이")
         // {
         //     SlotResult match = _results.Find(r => r.Symbol == "고양이");
