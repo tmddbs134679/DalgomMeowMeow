@@ -38,7 +38,14 @@ public class UI_FarmPopup : UI_Popup
         PotatoCountText,
         OnionCountText,
     }
-    enum Images { }
+    enum Images 
+    {         
+        CabbageButtonLockImage,
+        CarrotButtonLockImage,
+        PumpkinButtonLockImage,
+        PotatoButtonLockImage,
+        OnionButtonLockImage, 
+    }
 
     ScrollRect _scrollRect;
     bool _isDrag = false;
@@ -226,8 +233,11 @@ public class UI_FarmPopup : UI_Popup
                 bool isUnlocked = QuestManager.Instance.IsUnlocked(contentId);
 
                 var button = GetButton((int)buttonEnum);
+                var lockImage = GetImage((int)(Images)Enum.Parse(typeof(Images), $"{buttonEnum}LockImage"));
                 if (button != null)
                     button.interactable = isUnlocked;
+                if (lockImage != null)
+                    lockImage.enabled = !isUnlocked;
             }
         }
 
