@@ -35,15 +35,32 @@ public class DraggableObject : MonoBehaviour, IDraggable
     }
     #region IDraggable
     //드래그 스타트
-    public void OnDragStart(Vector3 hitPos)
+public void OnDragStart(Vector3 hitPos)
+{
+    // 이미 다른 오브젝트가 선택되어 있고, 그게 자신이 아니면 리턴
+    if (BuildingPlacer.Instance.tempDraggleOBJ != null &&
+        BuildingPlacer.Instance.tempDraggleOBJ != this)
     {
-
-            BuildingPlacer.Instance.isSelect = true;
-        BuildingPlacer.Instance.tempDraggleOBJ = this;
-        _offsetx = (buildSize.x % 2 == 0) ? (gridSize / 2f) : 0f;
-        _offsety = (buildSize.y % 2 == 0) ? (gridSize / 2f) : 0f;
-        CheckTilesUnderBuilding();
+        // 다른 오브젝트가 선택 중이므로 무시
+        return;
     }
+
+    if (BuildingPlacer.Instance.tempDraggleOBJ == this)
+    {
+        // 이미 선택된 오브젝트를 다시 클릭한 경우
+        BuildingPlacer.Instance.isSelect = true;
+        return;
+    }
+
+    // tempDraggleOBJ가 비어있거나 처음 선택되는 경우
+    BuildingPlacer.Instance.tempDraggleOBJ = this;
+    BuildingPlacer.Instance.isSelect = false;
+
+    _offsetx = (buildSize.x % 2 == 0) ? (gridSize / 2f) : 0f;
+    _offsety = (buildSize.y % 2 == 0) ? (gridSize / 2f) : 0f;
+
+    CheckTilesUnderBuilding();
+}
 
     //드래그
     private Vector3Int _prevGridPos = Vector3Int.zero;
@@ -78,6 +95,7 @@ public class DraggableObject : MonoBehaviour, IDraggable
     //드래그 드롭
     public void OnDragEnd()
     {
+        
             BuildingPlacer.Instance.isSelect = false;
     }
     //드래그 하지않고 눌렀다 떼기

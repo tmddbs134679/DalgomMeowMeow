@@ -45,6 +45,10 @@ public class UI_Road : UI_Popup
     private void OnClickRoadBuildButton()
     {
         BuildingPlacer.Instance.SelectBuildingType(Define.EBuildingType.Road);
+        if (!BuildingPlacer.Instance.isGold) //돈이 부족할경우 게임씬으로 복귀
+        {
+            (Managers.UI.SceneUI as UI_GameScene).gameObject.SetActive(true);
+        }
         this.gameObject.SetActive(false);
     }
 

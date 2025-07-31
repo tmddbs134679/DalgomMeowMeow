@@ -231,11 +231,11 @@ public class UI_BuildPopup : UI_Popup
 
         GetObject((int)GameObjects.BuildScrollObject).SetActive(false);
         BuildingPlacer.Instance.SelectBuildingType(type);
-        if (BuildingPlacer.Instance.isGold)
+        if (BuildingPlacer.Instance.isGold) //돈이 부족할경우 게임씬으로 복귀
         {
 
             BuildingPlacer.Instance.uI_BuildAction.transform.position = this.transform.position;
-            if (type != Define.EBuildingType.Road)
+            if (type != Define.EBuildingType.Road)//도로는 다른곳에서 실행하므로 여기서는 패스
                 BuildingPlacer.Instance.uI_BuildAction.SetActive(true);
         }
         else

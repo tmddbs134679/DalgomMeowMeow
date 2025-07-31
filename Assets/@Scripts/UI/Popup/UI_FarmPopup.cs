@@ -151,8 +151,17 @@ public class UI_FarmPopup : UI_Popup
         _buildScrollObject.SetActive(false);
         GetObject((int)GameObjects.BuildScrollObject).SetActive(false);
         BuildingPlacer.Instance.SelectBuildingType(type);
-        BuildingPlacer.Instance.uI_BuildAction.transform.position = this.transform.position;
-        BuildingPlacer.Instance.uI_BuildAction.SetActive(true);
+                if (BuildingPlacer.Instance.isGold) //돈이 부족할경우 게임씬으로 복귀
+        {
+
+            BuildingPlacer.Instance.uI_BuildAction.transform.position = this.transform.position;
+            if (type != Define.EBuildingType.Road)//도로는 다른곳에서 실행하므로 여기서는 패스
+                BuildingPlacer.Instance.uI_BuildAction.SetActive(true);
+        }
+        else
+        {
+            (Managers.UI.SceneUI as UI_GameScene).gameObject.SetActive(true);
+        }
     }
     //건물 갯수 제한 코드 구간
     private void LimitBuildCount(Define.EBuildingType type)

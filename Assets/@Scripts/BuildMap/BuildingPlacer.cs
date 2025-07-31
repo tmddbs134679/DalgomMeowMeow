@@ -55,7 +55,7 @@ public class BuildingPlacer : MonoBehaviour
 
     private int _buyMoney;
 
-        private int _sumBuyMoney;
+    private int _sumBuyMoney;
     //Bool값
     public bool _isBuild;//건설이 가능한 곳일 때 true
     public bool isSelect;//프리뷰 드래그,맵드래그가 동시에 눌리는거 방지
@@ -87,8 +87,8 @@ public class BuildingPlacer : MonoBehaviour
         InitializeMaps();
         uI_BuildAction = (Managers.UI.SceneUI as UI_GameScene)._uI_BuildAction;
         uI_BuildAction.SetActive(false);
-      //  uI_LongPressGauge = (Managers.UI.SceneUI as UI_GameScene)._uI_LongPressGauge;
-      //  uI_LongPressGauge.SetActive(false);
+        //  uI_LongPressGauge = (Managers.UI.SceneUI as UI_GameScene)._uI_LongPressGauge;
+        //  uI_LongPressGauge.SetActive(false);
 
     }
 
@@ -112,8 +112,8 @@ public class BuildingPlacer : MonoBehaviour
             Managers.UI.ShowToast("돈이 부족합니다.");
             return;
         }
-                    _sumBuyMoney += BuyMoney;
-                                uI_BuildAction.CountGold(_sumBuyMoney);
+        _sumBuyMoney += BuyMoney;
+        uI_BuildAction.CountGold(_sumBuyMoney);
         if (RemoveRoadSelectBuildingType(type)) return;
         if (SequenceSelectBuildingType(type)) return;
         isAI = true;
@@ -179,22 +179,6 @@ public class BuildingPlacer : MonoBehaviour
         buildMap.ColliderAllOff();
         tempTypeNum = (int)type;
         _saveBuildingSO = buildingSO[(int)type];
-        // Camera cam = Camera.main;
-        // Vector3 screenCenter = new Vector3(Screen.width / 2f, Screen.height / 2f, cam.nearClipPlane);
-        // Ray ray = Camera.main.ScreenPointToRay(screenCenter);
-
-        // if (Physics.Raycast(ray, out var groundHit, 1000f, groundLayer))
-        // {
-
-        //     _PreviewOBJ = Instantiate(buildingSO[(int)type].previewOBJ,
-        //         new Vector3(groundHit.point.x, groundHit.point.y + _heightOffset, groundHit.point.z),
-        //         Quaternion.identity);
-
-        //     tempDraggleOBJ = _PreviewOBJ.GetComponent<DraggableObject>();
-        //     tempDraggleOBJ.SnapToGrid(new Vector3(groundHit.point.x, groundHit.point.y - _heightOffset, groundHit.point.z));
-        //     tempDraggleOBJ.isDrag = true;
-        //     tempDraggleOBJ.isLongPress = false;
-        // }
         return true;
     }
 
@@ -319,7 +303,7 @@ public class BuildingPlacer : MonoBehaviour
     {
         yield return null; // 다음 프레임까지 기다림
         surface.BuildNavMesh(); // 이제 완전히 제거된 후 갱신
-                        Managers.AI.AllRelocateToNearestNavMesh();
+        Managers.AI.AllRelocateToNearestNavMesh();
     }
 
     /// <summary>
@@ -341,7 +325,7 @@ public class BuildingPlacer : MonoBehaviour
         {
             BuyMoney = buildingSO[tempTypeNum].BuyMoney;
         }
-        
+
         isGold = Managers.Game.Gold >= _buyMoney;
         return isGold;
     }
@@ -418,9 +402,9 @@ public class BuildingPlacer : MonoBehaviour
             _PreviewOBJ.transform.position = a.Value;
             _PreviewOBJ.GetComponent<DraggableObject>().SetTileIsBuild();//새롭게 설치할 오브젝트의 타일
         }
-                        Managers.Game.Gold -=_sumBuyMoney;
+        Managers.Game.Gold -= _sumBuyMoney;
         _sumBuyMoney = 0;
-                    uI_BuildAction.CountGold(_sumBuyMoney);
+        uI_BuildAction.CountGold(_sumBuyMoney);
         ClearTempPreviewObjects();
         Destroy(_PreviewOBJ);
         gridMap.LoadMap(); //맵갱신
@@ -449,8 +433,8 @@ public class BuildingPlacer : MonoBehaviour
         {
 
             Managers.Game.Gold -= _buyMoney;
-        _sumBuyMoney = 0;
-                    uI_BuildAction.CountGold(_sumBuyMoney);
+            _sumBuyMoney = 0;
+            uI_BuildAction.CountGold(_sumBuyMoney);
             int hash = Guid.NewGuid().GetHashCode();
             _buildData = new BuildData
             {
@@ -534,12 +518,12 @@ public class BuildingPlacer : MonoBehaviour
         }
         if (_PreviewOBJ != null)
         {
-                                _PreviewOBJ.GetComponent<PreviewColliderSensor>()?.CancelPreview();
+            _PreviewOBJ.GetComponent<PreviewColliderSensor>()?.CancelPreview();
             _PreviewOBJ.GetComponent<DraggableObject>().isDrag = false;
             Destroy(_PreviewOBJ);
         }
-                _sumBuyMoney = 0;
-                    uI_BuildAction.CountGold(_sumBuyMoney);
+        _sumBuyMoney = 0;
+        uI_BuildAction.CountGold(_sumBuyMoney);
         buildMap.ColliderAllOn();
         isLongPressAcceptBuild = false;
         ClearTempPreviewObjects();
