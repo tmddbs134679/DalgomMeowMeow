@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -57,15 +58,22 @@ public class StageDataManager : MonoBehaviour
         }
     }
 
-    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    async void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        await Task.Delay(100);
         var manager = StageDataManager.Instance;
         if (manager.PendingGoldReward > 0 || manager.PendingExpReward > 0)
         {
             Managers.Game.Gold += manager.PendingGoldReward;
             for (int k = 0; k < PlayerCharacter.Length; k++)
             { 
-                PlayerCharacter[k].CurrentExp += manager.PendingExpReward;
+                foreach (var character in Managers.Game.CharacterInMainScene)
+                {
+                    if (character.Value.Data.UniqueId == PlayerCharacter[k].UniqueId)
+                    {
+                        character.Value.GainExp(manager.PendingExpReward);
+                    }
+                }
             }
             manager.ClearReward();
         }
