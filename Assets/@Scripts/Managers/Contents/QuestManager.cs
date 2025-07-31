@@ -69,13 +69,12 @@ public class QuestManager : MonoBehaviour
                 {
                     CheckUnlockConditions(quest.QuestData.QuestId);
                     TryActivateNext(quest.QuestData.QuestId); // 다음 퀘스트도 활성화
+                    CheckCompleteChapterQuest();
                 }
-                
-                CheckChapterUnlock(quest.QuestData.QuestId);
             }
         }
         OnQuestUpdated?.Invoke(); // 이벤트 호출
-        CheckCompleteChapterQuest();
+
     }
 
     public void GiveReward(string questId)
