@@ -56,12 +56,6 @@ public class AICharacter : BaseObject
     [HideInInspector]
     public bool _isHelloReady = true;
     
-    [HideInInspector]
-    public Sprite[] sprites;
-
-    [HideInInspector]
-    public Sprite sprite;
-
     //UI 상에 보일 캐릭터들
     [HideInInspector]
     public bool IsReplica = false;
