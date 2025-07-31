@@ -28,6 +28,7 @@ public class Quest
         Progress += amount;
         if (Progress >= QuestData.GoalCount)
         {
+            QuestManager.Instance.CheckCountNotity++;
             State = QuestProgressState.Completed;
         }
         
@@ -51,6 +52,7 @@ public class Quest
         if (Progress >= QuestData.GoalCount)
         {
             State = QuestProgressState.Completed;
+
         }
     }
 }

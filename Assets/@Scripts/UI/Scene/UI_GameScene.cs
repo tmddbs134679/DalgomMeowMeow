@@ -16,7 +16,8 @@ public class UI_GameScene : UI_Scene
     enum GameObjects
     {
         StorageObject,
-        QuickNotifyObject
+        QuickNotifyObject,
+        QuestNotifyObject
     }
 
     enum Buttons
@@ -46,7 +47,9 @@ public class UI_GameScene : UI_Scene
     UI_EditSettingPopup _editSettingPopupUI;
     UI_NotiPopup _uiNotiPopup;
     public UI_BuildAction _uI_BuildAction;
-   // public UI_LongPressGauge _uI_LongPressGauge;
+
+
+    // public UI_LongPressGauge _uI_LongPressGauge;
 
     public override bool Init()
     {
@@ -108,6 +111,7 @@ public class UI_GameScene : UI_Scene
         Managers.Food.OnFoodAdded += AddFoodSlot;
         Managers.Food.OnFoodSold += RemoveFoodSlot;
 
+        QuestManager.Instance.OnQuestUpdated += Refresh;
         #endregion
 
         Refresh();
@@ -130,6 +134,7 @@ public class UI_GameScene : UI_Scene
             Managers.Food.OnFoodAdded -= AddFoodSlot;
             Managers.Food.OnFoodSold -= RemoveFoodSlot;
             Managers.Equipment.EquipInfoChanged -= Refresh;
+            QuestManager.Instance.OnQuestUpdated -= Refresh;
         }
     }
 
@@ -311,11 +316,18 @@ public class UI_GameScene : UI_Scene
 
     public void CheckNotify()
     {
-        //장비, 캐릭터 업데이트된게 있으면 True
-        if (Managers.Game.OwnedEquipments.Any(e => !e.IsConfirmed) || Managers.Game._characters.Any(c => !c.Value.IsConfirmed))
+        //장비, 캐릭터 업데이트된게 있거나 챕터 해금시 TRUE
+        if (Managers.Game.OwnedEquipments.Any(e => !e.IsConfirmed) || Managers.Game._characters.Any(c => !c.Value.IsConfirmed) || QuestManager.Instance.CheapterNotify)
             GetObject((int)GameObjects.QuickNotifyObject).SetActive(true);
         else
             GetObject((int)GameObjects.QuickNotifyObject).SetActive(false);
+
+        //Quest 업데이트
+        if(QuestManager.Instance.CheckCountNotity > 0)
+            GetObject((int)GameObjects.QuestNotifyObject).SetActive(true);
+        else
+            GetObject((int)GameObjects.QuestNotifyObject).SetActive(false);
+
     }
 
 

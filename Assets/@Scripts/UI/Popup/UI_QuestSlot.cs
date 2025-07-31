@@ -62,6 +62,7 @@ public class UI_QuestSlot : UI_Base
 
         if (_quest.State == QuestProgressState.Completed)
         {
+            QuestManager.Instance.CheckCountNotity--;
             QuestManager.Instance.GiveReward(_quest.QuestData.QuestId);
 
             if (_quest.QuestData.QuestType == Define.EQuestType.Daily)
