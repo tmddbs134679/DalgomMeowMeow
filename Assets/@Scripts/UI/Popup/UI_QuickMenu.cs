@@ -13,7 +13,8 @@ public class UI_QuickMenu : UI_Popup
     {
         ContentObject,
         CharacterNotifyObject,
-        EquipmentNotifyObject
+        EquipmentNotifyObject,
+        CheapterNotifyObject
     }
 
     enum Buttons
@@ -136,5 +137,10 @@ public class UI_QuickMenu : UI_Popup
             GetObject((int)GameObjects.CharacterNotifyObject).SetActive(true);
         else
             GetObject((int)GameObjects.CharacterNotifyObject).SetActive(false);
+
+        if(QuestManager.Instance.CheapterNotify)
+            GetObject((int)GameObjects.CheapterNotifyObject).SetActive(true);
+        else
+            GetObject((int)GameObjects.CheapterNotifyObject).SetActive(false);
     }
 }
