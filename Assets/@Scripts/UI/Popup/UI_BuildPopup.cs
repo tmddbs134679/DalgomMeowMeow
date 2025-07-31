@@ -84,7 +84,9 @@ public class UI_BuildPopup : UI_Popup
         ShopImage,
         PotImage,
         TravelImage,
-
+        SlotMachineChapterLock,
+        StorageChapterLock,
+        FishingChapterLock,
     }
     #endregion
 
@@ -407,8 +409,9 @@ public class UI_BuildPopup : UI_Popup
     //챕터
     private Dictionary<Define.EBuildingType, string> _contentIdMap = new()
     {
-        { Define.EBuildingType.SlotMachine,    "Building_SlotMachine" },
         { Define.EBuildingType.Fishing,        "Building_FishingSpot" },
+        { Define.EBuildingType.Storage,        "Building_AnimalStorage" },
+        { Define.EBuildingType.SlotMachine,    "Building_SlotMachine" },
     };
 
     public void UpdateButtonStates()
@@ -420,9 +423,12 @@ public class UI_BuildPopup : UI_Popup
 
             bool isUnlocked = QuestManager.Instance.IsUnlocked(contentId);
             var button = GetButton((int)(Buttons)Enum.Parse(typeof(Buttons), $"{type}Button")); // "Cooking" → "CookButton"
+            var lockImage = GetImage((int)(Images)Enum.Parse(typeof(Images), $"{type}ChapterLock"));
 
             if (button != null)
                 button.interactable = isUnlocked;
+            if(lockImage != null)
+                lockImage.gameObject.SetActive(!isUnlocked);
         }
     }
 
