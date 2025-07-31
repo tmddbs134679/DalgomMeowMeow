@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [System.Serializable]
 public class SlotResult
@@ -8,6 +9,8 @@ public class SlotResult
     public string Symbol;
     public int RewardGold;
     public int Weight;
+    public string IconAddress; // Addressable 주소
+    public Sprite Icon;        // 실제 로딩된 스프라이트
 }
 
 public class SlotMachineTestData
@@ -19,17 +22,46 @@ public class SlotMachineTestData
         new SlotResult { Symbol = "CAT",  RewardGold = 1000, Weight = 5  }
     };
 }
+
 public class SlotMachineBuilding : BuildingBase
 {
     private List<SlotResult> _results => SlotMachineTestData.TestResults;
 
     private string[] _currentResult = new string[3];
     public string[] CurrentResult => _currentResult;
+    [SerializeField] private Image[] slotImages; // 슬롯 3칸 이미지 연결
 
 
     private int _slotCount = 3;
 
     private int _finishedCount = 0;
+
+    private IEnumerator Start()
+    {
+        yield return LoadSlotIcons(_results); // 어드레서블 아이콘 로드
+    }
+    public IEnumerator LoadSlotIcons(List<SlotResult> results)
+    {
+        int loaded = 0;
+        int total = results.Count;
+
+        foreach (var result in results)
+        {
+            if (!string.IsNullOrEmpty(result.IconAddress))
+            {
+                bool isDone = false;
+
+                Managers.Resource.LoadAsync<Sprite>(result.IconAddress, (sprite) =>
+                {
+                    result.Icon = sprite;
+                    loaded++;
+                    isDone = true;
+                });
+
+                yield return new WaitUntil(() => isDone);
+            }
+        }
+    }
 
     public IEnumerator StartAllSlots()
     {
@@ -50,22 +82,23 @@ public class SlotMachineBuilding : BuildingBase
 
     private IEnumerator RollSingleSlot(int index)
     {
-        float randomSpinTime = Random.Range(0.5f, 1.5f); // 슬롯당 랜덤 회전 시간
+        float randomSpinTime = Random.Range(0.5f, 1.5f); 
         float elapsed = 0f;
 
         while (elapsed < randomSpinTime)
         {
-            // 선택된 슬롯의 모양을 계속 바꾸는 효과
-            _currentResult[index] = _results[Random.Range(0, _results.Count)].Symbol;
+            SlotResult temp = _results[Random.Range(0, _results.Count)];
+            _currentResult[index] = temp.Symbol;
+            slotImages[index].sprite = temp.Icon; // 이미지 갱신
             elapsed += 0.1f;
             yield return new WaitForSeconds(0.1f);
         }
 
-        // 멈출 때의 최종 결과
-        string finalSymbol = _results[Random.Range(0, _results.Count)].Symbol;
-        _currentResult[index] = finalSymbol;
+        SlotResult final = _results[Random.Range(0, _results.Count)];
+        _currentResult[index] = final.Symbol;
+        slotImages[index].sprite = final.Icon; // 최종 고정
 
-        Managers.Debug.Log($"슬롯 {index + 1} 멈춤 → {finalSymbol}", Define.EDebugType.Building);
+        Managers.Debug.Log($"슬롯 {index + 1} 멈춤 → {final.Symbol}", Define.EDebugType.Building);
         _finishedCount++;
     }
 

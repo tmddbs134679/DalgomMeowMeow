@@ -178,9 +178,8 @@ public class TutorialManager : MonoBehaviour
         foreach (var button in FindObjectsOfType<Button>())
         {
             button.interactable = state;
-            button.image.raycastTarget = state;
-            Debug.Log($"{button} interactable: {button.interactable}" );
-            Debug.Log($"{button} raycastTarget:{button.image.raycastTarget}");
+            if (button.image != null)
+                button.image.raycastTarget = state;
         }
 
         foreach (var toggle in FindObjectsOfType<Toggle>())
@@ -193,15 +192,11 @@ public class TutorialManager : MonoBehaviour
         SetAllUIInteractable(false); // 전체 비활성화
 
         var btn = target.GetComponent<Button>();
-        Debug.Log($"{btn} interactable : {btn.interactable}" );
-        Debug.Log($"{btn} raycastTarget :{btn.image.raycastTarget}");
         if (btn != null)
         {
             btn.interactable = true;
             btn.image.raycastTarget = true;
         }
-        Debug.Log($"{btn} : {btn.interactable}" );
-        Debug.Log($"{btn} :{btn.image.raycastTarget}");
 
         var toggle = target.GetComponent<Toggle>();
         if (toggle != null)
