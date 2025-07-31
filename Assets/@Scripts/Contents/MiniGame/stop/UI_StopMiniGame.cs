@@ -105,7 +105,7 @@ public class UI_StopMiniGame : UI_Popup
             _gameManager.GameOver();
 
             _player.transform.localScale = new Vector3(1.5f, 1, 1);
-            Lefttime = 0f;
+            Lefttime = 60f;
             GameEndUI(); // 게임 오버시 보상 UI 띄우기
             return;
         }
