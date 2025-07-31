@@ -74,6 +74,7 @@ public class QuestManager : MonoBehaviour
             }
         }
         OnQuestUpdated?.Invoke(); // 이벤트 호출
+        CheckCompleteChapterQuest();
     }
 
     public void GiveReward(string questId)
@@ -345,5 +346,42 @@ public class QuestManager : MonoBehaviour
             int a = 0;
         }
 
+    }
+    
+    
+    public void CheckCompleteChapterQuest()
+    {
+        foreach (var kvp in Managers.Data.UnlockContentDic)
+        {
+            string chapterId = kvp.Key;
+            var data = kvp.Value;
+            if (IsUnlocked(chapterId))
+                continue;
+            
+            // 나머지 조건도 충족되는지 확인
+            bool allMet = true;
+            foreach (var condition in data.Conditions)
+            {
+                switch (condition.Type)
+                {
+                    case Data.UnlockConditionType.Quest:
+                        bool questCompleted = IsQuestCompleted(condition.QuestId);
+                        if (!questCompleted)
+                            allMet = false;
+                        break;
+                    case Data.UnlockConditionType.Gold:
+                        if (Managers.Game.Gold < condition.RequiredGold)
+                            allMet = false;
+                        break;
+                }
+
+                if (!allMet) break;
+            }
+
+            if (allMet)
+            {
+                Managers.UI.ShowToast($"{chapterId} 해금 조건이 모두 충족되었습니다!");
+            }
+        }
     }
 }
