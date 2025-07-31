@@ -66,11 +66,11 @@ public class UI_BuildPopup : UI_Popup
 
     enum Images
     {
-        FishingLockImage,
-        StorageLockImage,
-        SlotMachineLockImage,
-        OnionLockImage,
-        PumpkinLockImage
+        SlotLockImage,
+        ShopLockImage,
+        PotLockImage,
+        TravelLockImage,
+
     }
     #endregion
 
@@ -113,8 +113,6 @@ public class UI_BuildPopup : UI_Popup
         GetButton((int)Buttons.PotButton).gameObject.BindEvent(() => SelectBuildingType(Define.EBuildingType.Pot));
         GetButton((int)Buttons.TravelButton).gameObject.BindEvent(() => SelectBuildingType(Define.EBuildingType.Travel));
         GetButton((int)Buttons.CancelButton).gameObject.BindEvent(CancelBuildUI);
-        
-        
         Managers.Game.OnResourcesChagned += Refresh;
         BuildingPlacer.Instance.OnBuildingCancel += CancelBuildUI;
         Refresh();
@@ -231,8 +229,16 @@ public class UI_BuildPopup : UI_Popup
         if (type == Define.EBuildingType.SlotMachine)
         {
             if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(Define.EBuildingType.SlotMachine.ToString(), out int count) && count >= 1)
+            {
                 BuildingPlacer.Instance.islimitBuildCount = false;
-            return;
+                GetText((int)Texts.SlotMachineGoldText).gameObject.SetActive(false);
+                GetImage((int)Images.SlotLockImage).gameObject.SetActive(true);
+                return;
+            }
+            else
+            {
+                                    GetImage((int)Images.SlotLockImage).gameObject.SetActive(false);
+            }
         }
         if (type == Define.EBuildingType.Shop)
         {
@@ -321,7 +327,6 @@ public class UI_BuildPopup : UI_Popup
     {
         { Define.EBuildingType.SlotMachine,    "Building_SlotMachine" },
         { Define.EBuildingType.Fishing,        "Building_FishingSpot" },
-        { Define.EBuildingType.Storage,        "Building_AnimalStorage" },
     };
 
     public void UpdateButtonStates()
@@ -333,13 +338,9 @@ public class UI_BuildPopup : UI_Popup
 
             bool isUnlocked = QuestManager.Instance.IsUnlocked(contentId);
             var button = GetButton((int)(Buttons)Enum.Parse(typeof(Buttons), $"{type}Button")); // "Cooking" → "CookButton"
-            var lockImage = GetImage((int)(Images)Enum.Parse(typeof(Images), $"{type}LockImage"));
+
             if (button != null)
-            {
                 button.interactable = isUnlocked;
-            }
-            if (lockImage != null)
-                lockImage.enabled = !isUnlocked;
         }
     }
 
