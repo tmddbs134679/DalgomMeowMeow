@@ -19,10 +19,18 @@ public class BuildMap : MonoBehaviour
     public Dictionary<String, int> valueCounts = new Dictionary<string, int>();
     public Dictionary<String, int> filtervalueCounts = new Dictionary<string, int>();
     private Dictionary<int, BuildData> _buildDataMap = new Dictionary<int, BuildData>();
-    void Awake()
-    {
-        _arrayBuildPos.LoadMapData();
-    }
+void Awake()
+{
+    _arrayBuildPos.LoadMapData();
+    StartCoroutine(DelayedRebuildAndRelocate());
+}
+
+IEnumerator DelayedRebuildAndRelocate()
+{
+    yield return null; // 오브젝트 파괴 등 반영될 때까지 1프레임 대기
+    surface.BuildNavMesh(); // NavMesh 다시 생성
+    Managers.AI.AllRelocateToNearestNavMesh(); // 캐릭터들 위치 재조정
+}
     void Start()
     {
         if (Managers.Scene.GetSceneName(Define.EScene.CharacterStoreScene) == SceneManager.GetActiveScene().name) return;

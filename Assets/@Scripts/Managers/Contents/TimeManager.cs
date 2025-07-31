@@ -326,14 +326,10 @@ public DateTime LastDayNightCheckTime
     {
         Managers.Game.AdvancedGachaOpenCount = 3;
         _claimedThisSession = false;
-        Managers.Game.DailyMiniGameReward();
+        Managers.Game.RewardMinigame = true;
     }
 
-    [ContextMenu("RewardTest")]
-    public void Test()
-    {
-        Managers.Game.DailyMiniGameReward();
-    }
+    
 
     public int CalculateOfflineGold()
     {

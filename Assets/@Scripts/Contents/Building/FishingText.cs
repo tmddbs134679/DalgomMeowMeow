@@ -55,8 +55,10 @@ public class FishingText : MonoBehaviour
         if (Camera.main != null)
         {
             Vector3 rightDir = Camera.main.transform.right;
-            Vector3 offset = rightDir * Mathf.Sin(elapsed * waveFrequency) * waveAmplitude;
-            transform.localPosition = startPos + offset;
+            float xOffset = Mathf.Sin(elapsed * waveFrequency) * waveAmplitude;
+
+            Vector3 currentPos = transform.localPosition;
+            transform.localPosition = new Vector3(startPos.x + xOffset, currentPos.y, startPos.z);
         }
     }
 

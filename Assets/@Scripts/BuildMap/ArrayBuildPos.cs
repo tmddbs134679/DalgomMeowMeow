@@ -99,7 +99,7 @@ public class ArrayBuildPos : ScriptableObject
     }
 #endif
 
- public void LoadMapData()
+    public void LoadMapData()
     {
         string path = $"{Application.dataPath}/@Resources/Map/MapData.json";
 
@@ -135,6 +135,8 @@ public class ArrayBuildPos : ScriptableObject
         }
         baseBuilding = buildDataList;
         Debug.Log("건물 데이터 불러오기 완료!");
+               Managers.AI.AllRelocateToNearestNavMesh();
+
     }
 
 #if UNITY_EDITOR
