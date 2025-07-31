@@ -11,10 +11,10 @@ namespace Scripts.Contents.AI.FSM.State
         public override void OnEnter()
         {
             base.OnEnter();
-            character.UseStamina(20);
+            character.Stat.UseStamina(20);
             character.currentBuilding.ConnectToAnimal(character);
             character.OnAnimalArrived(); // 도착 처리 메소드 호출
-            character.SetAnimation(42);
+            character.View.SetAnimation(42);
             character.Controller.NavRotateFalse(); // 회전 비활성화
         }
 
@@ -23,7 +23,7 @@ namespace Scripts.Contents.AI.FSM.State
             base.OnUpdate(deltaTime);
             if (elapsedTime > character.currentBuilding.BuildingData.Interval)
             {
-                character.characterAction.Idle();
+                character.Action.Idle();
                 return;
             }
           

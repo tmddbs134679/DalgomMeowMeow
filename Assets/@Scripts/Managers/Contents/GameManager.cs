@@ -191,19 +191,19 @@ public class GameManager
         newChar.IsConfirmed = true;
         _characters[newChar.UniqueId] = newChar;
 
-        var newCharTest = new Character();
-        newCharTest.InMainScene = true; // 메인 씬에 존재하는 캐릭터로 설정
-        newCharTest.Init("A10002", new Vector3(39f, 0, 27f)); // 위치 초기값
-        newCharTest.SetInfo(Managers.Data.CreatureDic["A10002"]);
-        newCharTest.IsConfirmed = true;
-        _characters[newCharTest.UniqueId] = newCharTest;
+        //var newCharTest = new Character();
+        //newCharTest.InMainScene = true; // 메인 씬에 존재하는 캐릭터로 설정
+        //newCharTest.Init("A10002", new Vector3(39f, 0, 27f)); // 위치 초기값
+        //newCharTest.SetInfo(Managers.Data.CreatureDic["A10002"]);
+        //newCharTest.IsConfirmed = true;
+        //_characters[newCharTest.UniqueId] = newCharTest;
 
-        var newChar1 = new Character();
-        newChar1.InMainScene = true; // 메인 씬에 존재하는 캐릭터로 설정
-        newChar1.Init("A10006", new Vector3(38f, 0, 27f)); // 위치 초기값
-        newChar1.SetInfo(Managers.Data.CreatureDic["A10006"]);
-        newChar1.IsConfirmed = true;
-        _characters[newChar1.UniqueId] = newChar1;
+        //var newChar1 = new Character();
+        //newChar1.InMainScene = true; // 메인 씬에 존재하는 캐릭터로 설정
+        //newChar1.Init("A10006", new Vector3(38f, 0, 27f)); // 위치 초기값
+        //newChar1.SetInfo(Managers.Data.CreatureDic["A10006"]);
+        //newChar1.IsConfirmed = true;
+        //_characters[newChar1.UniqueId] = newChar1;
 
 
         AdvancedGachaOpenCount = 3;
@@ -267,8 +267,8 @@ public class GameManager
             if (Managers.Scene.CurrentScene is GameScene)
             {
                 character.Pos = new Vector3Data(ai.transform.position);
-                character.CurrentState = ai.Data.CurrentState;
-                character.CurrentStamina = ai.Data.CurrentStamina;
+                character.CurrentState = ai.Stat.data.CurrentState;
+                character.CurrentStamina = ai.Stat.data.CurrentStamina;
             }
 
             if (Managers.Scene.CurrentScene is CharacterStoreScene)
@@ -527,7 +527,7 @@ public class GameManager
 
         if (Managers.Game.CharacterInMainScene.TryGetValue(character.UniqueId, out AICharacter aiCharacter))
         {
-            aiCharacter.Data.IsTravelMode = true;
+            aiCharacter.Stat.data.IsTravelMode = true;
             //일단 false;
             aiCharacter.gameObject.SetActive(false);
         }
