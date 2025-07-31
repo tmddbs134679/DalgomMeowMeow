@@ -174,7 +174,7 @@ public class UI_BuildAction : UI_Popup
         else
         {
             GetText((int)Texts.MoneyText).gameObject.SetActive(true);
-            GetText((int)Texts.GText).gameObject.SetActive(false);
+            GetText((int)Texts.GText).gameObject.SetActive(true);
         }
     }
     public void CountGold(int sumBuyMoney)

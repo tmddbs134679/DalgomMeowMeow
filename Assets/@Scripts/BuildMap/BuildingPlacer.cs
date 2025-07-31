@@ -534,7 +534,7 @@ public class BuildingPlacer : MonoBehaviour
         }
         if (_PreviewOBJ != null)
         {
-                                _PreviewOBJ.GetComponent<PreviewColliderSensor>().CancelPreview();
+                                _PreviewOBJ.GetComponent<PreviewColliderSensor>()?.CancelPreview();
             _PreviewOBJ.GetComponent<DraggableObject>().isDrag = false;
             Destroy(_PreviewOBJ);
         }
