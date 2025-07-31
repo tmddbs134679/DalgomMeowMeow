@@ -34,12 +34,12 @@ public class AIManager
             return;
 
         character.transform.position = hit.position;
-        character.nav.Warp(hit.position); // NavMeshAgent에 위치 강제 적용
+        character.View.Nav.Warp(hit.position); // NavMeshAgent에 위치 강제 적용
     }
 
     public void ValidateNavMeshPosition(AICharacter character)
     {
-        if (!character.nav.isOnNavMesh || character.nav.pathStatus == NavMeshPathStatus.PathInvalid)
+        if (!character.View.Nav.isOnNavMesh || character.View.Nav.pathStatus == NavMeshPathStatus.PathInvalid)
         {
             Managers.Debug.Log("[AIManager] NavMesh 위치가 유효하지 않음. 재위치 조정 중...", Define.EDebugType.AI);
             RelocateToNearestNavMesh(character);

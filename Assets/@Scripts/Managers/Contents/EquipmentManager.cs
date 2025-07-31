@@ -98,7 +98,7 @@ public class EquipmentManager
 
     public void SetInitEquipment(AICharacter character)
     {
-        var equippedIdsCopy = new List<string>(character.Data.EquippedItemIds);
+        var equippedIdsCopy = new List<string>(character.Stat.data.EquippedItemIds);
 
         foreach (var equipUid in equippedIdsCopy)
         {
@@ -109,10 +109,10 @@ public class EquipmentManager
                 continue;
             }
 
-            if (!character.Data.EquippedItems.ContainsKey(equip.EquipmentData.EquipmentType))
-                character.Data.EquippedItems.Add(equip.EquipmentData.EquipmentType, equip);
+            if (!character.Stat.data.EquippedItems.ContainsKey(equip.EquipmentData.EquipmentType))
+                character.Stat.data.EquippedItems.Add(equip.EquipmentData.EquipmentType, equip);
 
-            EquipItem(character.Data, equip);
+            EquipItem(character.Stat.data, equip);
         }
     }
 

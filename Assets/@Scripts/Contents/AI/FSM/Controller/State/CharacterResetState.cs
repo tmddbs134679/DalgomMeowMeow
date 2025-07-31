@@ -26,7 +26,7 @@ namespace Scripts.Contents.AI.FSM.State
             }
             if (elapsedTime > 1f)
             {
-                character.characterAction.Idle();
+                character.Action.Idle();
                 return;
 
             }

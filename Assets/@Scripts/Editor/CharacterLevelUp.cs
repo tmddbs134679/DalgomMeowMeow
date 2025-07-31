@@ -14,12 +14,12 @@ public class CharacterEditor : Editor
 
         if (GUILayout.Button("레벨업"))
         {
-            character.OnLevelUp();
+            character.Stat.OnLevelUp();
         }
 
         if (GUILayout.Button("경험치 증가"))
         {
-            character.GainExp(Random.Range(1, 10));
+            character.Stat.GainExp(Random.Range(1, 10));
         }
 
 

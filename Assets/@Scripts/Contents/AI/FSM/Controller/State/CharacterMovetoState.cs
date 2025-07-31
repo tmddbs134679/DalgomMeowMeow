@@ -21,10 +21,10 @@ namespace Scripts.Contents.AI.FSM.State
         {
             base.OnEnter();
             state = Define.EAIState.MoveTo;
-            character.SetAnimation(18); // 이동 애니메이션 설정
+            character.View.SetAnimation(18); // 이동 애니메이션 설정
             character.Controller.NavRotateTrue(); // 회전 활성화
             character.Controller.Move(targetPosition);
-            character.SetSpeed(character.Data.MoveSpeed);
+            character.View.SetSpeed(character.Stat.data.MoveSpeed);
 
         }
 
@@ -36,7 +36,7 @@ namespace Scripts.Contents.AI.FSM.State
             // 일정 거리 이내면 도착한 것으로 판단
             if (character.currentBuilding == null)
             {
-                character.characterAction.Idle();
+                character.Action.Idle();
                 return;
             }
             if (elapsedTime > 0.5f)
@@ -52,7 +52,7 @@ namespace Scripts.Contents.AI.FSM.State
             }
 
 
-            if (Vector3.Distance(character.transform.position, targetPosition) < 0.5f && !character.isFollowing)
+            if (Vector3.Distance(character.transform.position, targetPosition) < 0.5f && !character.Interaction.isFollowing)
             {
                 isArrived = true;
 

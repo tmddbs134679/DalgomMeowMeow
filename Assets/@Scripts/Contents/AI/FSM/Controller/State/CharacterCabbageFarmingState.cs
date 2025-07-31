@@ -11,10 +11,10 @@ namespace Scripts.Contents.AI.FSM.State
         public override void OnEnter()
         {
             base.OnEnter();
-            character.UseStamina(25);
+            character.Stat.UseStamina(25);
             character.currentBuilding.ConnectToAnimal(character);
             character.OnAnimalArrived(); // 도착 처리 메소드 호출
-            character.SetAnimation(29);
+            character.View.SetAnimation(29);
             character.Controller.NavRotateFalse();
         }
 

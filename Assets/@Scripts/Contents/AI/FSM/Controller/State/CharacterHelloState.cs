@@ -12,10 +12,10 @@ namespace Scripts.Contents.AI.FSM.State
         {
             base.OnEnter();
             character._isHelloReady = false; // Hello 준비 상태를 false로 설정
-            character.nav.isStopped = true;
-            character.nav.ResetPath();
-            character.SetSpeed(0);
-            character.SetAnimation(3); 
+            character.View.Nav.isStopped = true;
+            character.View.Nav.ResetPath();
+            character.View.SetSpeed(0);
+            character.View.SetAnimation(3); 
         }
 
         public override void OnUpdate(float deltaTime)
@@ -24,7 +24,7 @@ namespace Scripts.Contents.AI.FSM.State
 
             if (elapsedTime > 5f)
             {
-                character.characterAction.Idle();
+                character.Action.Idle();
                 return;
             }
 
@@ -33,7 +33,7 @@ namespace Scripts.Contents.AI.FSM.State
         public override void OnExit()
         {
             base.OnExit();
-            character.nav.isStopped = false;
+            character.View.Nav.isStopped = false;
         }
     }
 }

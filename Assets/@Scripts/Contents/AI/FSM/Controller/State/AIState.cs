@@ -10,8 +10,8 @@ public class AIState : BaseState<AICharacter>
     public override void OnEnter()
     {
         base.OnEnter();
-        character.Data.CurrentState = state; 
-        character.CurrentState = character.Data.CurrentState;
+        character.Stat.data.CurrentState = state; 
+        character.CurrentState = character.Stat.data.CurrentState;
     }
 
     public Define.EAIState GetState() { return state; }
