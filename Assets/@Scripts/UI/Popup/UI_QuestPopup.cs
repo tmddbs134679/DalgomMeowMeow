@@ -153,7 +153,16 @@ public class UI_QuestPopup : UI_Popup
 
         foreach (var quest in QuestManager.Instance.AchievementQuests)
         {
-            if (quest.State == QuestProgressState.InProgress || quest.State == QuestProgressState.Completed)
+            if (quest.State == QuestProgressState.Completed)
+            {
+                UI_QuestSlot slot = Managers.UI.MakeSubItem<UI_QuestSlot>(parent);
+                slot.SetQuest(quest);
+                _questSlots.Add(slot);
+            }
+        }
+        foreach (var quest in QuestManager.Instance.AchievementQuests)
+        {
+            if (quest.State == QuestProgressState.InProgress)
             {
                 UI_QuestSlot slot = Managers.UI.MakeSubItem<UI_QuestSlot>(parent);
                 slot.SetQuest(quest);
