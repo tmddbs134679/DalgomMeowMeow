@@ -146,6 +146,7 @@ public class UI_BuildAction : UI_Popup
     //버튼 UI Hide,show
     public void ButtonSetAtive()
     {
+        if (BuildingPlacer.Instance == null) return;
         if (!BuildingPlacer.Instance.isLongPressAcceptBuild)
         {
             GetButton((int)Buttons.RemoveButton).gameObject.SetActive(false);
