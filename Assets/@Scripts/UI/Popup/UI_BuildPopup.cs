@@ -48,6 +48,7 @@ public class UI_BuildPopup : UI_Popup
         PotGoldText,
         TravelGoldText,
 
+
         CookCountText,
         FarmCountText,
         PlayGroundCountText,
@@ -59,8 +60,17 @@ public class UI_BuildPopup : UI_Popup
         ShopCountText,
         PotCountText,
         TravelCountText,
+
+
         PlayerGoldTxt,
-        DiaValueText
+        DiaValueText,
+
+
+        SlotMachineMaxText,
+        ShopMaxText,
+        PotMaxText,
+        TravelMaxText,
+
 
     }
 
@@ -70,6 +80,10 @@ public class UI_BuildPopup : UI_Popup
         ShopLockImage,
         PotLockImage,
         TravelLockImage,
+        SlotMachineImage,
+        ShopImage,
+        PotImage,
+        TravelImage,
 
     }
     #endregion
@@ -118,9 +132,14 @@ public class UI_BuildPopup : UI_Popup
         Refresh();
         Setting();
         UpdateButtonStates(); //챕터
+
         return true;
     }
 
+    void OnEnable()
+    {
+        HideOrShowUI();
+    }
     public void OnDestroy()
     {
         if (Managers.Game != null)
@@ -212,14 +231,14 @@ public class UI_BuildPopup : UI_Popup
         BuildingPlacer.Instance.SelectBuildingType(type);
         if (BuildingPlacer.Instance.isGold)
         {
-            
+
             BuildingPlacer.Instance.uI_BuildAction.transform.position = this.transform.position;
-            if(type!=Define.EBuildingType.Road)
-            BuildingPlacer.Instance.uI_BuildAction.SetActive(true);
+            if (type != Define.EBuildingType.Road)
+                BuildingPlacer.Instance.uI_BuildAction.SetActive(true);
         }
         else
         {
-                 (Managers.UI.SceneUI as UI_GameScene).gameObject.SetActive(true);
+            (Managers.UI.SceneUI as UI_GameScene).gameObject.SetActive(true);
         }
     }
     //건물 갯수 제한 코드 구간
@@ -229,16 +248,8 @@ public class UI_BuildPopup : UI_Popup
         if (type == Define.EBuildingType.SlotMachine)
         {
             if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(Define.EBuildingType.SlotMachine.ToString(), out int count) && count >= 1)
-            {
                 BuildingPlacer.Instance.islimitBuildCount = false;
-                GetText((int)Texts.SlotMachineGoldText).gameObject.SetActive(false);
-                GetImage((int)Images.SlotLockImage).gameObject.SetActive(true);
-                return;
-            }
-            else
-            {
-                                    GetImage((int)Images.SlotLockImage).gameObject.SetActive(false);
-            }
+            return;
         }
         if (type == Define.EBuildingType.Shop)
         {
@@ -262,6 +273,77 @@ public class UI_BuildPopup : UI_Popup
         }
     }
 
+    private void HideOrShowUI()
+    {
+        if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(Define.EBuildingType.SlotMachine.ToString(), out int Slotcount) && Slotcount >= 1)
+        {
+            GetText((int)Texts.SlotMachineGoldText).gameObject.SetActive(false);
+            GetText((int)Texts.SlotMachineCountText).gameObject.SetActive(false);
+            GetText((int)Texts.SlotMachineMaxText).gameObject.SetActive(true);
+            GetImage((int)Images.SlotLockImage).gameObject.SetActive(true);
+            GetImage((int)Images.SlotMachineImage).gameObject.SetActive(false);
+        }
+        else
+        {
+            GetText((int)Texts.SlotMachineGoldText).gameObject.SetActive(true);
+            GetText((int)Texts.SlotMachineCountText).gameObject.SetActive(true);
+            GetText((int)Texts.SlotMachineMaxText).gameObject.SetActive(false);
+            GetImage((int)Images.SlotLockImage).gameObject.SetActive(false);
+            GetImage((int)Images.SlotMachineImage).gameObject.SetActive(true);
+        }
+
+        if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(Define.EBuildingType.Shop.ToString(), out int Shopcount) && Shopcount >= 1)
+        {
+            GetText((int)Texts.ShopGoldText).gameObject.SetActive(false);
+            GetText((int)Texts.ShopCountText).gameObject.SetActive(false);
+            GetText((int)Texts.ShopMaxText).gameObject.SetActive(true);
+            GetImage((int)Images.ShopLockImage).gameObject.SetActive(true);
+            GetImage((int)Images.ShopImage).gameObject.SetActive(false);
+        }
+        else
+        {
+            GetText((int)Texts.ShopGoldText).gameObject.SetActive(true);
+            GetText((int)Texts.ShopCountText).gameObject.SetActive(true);
+            GetText((int)Texts.ShopMaxText).gameObject.SetActive(false);
+            GetImage((int)Images.ShopLockImage).gameObject.SetActive(false);
+            GetImage((int)Images.ShopImage).gameObject.SetActive(true);
+        }
+
+        if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(Define.EBuildingType.Pot.ToString(), out int Potcount) && Potcount >= 1)
+        {
+            GetText((int)Texts.PotGoldText).gameObject.SetActive(false);
+            GetText((int)Texts.PotCountText).gameObject.SetActive(false);
+            GetText((int)Texts.PotMaxText).gameObject.SetActive(true);
+            GetImage((int)Images.PotLockImage).gameObject.SetActive(true);
+            GetImage((int)Images.PotImage).gameObject.SetActive(false);
+        }
+        else
+        {
+            GetText((int)Texts.PotGoldText).gameObject.SetActive(true);
+            GetText((int)Texts.PotCountText).gameObject.SetActive(true);
+            GetText((int)Texts.PotMaxText).gameObject.SetActive(false);
+            GetImage((int)Images.PotLockImage).gameObject.SetActive(false);
+            GetImage((int)Images.PotImage).gameObject.SetActive(true);
+        }
+
+        if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(Define.EBuildingType.Travel.ToString(), out int Travelcount) && Travelcount >= 1)
+        {
+            GetText((int)Texts.TravelGoldText).gameObject.SetActive(false);
+            GetText((int)Texts.TravelCountText).gameObject.SetActive(false);
+            GetText((int)Texts.TravelMaxText).gameObject.SetActive(true);
+            GetImage((int)Images.TravelLockImage).gameObject.SetActive(true);
+            GetImage((int)Images.TravelImage).gameObject.SetActive(false);
+        }
+        else
+        {
+            GetText((int)Texts.TravelGoldText).gameObject.SetActive(true);
+            GetText((int)Texts.TravelCountText).gameObject.SetActive(true);
+            GetText((int)Texts.TravelMaxText).gameObject.SetActive(false);
+            GetImage((int)Images.TravelLockImage).gameObject.SetActive(false);
+            GetImage((int)Images.TravelImage).gameObject.SetActive(true);
+        }
+
+    }
     /// <summary>
     /// buildUI창 건설비용과 건물갯수 갱신
     /// goldTextEnum=Enum.Texts(GoldText)  buildingType=Enum.BuildingType  countText=Enum.Texts(CountText)
@@ -346,7 +428,7 @@ public class UI_BuildPopup : UI_Popup
 
     private void OnOffFarmPopup()
     {
-                // 이미 열려 있다면 닫기
+        // 이미 열려 있다면 닫기
         if (_farmPopup != null)
         {
             Managers.UI.ClosePopupUI(_farmPopup); // 닫기
