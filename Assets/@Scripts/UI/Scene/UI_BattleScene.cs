@@ -75,9 +75,16 @@ public class UI_BattleScene : UI_Scene
         _skill.SetImage(Managers.Resource.Load<Sprite>($"{character.CharID}_S"));
 
         //추가 사운드 이펙트
-        Managers.Sound.Play(Define.ESound.Effect, "SkillActive");
+        if(character.CharID.Contains("B"))
+        {
+            Managers.Sound.Play(Define.ESound.Effect, "BearSkill");
+        }
+        else
+        {
+            Managers.Sound.Play(Define.ESound.Effect, "CatSkill");
+        }
 
-        StartCoroutine(SkillCutScene());
+            StartCoroutine(SkillCutScene());
         character.ActiveSkill();
         _skillButtons[index].SkillActive(character.SkillCooldown, character.IsDead);
     }
