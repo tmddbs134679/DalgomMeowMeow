@@ -11,7 +11,9 @@ public class QuestManager : MonoBehaviour
     private Dictionary<string, Quest> _quests = new();
     private Dictionary<(Define.EQuestConditionType, Define.ETargetType), List<Quest>> _questIndex = new();
 
-    public event Action OnQuestUpdated;
+    public int CheckCountNotity;
+    public bool CheapterNotify;
+    public Action OnQuestUpdated;
 
     void Awake()
     {
@@ -340,7 +342,7 @@ public class QuestManager : MonoBehaviour
         if (allMet)
         {
             // 해금조건달성 알림 
-            int a = 0;
+            CheapterNotify = true;
         }
 
     }

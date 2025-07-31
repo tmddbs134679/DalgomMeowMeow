@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Data;
 using DG.Tweening;
 using Scripts.Contents.AI.FSM.State;
 using TMPro;
@@ -14,10 +15,22 @@ public class AICharacter : BaseObject
     public AIController Controller { get { return _controller; } }
     private AIController _controller;
 
-    public List<string> EquippedItemIds { get; set; } = new();
-    public Character Data { get; set; }
+    public  AICharacterStat Stat { get { return _stat; } }
+    private AICharacterStat _stat;
 
-    private AICharacterLevelEffectHandler levelEffectHandler;
+    public AICharacterLevelEffectHandler Effect { get { return _effect; } }
+    private AICharacterLevelEffectHandler _effect;
+
+    public AICharacterView View  { get { return _view; } }
+    private AICharacterView _view;
+
+    public AICharacterInteraction Interaction { get { return _interaction; } }
+    private AICharacterInteraction _interaction;
+
+    public CharacterAction Action { get; private set; }
+
+    public List<string> EquippedItemIds { get; set; } = new();
+
 
     [Header("AI 캐릭터 현재 상태")]
     public Define.EAIState CurrentState;
@@ -35,44 +48,14 @@ public class AICharacter : BaseObject
 
     #region Hide
     [HideInInspector]
-    public int CurrentAnimation { get; set; }
-
-    [HideInInspector]
-    public bool isClicked = false;
-    private Transform head;
-    [HideInInspector]
-    public Camera _camera;
-    private float tempCameraSize = 0;
-    private Vector3 tempCameraPos = new Vector3(21.2f, 26.35f, 9.3f); // 초기 카메라 위치
-    [HideInInspector]
-    public float tempSpeed;
-    [HideInInspector]
-    public bool isFollowing;
-    [HideInInspector]
     public EAIState loadState;
+
     [HideInInspector]
     public BuildingBase loadBuilding;
 
     [HideInInspector]
-    public NavMeshAgent nav;
-
-    [HideInInspector]
-    public Animator animator;
-
-    [HideInInspector]
-    public SkinnedMeshRenderer skinnedMeshRenderer;
-
-    [HideInInspector]
-    public Material currentEmo;
-
-    [HideInInspector]
-    public CharacterAction characterAction;
-
-    [HideInInspector]
     public bool _isHelloReady = true;
-
-    [HideInInspector]
-    public CharacterEmoSet emo;
+    
     [HideInInspector]
     public Sprite[] sprites;
 
@@ -91,61 +74,28 @@ public class AICharacter : BaseObject
 
     #endregion
 
-
     #region Action
     public Action<AICharacter> AnimalLeaved;
     public Action<AICharacter> AnimalArrived;
     public Action<AICharacter> AnimalDelivered;
     public Action<int> CharacterGainExp;
     public Action<float> Levelup;
-
-
-
-
     #endregion
-
-    #region WorldSpace
-    private GameObject infoButton;
-    private TextMeshProUGUI nameText;
-    #endregion
-
-    #region OnClickCharacter
-    private float clickStartTime = 0f;
-    private float longPressThreshold = 0.2f;
-    private LayerMask groundLayer;
-    private bool isTweening;
-    #endregion
-
-    private void Awake()
-    {
-        ObjectType = Define.EObjectType.Character;
-        InitEquipBones();
-    }
-
-    private void Start()
-    {
-        _camera = Camera.main;
-        infoButton = transform.Find("Canvas").gameObject;
-        head = transform.Find("root/pelvis/spine_01/spine_02/spine_03/neck_01");
-        nameText = transform.Find("Canvas/Name").GetComponent<TextMeshProUGUI>();
-        nameText.text = Data.Name;
-        
-    }
 
     private void Update()
     {
         if (IsReplica) return;
 
-        if (_controller == null) return;
+        if (Controller == null) return;
 
-        if (!nav.enabled)
+        if (!View.Nav.enabled)
         {
-            nav.enabled = true;
+            View.Nav.enabled = true;
             return;
         }
 
         Controller.OnUpdate(Time.deltaTime);
-        if (BuildingPlacer.Instance == null || !BuildingPlacer.Instance.isAI) LongPressClick();
+        if (BuildingPlacer.Instance == null || !BuildingPlacer.Instance.isAI) Interaction.LongPressClick();
 
     }
 
@@ -153,7 +103,7 @@ public class AICharacter : BaseObject
     private void LateUpdate()
     {
         if (_controller == null) return;
-        ClickToSet();
+        Interaction.ClickToSet();
     }
 
 
@@ -161,65 +111,39 @@ public class AICharacter : BaseObject
     #region 생성 시 초기화 및 불러오기
     public override bool Init()
     {
-        levelEffectHandler = GetComponentInChildren<AICharacterLevelEffectHandler>();
-        nav = GetComponent<NavMeshAgent>();
-        animator = GetComponent<Animator>();
-        skinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
-        characterAction = GetComponent<CharacterAction>();
-        groundLayer = LayerMask.GetMask("Ground");
-        currentEmo = skinnedMeshRenderer.materials[1];
+        ObjectType = Define.EObjectType.Character;
+        InitEquipBones();
+        Action    = GetComponent<CharacterAction>();
+        _view              = GetComponentInChildren<AICharacterView>();
+        _effect            = GetComponentInChildren<AICharacterLevelEffectHandler>();
+        _interaction       = GetComponentInChildren<AICharacterInteraction>();
+        _stat              = GetComponentInChildren<AICharacterStat>();
 
         return true;
     }
 
     public void SetInfo(Character ch)
     {
-        Data = ch;
+        Stat.Init(this);
+        Stat.data = ch;
         // 위치값
-        transform.position = Data.Pos.ToVector3();
-        CurrentState = Data.CurrentState;
-        loadState = Data.CurrentState;
-        loadBuilding = Data.LoadBuilding;
+        if (Managers.Scene.CurrentScene is GameScene)
+        {
+            transform.position = Stat.data.Pos.ToVector3();
+            CurrentState = Stat.data.CurrentState;
+            loadState = Stat.data.CurrentState;
+            loadBuilding = Stat.data.LoadBuilding;
+        }
 
 
         // TODO : FSM 등 상태 적용
-        ControllerRegister();
-        levelEffectHandler.Init();
+        _controller = new AIController(new CharacterResetState(),this, Define.EAIState.None);
+        Effect.Init();
+        View.Init(this);
+        Interaction.Init(this);
+
 
     }
-    #endregion
-
-    #region FSM Register
-    public void ControllerRegister()
-    {
-        _controller = new AIController(new CharacterResetState(), this, Define.EAIState.None);
-        _controller.RegisterState(new CharacterIdleState(), this, Define.EAIState.Idle);
-        _controller.RegisterState(new CharacterBuildingState(), this, Define.EAIState.Build);
-        _controller.RegisterState(new CharacterCookState(), this, Define.EAIState.Cook);
-        _controller.RegisterState(new CharacterCabbageFarmingState(), this, Define.EAIState.CabbageFarm);
-        _controller.RegisterState(new CharacterOnionFarmingState(), this, Define.EAIState.OnionFarm);
-        _controller.RegisterState(new CharacterPotatoFarmingState(), this, Define.EAIState.PotatoFarm);
-        _controller.RegisterState(new CharacterPumpkinFarmingState(), this, Define.EAIState.PumpkinFarm);
-        _controller.RegisterState(new CharacterCarrotFarmingState(), this, Define.EAIState.CarrotFarm);
-        _controller.RegisterState(new CharacterPlayState(), this, Define.EAIState.Play);
-        _controller.RegisterState(new CharacterRestState(), this, Define.EAIState.Rest);
-        _controller.RegisterState(new CharacterMoveToState(), this, Define.EAIState.MoveTo);
-        _controller.RegisterState(new CharacterDeliverState(), this, Define.EAIState.Deliver);
-        _controller.RegisterState(new CharacterHelloState(), this, Define.EAIState.Hello);
-        _controller.RegisterState(new CharacterFishingState(), this, Define.EAIState.Fishing);
-
-    }
-
-    public Dictionary<Define.EBuildingType, Define.EAIState> farmActions = new()
-{
-    { Define.EBuildingType.CabbageFarm, Define.EAIState.CabbageFarm },
-    { Define.EBuildingType.OnionFarm,   Define.EAIState.OnionFarm },
-    { Define.EBuildingType.PotatoFarm,  Define.EAIState.PotatoFarm },
-    { Define.EBuildingType.PumpkinFarm, Define.EAIState.PumpkinFarm },
-    { Define.EBuildingType.CarrotFarm,  Define.EAIState.CarrotFarm },
-};
-
-
     #endregion
 
     #region 건물 상호작용
@@ -245,87 +169,13 @@ public class AICharacter : BaseObject
     }
     #endregion
 
-    #region 캐릭터 스탯 관련
-    public void OnLevelUp()
-    {
-        //스탯
-        Data.MoveSpeed += 0.5f; // 레벨업 시 이동 속도 증가
-        Data.MoveSpeed = MathF.Min(6, Data.MoveSpeed);
-        Data.MaxExp *= 1.3f; // 레벨업 시 최대 경험치 증가
-        Data.Atk += 2f; // 레벨업 시 공격력 증가
-        Data.MaxStamina += 5f; // 레벨업 시 최대 스태미너 증가
-        Data.Level++;
-
-        levelEffectHandler.PlayLevelUpEffect(_camera);
-
-        Levelup?.Invoke(Data.Level);
-    }
-
-    public void GainExp(int value)
-    {
-        Data.CurrentExp += value;
-        while (Data.CurrentExp >= Data.MaxExp)
-        {
-            Data.CurrentExp -= Data.MaxExp;
-            OnLevelUp();
-        }
-        CharacterGainExp?.Invoke(value);
-    }
-
-    public void UseStamina(float amount)
-    {
-        if (Data.CurrentStamina - amount < 0)
-        {
-            return;
-        }
-        Data.CurrentStamina = Mathf.Max(0, Data.CurrentStamina - amount);
-    }
-
-    public void RecoverStamina(float amount)
-    {
-        Data.CurrentStamina = Mathf.Min(Data.MaxStamina, Data.CurrentStamina + amount);
-    }
-    #endregion
-
-    #region 캐릭터 제거 시
-    public void OnDestroy()
-    {
-        Controller?.Dispose();
-        Managers.AI.Unregister(this);
-    }
-    #endregion
-
-    #region 애니메이션 / 속도 설정
-    public void SetAnimation(int animNum)
-    {
-        animator.SetInteger("animation", animNum);
-        CurrentAnimation = animNum;
-    }
-
-    public void SetEmotion(int index)
-    {
-        if (emo == null) return;
-        currentEmo = emo.EmotionMaterials[index];
-        var mats = skinnedMeshRenderer.materials;
-        mats[1] = emo.EmotionMaterials[index];
-        skinnedMeshRenderer.materials = mats;
-    }
-
-    public void SetSpeed(float speed)
-    {
-        nav.speed = speed;
-    }
-
-
-    #endregion
-
     #region 클릭 상호작용
     public override void OnClick()
     {
         if (EventSystem.current.IsPointerOverGameObject())
             return;
 
-        if (!isClicked && Controller.CurrentState() is not CharacterHelloState)
+        if (!Interaction.isClicked && Controller.CurrentState() is not CharacterHelloState)
         {
             System.Random random = new System.Random();
             string randomCatSound = Define.CAT_SOUNDS[random.Next(Define.CAT_SOUNDS.Length)];
@@ -335,122 +185,12 @@ public class AICharacter : BaseObject
         if (gameObject == this.gameObject &&
             Controller.CurrentState() is not CharacterHelloState)
         {
-            isClicked = !isClicked;
-            clickStartTime = 0;
+            Interaction.isClicked = !Interaction.isClicked;
+            Interaction.clickStartTime = 0;
         }
 
     }
-    private void LongPressClick()
-    {
-        if (EventSystem.current.IsPointerOverGameObject())
-            return;
-        if (Input.GetMouseButton(0))
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit))
-            {
-                if (hit.collider.gameObject == this.gameObject &&
-                    (
-                    Controller.CurrentState() is CharacterIdleState ||
-                    Controller.CurrentState() is CharacterMoveToState ||
-                    Controller.CurrentState() is CharacterDeliverState)
-                    )
 
-                {
-                    clickStartTime += Time.deltaTime;
-                    if (clickStartTime > longPressThreshold)
-                    {
-                        nav.enabled = false;
-                        isClicked = false;
-                        isFollowing = true;
-                    }
-
-                }
-            }
-        }
-
-        if (isFollowing)
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit, 1000f, groundLayer))
-            {
-                infoButton.SetActive(false);
-                Vector3 mouspot = hit.point;
-                animator.SetInteger("animation", 49);
-                //SetSpeed(0);
-                this.transform.position = new Vector3(mouspot.x, hit.point.y + 2f, mouspot.z);
-
-            }
-        }
-        if (Input.GetMouseButtonUp(0))
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit))
-            {
-
-                if (clickStartTime <= 0.2f && hit.collider.gameObject == this.gameObject &&
-                    Controller.CurrentState() is not CharacterHelloState &&
-                    Managers.Scene.CurrentScene is GameScene &&
-                    !isFollowing)
-                {
-                    if (isClicked)
-                    {
-                        // 확대 전 상태 저장
-                        tempCameraSize = _camera.orthographicSize;
-                        tempCameraPos = _camera.transform.position;
-
-                        // 부드럽게 줌인
-                        Vector3 targetPos = new Vector3(transform.position.x - 20.3f, 30.5f, transform.position.z - 20.6f);
-                        _camera.DOOrthoSize(2f, 0.7f);
-                        _camera.transform.DOMove(targetPos, 0.7f).OnComplete(() => isTweening = false);
-                    }
-                    else if (!isClicked && !isTweening)
-                    {
-                        isTweening = true;
-
-                        Vector3 targetPos = new Vector3(tempCameraPos.x, 26.35f, tempCameraPos.z);
-                        _camera.DOOrthoSize(7, 0.7f);
-                        _camera.transform.DOMove(targetPos, 0.7f).OnComplete(() => isTweening = false);
-                    }
-
-                }
-            }
-
-            if (isFollowing)
-            {
-                nav.enabled = true;
-                this.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
-                Managers.AI.ValidateNavMeshPosition(this);
-            }
-            isFollowing = false;
-            SetAnimation(CurrentAnimation);
-            clickStartTime = 0f;
-        }
-    }
-    private void ClickToSet()
-    {
-        if (isClicked)
-        {
-            SetSpeed(0);
-            this.gameObject.transform.rotation = Quaternion.Euler(0, _camera.transform.eulerAngles.y + 180, 0);
-            head.transform.localRotation = quaternion.Euler(0, 0, -12);
-            infoButton.SetActive(true);
-            animator.SetInteger("animation", 36);
-        }
-
-        else if (!isClicked && !isFollowing)
-        {
-            if (Controller.CurrentState() is CharacterIdleState)
-                SetSpeed(Data.WalkSpeed);
-            else if (Controller.CurrentState() is CharacterDeliverState)
-                SetSpeed(Data.MoveSpeed / 2);
-            else
-                SetSpeed(Data.MoveSpeed);
-
-            SetAnimation(CurrentAnimation);
-            infoButton.SetActive(false);
-        }
-    }
     #endregion
 
     #region 장비설정
@@ -466,11 +206,19 @@ public class AICharacter : BaseObject
 
     public void ReplicaSetting(Character character)
     {
-        Data = character;
+        Stat.data = character;
 
         Managers.Equipment.ApplyEquipmentPreview(this, character);
     }
 
+    #endregion
+
+    #region 캐릭터 제거 시
+    public void OnDestroy()
+    {
+        Controller?.Dispose();
+        Managers.AI.Unregister(this);
+    }
     #endregion
 }
 

@@ -16,7 +16,36 @@ public class AIController : BaseController<AICharacter>
     {
         character = owner;
         Setup();
+        ControllerRegister();
     }
+
+    public void ControllerRegister()
+    {
+        RegisterState(new CharacterIdleState(), character, Define.EAIState.Idle);
+        RegisterState(new CharacterBuildingState(), character, Define.EAIState.Build);
+        RegisterState(new CharacterCookState(), character, Define.EAIState.Cook);
+        RegisterState(new CharacterCabbageFarmingState(), character, Define.EAIState.CabbageFarm);
+        RegisterState(new CharacterOnionFarmingState(), character, Define.EAIState.OnionFarm);
+        RegisterState(new CharacterPotatoFarmingState(), character, Define.EAIState.PotatoFarm);
+        RegisterState(new CharacterPumpkinFarmingState(), character, Define.EAIState.PumpkinFarm);
+        RegisterState(new CharacterCarrotFarmingState(), character, Define.EAIState.CarrotFarm);
+        RegisterState(new CharacterPlayState(), character, Define.EAIState.Play);
+        RegisterState(new CharacterRestState(), character, Define.EAIState.Rest);
+        RegisterState(new CharacterMoveToState(), character, Define.EAIState.MoveTo);
+        RegisterState(new CharacterDeliverState(), character, Define.EAIState.Deliver);
+        RegisterState(new CharacterHelloState(), character, Define.EAIState.Hello);
+        RegisterState(new CharacterFishingState(), character, Define.EAIState.Fishing);
+
+    }
+
+    public Dictionary<Define.EBuildingType, Define.EAIState> farmActions = new()
+{
+    { Define.EBuildingType.CabbageFarm, Define.EAIState.CabbageFarm },
+    { Define.EBuildingType.OnionFarm,   Define.EAIState.OnionFarm },
+    { Define.EBuildingType.PotatoFarm,  Define.EAIState.PotatoFarm },
+    { Define.EBuildingType.PumpkinFarm, Define.EAIState.PumpkinFarm },
+    { Define.EBuildingType.CarrotFarm,  Define.EAIState.CarrotFarm },
+};
 
     public override void OnUpdate(float deltaTime)
     {
@@ -31,14 +60,14 @@ public class AIController : BaseController<AICharacter>
 
     public void Setup()
     {
-        character.characterAction.OnAction += OnActionPerformed;
+        character.Action.OnAction += OnActionPerformed;
     }
 
     public void Dispose()
     {
-        if (character?.characterAction != null)
+        if (character?.Action != null)
         {
-            character.characterAction.OnAction -= OnActionPerformed;
+            character.Action.OnAction -= OnActionPerformed;
         }
     }
 
@@ -102,10 +131,10 @@ public class AIController : BaseController<AICharacter>
 
     public bool TryRest()
     {
-        if (character.Data.CurrentStamina <= 19f &&
+        if (character.Stat.data.CurrentStamina <= 19f &&
             FindAvailableBuilding(Define.EBuildingType.Resting) != null)
         {
-            character.characterAction.Rest();
+            character.Action.Rest();
             return true;
         }
         return false;
@@ -113,10 +142,10 @@ public class AIController : BaseController<AICharacter>
 
     public bool TryCook()
     {
-        if (character.Data.CurrentStamina >= 20f &&
+        if (character.Stat.data.CurrentStamina >= 20f &&
             FindAvailableBuilding(Define.EBuildingType.Cooking) != null)
         {
-            character.characterAction.Cook();
+            character.Action.Cook();
             return true;
         }
         return false;
@@ -124,10 +153,10 @@ public class AIController : BaseController<AICharacter>
 
     public bool TryFish()
     {
-        if (character.Data.CurrentStamina >= 100f &&
+        if (character.Stat.data.CurrentStamina >= 100f &&
             FindAvailableBuilding(Define.EBuildingType.Fishing))
         {
-            character.characterAction.Fishing();
+            character.Action.Fishing();
             return true;
         }
         return false;
@@ -135,16 +164,16 @@ public class AIController : BaseController<AICharacter>
 
     public bool TryFarm()
     {
-        if (character.Data.CurrentStamina < 40f)
+        if (character.Stat.data.CurrentStamina < 40f)
             return false;
 
 
 
-        foreach (var (type, action) in character.farmActions)
+        foreach (var (type, action) in farmActions)
         {
             if (FindAvailableBuilding(type))
             {
-                character.characterAction.TryState(action);
+                character.Action.TryState(action);
                 return true;
             }
         }
@@ -156,7 +185,7 @@ public class AIController : BaseController<AICharacter>
     {
         if (FindAvailableBuilding(Define.EBuildingType.Playing))
         {
-            character.characterAction.Play();
+            character.Action.Play();
             return true;
         }
 
@@ -180,12 +209,12 @@ public class AIController : BaseController<AICharacter>
         // 3. 상태 전환
         if (hasDeliverTarget)
         {
-            character.characterAction.Deliver();
+            character.Action.Deliver();
             return;
         }
         else
         {
-            character.characterAction.Idle();
+            character.Action.Idle();
             return;
         }
     }
@@ -272,7 +301,7 @@ public class AIController : BaseController<AICharacter>
     #region 이동 / 순찰
     public void NavRotateFalse()
     {
-        character.nav.updateRotation = false;
+        character.View.Nav.updateRotation = false;
 
         if (currentState is CharacterRestState)
         {
@@ -288,40 +317,40 @@ public class AIController : BaseController<AICharacter>
 
     public void NavRotateTrue()
     {
-        character.nav.updateRotation = true;
+        character.View.Nav.updateRotation = true;
     }
 
     public async void Move(Vector3 destination)
     {
-        if (!character.nav.enabled || !character.nav.isOnNavMesh) return;
+        if (!character.View.Nav.enabled || !character.View.Nav.isOnNavMesh) return;
         await Task.Delay(10);
 
-        character.nav.ResetPath();
-        character.nav.SetDestination(destination);
+        character.View.Nav.ResetPath();
+        character.View.Nav.SetDestination(destination);
     }
 
     public void PatrolMove(float patrolDelay)
     {
-        if (!character.nav.enabled || !character.nav.isOnNavMesh) return;
+        if (!character.View.Nav.enabled || !character.View.Nav.isOnNavMesh) return;
         patrolTimer += Time.deltaTime;
 
         if (patrolTimer >= patrolDelay)
         {
             Patrol();
-            character.SetAnimation(21);
+            character.View.SetAnimation(21);
             patrolTimer = Random.Range(0f, 10f);
             return;
         }
 
-        if (character.nav.isPathStale)
+        if (character.View.Nav.isPathStale)
         {
-            character.nav.ResetPath();
+            character.View.Nav.ResetPath();
             return;
         }
 
         if (HasArrived())
         {
-            character.SetAnimation(36);
+            character.View.SetAnimation(36);
             return;
         }
 
@@ -329,15 +358,15 @@ public class AIController : BaseController<AICharacter>
 
     private bool HasArrived()
     {
-        return !character.nav.pathPending &&
-               character.nav.remainingDistance <= character.nav.stoppingDistance &&
-               (!character.nav.hasPath || character.nav.velocity.sqrMagnitude == 0f);
+        return !character.View.Nav.pathPending &&
+               character.View.Nav.remainingDistance <= character.View.Nav.stoppingDistance &&
+               (!character.View.Nav.hasPath || character.View.Nav.velocity.sqrMagnitude == 0f);
     }
 
     private void Patrol()
     {
         var destination = GetRandomNavPosition(character.transform.position, new Vector3(5f, 0f, 5f));
-        character.nav.SetDestination(destination);
+        character.View.Nav.SetDestination(destination);
     }
 
     private Vector3 GetRandomNavPosition(Vector3 origin, Vector3 range)
@@ -364,17 +393,17 @@ public class AIController : BaseController<AICharacter>
     {
         if (!character._isHelloReady)
             return;
-        if (character.isClicked)
+        if (character.Interaction.isClicked)
             return;
-        if (character.isFollowing) return;
+        if (character.Interaction.isFollowing) return;
 
         // 주변 모든 캐릭터 탐색
         foreach (var other in Managers.AI.AllCharacters)
         {
             if (other == character) continue; // 자기 자신 제외
             if (!other._isHelloReady) continue;
-            if (other.isClicked) continue;
-            if (other.isFollowing) continue;// 클릭된 캐릭터 제외
+            if (other.Interaction.isClicked) continue;
+            if (other.Interaction.isFollowing) continue;// 클릭된 캐릭터 제외
 
 
             float distance = Vector3.Distance(character.transform.position, other.transform.position);
@@ -395,8 +424,8 @@ public class AIController : BaseController<AICharacter>
                 if (angleToOther < 45f && angleToSelf < 45f) // 마주보는 각도 제한 (45도)
                 {
                     // 인사 상태로 변경
-                    character.characterAction.Hello();
-                    other.characterAction.Hello(); // 상대방도 인사
+                    character.Action.Hello();
+                    other.Action.Hello(); // 상대방도 인사
                     break; // 한 번만 실행
                 }
             }

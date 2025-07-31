@@ -26,10 +26,10 @@ public class CharacterStoreScene : BaseScene
 
             var ai = Managers.Object.Spawn<AICharacter>(Vector3.zero, ch.DataId);
 
-            ai.Data = ch;
+            ai.Stat.data = ch;
             ai.Init();
+            ai.SetInfo(ch);
             ai.transform.position = ch.RoomPos.ToVector3();
-            ai.ControllerRegister();
 
             Managers.Game.CharacterInMainScene[ch.UniqueId] = ai;
             Managers.Equipment.SetInitEquipment(Managers.Game.CharacterInMainScene[ch.UniqueId]);

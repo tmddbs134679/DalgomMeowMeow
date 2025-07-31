@@ -24,7 +24,8 @@ public class UI_BuildAction : UI_Popup
 
     enum Texts
     {
-
+        MoneyText,
+        GText,
     }
 
     enum Images
@@ -165,5 +166,23 @@ public class UI_BuildAction : UI_Popup
             GetButton((int)Buttons.RemoveRoadButton).gameObject.SetActive(true);
             GetButton((int)Buttons.AcceptButton).gameObject.SetActive(false);
         }
+        if (BuildingPlacer.Instance.isSequenceRemove)
+        {
+            GetText((int)Texts.MoneyText).gameObject.SetActive(false);
+            GetText((int)Texts.GText).gameObject.SetActive(false);
+        }
+        else
+        {
+            GetText((int)Texts.MoneyText).gameObject.SetActive(true);
+            GetText((int)Texts.GText).gameObject.SetActive(true);
+        }
+    }
+    public void CountGold(int sumBuyMoney)
+    {
+        GetText((int)Texts.MoneyText).text = sumBuyMoney.ToString();
+    }
+    public void Setyellow(int sumBuyMoney)
+    {
+        GetText((int)Texts.MoneyText).text = sumBuyMoney.ToString();
     }
 }

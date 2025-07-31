@@ -63,20 +63,17 @@ public class FishingBuilding : BuildingBase
         switch (result)
         {
             case FishingResult.Jackpot:
-                Debug.Log("월척 희귀한 물고기 획득!");
                 _fishingText.PlayResult(FishingResult.Jackpot);
                 StoredCount++; // 월척도 카운트에 포함
                 break;
 
             case FishingResult.Normal:
-                Debug.Log(" 평범한 물고기 획득");
                 _fishingText.PlayResult(FishingResult.Normal);
                 StoredCount++;
                 break;
 
             case FishingResult.Miss:
                 _fishingText.PlayResult(FishingResult.Miss);
-                Debug.Log(" 놓침");
                 break;
         }
 
@@ -100,7 +97,6 @@ public class FishingBuilding : BuildingBase
     {
         if (StoredCount <= 0) return;
 
-        Debug.Log($" {StoredCount}마리 물고기를 획득");
 
         StoredCount = 0;
         CurrentState = BuildingState.Producing;

@@ -9,39 +9,49 @@ public class ParticleCycle : MonoBehaviour
     private Coroutine currentCoroutine;
     [SerializeField] private bool hasTurnedOn = false;
     [SerializeField] private bool hasTurnedOff = false;
-    [SerializeField] private float Changeparameter = 50f; // 최대 파티클 수
+    [SerializeField] private float Changeparameter = 20f; // 최대 파티클 수
 
     void Awake()
     {
         _targetParticleSystem = GetComponent<ParticleSystem>();
     }
 
-    void Start()
+void Start()
+{
+    duration = GetFadeDuration();
+
+    // 기본 rate 설정
+    var rate = _targetParticleSystem.emission.rateOverTime;
+    rate.constant = 10f;
+
+    // Lifetime 계산 및 설정
+    float normalized = Mathf.InverseLerp(20f, 480f, DayNightCycleManager.Instance.DayDurationInSeconds);
+    float lifetime = Mathf.Lerp(2f, 6f, normalized); // 예: 0.5초 ~ 6초
+
+    var main = _targetParticleSystem.main;
+    main.startLifetime = lifetime;
+}
+
+
+    void Update()
     {
-        duration = GetFadeDuration();
-                    var rate = _targetParticleSystem.emission.rateOverTime;
-            rate.constant = 10f;
+        if (DayNightCycleManager.Instance != null)
+            _adjustedNormalizedTime = DayNightCycleManager.Instance.AdjustedNormalizedTime;
+
+        SunCycleCalculate();
     }
-
-    // void Update()
-    // {
-    //     if (DayNightCycleManager.Instance != null)
-    //         _adjustedNormalizedTime = DayNightCycleManager.Instance.AdjustedNormalizedTime;
-
-    //     SunCycleCalculate();
-    // }
 
     void SunCycleCalculate()
     {
         float t = _adjustedNormalizedTime;
 
-        if (!hasTurnedOn && t >= 0.45f && t < 0.95f)
+        if (!hasTurnedOn && t >= 0.50f && t < 0.90f)
         {
             FadeParticles(true);
             hasTurnedOn = true;
         }
 
-        if (!hasTurnedOff && t >= 0.95f)
+        if (!hasTurnedOff && t >= 0.90f)
         {
             FadeParticles(false);
             hasTurnedOff = true;
@@ -77,7 +87,6 @@ public class ParticleCycle : MonoBehaviour
             var rate = emission.rateOverTime;
             rate.constant = currentRate;
             emission.rateOverTime = rate;
-
             yield return null;
         }
 

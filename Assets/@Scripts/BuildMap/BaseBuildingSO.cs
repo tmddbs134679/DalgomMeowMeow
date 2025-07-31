@@ -15,6 +15,7 @@ public class BaseBuildingSO : ScriptableObject
     [SerializeField] private GameObject _previweOBJ;
     [SerializeField] private int _sizeWidth;
     [SerializeField] private int _sizeHeight;
+    [SerializeField] private Sprite _buildingImage;
 
     [SerializeField] private int _id;
     [SerializeField] private string _buildingName;
@@ -36,5 +37,6 @@ public class BaseBuildingSO : ScriptableObject
     public int UnlockCost { get => _unlockCost; set => _unlockCost = value; }
     public int BuyMoney { get => _buyMoney; set => _buyMoney = value; }
     
-        public string  Description{get => _description; set => _description = value; }
+   public string  Description{get => _description; set => _description = value; }
+   public Sprite BuildingImage { get => _buildingImage; set => _buildingImage = value; }
 }

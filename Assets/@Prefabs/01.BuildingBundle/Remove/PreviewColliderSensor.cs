@@ -27,9 +27,9 @@ public class PreviewColliderSensor : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log($"{other}+하고 충돌");
         if (other.gameObject.layer == _targetLayer && !currentHits.Contains(other))
         {
+            other.GetComponent<RemoveShowBox>().OnRemoveShowBox();
             currentHits.Add(other);
         }
     }
@@ -47,8 +47,14 @@ public class PreviewColliderSensor : MonoBehaviour
         return currentHits.ToArray();
     }
 
-    public void ClearHits()
+public void CancelPreview()
+{
+    foreach (var hit in currentHits)
     {
-        currentHits.Clear();
+        if (hit != null)
+            hit.GetComponent<RemoveShowBox>().OffRemoveShowBox();
     }
+
+    currentHits.Clear(); // 리스트 초기화 (다시 감지하게 만들고 싶다면)
+}
 }

@@ -37,6 +37,8 @@ public class DraggableObject : MonoBehaviour, IDraggable
     //드래그 스타트
     public void OnDragStart(Vector3 hitPos)
     {
+
+            BuildingPlacer.Instance.isSelect = true;
         BuildingPlacer.Instance.tempDraggleOBJ = this;
         _offsetx = (buildSize.x % 2 == 0) ? (gridSize / 2f) : 0f;
         _offsety = (buildSize.y % 2 == 0) ? (gridSize / 2f) : 0f;
@@ -76,13 +78,12 @@ public class DraggableObject : MonoBehaviour, IDraggable
     //드래그 드롭
     public void OnDragEnd()
     {
-        if (BuildingPlacer.Instance.isLongPressAcceptBuild == true || BuildingPlacer.Instance.isSequenceBuild == true||BuildingPlacer.Instance.isSequenceRemove)
             BuildingPlacer.Instance.isSelect = false;
     }
     //드래그 하지않고 눌렀다 떼기
     public void OnClickRelease()
     {
-        if (BuildingPlacer.Instance.isLongPressAcceptBuild == true || BuildingPlacer.Instance.isSequenceBuild == true||BuildingPlacer.Instance.isSequenceRemove)
+
             BuildingPlacer.Instance.isSelect = false;
     }
     //꾹누르기
@@ -90,7 +91,7 @@ public class DraggableObject : MonoBehaviour, IDraggable
     {
         if (EventSystem.current.IsPointerOverGameObject())
             return;
-        if (this.GetComponent<BuildingBase>().CurrentState == BuildingState.Producing) return;
+        if (this.GetComponent<BuildingBase>()?.CurrentState == BuildingState.Producing) return;
         if (isLongPress)
         {
             CheckTilesUnderBuilding();

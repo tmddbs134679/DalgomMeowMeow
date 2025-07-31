@@ -77,7 +77,7 @@ public static class Util
     {
         foreach (var ai in GameObject.FindObjectsOfType<AICharacter>())
         {
-            if (ai.Data?.DataId == dataId)
+            if (ai.Stat.data?.DataId == dataId)
                 return ai;
         }
         return null;
