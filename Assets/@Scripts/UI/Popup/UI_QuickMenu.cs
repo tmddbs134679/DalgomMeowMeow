@@ -39,6 +39,7 @@ public class UI_QuickMenu : UI_Popup
     private void Awake()
     {
         Init();
+       
     }
 
     private void OnEnable()
@@ -81,6 +82,8 @@ public class UI_QuickMenu : UI_Popup
     private void OnClickChapterButtonButton()
     {
         Managers.Sound.PlayButtonClick();
+        QuestManager.Instance.ChapterNotify = false;
+        QuestManager.Instance.OnQuestUpdated?.Invoke();
         Managers.UI.ShowPopupUI<UI_ChapterPopup>();
         gameObject.SetActive(false);
     }
@@ -138,7 +141,7 @@ public class UI_QuickMenu : UI_Popup
         else
             GetObject((int)GameObjects.CharacterNotifyObject).SetActive(false);
 
-        if(QuestManager.Instance.CheapterNotify)
+        if(QuestManager.Instance.ChapterNotify)
             GetObject((int)GameObjects.CheapterNotifyObject).SetActive(true);
         else
             GetObject((int)GameObjects.CheapterNotifyObject).SetActive(false);
