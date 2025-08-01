@@ -72,8 +72,13 @@ public class ArrayBuildPos : ScriptableObject
     //save이벤트
     public void SaveMapData()
     {
-        string path = $"{Application.dataPath}/@Resources/Map/MapData.json";
-        MapSaveData saveData = new MapSaveData();
+        TextAsset mapData = Resources.Load<TextAsset>("MapData");
+
+        string json = mapData.text;
+        MapSaveData saveData = JsonConvert.DeserializeObject<MapSaveData>(json);
+
+
+
 
         foreach (var data in baseBuilding)
         {
@@ -88,8 +93,11 @@ public class ArrayBuildPos : ScriptableObject
             });
         }
 
-        string json = JsonConvert.SerializeObject(saveData, Formatting.Indented);
-        File.WriteAllText(path, json);
+        //MapSaveData saveData = new MapSaveData();
+
+       // string path = $"{Application.dataPath}/@Resources/Map/MapData.json";
+        //string json = JsonConvert.SerializeObject(saveData, Formatting.Indented);
+        //File.WriteAllText(path, json);
     }
 
 
@@ -103,16 +111,24 @@ public class ArrayBuildPos : ScriptableObject
 
     public async void LoadMapDataAsync()
     {
-        string path = $"{Application.dataPath}/@Resources/Map/MapData.json";
+        //string path = $"{Application.dataPath}/@Resources/Map/MapData.json";
 
-        if (!File.Exists(path))
-        {
-            Debug.LogError("건물 데이터 파일이 없습니다!");
-            return;
-        }
+        //if (!File.Exists(path))
+        //{
+        //    Debug.LogError("건물 데이터 파일이 없습니다!");
+        //    return;
+        //}
 
-        string json = File.ReadAllText(path);
+        //string json = File.ReadAllText(path);
+        //MapSaveData saveData = JsonConvert.DeserializeObject<MapSaveData>(json);
+
+        //
+        TextAsset mapData = Resources.Load<TextAsset>("MapData");
+
+        string json = mapData.text;
         MapSaveData saveData = JsonConvert.DeserializeObject<MapSaveData>(json);
+        //
+
 
         List<BuildData> buildDataList = new();
 

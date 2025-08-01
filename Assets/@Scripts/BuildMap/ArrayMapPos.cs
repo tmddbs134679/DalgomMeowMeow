@@ -60,7 +60,6 @@ public class ArrayMapPos : ScriptableObject
 #endif
     public void SaveMapTileData()
     {
-        string path = $"{Application.dataPath}/@Resources/Map/MapTileData.json";
 
         MapTileSaveData saveData = new MapTileSaveData
         {
@@ -69,9 +68,17 @@ public class ArrayMapPos : ScriptableObject
             rows = this.rows
         };
 
+        string path = $"{Application.dataPath}/Resources/MapTileData.json";
         string json = JsonConvert.SerializeObject(saveData, Formatting.Indented);
         File.WriteAllText(path, json);
     }
+
+
+    //TextAsset mapTileData = Resources.Load<TextAsset>("MapTileData");
+    //string json = mapTileData.text;
+    //MapTileSaveData saveData = JsonConvert.DeserializeObject<MapTileSaveData>(json);
+
+
 #if UNITY_EDITOR
     public void EditorLoadMapTileData()
     {
@@ -81,15 +88,17 @@ public class ArrayMapPos : ScriptableObject
 
     public void LoadMapTileData()
     {
-        string path = $"{Application.dataPath}/@Resources/Map/MapTileData.json";
+        //string path = $"{Application.dataPath}/@Resources/Map/MapTileData.json";
 
-        if (!File.Exists(path))
-        {
-            Debug.LogError("맵 타일 데이터 파일이 없습니다!");
-            return;
-        }
+        //if (!File.Exists(path))
+        //{
+        //    Debug.LogError("맵 타일 데이터 파일이 없습니다!");
+        //    return;
+        //}
 
-        string json = File.ReadAllText(path);
+        TextAsset mapTileData = Resources.Load<TextAsset>("MapTileData");
+
+        string json = mapTileData.text;
         MapTileSaveData saveData = JsonConvert.DeserializeObject<MapTileSaveData>(json);
 
         this.width = saveData.width;
@@ -112,7 +121,11 @@ public class ArrayMapPos : ScriptableObject
             return;
         }
 
-        string json = File.ReadAllText(path);
+
+        TextAsset mapTileSaveData = Resources.Load<TextAsset>("MapTileSaveData");
+
+        string json = mapTileSaveData.text;
+
         MapTileSaveData saveData = JsonConvert.DeserializeObject<MapTileSaveData>(json);
 
         this.width = saveData.width;
