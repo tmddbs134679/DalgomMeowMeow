@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.Advertisements;
-
+/*
 public class AdsManager : IUnityAdsInitializationListener, IUnityAdsLoadListener, IUnityAdsShowListener
 {
     //[SerializeField] private string androidGameId = "ca-app-pub-3940256099942544/5354046379"; // 실제 ID로 교체
@@ -20,9 +20,9 @@ public class AdsManager : IUnityAdsInitializationListener, IUnityAdsLoadListener
 #if UNITY_EDITOR
         _gameId = "5901065"; // Unity Ads 대시보드에서 에디터용 ID
 #elif UNITY_ANDROID
-    _gameId = 5901065;
+    _gameId = "5901065";
 #elif UNITY_IOS
-    _gameId = 5901064;
+    _gameId = "5901064";
 #endif
         Advertisement.Initialize(_gameId, testMode, this);
 
@@ -101,3 +101,4 @@ public class AdsManager : IUnityAdsInitializationListener, IUnityAdsLoadListener
     public void OnUnityAdsShowStart(string placementId) { } //광고 시작 시 호출
     public void OnUnityAdsShowClick(string placementId) { } //광고 클릭 시 호출
 }
+*/

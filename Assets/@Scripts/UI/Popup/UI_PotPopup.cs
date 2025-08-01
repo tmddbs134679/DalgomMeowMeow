@@ -67,10 +67,10 @@ public class UI_PotPopup : UI_Popup
 
     private void OnClickAdRewardButton()
     {
-        Managers.Ads.ShowRewardedAd(() =>
+       /* Managers.Ads.ShowRewardedAd(() =>
         {
             Managers.Time.GiveOfflineGold(true);
-        });
+        });*/
         Managers.UI.ClosePopupUI(this);
     }
 
