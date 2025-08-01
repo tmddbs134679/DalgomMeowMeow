@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Unity.VisualScripting;
 using static Define;
@@ -46,6 +47,8 @@ public class UI_CharacterStoreScene : UI_Scene
     UI_ShopPopup _shopPopupUI;
     UI_EditSettingPopup _editSettingPopupUI;
     UI_ChangePopup _ChangePopupUI;
+    UI_NotiPopup _uiNotiPopup;
+
     public override bool Init()
     {
         if (base.Init() == false)
@@ -61,12 +64,15 @@ public class UI_CharacterStoreScene : UI_Scene
         _shopPopupUI = Managers.UI.ShowPopupUI<UI_ShopPopup>();
         _editSettingPopupUI = Managers.UI.ShowPopupUI<UI_EditSettingPopup>();
         _ChangePopupUI = Managers.UI.ShowPopupUI<UI_ChangePopup>();
+        _uiNotiPopup = Managers.UI.ShowPopupUI<UI_NotiPopup>();
 
         _quickMenuPopupUI.gameObject.SetActive(false);
         _checkOutPopupUI.gameObject.SetActive(false);
         _shopPopupUI.gameObject.SetActive(false);
         _editSettingPopupUI.gameObject.SetActive(false);
         _ChangePopupUI.gameObject.SetActive(false);
+        _uiNotiPopup.gameObject.SetActive(false);
+
         GetObject((int)GameObjects.CheckImage).gameObject.SetActive(false);
 
         GetButton((int)Buttons.QuickButton).gameObject.BindEvent(OnClickQuickButton);
@@ -89,6 +95,8 @@ public class UI_CharacterStoreScene : UI_Scene
         GetButton((int)Buttons.Yes).gameObject.BindEvent(OnClickYes);
         GetButton((int)Buttons.No).gameObject.BindEvent(OnClickNo);
 
+        GetButton((int)Buttons.NoticeButton).gameObject.BindEvent(OnClickNoticeButton);
+        GetButton((int)Buttons.NoticeButton).GetOrAddComponent<UI_ButtonAnimation>();
 
         #region Action 추가
         Managers.Game.OnResourcesChagned += Refresh;
@@ -97,11 +105,18 @@ public class UI_CharacterStoreScene : UI_Scene
 
         #endregion
 
+
+        GetButton((int)Buttons.ShopButton).gameObject.SetActive(false);
         Refresh();
 
         return true;
     }
 
+    private void OnClickNoticeButton()
+    {
+        Managers.Sound.PlayButtonClick();
+        _uiNotiPopup.gameObject.SetActive(true);
+    }
 
     public void OnDestroy()
     {

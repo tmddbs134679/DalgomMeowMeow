@@ -58,10 +58,12 @@ public class UI_QuestSlot : UI_Base
 
     void OnClickRewardButton()
     {
-        Managers.Sound.PlayButtonClick();
+       
 
         if (_quest.State == QuestProgressState.Completed)
         {
+            Managers.Sound.Play(Define.ESound.Effect, "Money");
+
             QuestManager.Instance.CheckCountNotify--;
             QuestManager.Instance.GiveReward(_quest.QuestData.QuestId);
 
@@ -83,6 +85,10 @@ public class UI_QuestSlot : UI_Base
             }
 
             SetQuest(_quest); // UI 갱신
+        }
+        else
+        {
+            Managers.Sound.PlayButtonClick();
         }
     }
 
