@@ -32,7 +32,6 @@ public class SlotMachineBuilding : BuildingBase
     public string[] CurrentResult => _currentResult;
     [SerializeField] private Image[] slotImages; // 슬롯 3칸 이미지 연결
 
-
     private int _slotCount = 3;
 
     private int _finishedCount = 0;
