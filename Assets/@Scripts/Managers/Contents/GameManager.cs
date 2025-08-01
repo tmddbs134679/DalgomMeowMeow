@@ -343,19 +343,22 @@ public class GameManager
             SaveGame();
             return newChar;
         }
-
-        newChar.InMainScene = true;
-        AICharacter aiChar = Managers.Object.Spawn<AICharacter>(new Vector3(39f, 1, 27f), creatureId, isReplica: false);
-
-        if (aiChar == null)
+        else
         {
-            return null;
+            newChar.InMainScene = true;
+            AICharacter aiChar = Managers.Object.Spawn<AICharacter>(new Vector3(39f, 1, 27f), creatureId, isReplica: false);
+
+            if (aiChar == null)
+            {
+                return null;
+            }
+            aiChar.Init();
+            aiChar.SetInfo(newChar);
+
+            Managers.AI.Register(aiChar);
         }
-        aiChar.Init();
-        aiChar.SetInfo(newChar);
 
 
-        Managers.AI.Register(aiChar);
         _characters[newChar.UniqueId] = newChar;
 
         return newChar;
