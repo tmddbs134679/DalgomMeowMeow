@@ -140,7 +140,7 @@ public class TutorialManager : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning($"[Tutorial] 이미 등록된 key: {key} / object: {_registeredTargets[key].name}");
+               // Debug.LogWarning($"[Tutorial] 이미 등록된 key: {key} / object: {_registeredTargets[key].name}");
             }
         }
         else

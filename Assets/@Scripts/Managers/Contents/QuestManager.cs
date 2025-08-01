@@ -299,7 +299,7 @@ public class QuestManager : MonoBehaviour
         // string → ETargetType 변환
         if (!Enum.TryParse(type, out Define.ETargetType targetType))
         {
-            Debug.LogWarning($"[퀘스트] 알 수 없는 건물 타입: {type}");
+           // Debug.LogWarning($"[퀘스트] 알 수 없는 건물 타입: {type}");
             return;
         }
 

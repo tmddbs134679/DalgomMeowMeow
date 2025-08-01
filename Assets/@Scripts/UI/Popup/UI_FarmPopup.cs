@@ -66,7 +66,7 @@ public class UI_FarmPopup : UI_Popup
 
         BindText(typeof(Texts));
         BindButton(typeof(Buttons));
-        BindImage(typeof(Images));
+       // BindImage(typeof(Images));
 
         _scrollRect = GetObject((int)GameObjects.BuildScrollObject).GetComponent<ScrollRect>();
 
