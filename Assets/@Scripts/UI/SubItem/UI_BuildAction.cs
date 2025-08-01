@@ -166,7 +166,7 @@ public class UI_BuildAction : UI_Popup
             GetButton((int)Buttons.RemoveRoadButton).gameObject.SetActive(true);
             GetButton((int)Buttons.AcceptButton).gameObject.SetActive(false);
         }
-        if (BuildingPlacer.Instance.isSequenceRemove)
+        if (BuildingPlacer.Instance.isSequenceRemove||BuildingPlacer.Instance.isLongPressAcceptBuild)
         {
             GetText((int)Texts.MoneyText).gameObject.SetActive(false);
             GetText((int)Texts.GText).gameObject.SetActive(false);

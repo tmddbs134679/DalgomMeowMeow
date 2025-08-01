@@ -46,15 +46,18 @@ public class UI_GameScene : UI_Scene
     UI_ShopPopup _shopPopupUI;
     UI_EditSettingPopup _editSettingPopupUI;
     UI_NotiPopup _uiNotiPopup;
+    UI_MiniGameReward _miniGameReward;
     public UI_BuildAction _uI_BuildAction;
 
 
-    // public UI_LongPressGauge _uI_LongPressGauge;
+     public UI_LongPressGauge _uI_LongPressGauge;
 
     public override bool Init()
     {
         if (base.Init() == false)
             return false;
+
+        #region Object Bind
 
         BindObject(typeof(GameObjects));
         BindButton(typeof(Buttons));
@@ -65,18 +68,22 @@ public class UI_GameScene : UI_Scene
         _shopPopupUI = Managers.UI.ShowPopupUI<UI_ShopPopup>();
         _editSettingPopupUI = Managers.UI.ShowPopupUI<UI_EditSettingPopup>();
         _uI_BuildAction = Managers.UI.MakeSubItem<UI_BuildAction>();
-      //  _uI_LongPressGauge = Managers.UI.MakeSubItem<UI_LongPressGauge>();
+        _uI_LongPressGauge = Managers.UI.MakeSubItem<UI_LongPressGauge>();
         _uiNotiPopup = Managers.UI.ShowPopupUI<UI_NotiPopup>();
+        _miniGameReward = Managers.UI.ShowPopupUI<UI_MiniGameReward>();
+
 
         _quickMenuPopupUI.gameObject.SetActive(false);
         _checkOutPopupUI.gameObject.SetActive(false);
         _shopPopupUI.gameObject.SetActive(false);
         _editSettingPopupUI.gameObject.SetActive(false);
         _uI_BuildAction.SetActive(false);
-      //  _uI_LongPressGauge.SetActive(false);
+        _uI_LongPressGauge.SetActive(false);
 
+        _miniGameReward.gameObject.SetActive(false);
         _uiNotiPopup.gameObject.SetActive(false);
 
+    
         GetObject((int)GameObjects.StorageObject).GetComponent<HorizontalLayoutGroup>().spacing = UI_GROUP_SPACING;
 
         GetButton((int)Buttons.QuickButton).gameObject.BindEvent(OnClickQuickButton);
@@ -102,6 +109,17 @@ public class UI_GameScene : UI_Scene
 
         GetButton((int)Buttons.RoadButton).gameObject.BindEvent(OnClickRoadButton);
         GetButton((int)Buttons.RoadButton).GetOrAddComponent<UI_ButtonAnimation>();
+
+
+        #endregion
+
+        #region Minigame
+
+        if (Managers.Game.RewardMinigame)
+            _miniGameReward.gameObject.SetActive(true);
+        else
+            _miniGameReward.gameObject.SetActive(false);
+        #endregion
 
         #region Action 추가
         Managers.Game.OnResourcesChagned += Refresh;
@@ -317,13 +335,13 @@ public class UI_GameScene : UI_Scene
     public void CheckNotify()
     {
         //장비, 캐릭터 업데이트된게 있거나 챕터 해금시 TRUE
-        if (Managers.Game.OwnedEquipments.Any(e => !e.IsConfirmed) || Managers.Game._characters.Any(c => !c.Value.IsConfirmed) || QuestManager.Instance.CheapterNotify)
+        if (Managers.Game.OwnedEquipments.Any(e => !e.IsConfirmed) || Managers.Game._characters.Any(c => !c.Value.IsConfirmed) || QuestManager.Instance.ChapterNotify)
             GetObject((int)GameObjects.QuickNotifyObject).SetActive(true);
         else
             GetObject((int)GameObjects.QuickNotifyObject).SetActive(false);
 
         //Quest 업데이트
-        if(QuestManager.Instance.CheckCountNotity > 0)
+        if(QuestManager.Instance.CheckCountNotify > 0)
             GetObject((int)GameObjects.QuestNotifyObject).SetActive(true);
         else
             GetObject((int)GameObjects.QuestNotifyObject).SetActive(false);

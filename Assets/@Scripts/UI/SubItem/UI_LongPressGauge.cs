@@ -1,11 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
-using DG.Tweening;
 
-/// <summary>
-/// 건설할 때 롱프레스 게이지를 시각화하는 UI
-/// </summary>
 public class UI_LongPressGauge : UI_Popup
 {
     #region Enum
@@ -32,7 +27,15 @@ public class UI_LongPressGauge : UI_Popup
 
     private bool wasHolding = false;
     private Image gaugeImage;
-    private Sequence gaugeSequence;
+    private Transform gaugeTransform;
+
+    private float scaleAnimTime = 0f;
+    private float scaleAnimSpeed = 2f; // 진동 속도
+    private float scaleAnimAmount = 0.05f; // 진동 강도
+
+    private Color startColor = new Color(0.8f, 0.8f, 0.8f, 0.3f);
+    private Color fillColor = new Color(0.2f, 1f, 0.7f, 0.85f);
+    private Color completeColor = Color.green;
 
     private void Awake()
     {
@@ -50,8 +53,10 @@ public class UI_LongPressGauge : UI_Popup
         BindImage(typeof(Images));
 
         gaugeImage = GetImage((int)Images.GaugeImage);
+        gaugeTransform = gaugeImage.transform;
+
         gaugeImage.fillAmount = 0f;
-        gaugeImage.color = Color.gray;
+        gaugeImage.color = startColor;
 
         return true;
     }
@@ -68,7 +73,7 @@ public class UI_LongPressGauge : UI_Popup
             GetObject((int)GameObjects.MoveUI).transform.position = screenPos;
         }
 
-        // 게이지 처리
+        // 게이지 채우기
         float timer = placer.dragController.pointerDownTimer;
         bool isHolding = placer.dragController.IsPointDown;
 
@@ -76,15 +81,19 @@ public class UI_LongPressGauge : UI_Popup
         {
             if (!wasHolding)
             {
-                StartGaugeAnimation(); // 최초 진입 시 애니메이션 시작
+                StartGaugeAnimation();
                 wasHolding = true;
             }
 
-            // 실시간으로 fillAmount도 보정 (DOTween보다 우선순위)
             float t = Mathf.Clamp01(timer / holdDuration);
             gaugeImage.fillAmount = t;
+            gaugeImage.color = Color.Lerp(startColor, fillColor, t);
 
-            // 수동으로 끝났는지 확인 (DOTween OnComplete 대신)
+            // 흔들림 효과
+            scaleAnimTime += Time.deltaTime * scaleAnimSpeed;
+            float scale = 1f + Mathf.Sin(scaleAnimTime) * scaleAnimAmount;
+            gaugeTransform.localScale = new Vector3(scale, scale, 1f);
+
             if (t >= 1f)
             {
                 CompleteGaugeAnimation();
@@ -103,50 +112,28 @@ public class UI_LongPressGauge : UI_Popup
     private void StartGaugeAnimation()
     {
         gaugeImage.fillAmount = 0f;
-        gaugeImage.color = Color.gray;
-        gaugeImage.transform.localScale = Vector3.one;
-
-        // 기존 시퀀스 제거
-        gaugeSequence?.Kill();
-
-        // DOTween Sequence 시작
-        gaugeSequence = DOTween.Sequence();
-
-        gaugeSequence.Append(DOTween.To(
-            () => gaugeImage.fillAmount,
-            x => gaugeImage.fillAmount = x,
-            1f,
-            holdDuration
-        ).SetEase(Ease.InOutSine));
-
-        gaugeSequence.Join(gaugeImage.DOColor(Color.green, holdDuration));
-
-        gaugeSequence.Join(gaugeImage.transform.DOScale(1.1f, 0.4f)
-            .SetLoops(-1, LoopType.Yoyo)
-            .SetEase(Ease.InOutSine));
-
-        gaugeSequence.Play();
+        gaugeImage.color = startColor;
+        gaugeTransform.localScale = Vector3.one;
+        scaleAnimTime = 0f;
     }
 
     private void ResetGaugeAnimation()
     {
-        gaugeSequence?.Kill();
         gaugeImage.fillAmount = 0f;
-        gaugeImage.color = Color.gray;
-        gaugeImage.transform.localScale = Vector3.one;
+        gaugeImage.color = startColor;
+        gaugeTransform.localScale = Vector3.one;
     }
 
     private void CompleteGaugeAnimation()
     {
-        gaugeSequence?.Kill();
         gaugeImage.fillAmount = 1f;
-        gaugeImage.color = Color.green;
-        gaugeImage.transform.localScale = Vector3.one;
+        gaugeImage.color = completeColor;
+        gaugeTransform.localScale = Vector3.one;
     }
 
-    // UI hide/show
     public void SetActive(bool istrue)
     {
+        if (gameObject.activeSelf == istrue) return;
         gameObject.SetActive(istrue);
     }
 }
