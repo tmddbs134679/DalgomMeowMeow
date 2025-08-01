@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -58,15 +59,18 @@ public class StageDataManager : MonoBehaviour
         }
     }
 
-    async void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    IEnumerator HandleSceneReward()
     {
-        await Task.Delay(100);
+        yield return null; 
+        yield return null; 
+
         var manager = StageDataManager.Instance;
         if (manager.PendingGoldReward > 0 || manager.PendingExpReward > 0)
         {
             Managers.Game.Gold += manager.PendingGoldReward;
+
             for (int k = 0; k < PlayerCharacter.Length; k++)
-            { 
+            {
                 foreach (var character in Managers.Game.CharacterInMainScene)
                 {
                     if (character.Value.Stat.data.UniqueId == PlayerCharacter[k].UniqueId)
@@ -75,8 +79,13 @@ public class StageDataManager : MonoBehaviour
                     }
                 }
             }
+
             manager.ClearReward();
         }
+    }
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        StartCoroutine(HandleSceneReward());
     }
 
     public void ClearReward()
