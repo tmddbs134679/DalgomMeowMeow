@@ -378,7 +378,7 @@ public class UI_BuildPopup : UI_Popup
                     continue;
                 }
 
-                GetText((int)goldTextEnum).text = ((int)(buyMoney * Mathf.Pow(1.2f, output))).ToString();
+                GetText((int)goldTextEnum).text = ((int)(buyMoney * Mathf.Pow(10f, output))).ToString();
                 GetText((int)countText).text = output.ToString();
             }
             else

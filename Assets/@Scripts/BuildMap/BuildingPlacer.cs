@@ -319,7 +319,7 @@ public class BuildingPlacer : MonoBehaviour
         }
         else if (buildMap.valueCounts.TryGetValue(buildType, out int count))
         {
-            BuyMoney = (int)(buildingSO[tempTypeNum].BuyMoney * Mathf.Pow(1.2f, count));
+            BuyMoney = (int)(buildingSO[tempTypeNum].BuyMoney * Mathf.Pow(10f, count));
         }
         else
         {
