@@ -42,7 +42,7 @@ public class UI_CharacterPopup : UI_Popup
 
     private void OnDestroy()
     {
-        
+        Managers.Game.OnCharacterChanged -= () => Refresh(null);
     }
 
     public override bool Init()
@@ -61,6 +61,9 @@ public class UI_CharacterPopup : UI_Popup
 
         GetButton((int)Buttons.CarSortButton).gameObject.BindEvent(OnClickCatSortButton);
         GetButton((int)Buttons.BearSortButton).gameObject.BindEvent(OnClickBearSortButton);
+
+        //왼쪽 오른쪽 버튼 누르면 Notify 업데이트 되게 함.
+        Managers.Game.OnCharacterChanged += () => Refresh(null);
 
         Refresh();
         return true;
@@ -89,8 +92,6 @@ public class UI_CharacterPopup : UI_Popup
     private void Refresh(int? alpha = null)
     {
         GetObject((int)GameObjects.CharacterInfoScrollContentObject).DestroyChilds();
-
-       
 
         List<Character> characters = Managers.Game.Characters;
 

@@ -41,11 +41,13 @@ public class  Character
     public float Hp { get; set; }
     public float MoveSpeed { get; set; }
     public float WalkSpeed { get; set; } 
-    public bool IsConfirmed { get; set; }
+
     public bool InMainScene { get; set; } 
     public List<string> EquippedItemIds { get; set; } = new();
 
     public bool IsTravelMode { get; set; }
+    public bool IsConfirmed { get; set; }
+
 
     public Dictionary<EEquipmentType, Equipment> EquippedItems = new();
     public void Init(string dataid, Vector3 position)

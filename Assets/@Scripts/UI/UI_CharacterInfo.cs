@@ -175,6 +175,8 @@ public class UI_CharacterInfo : UI_Base
     {
         if(!_character.IsConfirmed)
             GetObject((int)GameObjects.NewTextObject).gameObject.SetActive(true);
+        else
+            GetObject((int)GameObjects.NewTextObject).gameObject.SetActive(false);
     }
 
     public void OnDrag(BaseEventData baseEventData)
