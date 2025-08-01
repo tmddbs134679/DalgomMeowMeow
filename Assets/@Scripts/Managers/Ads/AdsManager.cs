@@ -20,9 +20,9 @@ public class AdsManager : IUnityAdsInitializationListener, IUnityAdsLoadListener
 #if UNITY_EDITOR
         _gameId = "5901065"; // Unity Ads 대시보드에서 에디터용 ID
 #elif UNITY_ANDROID
-    _gameId = 5901065;
+    _gameId = "5901065";
 #elif UNITY_IOS
-    _gameId = 5901064;
+    _gameId = "5901064";
 #endif
         Advertisement.Initialize(_gameId, testMode, this);
 
