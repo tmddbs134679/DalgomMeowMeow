@@ -108,7 +108,6 @@ public abstract class BuildingBase : BaseObject
 
         if (Timer == null)
         {
-            Debug.LogError($"[BuildingBase] Timer is null in {gameObject.name}");
             return;
         }
         if (Timer.Tick(deltaTime))
