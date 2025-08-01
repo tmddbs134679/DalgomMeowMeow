@@ -619,7 +619,6 @@ public class GameManager
         PlayerPrefs.SetFloat("FastestTime", 60f); // 시간 초기화
         //Add other reward
     }
-
     #endregion
 }
 
