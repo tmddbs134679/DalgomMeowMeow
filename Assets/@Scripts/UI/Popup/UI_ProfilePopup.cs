@@ -1,5 +1,6 @@
 
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 using UnityEngine.UI;
@@ -163,11 +164,11 @@ public class UI_ProfilePopup : UI_Popup
         int currentIndex = characterList.FindIndex(c => c.UniqueId == _character.UniqueId);
         if (currentIndex == -1)
             return;
-
+    
         int nextIndex = (currentIndex + dir + characterList.Count) % characterList.Count;
 
         _character = characterList[nextIndex];
-
+        _character.IsConfirmed = true;
         // 이후 처리 (UI 업데이트 등)
         SetInfo(_character);
 
@@ -175,6 +176,8 @@ public class UI_ProfilePopup : UI_Popup
 
     private void OnClickExitButton()
     {
+        Managers.Game.OnCharacterChanged?.Invoke();
+
         Managers.UI.ClosePopupUI(this);
         Clear();
     }
@@ -189,7 +192,7 @@ public class UI_ProfilePopup : UI_Popup
 
         _character = character;
         GetText((int)Texts.CharacterNameText).text = _character.Name;
-
+   
 
         foreach (EEquipmentType type in displayOrder)
         {
@@ -224,6 +227,7 @@ public class UI_ProfilePopup : UI_Popup
         {
             Clear();
         }
+
         _characterAI = Managers.Object.Spawn<AICharacter>(new Vector3(500, 500, 500), _character.DataId, null, true);
         _characterAI.ReplicaSetting(_character);
        

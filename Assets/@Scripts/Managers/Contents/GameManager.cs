@@ -229,8 +229,6 @@ public class GameManager
 
         string jsonStr = JsonConvert.SerializeObject(_gameData);
         File.WriteAllText(_path, jsonStr);
-
-
     }
     private bool LoadGame()
     {
