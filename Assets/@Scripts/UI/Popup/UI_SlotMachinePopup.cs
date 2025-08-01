@@ -121,7 +121,7 @@ public class UI_SlotMachinePopup : UI_Popup
 
         if (a == b && b == c)
         {
-            var match = SlotMachineTestData.TestResults.Find(r => r.Symbol == a);
+            var match = _targetBuilding.GetMatchResult(a); // 또는 _targetBuilding 내부에서 match를 리턴하는 메서드 만들기
             if (match != null)
             {
                 if (match.RewardGold > 0)

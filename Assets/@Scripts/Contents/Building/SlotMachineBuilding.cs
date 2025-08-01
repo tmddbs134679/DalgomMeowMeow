@@ -14,19 +14,9 @@ public class SlotResult
     public Sprite Icon;        // 실제 로딩된 스프라이트
 }
 
-public class SlotMachineTestData
-{
-    public static List<SlotResult> TestResults = new()
-    {
-        new SlotResult { Symbol = "BEAR", RewardGold = 100 , Weight = 50 },
-        new SlotResult { Symbol = "SHARK", RewardGold = -200 , Weight = 30 },
-        new SlotResult { Symbol = "CAT",  RewardGold = 1000, Weight = 5  }
-    };
-}
 
 public class SlotMachineBuilding : BuildingBase
 {
-    private List<SlotResult> _results => SlotMachineTestData.TestResults;
 
     private string[] _currentResult = new string[3];
     public string[] CurrentResult => _currentResult;
@@ -40,11 +30,22 @@ public class SlotMachineBuilding : BuildingBase
     public float moveDistance = 200f;
     public float duration = 0.2f;
     public int spinCount = 10;
+    
+    private List<SlotResult> _results;
 
-    private IEnumerator Start()
+    [SerializeField] private Sprite bearIcon;
+    [SerializeField] private Sprite sharkIcon;
+    [SerializeField] private Sprite catIcon;
+    private void Awake()
     {
-        yield return LoadSlotIcons(_results); // 어드레서블 아이콘 로드
+        _results = new()
+        {
+            new SlotResult { Symbol = "BEAR", RewardGold = 100 , Weight = 50, Icon = bearIcon },
+            new SlotResult { Symbol = "SHARK", RewardGold = -200 , Weight = 30, Icon = sharkIcon },
+            new SlotResult { Symbol = "CAT",  RewardGold = 1000, Weight = 5 , Icon = catIcon }
+        };
     }
+
     public IEnumerator LoadSlotIcons(List<SlotResult> results)
     {
         int loaded = 0;
@@ -231,7 +232,10 @@ public class SlotMachineBuilding : BuildingBase
             StartCoroutine(SpinSingleSlot(i));
         }
     }
-    
+    public SlotResult GetMatchResult(string symbol)
+    {
+        return _results.Find(r => r.Symbol == symbol);
+    }
         public override void Produce()
     {
         
