@@ -49,7 +49,7 @@ public class UI_GameScene : UI_Scene
     public UI_BuildAction _uI_BuildAction;
 
 
-    // public UI_LongPressGauge _uI_LongPressGauge;
+     public UI_LongPressGauge _uI_LongPressGauge;
 
     public override bool Init()
     {
@@ -65,7 +65,7 @@ public class UI_GameScene : UI_Scene
         _shopPopupUI = Managers.UI.ShowPopupUI<UI_ShopPopup>();
         _editSettingPopupUI = Managers.UI.ShowPopupUI<UI_EditSettingPopup>();
         _uI_BuildAction = Managers.UI.MakeSubItem<UI_BuildAction>();
-      //  _uI_LongPressGauge = Managers.UI.MakeSubItem<UI_LongPressGauge>();
+        _uI_LongPressGauge = Managers.UI.MakeSubItem<UI_LongPressGauge>();
         _uiNotiPopup = Managers.UI.ShowPopupUI<UI_NotiPopup>();
 
         _quickMenuPopupUI.gameObject.SetActive(false);
@@ -73,7 +73,7 @@ public class UI_GameScene : UI_Scene
         _shopPopupUI.gameObject.SetActive(false);
         _editSettingPopupUI.gameObject.SetActive(false);
         _uI_BuildAction.SetActive(false);
-      //  _uI_LongPressGauge.SetActive(false);
+        _uI_LongPressGauge.SetActive(false);
 
         _uiNotiPopup.gameObject.SetActive(false);
 

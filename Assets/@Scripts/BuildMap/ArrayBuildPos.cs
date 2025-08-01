@@ -134,7 +134,6 @@ public class ArrayBuildPos : ScriptableObject
             });
         }
         baseBuilding = buildDataList;
-        Debug.Log("건물 데이터 불러오기 완료!");
                Managers.AI.AllRelocateToNearestNavMesh();
 
     }

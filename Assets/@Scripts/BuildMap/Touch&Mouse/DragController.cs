@@ -1,32 +1,40 @@
 using UnityEngine;
 
-
 /// <summary>
-/// DraggableObject 관리자 ,cameracontroller와 상호작용
+/// DraggableObject 관리자 , CameraController와 상호작용
 /// </summary>
 public class DragController : MonoBehaviour
 {
     public LayerMask groundLayer;
-
     public LayerMask exceptPlayer;
-    public float longPressThreshold = 1.5f; // 몇 초 이상 눌러야 롱프레스인지
+
+    public float longPressThreshold = 1.5f; // 게이지 충전 시간
+    public float postFillHoldDuration = 0.2f; // 게이지 다 찬 후 유지 시간
+    public float dragThreshold = 10f; // 드래그 판정 기준 (픽셀)
+
     public bool isDragging = false;
-    public float dragThreshold = 10f; // 10픽셀 이상 움직이면 드래그로 간주
+    public bool IsPointDown { get => isPointerDown; set => isPointerDown = value; }
+    public float pointerDownTimer = 0f;
 
     private IDraggable currentTarget = null;
+
     private bool isPointerDown = false;
-    public bool IsPointDown{ get => isPointerDown; set => isPointerDown = value; }
-    public float pointerDownTimer = 0f;
     private bool isDelay = false;
     private float delayTime = 0f;
-    private Vector3 dragStartPos;   // 클릭한 화면상의 위치
+    private Vector3 dragStartPos;
+
+    private bool isGaugeFilled = false;
+    private float postFillTimer = 0f;
+    private bool isGaugeVisible = false;
 
     void Awake()
     {
         BuildingPlacer.Instance.dragController = this;
     }
+
     void Update()
     {
+        // 지연 시작 처리 (클릭 시 0.3초 지연 후 포인터다운으로 인정)
         if (isDelay)
         {
             delayTime += Time.deltaTime;
@@ -38,19 +46,32 @@ public class DragController : MonoBehaviour
             }
         }
 
-
+        // 롱프레스 타이머 처리
         if (isPointerDown)
         {
-                        //BuildingPlacer.Instance.uI_LongPressGauge.SetActive(true);
             pointerDownTimer += Time.deltaTime;
 
-            if (pointerDownTimer >= longPressThreshold)
+            if (!isGaugeFilled)
             {
-                OnLongPress();
-                isPointerDown = false; // 1회 실행 후 초기화
+                  //  ShowGauge(true);
+                if (pointerDownTimer >= longPressThreshold)
+                {
+                    isGaugeFilled = true;
+                    postFillTimer = 0f;
+                }
+            }
+            else
+            {
+                postFillTimer += Time.deltaTime;
+                if (postFillTimer >= postFillHoldDuration)
+                {
+                    OnLongPress();
+                    ResetPressState();
+                }
             }
         }
 
+        // 입력 감지 처리
         Vector3 inputPos = Vector3.zero;
         bool began = false, moved = false, ended = false;
 
@@ -71,35 +92,27 @@ public class DragController : MonoBehaviour
         }
 
         Ray ray = Camera.main.ScreenPointToRay(inputPos);
+
         if (began)
         {
             isDelay = true;
-            pointerDownTimer = 0f;
+            ResetPressState();
 
-
-
-            // 빈 땅 터치 감지
+            // 땅 클릭 처리
             if (Physics.Raycast(ray, out var groundHit, 1000f, groundLayer))
             {
                 BuildingPlacer.Instance.OnGroundTouched(groundHit.point);
+                BuildingPlacer.Instance.OnGroundTouchedSecond(groundHit.point); // 하나로 통합 가능성 있음
             }
 
-            if (Physics.Raycast(ray, out var groundHit2, 1000f, groundLayer))
-            {
-                BuildingPlacer.Instance.OnGroundTouchedSecond(groundHit2.point);
-            }
-
-            if (Physics.Raycast(ray, out var hit, exceptPlayer))
+            // 오브젝트 감지
+            if (Physics.Raycast(ray, out var hit, 1000f, exceptPlayer))
             {
                 var draggable = hit.collider.GetComponent<IDraggable>();
                 if (draggable != null)
                 {
                     currentTarget = draggable;
-
-                        currentTarget.OnDragStart(hit.point);
-
-
-                    // 클릭 위치 저장
+                    currentTarget.OnDragStart(hit.point);
                     dragStartPos = inputPos;
                     isDragging = false;
                 }
@@ -107,7 +120,6 @@ public class DragController : MonoBehaviour
         }
         else if (moved && currentTarget != null)
         {
-            // 아직 드래그 시작 안했으면 거리 체크
             if (!isDragging)
             {
                 isDelay = true;
@@ -118,54 +130,58 @@ public class DragController : MonoBehaviour
                 }
             }
 
-            // 드래그 중일 때만 이동
             if (isDragging)
             {
                 isDelay = false;
-
-                if (Physics.Raycast(ray, out var groundHit, 1000f, groundLayer))
+                if (Physics.Raycast(ray, out var moveHit, 1000f, groundLayer))
                 {
-                    currentTarget.OnDrag(groundHit.point);
+                    currentTarget.OnDrag(moveHit.point);
                 }
             }
         }
         else if (ended && currentTarget != null)
         {
-            isDelay = false;
-            isPointerDown = false;
+            if (isDragging)
+            {
+                currentTarget.OnDragEnd();
+            }
+            else
+            {
+                currentTarget.OnClickRelease();
+            }
 
-    if (isDragging)
-    {
-        currentTarget.OnDragEnd();
-    }
-    else
-    {
-        // 클릭만 하고 뗀 경우 처리
-        currentTarget.OnClickRelease(); // <- 이걸 인터페이스에 추가하거나 적절히 구현
-    }
-
-            isDragging = false;
             currentTarget = null;
+            ResetPressState();
+            isDragging = false;
         }
     }
+
     private void OnLongPress()
     {
-
-        // 현재 타겟이 Stage 레이어면 롱프레스 동작 무시
         if (currentTarget is MonoBehaviour mb && mb.gameObject.layer == LayerMask.NameToLayer("Stage"))
-        {
-            return; // Stage일 땐 롱프레스 동작 안 함
-        }
-        if (currentTarget != null)
-        {
-            currentTarget.OnLongPress();
-        }
+            return;
+
+        currentTarget?.OnLongPress();
+    }
+
+    private void ResetPressState()
+    {
+        isPointerDown = false;
+        pointerDownTimer = 0f;
+        postFillTimer = 0f;
+        isGaugeFilled = false;
+       // ShowGauge(false);
+    }
+
+    private void ShowGauge(bool show)
+    {
+        if (isGaugeVisible == show) return;
+        isGaugeVisible = show;
+        BuildingPlacer.Instance.uI_LongPressGauge.SetActive(show);
     }
 
     public void ChangeTarget(IDraggable draggable)
     {
         currentTarget = draggable;
     }
-
-
 }

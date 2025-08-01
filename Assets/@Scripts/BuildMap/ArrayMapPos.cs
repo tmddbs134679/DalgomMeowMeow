@@ -95,8 +95,6 @@ public class ArrayMapPos : ScriptableObject
         this.width = saveData.width;
         this.height = saveData.height;
         this.rows = saveData.rows;
-
-        Debug.Log("맵 타일 데이터 로드 완료!");
         EditorUtility.SetDirty(this);
     }
 

@@ -87,8 +87,8 @@ public class BuildingPlacer : MonoBehaviour
         InitializeMaps();
         uI_BuildAction = (Managers.UI.SceneUI as UI_GameScene)._uI_BuildAction;
         uI_BuildAction.SetActive(false);
-        //  uI_LongPressGauge = (Managers.UI.SceneUI as UI_GameScene)._uI_LongPressGauge;
-        //  uI_LongPressGauge.SetActive(false);
+          uI_LongPressGauge = (Managers.UI.SceneUI as UI_GameScene)._uI_LongPressGauge;
+          uI_LongPressGauge.SetActive(false);
 
     }
 

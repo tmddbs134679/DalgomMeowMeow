@@ -125,7 +125,7 @@ public class UI_BuildPopup : UI_Popup
         GetButton((int)Buttons.SlotMachineButton).gameObject.BindEvent(() => SelectBuildingType(Define.EBuildingType.SlotMachine));
         GetButton((int)Buttons.RoadButton).gameObject.BindEvent(() => SelectBuildingType(Define.EBuildingType.Road));
         GetButton((int)Buttons.ShopButton).gameObject.BindEvent(() => SelectBuildingType(Define.EBuildingType.Shop));
-        GetButton((int)Buttons.UnlockAreaButton).gameObject.BindEvent(() => SelectBuildingType(Define.EBuildingType.UnLockStage));
+       // GetButton((int)Buttons.UnlockAreaButton).gameObject.BindEvent(() => SelectBuildingType(Define.EBuildingType.UnLockStage));
         GetButton((int)Buttons.PotButton).gameObject.BindEvent(() => SelectBuildingType(Define.EBuildingType.Pot));
         GetButton((int)Buttons.TravelButton).gameObject.BindEvent(() => SelectBuildingType(Define.EBuildingType.Travel));
         GetButton((int)Buttons.CancelButton).gameObject.BindEvent(CancelBuildUI);
