@@ -106,6 +106,10 @@ public abstract class BuildingBase : BaseObject
     {
         if (CurrentState != BuildingState.Producing) return;
 
+        if (Timer == null)
+        {
+            return;
+        }
         if (Timer.Tick(deltaTime))
         {
             Produce();

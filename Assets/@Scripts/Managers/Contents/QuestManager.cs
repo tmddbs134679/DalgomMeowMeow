@@ -409,7 +409,6 @@ public class QuestManager : MonoBehaviour
 
             if (allMet)
             {
-                Managers.UI.ShowToast($"{chapterId} 해금 조건이 모두 충족되었습니다!");
                 chapterNotify = true;
             }
         }
