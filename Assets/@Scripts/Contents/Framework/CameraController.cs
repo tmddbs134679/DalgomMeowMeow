@@ -19,6 +19,7 @@ public class CameraController : MonoBehaviour
     private bool isAI;
 
     private bool isCatTouch;
+
     void Start()
     {
         _cam = Camera.main;
@@ -29,25 +30,25 @@ public class CameraController : MonoBehaviour
 
     void Update()
     {
-
-#if UNITY_EDITOR
+#if UNITY_EDITOR || UNITY_STANDALONE
+        // PC 또는 에디터에서 마우스로 드래그 처리
         if (Input.GetMouseButtonDown(0))
         {
-            _startedOnUI = IsPointerOverUI(); //  UI 위에서 눌렀는지 기록
+            _startedOnUI = IsPointerOverUI(); // UI 위에서 눌렀는지 기록
             if (_startedOnUI) return;
 
-            ClickCat(Input.mousePosition); //고양이일때만
+            ClickCat(Input.mousePosition); // 고양이일 때만
             _dragOrigin = Input.mousePosition;
             _touchStartPos = _dragOrigin;
             isDragging = false;
         }
         else if (Input.GetMouseButton(0))
         {
-            if (_startedOnUI) return; //  UI 위에서 시작했으면 아예 이동 막기
-                                      // if (buildingplacer.tempDraggleOBJ.isLongPress) return;  // 드래그 입력 중이면 카메라 이동 아예 금지
+            if (_startedOnUI) return; // UI 위에서 시작했으면 아예 이동 막기
             if (buildingplacer == null) return;
-            if (buildingplacer.isSelect) return; //
+            if (buildingplacer.isSelect) return;
             if (isAI) return;
+
             Vector3 delta = Input.mousePosition - _dragOrigin;
             float dist = Vector2.Distance(Input.mousePosition, _touchStartPos);
 
@@ -60,7 +61,7 @@ public class CameraController : MonoBehaviour
         }
         else if (Input.GetMouseButtonUp(0))
         {
-            if (!isDragging && !isCatTouch) ClickBuilding(Input.mousePosition); //건물일때만
+            if (!isDragging && !isCatTouch) ClickBuilding(Input.mousePosition); // 건물일 때만
             isCatTouch = false;
             if (_startedOnUI)
             {
@@ -76,7 +77,7 @@ public class CameraController : MonoBehaviour
         float zoomAmount = 0;
 
 #if UNITY_EDITOR || UNITY_STANDALONE
-        // UI 위에 있을 때는 무시
+        // PC에서 마우스 스크롤로 확대/축소 처리
         if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
         {
             return;
@@ -93,6 +94,7 @@ public class CameraController : MonoBehaviour
         zoomAmount = Input.GetAxis("Mouse ScrollWheel") * 10f;
 #endif
 
+        // 모바일에서 두 손가락으로 확대/축소
         if (Input.touchCount == 2)
         {
             Touch touchZero = Input.GetTouch(0);
@@ -114,6 +116,51 @@ public class CameraController : MonoBehaviour
             Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize - zoomAmount, 6f, 10f);
         }
 
+        // 모바일에서 터치로 카메라 드래그 처리
+        if (Input.touchCount == 1)
+        {
+            Touch touch = Input.GetTouch(0);
+
+            if (touch.phase == TouchPhase.Began)
+            {
+                _startedOnUI = IsPointerOverUI(touch.fingerId); // UI 위에서 눌렀는지 확인
+                if (_startedOnUI) return;
+
+                _dragOrigin = touch.position;
+                _touchStartPos = _dragOrigin;
+                isDragging = false;
+            }
+            else if (touch.phase == TouchPhase.Moved)
+            {
+                if (_startedOnUI) return; // UI 위에서 시작했으면 아예 이동 막기
+                if (buildingplacer == null) return;
+                if (buildingplacer.isSelect) return;
+                if (isAI) return;
+
+                Vector3 delta = (Vector3)touch.position - _dragOrigin;
+                float dist = Vector2.Distance(touch.position, _touchStartPos);
+
+                if (dist > _clickThreshold)
+                {
+                    isDragging = true;
+                    ApplyCameraMove(delta);
+                    _dragOrigin = touch.position;
+                }
+            }
+            else if (touch.phase == TouchPhase.Ended)
+            {
+                if (!isDragging && !isCatTouch) ClickBuilding(touch.position); // 건물일 때만
+                isCatTouch = false;
+                if (_startedOnUI)
+                {
+                    _startedOnUI = false; // 다시 초기화
+                    return;
+                }
+
+                isDragging = false;
+                isAI = false;
+            }
+        }
     }
 
     void ApplyCameraMove(Vector2 delta)
@@ -157,7 +204,7 @@ public class CameraController : MonoBehaviour
         RaycastHit[] hits = Physics.RaycastAll(ray, 100f, layerMask);
 
         foreach (var hit in hits)
-        {//||hit.collider.gameObject.layer == LayerMask.NameToLayer("Stage")
+        {
             if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Building"))
             {
                 Managers.Debug.Log($" ClickBuilding:Building Clicked: {hit.collider.name}", Define.EDebugType.None);
@@ -184,5 +231,4 @@ public class CameraController : MonoBehaviour
         return EventSystem.current.IsPointerOverGameObject(fingerId);
 #endif
     }
-    
 }
