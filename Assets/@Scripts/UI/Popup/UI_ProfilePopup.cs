@@ -177,7 +177,7 @@ public class UI_ProfilePopup : UI_Popup
     private void OnClickExitButton()
     {
        // if(Managers.Scene.CurrentScene.SceneType == EScene.GameScene)
-            Managers.Game.OnCharacterChanged?.Invoke();
+        Managers.Game.OnNotifyChanged?.Invoke();
 
         Managers.UI.ClosePopupUI(this);
         Clear();

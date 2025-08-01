@@ -5,7 +5,7 @@ using static Define;
 using UnityEngine.TextCore.Text;
 using System;
 
-public class EquipmentManager 
+public class EquipmentManager
 {
 
 
@@ -164,11 +164,12 @@ public class EquipmentManager
     {
         var type = equipment.EquipmentData.EquipmentType;
 
-        if (!ai.equipmentBones.TryGetValue(type, out var bone))
+        if (!ai.equipmentBones.TryGetValue(type, out var bone) || bone == null)
         {
             Debug.LogWarning($"장비 본이 존재하지 않음: {type}");
             return;
         }
+      
 
         foreach (Transform child in bone)
         {

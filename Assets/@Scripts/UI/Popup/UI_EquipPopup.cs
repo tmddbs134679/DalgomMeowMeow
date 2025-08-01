@@ -49,7 +49,6 @@ public class UI_EquipPopup : UI_Popup
        
         OnClickTypeToggle();
 
-        Managers.Equipment.EquipInfoChanged += Refresh;
     }
 
     private void OnDestroy()
@@ -73,6 +72,10 @@ public class UI_EquipPopup : UI_Popup
         GetToggle((int)Toggles.BagToggle).gameObject.BindEvent(() => OnClickTypeToggle(EEquipmentType.Bag));
 
         _scrollRect = GetObject((int)GameObjects.EquipmentScrollGroup).GetComponent<ScrollRect>();
+
+        Managers.Equipment.EquipInfoChanged += Refresh;
+
+
         return true;
     }
 
@@ -137,6 +140,9 @@ public class UI_EquipPopup : UI_Popup
 
     private void Refresh()
     {
+        if (!gameObject.activeInHierarchy)
+            return;
+
         GetObject((int)GameObjects.EquipGroupObject).DestroyChilds();
         OnClickTypeToggle(_currentType);
 

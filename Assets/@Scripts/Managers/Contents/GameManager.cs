@@ -58,6 +58,7 @@ public class GameManager
 
     public event Action OnResourcesChagned;
     public Action OnCharacterChanged;
+    public Action OnNotifyChanged;
 
     #endregion
 
