@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -35,6 +36,11 @@ public class SlotMachineBuilding : BuildingBase
     private int _slotCount = 3;
 
     private int _finishedCount = 0;
+    
+    public RectTransform[] slotContents;
+    public float moveDistance = 200f;
+    public float duration = 0.2f;
+    public int spinCount = 10;
 
     private IEnumerator Start()
     {
@@ -194,6 +200,39 @@ public class SlotMachineBuilding : BuildingBase
         popup.SettingOnOff(Define.EBuildPopUpType.SlotButton);
     }
 
+    private IEnumerator SpinSingleSlot(int index)
+    {
+        RectTransform content = slotContents[index];
+        Sequence seq = DOTween.Sequence();
+
+        for (int i = 0; i < spinCount; i++)
+        {
+            seq.Append(content.DOAnchorPosY(-moveDistance, duration).SetEase(Ease.Linear))
+                .AppendCallback(() =>
+                {
+                    RectTransform last = content.GetChild(content.childCount - 1).GetComponent<RectTransform>();
+                    last.SetAsFirstSibling();
+                    content.anchoredPosition = Vector2.zero;
+                });
+        }
+
+        seq.OnComplete(() =>
+        {
+            Debug.Log($"슬롯 {index + 1} 멈춤!");
+            // 여기서 CurrentResult 갱신 및 CheckReward() 가능
+        });
+
+        yield return seq.WaitForCompletion();
+    }
+    
+    public void SpinAllSlots()
+    {
+        for (int i = 0; i < slotContents.Length; i++)
+        {
+            StartCoroutine(SpinSingleSlot(i));
+        }
+    }
+    
         public override void Produce()
     {
         
