@@ -31,11 +31,6 @@ public class GameScene : BaseScene
             Managers.AI.ValidateNavMeshPosition(ai);
             Managers.AI.Register(ai);
 
-            if(Managers.Game.RewardMinigame)
-            {
-                Managers.Game.RewardMinigame = false;
-                Managers.Game.DailyMiniGameReward();
-            }
 
             if (ch.IsTravelMode)
             {

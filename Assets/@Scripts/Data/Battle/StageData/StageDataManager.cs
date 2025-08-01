@@ -82,6 +82,13 @@ public class StageDataManager : MonoBehaviour
 
             manager.ClearReward();
         }
+        
+        if (Managers.Game.RewardMinigame)
+        {
+            Managers.Game.RewardMinigame = false;
+            Managers.Game.DailyMiniGameReward();
+        }
+
     }
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
