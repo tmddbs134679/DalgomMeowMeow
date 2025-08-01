@@ -106,6 +106,11 @@ public abstract class BuildingBase : BaseObject
     {
         if (CurrentState != BuildingState.Producing) return;
 
+        if (Timer == null)
+        {
+            Debug.LogError($"[BuildingBase] Timer is null in {gameObject.name}");
+            return;
+        }
         if (Timer.Tick(deltaTime))
         {
             Produce();

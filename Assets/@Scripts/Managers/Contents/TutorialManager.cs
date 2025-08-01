@@ -70,6 +70,7 @@ public class TutorialManager : MonoBehaviour
         else
         {
             EndTutorial();
+            Managers.UI.ShowToast("튜토리얼 완료");
         }
     }
 
