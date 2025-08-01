@@ -329,7 +329,7 @@ public DateTime LastDayNightCheckTime
         Managers.Game.RewardMinigame = true;
     }
 
-    
+       
 
     public int CalculateOfflineGold()
     {
