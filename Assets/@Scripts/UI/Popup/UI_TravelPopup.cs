@@ -126,7 +126,7 @@ public class UI_TravelPopup : UI_Popup
             return;
         }
 
-        Managers.Ads.ShowRewardedAd(() =>
+       /* Managers.Ads.ShowRewardedAd(() =>
         {
             //여행시간 30분 줄이기.
             TimeSpan travelTime = TimeSpan.FromHours(Define.TRAVEL_TIME - 0.5);
@@ -135,7 +135,7 @@ public class UI_TravelPopup : UI_Popup
 
             _character.IsTravelMode = true;
             Managers.UI.ClosePopupUI(this);
-        });
+        });*/
 
     }
 

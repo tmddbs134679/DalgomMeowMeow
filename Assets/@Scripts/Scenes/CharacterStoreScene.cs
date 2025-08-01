@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class CharacterStoreScene : BaseScene
@@ -13,7 +12,7 @@ public class CharacterStoreScene : BaseScene
         base.Init();
         SceneType = Define.EScene.CharacterStoreScene;
 
-        Managers.UI.ShowSceneUI<UI_CharacterStoreScene>();
+
         Managers.Room.rooms.Clear();
         for(int i = 0; i < Managers.Room.UnLockRoom; i++)
         {
@@ -36,6 +35,7 @@ public class CharacterStoreScene : BaseScene
 
         }
 
+        Managers.UI.ShowSceneUI<UI_CharacterStoreScene>();
     }
 
 

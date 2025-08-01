@@ -95,7 +95,10 @@ public class ArrayMapPos : ScriptableObject
         this.width = saveData.width;
         this.height = saveData.height;
         this.rows = saveData.rows;
+#if UNITY_EDITOR
         EditorUtility.SetDirty(this);
+#endif
+
     }
 
 #if UNITY_EDITOR

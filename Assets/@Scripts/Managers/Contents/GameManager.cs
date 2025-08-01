@@ -47,7 +47,6 @@ public class GameManager
     // 씬에 존재하는 실제 캐릭터 오브젝트
     public Dictionary<string, AICharacter> CharacterInMainScene = new();
 
-    public Dictionary<string, AICharacter> CharacterInStoreScene = new();
 
     public bool IsLoaded = false;
     public bool RewardMinigame = false;
@@ -58,7 +57,7 @@ public class GameManager
 
     public event Action OnResourcesChagned;
     public Action OnCharacterChanged;
-
+    public Action OnNotifyChanged;
     #endregion
 
     #region GameData
@@ -353,11 +352,13 @@ public class GameManager
             aiChar.Init();
             aiChar.SetInfo(newChar);
 
+            CharacterInMainScene[newChar.UniqueId] = aiChar;
             Managers.AI.Register(aiChar);
         }
 
+     
 
-        _characters[newChar.UniqueId] = newChar;
+           _characters[newChar.UniqueId] = newChar;
 
         return newChar;
     }
