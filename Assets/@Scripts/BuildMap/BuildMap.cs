@@ -21,7 +21,7 @@ public class BuildMap : MonoBehaviour
     private Dictionary<int, BuildData> _buildDataMap = new Dictionary<int, BuildData>();
 void Awake()
 {
-    _arrayBuildPos.LoadMapData();
+    _arrayBuildPos.LoadMapDataAsync();
     StartCoroutine(DelayedRebuildAndRelocate());
 }
 

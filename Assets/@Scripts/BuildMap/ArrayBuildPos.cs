@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using System.IO;
 using Newtonsoft.Json;
+using UnityEngine.AddressableAssets;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -95,11 +97,11 @@ public class ArrayBuildPos : ScriptableObject
     //파일에서 건물데이터 불러오기
     public void EditorLoadMapData()
     {
-        LoadMapData();
+        LoadMapDataAsync();
     }
 #endif
 
-    public void LoadMapData()
+    public async void LoadMapDataAsync()
     {
         string path = $"{Application.dataPath}/@Resources/Map/MapData.json";
 
@@ -112,17 +114,23 @@ public class ArrayBuildPos : ScriptableObject
         string json = File.ReadAllText(path);
         MapSaveData saveData = JsonConvert.DeserializeObject<MapSaveData>(json);
 
-        List<BuildData> buildDataList = new List<BuildData>();
+        List<BuildData> buildDataList = new();
 
         foreach (var data in saveData.buildings)
         {
-            string sopath = $"Assets/@Scripts/BuildMap/ScriptableOBJ/BuildSO/{data.buildingName}.asset";
-            if (!File.Exists(sopath))
+            string key = data.buildingName;
+
+            var handle = Addressables.LoadAssetAsync<BaseBuildingSO>(key);
+            await handle.Task;
+
+            if (handle.Status != UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationStatus.Succeeded)
             {
-                Debug.LogError("건물 So 파일이 없습니다!");
-                return;
+                Debug.LogError($"Addressables로 {key} 불러오기 실패!");
+                continue;
             }
-            BaseBuildingSO so = AssetDatabase.LoadAssetAtPath<BaseBuildingSO>(sopath);
+
+            BaseBuildingSO so = handle.Result;
+
             buildDataList.Add(new BuildData
             {
                 posX = data.posX,
@@ -133,9 +141,11 @@ public class ArrayBuildPos : ScriptableObject
                 LV = data.LV,
             });
         }
-        baseBuilding = buildDataList;
-               Managers.AI.AllRelocateToNearestNavMesh();
 
+        baseBuilding = buildDataList;
+
+        // 위치 재정렬
+        Managers.AI.AllRelocateToNearestNavMesh();
     }
 
 #if UNITY_EDITOR
@@ -191,10 +201,11 @@ public class ArrayBuildPos : ScriptableObject
     }
 
     public void UnBindEvent()
-    {        if (BuildingPlacer.Instance != null)
+    {
+        if (BuildingPlacer.Instance != null)
         {
             BuildingPlacer.Instance.OnAutoSave -= SaveMapData;
-                                                Debug.LogError("arraybuildpos해제됨");
+            Debug.LogError("arraybuildpos해제됨");
         }
     }
 }
@@ -220,5 +231,3 @@ public class MapSaveData
 {
     public List<BuildData> buildings = new List<BuildData>();
 }
-
-
