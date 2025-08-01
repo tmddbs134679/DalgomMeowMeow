@@ -58,7 +58,7 @@ public class UI_CharacterInfo : UI_Base
 
     private void OnEnable()
     {
-        Managers.UI.OnCharacterChange += UpdateCharacterText;
+
     }
     private void OnDestroy()
     {
@@ -84,6 +84,9 @@ public class UI_CharacterInfo : UI_Base
         gameObject.BindEvent(OnClickObjectButton);
 
         GetObject((int)GameObjects.NewTextObject).gameObject.SetActive(false);
+
+        Managers.UI.OnCharacterChange += UpdateCharacterText;
+
         return true;
     }
 
