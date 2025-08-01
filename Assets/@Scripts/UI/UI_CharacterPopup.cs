@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class UI_CharacterPopup : UI_Popup
 {
@@ -42,7 +43,7 @@ public class UI_CharacterPopup : UI_Popup
 
     private void OnDestroy()
     {
-        Managers.Game.OnCharacterChanged -= () => Refresh(null);
+        Managers.Game.OnNotifyChanged -= Refresh;
     }
 
     public override bool Init()
@@ -63,9 +64,8 @@ public class UI_CharacterPopup : UI_Popup
         GetButton((int)Buttons.BearSortButton).gameObject.BindEvent(OnClickBearSortButton);
 
         //왼쪽 오른쪽 버튼 누르면 Notify 업데이트 되게 함.
-        Managers.Game.OnCharacterChanged += () => Refresh(null);
+        Managers.Game.OnNotifyChanged += Refresh;
 
-        Refresh();
         return true;
     }
     private void OnClickCatSortButton()
@@ -91,6 +91,9 @@ public class UI_CharacterPopup : UI_Popup
 
     private void Refresh(int? alpha = null)
     {
+        if (!gameObject.activeInHierarchy)
+            return;
+
         GetObject((int)GameObjects.CharacterInfoScrollContentObject).DestroyChilds();
 
         List<Character> characters = Managers.Game.Characters;
@@ -106,5 +109,23 @@ public class UI_CharacterPopup : UI_Popup
             slot.SetInfo(ch, _scrollrect);
         }
     }
-    
+
+
+    // int? 버그 있는거 같아서 변수없는거 오버로딩으로 일단 해결
+    private void Refresh()
+    {
+        if (!gameObject.activeInHierarchy)
+            return;
+
+        GetObject((int)GameObjects.CharacterInfoScrollContentObject).DestroyChilds();
+
+        List<Character> characters = Managers.Game.Characters;
+
+        foreach (Character ch in characters)
+        {
+            UI_CharacterInfo slot = Managers.UI.MakeSubItem<UI_CharacterInfo>(GetObject((int)GameObjects.CharacterInfoScrollContentObject).transform);
+            slot.SetInfo(ch, _scrollrect);
+        }
+    }
+
 }

@@ -322,9 +322,14 @@ public class AIController : BaseController<AICharacter>
 
     public async void Move(Vector3 destination)
     {
+        if (character.View.Nav == null)
+            return;
+
         if (!character.View.Nav.enabled || !character.View.Nav.isOnNavMesh) return;
         await Task.Delay(10);
 
+
+    
         character.View.Nav.ResetPath();
         character.View.Nav.SetDestination(destination);
     }

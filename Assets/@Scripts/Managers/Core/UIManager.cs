@@ -150,7 +150,7 @@ public class UIManager
 
     public void Clear()
     {
-
+        CloseAllPopupUI();
     }
 
     public UI_Toast ShowToast(string msg)

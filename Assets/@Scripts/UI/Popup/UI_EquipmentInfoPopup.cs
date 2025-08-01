@@ -57,6 +57,9 @@ public class UI_EquipmentInfoPopup : UI_Popup
 
         GetButton((int)Buttons.EquipButton).gameObject.BindEvent(() => OnCilckEquipButton());
         GetButton((int)Buttons.EquipButton).gameObject.GetOrAddComponent<UI_ButtonAnimation>();
+
+        Managers.Equipment.EquipInfoChanged += Refresh;
+
         return true;
     }
 
@@ -65,7 +68,7 @@ public class UI_EquipmentInfoPopup : UI_Popup
     {
         PopupOpenAnimation(GetObject((int)GameObjects.ContentObject));
 
-        Managers.Equipment.EquipInfoChanged += Refresh;
+
     }
 
     private void OnDestroy()
