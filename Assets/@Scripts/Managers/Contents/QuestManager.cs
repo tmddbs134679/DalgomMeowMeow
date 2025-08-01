@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Playables;
 
 public class QuestManager : MonoBehaviour
 {
@@ -11,9 +12,37 @@ public class QuestManager : MonoBehaviour
     private Dictionary<string, Quest> _quests = new();
     private Dictionary<(Define.EQuestConditionType, Define.ETargetType), List<Quest>> _questIndex = new();
 
-    public int CheckCountNotity;
-    public bool CheapterNotify;
+    private int checkCountNotify;
+    public int CheckCountNotify
+    {
+        get => checkCountNotify;
+        set
+        {
+            if (checkCountNotify != value)
+            {
+                checkCountNotify = value;
+                Managers.Game.SaveGame();
+            }
+        }
+    }
+
+
+    private bool chapterNotify;
+    public bool ChapterNotify
+    {
+        get => chapterNotify;
+        set
+        {
+            if (chapterNotify != value)
+            {
+                chapterNotify = value;
+                Managers.Game.SaveGame(); // 값이 바뀌었을 때만 저장
+            }
+        }
+    }
+
     public Action OnQuestUpdated;
+
 
     void Awake()
     {
@@ -343,7 +372,7 @@ public class QuestManager : MonoBehaviour
         if (allMet)
         {
             // 해금조건달성 알림 
-            CheapterNotify = true;
+            chapterNotify = true;
         }
 
     }
@@ -381,6 +410,7 @@ public class QuestManager : MonoBehaviour
             if (allMet)
             {
                 Managers.UI.ShowToast($"{chapterId} 해금 조건이 모두 충족되었습니다!");
+                chapterNotify = true;
             }
         }
     }
