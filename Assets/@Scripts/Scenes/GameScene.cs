@@ -31,6 +31,7 @@ public class GameScene : BaseScene
             Managers.AI.ValidateNavMeshPosition(ai);
             Managers.AI.Register(ai);
 
+            
 
             if (ch.IsTravelMode)
             {
