@@ -135,14 +135,12 @@ public class SkillLibrary : MonoBehaviour
         yield return StartCoroutine(Grow(battleCharacter)); // 캐릭터 크기 증가 코루틴 실행
         battleCharacter.AttackDamage *= 2f; // 공격력 2배 증가
         battleCharacter.AttackRange *= 4f; // 공격 범위 2배 증가
-        battleCharacter.Agent.stoppingDistance = battleCharacter.AttackRange;
         battleCharacter.UsingSkill = false;
         yield return new WaitForSeconds(10f); // 1초 대기
         battleCharacter.UsingSkill = true;
         yield return StartCoroutine(Shrink(battleCharacter)); // 캐릭터 크기 감소 코루틴 실행
         battleCharacter.AttackDamage /= 2f; // 공격력 원래대로 되돌림
         battleCharacter.AttackRange /= 4f; // 공격 범위 원래대로 되돌림
-        battleCharacter.Agent.stoppingDistance = battleCharacter.AttackRange;
         battleCharacter.UsingSkill = false;
     }
 
@@ -178,12 +176,10 @@ public class SkillLibrary : MonoBehaviour
         battleCharacter.UsingSkill = true;
         battleCharacter.SkillCooldown = 20f; // 스킬 쿨타임 설정
         battleCharacter.AttackRange *= 5f; // 사거리 6배 증가
-        battleCharacter.Agent.stoppingDistance = battleCharacter.AttackRange;
         battleCharacter.UsingSkill = false;
         yield return new WaitForSeconds(5f);
         battleCharacter.UsingSkill = true;
         battleCharacter.AttackRange /= 5f; // 사거리 원래대로 되돌림
-        battleCharacter.Agent.stoppingDistance = battleCharacter.AttackRange;
         battleCharacter.UsingSkill = false;
     }
 
