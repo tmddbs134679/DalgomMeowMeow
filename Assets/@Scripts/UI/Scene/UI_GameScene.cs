@@ -116,7 +116,14 @@ public class UI_GameScene : UI_Scene
         #region Minigame
 
         if (Managers.Game.RewardMinigame)
-            _miniGameReward.gameObject.SetActive(true);
+        {
+            if (PlayerPrefs.GetFloat("HighScore", 0) != 0 || PlayerPrefs.GetFloat("FastestTime", 60f) != 60)
+            {
+                Managers.Game.RewardMinigame = false;
+                Managers.Game.DailyMiniGameReward();
+                _miniGameReward.gameObject.SetActive(true);
+            }
+        }
         else
             _miniGameReward.gameObject.SetActive(false);
         #endregion
