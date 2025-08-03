@@ -58,84 +58,68 @@ public class ArrayMapPos : ScriptableObject
         SaveMapTileData();
     }
 #endif
-    public void SaveMapTileData()
+  public void SaveMapTileData()
+{
+#if UNITY_EDITOR
+    MapTileSaveData saveData = new MapTileSaveData
     {
+        width = this.width,
+        height = this.height,
+        rows = this.rows
+    };
 
-        MapTileSaveData saveData = new MapTileSaveData
-        {
-            width = this.width,
-            height = this.height,
-            rows = this.rows
-        };
+    string path = $"{Application.dataPath}/Resources/MapTileData.json";
+    string json = JsonConvert.SerializeObject(saveData, Formatting.Indented);
+    File.WriteAllText(path, json);
+    Debug.Log("맵 저장 완료!");
+#endif
+}
 
-        string path = $"{Application.dataPath}/Resources/MapTileData.json";
-        string json = JsonConvert.SerializeObject(saveData, Formatting.Indented);
-        File.WriteAllText(path, json);
+
+public void LoadMapTileData()
+{
+    TextAsset mapTileData = Resources.Load<TextAsset>("MapTileData"); // "Resources/MapTileData.json"이 실제 경로
+    if (mapTileData == null)
+    {
+        Debug.LogError("MapTileData 리소스가 없습니다!");
+        return;
     }
 
+    string json = mapTileData.text;
+    MapTileSaveData saveData = JsonConvert.DeserializeObject<MapTileSaveData>(json);
 
-    //TextAsset mapTileData = Resources.Load<TextAsset>("MapTileData");
-    //string json = mapTileData.text;
-    //MapTileSaveData saveData = JsonConvert.DeserializeObject<MapTileSaveData>(json);
+    this.width = saveData.width;
+    this.height = saveData.height;
+    this.rows = saveData.rows;
+
+#if UNITY_EDITOR
+    EditorUtility.SetDirty(this);
+#endif
+}
 
 
 #if UNITY_EDITOR
-    public void EditorLoadMapTileData()
+public void LoadProtoTypeMapTileData()
+{
+    TextAsset mapTileData = Resources.Load<TextAsset>("Map/BaseMapTileData"); // Resources/Map/BaseMapTileData.json
+    if (mapTileData == null)
     {
-        LoadMapTileData();
-    }
-#endif
-
-    public void LoadMapTileData()
-    {
-        //string path = $"{Application.dataPath}/@Resources/Map/MapTileData.json";
-
-        //if (!File.Exists(path))
-        //{
-        //    Debug.LogError("맵 타일 데이터 파일이 없습니다!");
-        //    return;
-        //}
-
-        TextAsset mapTileData = Resources.Load<TextAsset>("MapTileData");
-
-        string json = mapTileData.text;
-        MapTileSaveData saveData = JsonConvert.DeserializeObject<MapTileSaveData>(json);
-
-        this.width = saveData.width;
-        this.height = saveData.height;
-        this.rows = saveData.rows;
-#if UNITY_EDITOR
-        EditorUtility.SetDirty(this);
-#endif
-
+        Debug.LogError("BaseMapTileData 리소스가 없습니다!");
+        return;
     }
 
-#if UNITY_EDITOR
-    public void LoadProtoTypeMapTileData()
-    {
-        string path = $"{Application.dataPath}/@Resources/Map/BaseMapTileData.json";
+    string json = mapTileData.text;
+    MapTileSaveData saveData = JsonConvert.DeserializeObject<MapTileSaveData>(json);
 
-        if (!File.Exists(path))
-        {
-            Debug.LogError("맵 타일 데이터 파일이 없습니다!");
-            return;
-        }
+    this.width = saveData.width;
+    this.height = saveData.height;
+    this.rows = saveData.rows;
 
-
-        TextAsset mapTileSaveData = Resources.Load<TextAsset>("BaseMapTileData");
-
-        string json = mapTileSaveData.text;
-
-        MapTileSaveData saveData = JsonConvert.DeserializeObject<MapTileSaveData>(json);
-
-        this.width = saveData.width;
-        this.height = saveData.height;
-        this.rows = saveData.rows;
-
-        Debug.Log("맵 타일 데이터 로드 완료!");
-        EditorUtility.SetDirty(this);
-    }
+    Debug.Log("베이스 맵 타일 데이터 로드 완료!");
+    EditorUtility.SetDirty(this);
+}
 #endif
+
 
 
 

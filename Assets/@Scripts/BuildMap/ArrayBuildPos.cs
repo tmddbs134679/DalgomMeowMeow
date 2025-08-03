@@ -109,100 +109,85 @@ public class ArrayBuildPos : ScriptableObject
     }
 #endif
 
-    public async void LoadMapDataAsync()
+  public async void LoadMapDataAsync()
+{
+    TextAsset mapData = Resources.Load<TextAsset>("MapData");
+    if (mapData == null)
     {
-        //string path = $"{Application.dataPath}/@Resources/Map/MapData.json";
+        Debug.LogError("MapData 리소스가 없습니다!");
+        return;
+    }
 
-        //if (!File.Exists(path))
-        //{
-        //    Debug.LogError("건물 데이터 파일이 없습니다!");
-        //    return;
-        //}
+    string json = mapData.text;
+    MapSaveData saveData = JsonConvert.DeserializeObject<MapSaveData>(json);
+    List<BuildData> buildDataList = new();
 
-        //string json = File.ReadAllText(path);
-        //MapSaveData saveData = JsonConvert.DeserializeObject<MapSaveData>(json);
+    foreach (var data in saveData.buildings)
+    {
+        string key = data.buildingName;
+        var handle = Addressables.LoadAssetAsync<BaseBuildingSO>(key);
+        await handle.Task;
 
-        //
-        TextAsset mapData = Resources.Load<TextAsset>("MapData");
-
-        string json = mapData.text;
-        MapSaveData saveData = JsonConvert.DeserializeObject<MapSaveData>(json);
-        //
-
-
-        List<BuildData> buildDataList = new();
-
-        foreach (var data in saveData.buildings)
+        if (handle.Status != UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationStatus.Succeeded)
         {
-            string key = data.buildingName;
-
-            var handle = Addressables.LoadAssetAsync<BaseBuildingSO>(key);
-            await handle.Task;
-
-            if (handle.Status != UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationStatus.Succeeded)
-            {
-                Debug.LogError($"Addressables로 {key} 불러오기 실패!");
-                continue;
-            }
-
-            BaseBuildingSO so = handle.Result;
-
-            buildDataList.Add(new BuildData
-            {
-                posX = data.posX,
-                posZ = data.posZ,
-                testBaseBuilding = so,
-                UnlockId = data.UnlockId,
-                UniqueId = data.UniqueId,
-                LV = data.LV,
-            });
+            Debug.LogError($"Addressables 로드 실패: {key}");
+            continue;
         }
 
-        baseBuilding = buildDataList;
-
-        // 위치 재정렬
-        Managers.AI.AllRelocateToNearestNavMesh();
+        BaseBuildingSO so = handle.Result;
+        buildDataList.Add(new BuildData
+        {
+            posX = data.posX,
+            posZ = data.posZ,
+            testBaseBuilding = so,
+            UnlockId = data.UnlockId,
+            UniqueId = data.UniqueId,
+            LV = data.LV,
+        });
     }
+
+    baseBuilding = buildDataList;
+    Managers.AI.AllRelocateToNearestNavMesh();
+}
 
 #if UNITY_EDITOR
-    //파일에서 건물데이터 불러오기
-    public void LoadProtoTypeMapData()
+public void LoadProtoTypeMapData()
+{
+    TextAsset baseData = Resources.Load<TextAsset>("Map/BaseMapData");
+    if (baseData == null)
     {
-        string path = $"{Application.dataPath}/@Resources/Map/BaseMapData.json";
-
-        if (!File.Exists(path))
-        {
-            Debug.LogError("건물 데이터 파일이 없습니다!");
-            return;
-        }
-
-        string json = File.ReadAllText(path);
-        MapSaveData saveData = JsonConvert.DeserializeObject<MapSaveData>(json);
-
-        List<BuildData> buildDataList = new List<BuildData>();
-
-        foreach (var data in saveData.buildings)
-        {
-            string sopath = $"Assets/@Scripts/BuildMap/ScriptableOBJ/BuildSO/{data.buildingName}.asset";
-            if (!File.Exists(sopath))
-            {
-                Debug.LogError("건물 So 파일이 없습니다!");
-                return;
-            }
-            BaseBuildingSO so = AssetDatabase.LoadAssetAtPath<BaseBuildingSO>(sopath);
-            buildDataList.Add(new BuildData
-            {
-                posX = data.posX,
-                posZ = data.posZ,
-                testBaseBuilding = so,
-                UnlockId = data.UnlockId,
-                UniqueId = data.UniqueId,
-                LV = data.LV,
-            });
-        }
-        baseBuilding = buildDataList;
-        Debug.Log("건물 데이터 불러오기 완료!");
+        Debug.LogError("BaseMapData 리소스가 없습니다!");
+        return;
     }
+
+    string json = baseData.text;
+    MapSaveData saveData = JsonConvert.DeserializeObject<MapSaveData>(json);
+    List<BuildData> buildDataList = new();
+
+    foreach (var data in saveData.buildings)
+    {
+        string sopath = $"Assets/@Scripts/BuildMap/ScriptableOBJ/BuildSO/{data.buildingName}.asset";
+        BaseBuildingSO so = AssetDatabase.LoadAssetAtPath<BaseBuildingSO>(sopath);
+        if (so == null)
+        {
+            Debug.LogError($"ScriptableObject 로드 실패: {sopath}");
+            continue;
+        }
+
+        buildDataList.Add(new BuildData
+        {
+            posX = data.posX,
+            posZ = data.posZ,
+            testBaseBuilding = so,
+            UnlockId = data.UnlockId,
+            UniqueId = data.UniqueId,
+            LV = data.LV,
+        });
+    }
+
+    baseBuilding = buildDataList;
+    Debug.Log("프로토타입 맵 데이터 로드 완료!");
+}
 #endif
 
 
