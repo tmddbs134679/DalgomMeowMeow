@@ -122,7 +122,7 @@ public class ArrayMapPos : ScriptableObject
         }
 
 
-        TextAsset mapTileSaveData = Resources.Load<TextAsset>("MapTileSaveData");
+        TextAsset mapTileSaveData = Resources.Load<TextAsset>("BaseMapTileData");
 
         string json = mapTileSaveData.text;
 
