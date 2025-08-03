@@ -58,9 +58,8 @@ public class ArrayMapPos : ScriptableObject
         SaveMapTileData();
     }
 #endif
-  public void SaveMapTileData()
+public void SaveMapTileData()
 {
-#if UNITY_EDITOR
     MapTileSaveData saveData = new MapTileSaveData
     {
         width = this.width,
@@ -68,35 +67,54 @@ public class ArrayMapPos : ScriptableObject
         rows = this.rows
     };
 
-    string path = $"{Application.dataPath}/Resources/MapTileData.json";
+    string path = Path.Combine(Application.persistentDataPath, "MapTileData.json");
     string json = JsonConvert.SerializeObject(saveData, Formatting.Indented);
     File.WriteAllText(path, json);
-    Debug.Log("맵 저장 완료!");
-#endif
-}
-
-
-public void LoadMapTileData()
-{
-    TextAsset mapTileData = Resources.Load<TextAsset>("MapTileData"); // "Resources/MapTileData.json"이 실제 경로
-    if (mapTileData == null)
-    {
-        Debug.LogError("MapTileData 리소스가 없습니다!");
-        return;
-    }
-
-    string json = mapTileData.text;
-    MapTileSaveData saveData = JsonConvert.DeserializeObject<MapTileSaveData>(json);
-
-    this.width = saveData.width;
-    this.height = saveData.height;
-    this.rows = saveData.rows;
+    Debug.Log($"맵 저장 완료! 저장 경로: {path}");
 
 #if UNITY_EDITOR
     EditorUtility.SetDirty(this);
 #endif
 }
 
+public void LoadMapTileData()
+{
+    string persistentPath = Path.Combine(Application.persistentDataPath, "MapTileData.json");
+
+    if (File.Exists(persistentPath))
+    {
+        string json = File.ReadAllText(persistentPath);
+        MapTileSaveData saveData = JsonConvert.DeserializeObject<MapTileSaveData>(json);
+        ApplyLoadedData(saveData);
+        Debug.Log("런타임 저장된 맵 로드 완료!");
+    }
+    else
+    {
+        // fallback: Resources 로드
+        TextAsset mapTileData = Resources.Load<TextAsset>("MapTileData"); 
+        if (mapTileData == null)
+        {
+            Debug.LogError("MapTileData 리소스도 없습니다!");
+            return;
+        }
+
+        string json = mapTileData.text;
+        MapTileSaveData saveData = JsonConvert.DeserializeObject<MapTileSaveData>(json);
+        ApplyLoadedData(saveData);
+        Debug.Log("Resources에서 맵 로드 완료!");
+    }
+
+#if UNITY_EDITOR
+    EditorUtility.SetDirty(this);
+#endif
+}
+
+private void ApplyLoadedData(MapTileSaveData saveData)
+{
+    this.width = saveData.width;
+    this.height = saveData.height;
+    this.rows = saveData.rows;
+}
 
 #if UNITY_EDITOR
 public void LoadProtoTypeMapTileData()
@@ -119,7 +137,6 @@ public void LoadProtoTypeMapTileData()
     EditorUtility.SetDirty(this);
 }
 #endif
-
 
 
 

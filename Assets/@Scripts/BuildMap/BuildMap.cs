@@ -5,32 +5,67 @@ using Unity.AI.Navigation;
 using System.Linq;
 using System;
 using UnityEngine.SceneManagement;
-/// <summary>
-/// 저장되어있는 데이터맵 가져와서 그리드맵 생성및 타일에 정보전달
-/// 현재까지는 remove,Collider ON,Off를 하기 위한 장치
-/// </summary>
+
 public class BuildMap : MonoBehaviour
 {
     [SerializeField] private ArrayBuildPos _arrayBuildPos;
 
-    public ArrayBuildPos ArrayBuildPos{ get=>_arrayBuildPos; set=>_arrayBuildPos=value;}
+    public ArrayBuildPos ArrayBuildPos { get => _arrayBuildPos; set => _arrayBuildPos = value; }
     public NavMeshSurface surface;
-    private Dictionary<int, GameObject> _spawnedBuilds = new Dictionary<int, GameObject>();
-    public Dictionary<String, int> valueCounts = new Dictionary<string, int>();
-    public Dictionary<String, int> filtervalueCounts = new Dictionary<string, int>();
-    private Dictionary<int, BuildData> _buildDataMap = new Dictionary<int, BuildData>();
-void Awake()
-{
-    _arrayBuildPos.LoadMapDataAsync();
-    StartCoroutine(DelayedRebuildAndRelocate());
-}
 
-IEnumerator DelayedRebuildAndRelocate()
-{
-    yield return null; // 오브젝트 파괴 등 반영될 때까지 1프레임 대기
-    surface.BuildNavMesh(); // NavMesh 다시 생성
-    Managers.AI.AllRelocateToNearestNavMesh(); // 캐릭터들 위치 재조정
-}
+    private Dictionary<int, GameObject> _spawnedBuilds = new Dictionary<int, GameObject>();
+    private Dictionary<int, BuildData> _buildDataMap = new Dictionary<int, BuildData>();
+    public Dictionary<string, int> valueCounts = new Dictionary<string, int>();
+
+    async void Awake()
+    {
+        await _arrayBuildPos.LoadMapDataAsync();
+
+        InstantiateBuildings();
+
+        StartCoroutine(DelayedRebuildAndRelocate());
+    }
+
+    private void InstantiateBuildings()
+    {
+        _buildDataMap.Clear();
+        _spawnedBuilds.Clear();
+        valueCounts.Clear();
+
+        foreach (BuildData data in _arrayBuildPos.baseBuilding)
+        {
+            _buildDataMap[data.UniqueId] = data;
+
+            GameObject go = Instantiate(data.testBaseBuilding.buildOBJ, new Vector3(data.posX, 1f, data.posZ), Quaternion.identity, transform);
+            go.name = data.testBaseBuilding.BuildingType.ToString();
+
+            if (go.TryGetComponent<BuildingBase>(out var buildingBase))
+            {
+                buildingBase.SetUniqueId(data.UniqueId);
+                buildingBase.SetLevel(data.LV);
+                buildingBase.SetBuildMap(this);
+            }
+
+            if (go.TryGetComponent<DraggableObject>(out var draggable))
+                draggable.buildMap = this;
+
+            if (go.TryGetComponent<ForestRegion>(out var region))
+                region.Id = data.UnlockId;
+
+            _spawnedBuilds.Add(data.UniqueId, go);
+        }
+
+        valueCounts = _spawnedBuilds.Values
+            .GroupBy(v => v.name)
+            .ToDictionary(g => g.Key, g => g.Count());
+    }
+
+    IEnumerator DelayedRebuildAndRelocate()
+    {
+        yield return null; // 1프레임 대기하여 오브젝트가 씬에 안정적으로 배치되도록 함
+        surface.BuildNavMesh();
+        Managers.AI.AllRelocateToNearestNavMesh();
+    }
     void Start()
     {
         if (Managers.Scene.GetSceneName(Define.EScene.CharacterStoreScene) == SceneManager.GetActiveScene().name) return;
