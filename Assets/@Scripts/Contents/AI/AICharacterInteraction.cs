@@ -139,6 +139,7 @@ public class AICharacterInteraction : MonoBehaviour
     {
         if (isClicked)
         {
+            nameText.text = AICharacter.Stat.data.Name;
             AICharacter.View.SetSpeed(0);
             AICharacter.gameObject.transform.rotation = Quaternion.Euler(0, _camera.transform.eulerAngles.y + 180, 0);
             head.transform.localRotation = quaternion.Euler(0, 0, -12);
