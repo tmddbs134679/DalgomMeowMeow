@@ -9,15 +9,15 @@ public class UI_Skill : UI_Popup   //어드레서블에 프리펩 넣기
     public RectTransform CharacterImage;
     public Image CharImg;
 
-    private Vector2 leftInPos = new Vector2(-490f, 280f);
-    private Vector2 rightInPos = new Vector2(850f, -410f);
+    private Vector2 leftInPos = Vector2.zero; // 중앙으로 이동
+    private Vector2 rightInPos = Vector2.zero; // 중앙으로 이동
 
     private Vector2 leftOutPos = new Vector2(-1490f, 1280f);
     private Vector2 rightOutPos = new Vector2(1850f, -1410f);
 
     private Vector2 characterOutPos = new Vector2(-1400f, 80f); // 왼쪽에서 시작
-    private Vector2 characterInPos = new Vector2(-835f, 340f); // 중앙으로 이동
-    private Vector2 characterEndPos = new Vector2(140f, 720f); // 나가기
+    private Vector2 characterInPos = new Vector2(-950f, 320f); // 중앙으로 이동
+    private Vector2 characterEndPos = new Vector2(200f, 850f); // 나가기
 
     #region Enum
     enum Images
@@ -42,21 +42,21 @@ public class UI_Skill : UI_Popup   //어드레서블에 프리펩 넣기
         RightBottom.anchoredPosition = rightOutPos;
         CharacterImage.anchoredPosition = characterOutPos; // 왼쪽에서 시작
 
-        Sequence cutSceneSequence = DOTween.Sequence().SetUpdate(true);
+        Sequence cutSceneSequence = DOTween.Sequence().SetUpdate(false);
 
         // 들어오기
         cutSceneSequence
-            .Append(LeftTop.DOAnchorPos(leftInPos, 0.3f).SetEase(Ease.OutExpo))
-            .Join(RightBottom.DOAnchorPos(rightInPos, 0.3f).SetEase(Ease.OutExpo))
-            .Join(CharacterImage.DOAnchorPos(characterInPos,0.4f).SetEase(Ease.OutBack))
+            .Append(LeftTop.DOAnchorPos(leftInPos, 0.075f).SetEase(Ease.OutExpo))
+            .Join(RightBottom.DOAnchorPos(rightInPos, 0.075f).SetEase(Ease.OutExpo))
+            .Join(CharacterImage.DOAnchorPos(characterInPos,0.1f).SetEase(Ease.OutBack))
 
             // 멈춤 (1초 기다림)
-            .AppendInterval(0.3f)
+            .AppendInterval(0.075f)
 
             // 나가기
-            .Append(CharacterImage.DOAnchorPos(characterEndPos, 0.3f).SetEase(Ease.InBack))
-            .Join(LeftTop.DOAnchorPos(leftOutPos, 0.4f).SetEase(Ease.InExpo))
-            .Join(RightBottom.DOAnchorPos(rightOutPos, 0.4f).SetEase(Ease.InExpo));
+            .Append(CharacterImage.DOAnchorPos(characterEndPos, 0.075f).SetEase(Ease.InBack))
+            .Join(LeftTop.DOAnchorPos(leftOutPos, 0.1f).SetEase(Ease.InExpo))
+            .Join(RightBottom.DOAnchorPos(rightOutPos, 0.1f).SetEase(Ease.InExpo));
     }
 
     public override bool Init()

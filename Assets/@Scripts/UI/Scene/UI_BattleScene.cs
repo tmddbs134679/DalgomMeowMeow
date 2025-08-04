@@ -93,7 +93,7 @@ public class UI_BattleScene : UI_Scene
     {
         _skillScene.SetActive(true);
         Time.timeScale = 0.25f;
-        yield return new WaitForSecondsRealtime(1.5f);
+        yield return new WaitForSeconds(0.375f);
         Time.timeScale = 1f;
         _skillScene.SetActive(false);
     }
