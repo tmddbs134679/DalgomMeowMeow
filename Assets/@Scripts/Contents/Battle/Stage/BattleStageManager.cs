@@ -69,7 +69,7 @@ public class BattleStageManager : BaseObject
 
     void SetAspectRatio()
     {
-        float targetAspect = 16f / 9f;
+        float targetAspect = 20f / 9f;
         float windowAspect = (float)Screen.width / (float)Screen.height;
         float scaleHeight = windowAspect / targetAspect;
 
