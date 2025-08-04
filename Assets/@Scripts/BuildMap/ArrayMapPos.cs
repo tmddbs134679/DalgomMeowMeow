@@ -86,7 +86,6 @@ public void LoadMapTileData()
         string json = File.ReadAllText(persistentPath);
         MapTileSaveData saveData = JsonConvert.DeserializeObject<MapTileSaveData>(json);
         ApplyLoadedData(saveData);
-        Debug.Log("런타임 저장된 맵 로드 완료!");
     }
     else
     {

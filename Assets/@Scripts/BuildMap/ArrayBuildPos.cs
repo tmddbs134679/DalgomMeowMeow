@@ -131,7 +131,6 @@ public class ArrayBuildPos : ScriptableObject
         string path = GetSavePath();
         string json = JsonConvert.SerializeObject(saveData, Formatting.Indented);
         File.WriteAllText(path, json);
-        Debug.Log($"맵 저장 완료: {path}");
     }
 
     public async Task LoadMapDataAsyncParallel()
@@ -186,7 +185,6 @@ public class ArrayBuildPos : ScriptableObject
             var results = await Task.WhenAll(loadTasks);
             baseBuilding = results.Where(r => r != null).ToList();
             Managers.AI.AllRelocateToNearestNavMesh();
-            Debug.Log("맵 로드 완료!");
         }
         catch (Exception ex)
         {
