@@ -18,7 +18,8 @@ public class UI_EditSettingPopup : UI_Popup
         SoundEffectOnButton,
         SoundEffectOffButton,
         BgmEffectOnButton,
-        BgmEffectOffButton
+        BgmEffectOffButton,
+        ExitButton
     }
 
     enum Texts
@@ -55,7 +56,7 @@ public class UI_EditSettingPopup : UI_Popup
 
         GetButton((int)Buttons.BgmEffectOnButton).gameObject.BindEvent(OnClickBgmOffButton);
         GetButton((int)Buttons.BgmEffectOffButton).gameObject.BindEvent(OnClickBgmOnButton);
-
+        GetButton((int)Buttons.ExitButton).gameObject.BindEvent(OnExitButton);
 
         if (Managers.Game.EffectSoundOn == false)
         {
@@ -80,6 +81,10 @@ public class UI_EditSettingPopup : UI_Popup
         return true;
     }
 
+    private void OnExitButton()
+    {
+        BuildingPlacer.Instance.OnApplicationQuit();
+    }
 
     private void OnClickSoundOnButton()
     {
