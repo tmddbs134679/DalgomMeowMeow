@@ -9,7 +9,8 @@ public class BuildButtonTrigger : MonoBehaviour
 
     private void Start()
     {
-        buildButton = GameObject.Find("BuildButton")?.GetComponent<Button>();
+        if (buildButton == null)
+            buildButton = GetComponent<Button>();
         if (buildButton == null)
         {
             Debug.LogError("BuildButton not found!");
