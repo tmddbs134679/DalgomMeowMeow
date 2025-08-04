@@ -87,8 +87,8 @@ public class BuildingPlacer : MonoBehaviour
         InitializeMaps();
         uI_BuildAction = (Managers.UI.SceneUI as UI_GameScene)._uI_BuildAction;
         uI_BuildAction.SetActive(false);
-          uI_LongPressGauge = (Managers.UI.SceneUI as UI_GameScene)._uI_LongPressGauge;
-          uI_LongPressGauge.SetActive(false);
+        uI_LongPressGauge = (Managers.UI.SceneUI as UI_GameScene)._uI_LongPressGauge;
+        uI_LongPressGauge.SetActive(false);
 
     }
 
@@ -315,8 +315,21 @@ public class BuildingPlacer : MonoBehaviour
         if (buildType == "Road") // 도로일 땐 else 처리,임시땜빵,나중에는 모든게 엑셀 데이터를 받아와서 계산해야함
         {
             BuyMoney = buildingSO[tempTypeNum].BuyMoney;
+                    isGold = Managers.Game.Gold >= _buyMoney;
+            return isGold;
         }
-        else if (buildMap.valueCounts.TryGetValue(buildType, out int count))
+
+        if (buildType == "Resting") // 도로일 땐 else 처리,임시땜빵,나중에는 모든게 엑셀 데이터를 받아와서 계산해야함
+        {
+            if (buildMap.valueCounts.TryGetValue(buildType, out int counta))
+            {
+                BuyMoney = (int)(buildingSO[tempTypeNum].BuyMoney * Mathf.Pow(3f, counta));
+            }
+                    isGold = Managers.Game.Gold >= _buyMoney;
+            return isGold;
+        }
+
+        if (buildMap.valueCounts.TryGetValue(buildType, out int count))
         {
             BuyMoney = (int)(buildingSO[tempTypeNum].BuyMoney * Mathf.Pow(10f, count));
         }
@@ -401,7 +414,9 @@ public class BuildingPlacer : MonoBehaviour
             _PreviewOBJ.transform.position = a.Value;
             _PreviewOBJ.GetComponent<DraggableObject>().SetTileIsBuild();//새롭게 설치할 오브젝트의 타일
         }
+        #if UNITY_EDITOR
         _arrayBuildPos.EditorOnly_SaveAsset();
+#endif
         Managers.Game.Gold -= _sumBuyMoney;
         _sumBuyMoney = 0;
         uI_BuildAction.CountGold(_sumBuyMoney);
@@ -445,7 +460,9 @@ public class BuildingPlacer : MonoBehaviour
             };
 
             _arrayBuildPos.GetBuildData(_buildData);//설치할 오브젝트
+            #if UNITY_EDITOR
             _arrayBuildPos.EditorOnly_SaveAsset();
+#endif
             _PreviewOBJ.GetComponent<DraggableObject>().SetTileIsBuild();//새롭게 설치할 오브젝트의 타일
             Destroy(_PreviewOBJ);
             gridMap.LoadMap(); //맵갱신
@@ -476,7 +493,9 @@ public class BuildingPlacer : MonoBehaviour
                 LV = LV,
             };
             _arrayBuildPos.GetBuildData(_buildData);//설치할 오브젝트
+            #if UNITY_EDITOR
             _arrayBuildPos.EditorOnly_SaveAsset();
+#endif
             _arrayBuildPos.RemoveBuildData(_CurBuildData);//기존에 있던 오브젝트 제거
             buildMap.Remove(_CurBuildData.UniqueId);
             _PreviewOBJ.GetComponent<DraggableObject>().SetTileIsBuild();//새롭게 설치할 오브젝트의 타일
