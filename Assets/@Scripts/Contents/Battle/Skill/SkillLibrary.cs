@@ -84,23 +84,25 @@ public class SkillLibrary : MonoBehaviour
 
     private IEnumerator NyangPunch(BattleCharacter battleCharacter)
     {
-        if (battleCharacter.TargetLocation != null)
+        Transform target = battleCharacter.TargetLocation;
+        if (target == null)
         {
-            battleCharacter.UsingSkill = true;
-            battleCharacter.SkillCooldown = 5f; // 스킬 쿨타임 설정
-            yield return StartCoroutine(battleCharacter._effectManager.Punch(battleCharacter.TargetLocation.position));
-            battleCharacter.Animator.SetTrigger(battleCharacter.SkillTrigger); // 스킬 애니메이션 트리거 활성화
-            Collider[] hits = Physics.OverlapSphere(battleCharacter.TargetLocation.position, 2.5f, LayerMask.GetMask("Enemy")); // 적 캐릭터 레이어 마스크 사용
-            foreach (var hit in hits)
-            {
-                if(hit == null) continue; // hit가 null인 경우를 방지
-                if (hit.TryGetComponent<BattleCharacter>(out var targetCharacter))
-                {
-                    targetCharacter.HpControl(battleCharacter.AttackDamage*5);
-                }
-            }
-            battleCharacter.UsingSkill = false;
+            yield break;
         }
+        battleCharacter.UsingSkill = true;
+        battleCharacter.SkillCooldown = 5f; // 스킬 쿨타임 설정
+        yield return StartCoroutine(battleCharacter._effectManager.Punch(target.position));
+        battleCharacter.Animator.SetTrigger(battleCharacter.SkillTrigger); // 스킬 애니메이션 트리거 활성화
+        Collider[] hits = Physics.OverlapSphere(target.position, 2.5f, LayerMask.GetMask("Enemy")); // 적 캐릭터 레이어 마스크 사용
+        foreach (var hit in hits)
+        {
+            if(hit == null) continue; // hit가 null인 경우를 방지
+            if (hit.TryGetComponent<BattleCharacter>(out var targetCharacter))
+            {
+                targetCharacter.HpControl(battleCharacter.AttackDamage*5);
+            }
+        }
+        battleCharacter.UsingSkill = false;
     }
 
     #endregion 
