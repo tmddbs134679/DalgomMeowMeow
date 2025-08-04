@@ -174,7 +174,7 @@ public class TutorialManager : MonoBehaviour
             Debug.Log($"[Tutorial] Canvas '{targetCanvas.name}' sortingOrder = 200");
         }
     }
-    void SetAllUIInteractable(bool state)
+    public void SetAllUIInteractable(bool state)
     {
         foreach (var button in FindObjectsOfType<Button>())
         {

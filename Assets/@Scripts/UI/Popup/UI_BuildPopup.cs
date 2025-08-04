@@ -410,6 +410,7 @@ public class UI_BuildPopup : UI_Popup
         OnOffFarmPopup();
         Managers.UI.ClosePopupUI(this);
         (Managers.UI.SceneUI as UI_GameScene).gameObject.SetActive(true);
+        TutorialManager.Instance.SetAllUIInteractable(true);//튜토리얼 스킵시 버튼활성화
     }
 
 
