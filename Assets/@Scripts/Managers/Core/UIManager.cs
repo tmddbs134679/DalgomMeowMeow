@@ -124,7 +124,7 @@ public class UIManager
         if (_popupStack.Peek() != popup)
         {
             Debug.Log("팝업 에러");
-            return;
+            //return;
         }
 
         ClosePopupUI();
