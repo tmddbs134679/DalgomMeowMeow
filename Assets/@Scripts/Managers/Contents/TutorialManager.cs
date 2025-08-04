@@ -32,7 +32,7 @@ public class TutorialManager : MonoBehaviour
 
     private void Start()
     {
-        ResetTutorialProgress();
+        
         if (PlayerPrefs.GetInt("Tutorial_Completed", 0) == 1)
             return;
         

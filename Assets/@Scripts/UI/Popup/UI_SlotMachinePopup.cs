@@ -14,7 +14,7 @@ public class UI_SlotMachinePopup : UI_Popup
         SlotButton,
         Background
     }
-    enum Texts { Slot1, Slot2, Slot3, Result }
+    enum Texts {  Result }
 
     private SlotMachineBuilding _targetBuilding;
     private bool _isSpinning = false;
@@ -69,38 +69,11 @@ public class UI_SlotMachinePopup : UI_Popup
 
     }
 
-    private IEnumerator RollSingleSlot(int index)
-    {
-        float duration = Random.Range(0.5f, 1.5f);
-        float elapsed = 0f;
 
-        while (elapsed < duration)
-        {
-            string symbol = _targetBuilding.GetRandomResult().Symbol;
-            _targetBuilding.CurrentResult[index] = symbol;
-
-            // 슬롯 텍스트 즉시 반영
-            GetText((int)Texts.Slot1 + index).text = symbol;
-
-            elapsed += 0.1f;
-            yield return new WaitForSeconds(0.1f);
-        }
-
-        // 멈출 때의 최종 결과
-        string final = _targetBuilding.GetRandomResult().Symbol;
-        _targetBuilding.CurrentResult[index] = final;
-        GetText((int)Texts.Slot1 + index).text = final;
-
-        _finishedCount++;
-    }
     private void FinalizeRewardText()
     {
         string[] result = _targetBuilding.CurrentResult;
 
-        for (int i = 0; i < 3; i++)
-        {
-            GetText((int)Texts.Slot1 + i).text = result[i];
-        }
         
         string a = result[0], b = result[1], c = result[2];
         string rewardText = "Try again!";
