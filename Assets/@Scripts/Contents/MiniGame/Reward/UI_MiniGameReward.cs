@@ -62,6 +62,6 @@ public class UI_MiniGameReward : UI_Popup
     public void PopupClose()
     {
         Managers.Sound.PlayPopupClose();
-        Managers.UI.ClosePopupUI(this);
+        this.gameObject.SetActive(false);
     }
 }

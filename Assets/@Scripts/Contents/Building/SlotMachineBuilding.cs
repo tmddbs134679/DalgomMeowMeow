@@ -1,8 +1,10 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using Sequence = DG.Tweening.Sequence;
 
 [System.Serializable]
 public class SlotResult
@@ -11,23 +13,12 @@ public class SlotResult
     public int RewardGold;
     public int Weight;
     public string IconAddress; // Addressable 주소
-    public Sprite Icon;        // 실제 로딩된 스프라이트
+    public Sprite Icon; // 실제 로딩된 스프라이트
 }
 
-public class SlotMachineTestData
-{
-    public static List<SlotResult> TestResults = new()
-    {
-        new SlotResult { Symbol = "BEAR", RewardGold = 100 , Weight = 50 },
-        new SlotResult { Symbol = "SHARK", RewardGold = -200 , Weight = 30 },
-        new SlotResult { Symbol = "CAT",  RewardGold = 1000, Weight = 5  }
-    };
-}
 
 public class SlotMachineBuilding : BuildingBase
 {
-    private List<SlotResult> _results => SlotMachineTestData.TestResults;
-
     private string[] _currentResult = new string[3];
     public string[] CurrentResult => _currentResult;
     [SerializeField] private Image[] slotImages; // 슬롯 3칸 이미지 연결
@@ -35,16 +26,38 @@ public class SlotMachineBuilding : BuildingBase
     private int _slotCount = 3;
 
     private int _finishedCount = 0;
-    
+
     public RectTransform[] slotContents;
     public float moveDistance = 200f;
     public float duration = 0.2f;
     public int spinCount = 10;
 
-    private IEnumerator Start()
+    private List<SlotResult> _results;
+
+    [SerializeField] private Sprite bearIcon;
+    [SerializeField] private Sprite sharkIcon;
+    [SerializeField] private Sprite catIcon;
+    
+    private Vector2[] _originalPositions;
+
+    private void Awake()
     {
-        yield return LoadSlotIcons(_results); // 어드레서블 아이콘 로드
+        _results = new()
+        {
+            new SlotResult { Symbol = "BEAR", RewardGold = 100, Weight = 50, Icon = bearIcon },
+            new SlotResult { Symbol = "SHARK", RewardGold = -200, Weight = 30, Icon = sharkIcon },
+            new SlotResult { Symbol = "CAT", RewardGold = 1000, Weight = 5, Icon = catIcon }
+        };
     }
+
+    public void Init()
+    {
+        slotContents = new RectTransform[3];
+        slotContents[0] = GameObject.Find("Slot1").GetComponent<RectTransform>();
+        slotContents[1] = GameObject.Find("Slot2").GetComponent<RectTransform>();
+        slotContents[2] = GameObject.Find("Slot3").GetComponent<RectTransform>();
+    }
+
     public IEnumerator LoadSlotIcons(List<SlotResult> results)
     {
         int loaded = 0;
@@ -87,7 +100,7 @@ public class SlotMachineBuilding : BuildingBase
 
     private IEnumerator RollSingleSlot(int index)
     {
-        float randomSpinTime = Random.Range(0.5f, 1.5f); 
+        float randomSpinTime = Random.Range(0.5f, 1.5f);
         float elapsed = 0f;
 
         while (elapsed < randomSpinTime)
@@ -125,6 +138,7 @@ public class SlotMachineBuilding : BuildingBase
 
         return _results[0]; // fallback
     }
+
     public void RollSlot()
     {
         for (int i = 0; i < 3; i++)
@@ -167,6 +181,7 @@ public class SlotMachineBuilding : BuildingBase
         //     Debug.Log("꽝! 다시 도전하세요.");
         // }
     }
+
     public (string[], int) RollSlotAndReturn()
     {
         for (int i = 0; i < 3; i++)
@@ -202,38 +217,68 @@ public class SlotMachineBuilding : BuildingBase
     private IEnumerator SpinSingleSlot(int index)
     {
         RectTransform content = slotContents[index];
+
+        if (_originalPositions == null || _originalPositions.Length != slotContents.Length)
+        {
+            _originalPositions = new Vector2[slotContents.Length];
+            for (int i = 0; i < slotContents.Length; i++)
+                _originalPositions[i] = slotContents[i].anchoredPosition;
+        }
+
         Sequence seq = DOTween.Sequence();
+        Sprite finalSprite = null;
 
         for (int i = 0; i < spinCount; i++)
         {
-            seq.Append(content.DOAnchorPosY(-moveDistance, duration).SetEase(Ease.Linear))
+            seq.Append(content.DOAnchorPosY(_originalPositions[index].y - moveDistance, duration).SetEase(Ease.Linear))
                 .AppendCallback(() =>
                 {
                     RectTransform last = content.GetChild(content.childCount - 1).GetComponent<RectTransform>();
+                    Image image = last.GetComponent<Image>();
+
+                    SlotResult randomResult = GetRandomResult();
+                    image.sprite = randomResult.Icon;
+
+                    // 마지막 반복에서 보여줄 아이콘 저장
+                    if (i == spinCount - 1)
+                        finalSprite = randomResult.Icon;
+
                     last.SetAsFirstSibling();
-                    content.anchoredPosition = Vector2.zero;
+                    content.anchoredPosition = _originalPositions[index];
                 });
         }
 
         seq.OnComplete(() =>
         {
-            Debug.Log($"슬롯 {index + 1} 멈춤!");
-            // 여기서 CurrentResult 갱신 및 CheckReward() 가능
+            // 보여진 스프라이트를 기준으로 Symbol 찾아 저장
+            SlotResult matched = _results.Find(r => r.Icon == finalSprite);
+            _currentResult[index] = matched != null ? matched.Symbol : "";
+            Debug.Log($"슬롯 {index + 1} 멈춤! 결과: {_currentResult[index]}");
         });
 
         yield return seq.WaitForCompletion();
     }
-    
+
     public void SpinAllSlots()
     {
         for (int i = 0; i < slotContents.Length; i++)
         {
-            StartCoroutine(SpinSingleSlot(i));
+            StartCoroutine(DelayedSpin(i));
         }
     }
-    
-        public override void Produce()
+    private IEnumerator DelayedSpin(int index)
     {
-        
+        float delay = 0.1f * index; // 인덱스에 따라 약간의 지연
+        yield return new WaitForSeconds(delay);
+        StartCoroutine(SpinSingleSlot(index));
+    }
+
+    public SlotResult GetMatchResult(string symbol)
+    {
+        return _results.Find(r => r.Symbol == symbol);
+    }
+
+    public override void Produce()
+    {
     }
 }
