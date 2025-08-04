@@ -97,6 +97,7 @@ public class UI_SlotMachinePopup : UI_Popup
         }
         QuestManager.Instance.UpdateQuestProgress(Define.EQuestConditionType.Collect,Define.ETargetType.SlotMachine);
         GetText((int)Texts.Result).text = rewardText;
+        Managers.UI.ShowToast("rewardText");
     }
     public void SetTarget(SlotMachineBuilding building)
     {
