@@ -82,6 +82,16 @@ public class StageDataManager : MonoBehaviour
 
             manager.ClearReward();
         }
+        
+        if (Managers.Game.RewardMinigame)
+        {
+            if (PlayerPrefs.GetFloat("HighScore", 0) != 0 && PlayerPrefs.GetFloat("FastestTime", 60) != 60)
+            {
+                Managers.Game.RewardMinigame = false;
+                Managers.Game.DailyMiniGameReward();
+            }
+        }
+
     }
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {

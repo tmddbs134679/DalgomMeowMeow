@@ -8,13 +8,8 @@ public class TestCam : MonoBehaviour
     void Start()
     {
         GetComponent<Camera>().targetTexture = Managers.Resource.Load<RenderTexture>("CharacterProfile_RT");
-
-
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
 }
+

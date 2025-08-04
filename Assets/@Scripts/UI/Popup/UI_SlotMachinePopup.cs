@@ -33,7 +33,16 @@ public class UI_SlotMachinePopup : UI_Popup
         GetButton((int)Buttons.SlotButton).gameObject.BindEvent(() => StartCoroutine(OnClickSlotButton()));
         GetButton((int)Buttons.Background).gameObject.BindEvent(OnClickBackgroundButton);
 
+        
+        if (_targetBuilding == null)
+        {
+            Debug.LogError("TargetBuilding not set! 반드시 SetTarget(building)을 먼저 호출하세요.");
+            return false;
+        }
+        
+        _targetBuilding.Init();
         FocusCameraOnPivot();
+        
 
         return true;
     }
@@ -50,41 +59,13 @@ public class UI_SlotMachinePopup : UI_Popup
         _isSpinning = true;
 
         Managers.Game.Gold -= 100;
-        _finishedCount = 0;
-        for (int i = 0; i < 3; i++)
-        {
-            StartCoroutine(RollSingleSlot(i));
-        }
 
-        while (_finishedCount < 3)
-            yield return null;
+        _targetBuilding.SpinAllSlots(); // ⭐ 이미지 회전 효과 실행
+
+        yield return new WaitForSeconds(2.5f); // 대략적인 spin 시간 후 결과 처리
 
         FinalizeRewardText();
-
         _isSpinning = false;
-        // yield return StartCoroutine(_targetBuilding.StartAllSlots());
-        //
-        // string[] result = _targetBuilding.CurrentResult; // CurrentResult는 public으로 만들어야 함
-        //
-        // GetText((int)Texts.Slot1).text = result[0];
-        // GetText((int)Texts.Slot2).text = result[1];
-        // GetText((int)Texts.Slot3).text = result[2];
-        //
-        // string a = result[0], b = result[1], c = result[2];
-        // string rewardText = "Try again!";
-        // if (a == b && b == c)
-        // {
-        //     var match = SlotMachineTestData.TestResults.Find(r => r.Symbol == a);
-        //     if (match != null)
-        //     {
-        //         if (match.RewardGold > 0)
-        //             rewardText = $"🎉 {a} x3 → +{match.RewardGold} Gold";
-        //         else
-        //             rewardText = $"🦈 {a} x3 → {match.RewardGold} Gold";
-        //     }
-        // }
-        //
-        // GetText((int)Texts.Result).text = rewardText;
 
     }
 
@@ -116,12 +97,17 @@ public class UI_SlotMachinePopup : UI_Popup
     {
         string[] result = _targetBuilding.CurrentResult;
 
+        for (int i = 0; i < 3; i++)
+        {
+            GetText((int)Texts.Slot1 + i).text = result[i];
+        }
+        
         string a = result[0], b = result[1], c = result[2];
         string rewardText = "Try again!";
-
+        Debug.Log($"결과: {a}, {b}, {c} → {a == b}, {b == c}");
         if (a == b && b == c)
         {
-            var match = SlotMachineTestData.TestResults.Find(r => r.Symbol == a);
+            var match = _targetBuilding.GetMatchResult(a); // 또는 _targetBuilding 내부에서 match를 리턴하는 메서드 만들기
             if (match != null)
             {
                 if (match.RewardGold > 0)
