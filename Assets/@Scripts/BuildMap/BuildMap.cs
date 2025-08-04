@@ -23,7 +23,8 @@ public class BuildMap : MonoBehaviour
 
         InstantiateBuildings();
 
-        StartCoroutine(DelayedRebuildAndRelocate());
+        surface.BuildNavMesh();
+        Managers.AI.AllRelocateToNearestNavMesh();
     }
 
     private void InstantiateBuildings()
