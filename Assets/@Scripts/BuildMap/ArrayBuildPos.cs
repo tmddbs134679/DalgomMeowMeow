@@ -6,7 +6,7 @@ using System.IO;
 using Newtonsoft.Json;
 using UnityEngine.AddressableAssets;
 using System.Threading.Tasks;
-
+using System.Linq;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -25,8 +25,25 @@ public class ArrayBuildPos : ScriptableObject
 
     public void GetBuildData(BuildData buildData)
     {
-        baseBuilding.Add(buildData);
-    }
+        if (baseBuilding == null)
+            baseBuilding = new List<BuildData>();
+
+        // 중복 방지
+        if (!baseBuilding.Any(b => b.UniqueId == buildData.UniqueId))
+        {
+            baseBuilding.Add(buildData);
+        }
+        else
+        {
+            Debug.LogWarning($"중복된 UniqueId: {buildData.UniqueId} - 이미 추가됨");
+        }
+    
+    #if UNITY_EDITOR
+EditorUtility.SetDirty(this);
+AssetDatabase.SaveAssets();
+#endif
+}
+
 
     public void RemoveBuildData(BuildData buildData)
     {

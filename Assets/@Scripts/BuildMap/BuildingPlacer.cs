@@ -295,7 +295,6 @@ public class BuildingPlacer : MonoBehaviour
         isLongPressAcceptBuild = false;
         OriginTempOBJ = null;
         _PreviewOBJ = null;
-        OnAutoSave?.Invoke();
     }
 
     //여러개 삭제시에는 프레임이느려져서 네브매쉬가 destroy가 제대로 안된 상태에서 재생성 할 수 있음
@@ -417,7 +416,6 @@ public class BuildingPlacer : MonoBehaviour
         OnBuildingAccepted?.Invoke(_saveBuildingSO);
         QuestManager.Instance.NotifyBuildingConstructed(((Define.EBuildingType)tempTypeNum).ToString());
 
-        OnAutoSave?.Invoke();
     }
 
     /// <summary>
@@ -459,7 +457,6 @@ public class BuildingPlacer : MonoBehaviour
         }
         _PreviewOBJ.GetComponent<DraggableObject>().CheckTilesUnderBuilding(); //설치 이후 종료하는게 아니기 때문에 계속 타일 판별
 
-        OnAutoSave?.Invoke();
     }
 
     public void AcceptLongPressBuild()
@@ -499,7 +496,6 @@ public class BuildingPlacer : MonoBehaviour
             //     Managers.AI.ValidateNavMeshPosition(ai);
             // }
         }
-        OnAutoSave?.Invoke();
     }
     #endregion
     #region 건물 취소 및 삭제
@@ -543,7 +539,6 @@ public class BuildingPlacer : MonoBehaviour
         isLongPressAcceptBuild = false;
         OriginTempOBJ = null;
         _PreviewOBJ = null;
-        OnAutoSave?.Invoke();
         Managers.AI.AllRelocateToNearestNavMesh();
     }
 
@@ -581,7 +576,6 @@ public class BuildingPlacer : MonoBehaviour
         gridMap.LoadMap(); //맵갱신
         buildMap.LoadBuild(); //오브젝트 갱신
         surface.BuildNavMesh(); //네브매쉬 깔기
-        OnAutoSave?.Invoke();
     }
     #endregion
     #region 저장 및 기타
