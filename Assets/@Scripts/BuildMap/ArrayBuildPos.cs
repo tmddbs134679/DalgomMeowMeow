@@ -38,12 +38,15 @@ public class ArrayBuildPos : ScriptableObject
             Debug.LogWarning($"중복된 UniqueId: {buildData.UniqueId} - 이미 추가됨");
         }
     
-    #if UNITY_EDITOR
-EditorUtility.SetDirty(this);
-AssetDatabase.SaveAssets();
-#endif
-}
 
+}
+#if UNITY_EDITOR
+public void EditorOnly_SaveAsset()
+{
+    UnityEditor.EditorUtility.SetDirty(this);
+    UnityEditor.AssetDatabase.SaveAssets();
+}
+#endif
 
     public void RemoveBuildData(BuildData buildData)
     {
