@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1369253878329115201}
   - component: {fileID: 2135141623425778150}
   - component: {fileID: 503535979892482855}
+  - component: {fileID: 4794565814180556182}
   m_Layer: 5
   m_Name: BuildButton
   m_TagString: Untagged
@@ -134,6 +135,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RegisterKey: 
+--- !u!114 &4794565814180556182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 316228136835615417}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb9a65b1e947c754fa3671332c0511e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildButton: {fileID: 0}
 --- !u!1 &433089952912175501
 GameObject:
   m_ObjectHideFlags: 0
@@ -1784,6 +1798,8 @@ GameObject:
   - component: {fileID: 3535993744707493636}
   - component: {fileID: 8323749855211069826}
   - component: {fileID: 4743161268202476556}
+  - component: {fileID: 1309370891287039091}
+  - component: {fileID: 1144389609158879301}
   m_Layer: 5
   m_Name: RoadButton
   m_TagString: Untagged
@@ -1907,6 +1923,32 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 1
+--- !u!114 &1309370891287039091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5327201008864336445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa0ab7986e6129943926702e55b1d12d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RegisterKey: 
+--- !u!114 &1144389609158879301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5327201008864336445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 944fe5817dc3dd341a5af7c004cb7cd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  roadButton: {fileID: 0}
 --- !u!1 &5613314115998196380
 GameObject:
   m_ObjectHideFlags: 0

@@ -70,7 +70,6 @@ public class TutorialManager : MonoBehaviour
         else
         {
             EndTutorial();
-            Managers.UI.ShowToast("튜토리얼 완료");
         }
     }
 
@@ -121,6 +120,7 @@ public class TutorialManager : MonoBehaviour
         
         StartCoroutine(EnableAllInteractablesAfterDelay());
         
+        Managers.UI.ShowToast("튜토리얼 완료");
         PlayerPrefs.SetInt("Tutorial_Completed", 1);
         PlayerPrefs.Save();
     }
