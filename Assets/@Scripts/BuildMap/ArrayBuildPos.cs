@@ -136,7 +136,7 @@ public class ArrayBuildPos : ScriptableObject
 
     public async Task LoadMapDataAsyncParallel()
     {
-        UI_LodingMap ui = Managers.UI.ShowPopupUI<UI_LodingMap>();
+        UI_LoadingMap ui = Managers.UI.ShowPopupUI<UI_LoadingMap>();
         ui.gameObject.SetActive(true);
 
         string path = GetSavePath();

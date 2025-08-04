@@ -492,11 +492,11 @@ public class BuildingPlacer : MonoBehaviour
                 UniqueId = uniqueId,
                 LV = LV,
             };
-            _arrayBuildPos.GetBuildData(_buildData);//설치할 오브젝트
             #if UNITY_EDITOR
             _arrayBuildPos.EditorOnly_SaveAsset();
 #endif
             _arrayBuildPos.RemoveBuildData(_CurBuildData);//기존에 있던 오브젝트 제거
+            _arrayBuildPos.GetBuildData(_buildData);//설치할 오브젝트
             buildMap.Remove(_CurBuildData.UniqueId);
             _PreviewOBJ.GetComponent<DraggableObject>().SetTileIsBuild();//새롭게 설치할 오브젝트의 타일
             ClearTile();//기존에 있던 오브젝트의 타일 제거
@@ -601,18 +601,17 @@ public class BuildingPlacer : MonoBehaviour
     }
     #endregion
     #region 저장 및 기타
-    //autosave rapping
-    public void AutoSave()
-    {
-        OnAutoSave?.Invoke();
-    }
+
     void OnApplicationQuit()//유니티 내장 맨마지막에 불려지는 함수
     {
         OnAutoSave?.Invoke();
         Managers.Game.SaveGame();
     }
-
-
+//씬 종료전에 저장
+    private void OnDisable()
+    {
+                OnAutoSave?.Invoke();
+    }
     Vector2Int GridKey(float x, float z)
     {
         float gridSize = 0.5f;

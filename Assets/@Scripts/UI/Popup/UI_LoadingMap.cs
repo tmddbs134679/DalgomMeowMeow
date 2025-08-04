@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class UI_LodingMap : UI_Popup
+public class UI_LoadingMap : UI_Popup
 {
 
     #region Enum
