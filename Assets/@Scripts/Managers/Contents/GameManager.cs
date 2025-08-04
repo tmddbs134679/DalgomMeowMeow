@@ -355,7 +355,7 @@ public class GameManager
             CharacterInMainScene[newChar.UniqueId] = aiChar;
             Managers.AI.Register(aiChar);
         }
-
+            Managers.AI.AllRelocateToNearestNavMesh();
      
 
            _characters[newChar.UniqueId] = newChar;

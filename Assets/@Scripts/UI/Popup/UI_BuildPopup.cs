@@ -24,7 +24,7 @@ public class UI_BuildPopup : UI_Popup
         FishingButton,
         StorageButton,
         SlotMachineButton,
-        RoadButton,
+     //   RoadButton,
         ShopButton,
         CancelButton,
         PotButton,
@@ -37,26 +37,26 @@ public class UI_BuildPopup : UI_Popup
     enum Texts
     {
         CookGoldText,
-        FarmGoldText,
+      //  FarmGoldText,
         PlayGroundGoldText,
         RestGoldText,
         FishingGoldText,
         StorageGoldText,
         SlotMachineGoldText,
-        RoadGoldText,
+       // RoadGoldText,
         ShopGoldText,
         PotGoldText,
         TravelGoldText,
 
 
         CookCountText,
-        FarmCountText,
+      //  FarmCountText,
         PlayGroundCountText,
         RestCountText,
         FishingCountText,
         StorageCountText,
         SlotMachineCountText,
-        RoadCountText,
+      //  RoadCountText,
         ShopCountText,
         PotCountText,
         TravelCountText,
@@ -123,9 +123,9 @@ public class UI_BuildPopup : UI_Popup
         GetButton((int)Buttons.FishingButton).gameObject.BindEvent(() => SelectBuildingType(Define.EBuildingType.Fishing));
         GetButton((int)Buttons.StorageButton).gameObject.BindEvent(() => SelectBuildingType(Define.EBuildingType.Storage));
         GetButton((int)Buttons.SlotMachineButton).gameObject.BindEvent(() => SelectBuildingType(Define.EBuildingType.SlotMachine));
-        GetButton((int)Buttons.RoadButton).gameObject.BindEvent(() => SelectBuildingType(Define.EBuildingType.Road));
+       // GetButton((int)Buttons.RoadButton).gameObject.BindEvent(() => SelectBuildingType(Define.EBuildingType.Road));
         GetButton((int)Buttons.ShopButton).gameObject.BindEvent(() => SelectBuildingType(Define.EBuildingType.Shop));
-       // GetButton((int)Buttons.UnlockAreaButton).gameObject.BindEvent(() => SelectBuildingType(Define.EBuildingType.UnLockStage));
+        // GetButton((int)Buttons.UnlockAreaButton).gameObject.BindEvent(() => SelectBuildingType(Define.EBuildingType.UnLockStage));
         GetButton((int)Buttons.PotButton).gameObject.BindEvent(() => SelectBuildingType(Define.EBuildingType.Pot));
         GetButton((int)Buttons.TravelButton).gameObject.BindEvent(() => SelectBuildingType(Define.EBuildingType.Travel));
         GetButton((int)Buttons.CancelButton).gameObject.BindEvent(CancelBuildUI);
@@ -162,13 +162,13 @@ public class UI_BuildPopup : UI_Popup
         goldTextToBuildingMap = new()
         {
     { Texts.CookGoldText, (Define.EBuildingType.Cooking, Texts.CookCountText) },
-    { Texts.FarmGoldText, (Define.EBuildingType.CabbageFarm, Texts.FarmCountText) },
+   // { Texts.FarmGoldText, (Define.EBuildingType.CabbageFarm, Texts.FarmCountText) },
     { Texts.PlayGroundGoldText, (Define.EBuildingType.Playing, Texts.PlayGroundCountText) },
     { Texts.RestGoldText, (Define.EBuildingType.Resting, Texts.RestCountText) },
     { Texts.FishingGoldText, (Define.EBuildingType.Fishing, Texts.FishingCountText) },
     { Texts.StorageGoldText, (Define.EBuildingType.Storage, Texts.StorageCountText) },
     { Texts.SlotMachineGoldText, (Define.EBuildingType.SlotMachine, Texts.SlotMachineCountText) },
-    { Texts.RoadGoldText, (Define.EBuildingType.Road, Texts.RoadCountText) },
+   // { Texts.RoadGoldText, (Define.EBuildingType.Road, Texts.RoadCountText) },
     { Texts.ShopGoldText, (Define.EBuildingType.Shop, Texts.ShopCountText) },
     { Texts.PotGoldText, (Define.EBuildingType.Pot, Texts.PotCountText) },
     { Texts.TravelGoldText, (Define.EBuildingType.Travel, Texts.TravelCountText) },
@@ -183,7 +183,7 @@ public class UI_BuildPopup : UI_Popup
     { Define.EBuildingType.Fishing,(int)Buttons.FishingButton },
     { Define.EBuildingType.Storage,(int)Buttons.StorageButton },
     { Define.EBuildingType.SlotMachine,(int)Buttons.SlotMachineButton },
-    { Define.EBuildingType.Road,(int)Buttons.RoadButton },
+ //   { Define.EBuildingType.Road,(int)Buttons.RoadButton },
     { Define.EBuildingType.Shop,(int)Buttons.ShopButton },
     { Define.EBuildingType.UnLockStage,(int)Buttons.UnlockAreaButton },
     { Define.EBuildingType.Pot,(int)Buttons.PotButton },
@@ -235,8 +235,8 @@ public class UI_BuildPopup : UI_Popup
         {
 
             BuildingPlacer.Instance.uI_BuildAction.transform.position = this.transform.position;
-            if (type != Define.EBuildingType.Road)//도로는 다른곳에서 실행하므로 여기서는 패스
-                BuildingPlacer.Instance.uI_BuildAction.SetActive(true);
+      //      if (type != Define.EBuildingType.Road)//도로는 다른곳에서 실행하므로 여기서는 패스
+         BuildingPlacer.Instance.uI_BuildAction.SetActive(true);
         }
         else
         {
@@ -371,17 +371,25 @@ public class UI_BuildPopup : UI_Popup
             if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(buildingType.ToString(), out int output))
             {
 
-                if (buildingType == Define.EBuildingType.Road) // 도로일 땐 else 처리,임시땜빵,나중에는 모든게 엑셀 데이터를 받아와서 계산해야함
-                {
-                    GetText((int)goldTextEnum).text = buyMoney.ToString();
-                    GetText((int)countText).text = output.ToString();
-                    continue;
-                }
+                // if (buildingType == Define.EBuildingType.Road) // 도로일 땐 else 처리,임시땜빵,나중에는 모든게 엑셀 데이터를 받아와서 계산해야함
+                // {
+                //     GetText((int)goldTextEnum).text = buyMoney.ToString();
+                //     GetText((int)countText).text = output.ToString();
+                //     continue;
+                // }
 
-                                if (buildingType == Define.EBuildingType.Resting) // 도로일 땐 else 처리,임시땜빵,나중에는 모든게 엑셀 데이터를 받아와서 계산해야함
+                if (buildingType == Define.EBuildingType.Resting)
                 {
-                GetText((int)goldTextEnum).text = ((int)(buyMoney * Mathf.Pow(3f, output))).ToString();
-                    GetText((int)countText).text = output.ToString();
+                    if (output > 0)
+                    {
+                        GetText((int)goldTextEnum).text = ((int)(buyMoney * Mathf.Pow(3f, output))).ToString();
+                        GetText((int)countText).text = output.ToString();
+                    }
+                    else
+                    {
+                        GetText((int)goldTextEnum).text = buyMoney.ToString();
+                        GetText((int)countText).text = "0";
+                    }
                     continue;
                 }
 
@@ -434,7 +442,7 @@ public class UI_BuildPopup : UI_Popup
 
             if (button != null)
                 button.interactable = isUnlocked;
-            if(lockImage != null)
+            if (lockImage != null)
                 lockImage.gameObject.SetActive(!isUnlocked);
         }
     }
@@ -482,9 +490,9 @@ public class UI_BuildPopup : UI_Popup
         GetButton((int)Buttons.SlotMachineButton).gameObject.gameObject.BindEvent(null, OnBeginDrag, Define.EUIEvent.BeginDrag);
         GetButton((int)Buttons.SlotMachineButton).gameObject.gameObject.BindEvent(null, OnEndDrag, Define.EUIEvent.EndDrag);
 
-        GetButton((int)Buttons.RoadButton).gameObject.gameObject.BindEvent(null, OnDrag, Define.EUIEvent.Drag);
-        GetButton((int)Buttons.RoadButton).gameObject.gameObject.BindEvent(null, OnBeginDrag, Define.EUIEvent.BeginDrag);
-        GetButton((int)Buttons.RoadButton).gameObject.gameObject.BindEvent(null, OnEndDrag, Define.EUIEvent.EndDrag);
+ //       GetButton((int)Buttons.RoadButton).gameObject.gameObject.BindEvent(null, OnDrag, Define.EUIEvent.Drag);
+   //     GetButton((int)Buttons.RoadButton).gameObject.gameObject.BindEvent(null, OnBeginDrag, Define.EUIEvent.BeginDrag);
+    //    GetButton((int)Buttons.RoadButton).gameObject.gameObject.BindEvent(null, OnEndDrag, Define.EUIEvent.EndDrag);
 
 
         GetButton((int)Buttons.ShopButton).gameObject.gameObject.BindEvent(null, OnDrag, Define.EUIEvent.Drag);

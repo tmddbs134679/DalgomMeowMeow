@@ -193,7 +193,7 @@ public class UI_FarmPopup : UI_Popup
 
             if (BuildingPlacer.Instance.buildMap.valueCounts.TryGetValue(buildingType.ToString(), out int output))
             {
-                GetText((int)goldTextEnum).text = ((int)(buyMoney * Mathf.Pow(1.2f, output))).ToString();
+                GetText((int)goldTextEnum).text = ((int)(buyMoney * Mathf.Pow(10f, output))).ToString();
                 GetText((int)countText).text = output.ToString();
             }
             else

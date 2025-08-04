@@ -325,6 +325,10 @@ public class BuildingPlacer : MonoBehaviour
             {
                 BuyMoney = (int)(buildingSO[tempTypeNum].BuyMoney * Mathf.Pow(3f, counta));
             }
+                    else
+        {
+            BuyMoney = buildingSO[tempTypeNum].BuyMoney;
+        }
                     isGold = Managers.Game.Gold >= _buyMoney;
             return isGold;
         }
