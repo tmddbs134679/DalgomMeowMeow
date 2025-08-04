@@ -10,14 +10,7 @@ using System.Linq;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
-//rows 맵
-//Width,Height 맵의 크기
-//rows[0].columns.Count =>첫 행의 리스트 크기를 가져와 열의 전체크기를 반환
-//rows?.Count ?? 0 => rows?.Count가  null일시 0반환
 
-/// <summary>
-/// 맵 저장 데이터
-/// </summary>
 [CreateAssetMenu(menuName = "Map/TileBuildData")]
 public class ArrayBuildPos : ScriptableObject
 {
@@ -28,7 +21,6 @@ public class ArrayBuildPos : ScriptableObject
         if (baseBuilding == null)
             baseBuilding = new List<BuildData>();
 
-        // 중복 방지
         if (!baseBuilding.Any(b => b.UniqueId == buildData.UniqueId))
         {
             baseBuilding.Add(buildData);
@@ -37,15 +29,14 @@ public class ArrayBuildPos : ScriptableObject
         {
             Debug.LogWarning($"중복된 UniqueId: {buildData.UniqueId} - 이미 추가됨");
         }
-    
+    }
 
-}
 #if UNITY_EDITOR
-public void EditorOnly_SaveAsset()
-{
-    UnityEditor.EditorUtility.SetDirty(this);
-    UnityEditor.AssetDatabase.SaveAssets();
-}
+    public void EditorOnly_SaveAsset()
+    {
+        EditorUtility.SetDirty(this);
+        AssetDatabase.SaveAssets();
+    }
 #endif
 
     public void RemoveBuildData(BuildData buildData)
@@ -71,17 +62,16 @@ public void EditorOnly_SaveAsset()
 
     public void EditorSaveMapData()
     {
-        SaveMapData(); // 같은 로직 재사용
+        SaveMapData();
     }
 
     public void EditorLoadMapData()
     {
-        LoadMapDataAsync(); // 같은 로직 재사용
+        LoadMapDataAsyncParallel();
     }
 
     public void LoadProtoTypeMapData()
     {
-        // 에디터용 SO 직접 경로 로딩
         TextAsset baseData = Resources.Load<TextAsset>("Map/BaseMapData");
         if (baseData == null)
         {
@@ -119,9 +109,6 @@ public void EditorOnly_SaveAsset()
     }
 #endif
 
-    /// <summary>
-    /// 저장 경로: PC / Android / iOS 공통
-    /// </summary>
     private string GetSavePath() => Path.Combine(Application.persistentDataPath, "MapData.json");
 
     public void SaveMapData()
@@ -146,59 +133,70 @@ public void EditorOnly_SaveAsset()
         File.WriteAllText(path, json);
         Debug.Log($"맵 저장 완료: {path}");
     }
-public async Task LoadMapDataAsync()
-{
-    string path = GetSavePath();
 
-    if (!File.Exists(path))
+    public async Task LoadMapDataAsyncParallel()
     {
-        Debug.LogWarning("저장된 맵 데이터가 없습니다.");
-        return;
-    }
+        UI_LodingMap ui = Managers.UI.ShowPopupUI<UI_LodingMap>();
+        ui.gameObject.SetActive(true);
 
-    try
-    {
-        string json = File.ReadAllText(path);
-        MapSaveData saveData = JsonConvert.DeserializeObject<MapSaveData>(json);
-        List<BuildData> buildDataList = new();
-
-        foreach (var data in saveData.buildings)
+        string path = GetSavePath();
+        if (!File.Exists(path))
         {
-            string key = data.buildingName;
-            var handle = Addressables.LoadAssetAsync<BaseBuildingSO>(key);
-            await handle.Task;
-
-            if (handle.Status == UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationStatus.Succeeded)
-            {
-                BaseBuildingSO so = handle.Result;
-                buildDataList.Add(new BuildData
-                {
-                    posX = data.posX,
-                    posZ = data.posZ,
-                    testBaseBuilding = so,
-                    UnlockId = data.UnlockId,
-                    UniqueId = data.UniqueId,
-                    LV = data.LV,
-                });
-            }
-            else
-            {
-                Debug.LogError($"Addressables 로드 실패: {key}");
-            }
-
-            Addressables.Release(handle);
+            Debug.LogWarning("저장된 맵 데이터가 없습니다.");
+            ui.gameObject.SetActive(false);
+            return;
         }
 
-        baseBuilding = buildDataList;
-        Managers.AI.AllRelocateToNearestNavMesh();
-        Debug.Log("맵 로드 완료!");
-    }
-    catch (Exception ex)
-    {
-        Debug.LogError($"맵 데이터 로드 중 예외 발생: {ex}");
-    }
-}
+        try
+        {
+            string json = File.ReadAllText(path);
+            MapSaveData saveData = JsonConvert.DeserializeObject<MapSaveData>(json);
+            int totalCount = saveData.buildings.Count;
+            int loadedCount = 0;
 
+            var loadTasks = saveData.buildings.Select(async data =>
+            {
+                string key = data.buildingName;
+                var handle = Addressables.LoadAssetAsync<BaseBuildingSO>(key);
+                await handle.Task;
+
+                if (handle.Status == UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationStatus.Succeeded)
+                {
+                    BaseBuildingSO so = handle.Result;
+                    var buildData = new BuildData
+                    {
+                        posX = data.posX,
+                        posZ = data.posZ,
+                        testBaseBuilding = so,
+                        UnlockId = data.UnlockId,
+                        UniqueId = data.UniqueId,
+                        LV = data.LV,
+                    };
+                    Addressables.Release(handle);
+                    return buildData;
+                }
+                else
+                {
+                    Debug.LogError($"Addressables 로드 실패: {key}");
+                    Addressables.Release(handle);
+                    return null;
+                }
+            }).ToList();
+
+            var results = await Task.WhenAll(loadTasks);
+            baseBuilding = results.Where(r => r != null).ToList();
+            Managers.AI.AllRelocateToNearestNavMesh();
+            Debug.Log("맵 로드 완료!");
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"맵 데이터 로드 중 예외 발생: {ex}");
+        }
+        finally
+        {
+            ui.gameObject.SetActive(false);
+        }
+    }
 
     public void BindEvent()
     {
@@ -216,7 +214,6 @@ public async Task LoadMapDataAsync()
     }
 }
 
-
 [Serializable]
 public class BuildData
 {
@@ -225,14 +222,10 @@ public class BuildData
     public string buildingName;
     public int UnlockId;
     public BaseBuildingSO testBaseBuilding;
-
-    //레벨
     public int LV;
-    //고유ID
     public int UniqueId;
 }
 
-//유니티 관련 오브젝트를 따로 저장할수는 없기 때문에 필요한 부분들만 따로 빼내서 저장하는걸 채택
 [Serializable]
 public class MapSaveData
 {

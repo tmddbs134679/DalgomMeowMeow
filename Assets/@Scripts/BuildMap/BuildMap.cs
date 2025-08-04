@@ -19,7 +19,7 @@ public class BuildMap : MonoBehaviour
 
     async void Awake()
     {
-        await _arrayBuildPos.LoadMapDataAsync();
+        await _arrayBuildPos.LoadMapDataAsyncParallel();
 
         InstantiateBuildings();
 
@@ -66,40 +66,6 @@ public class BuildMap : MonoBehaviour
         surface.BuildNavMesh();
         Managers.AI.AllRelocateToNearestNavMesh();
     }
-    void Start()
-    {
-        if (Managers.Scene.GetSceneName(Define.EScene.CharacterStoreScene) == SceneManager.GetActiveScene().name) return;
-        
-        foreach (BuildData data in _arrayBuildPos.baseBuilding)
-        {
-            _buildDataMap[data.UniqueId] = data;
-            GameObject go = Instantiate(data.testBaseBuilding.buildOBJ, new Vector3(data.posX, 1f, data.posZ), Quaternion.identity, transform);
-            go.name = data.testBaseBuilding.BuildingType.ToString();
-
-            if (go.GetComponent<BuildingBase>() != null)
-            {
-                var buildingBase = go.GetComponent<BuildingBase>();
-                buildingBase.SetUniqueId(data.UniqueId);
-                buildingBase.SetLevel(data.LV);
-                buildingBase.SetBuildMap(this);
-            }
-
-            if(go.GetComponent<DraggableObject>()!=null)
-            go.GetComponent<DraggableObject>().buildMap = gameObject.GetComponent<BuildMap>();
-            if (go.TryGetComponent(out ForestRegion region))
-            {
-                region.Id = data.UnlockId;
-            }
-            _spawnedBuilds.Add(data.UniqueId, go);
-        }
-
-        valueCounts = _spawnedBuilds.Values
-                          .GroupBy(v => v.name)
-                          .ToDictionary(g => g.Key, g => g.Count());
-
-        surface.BuildNavMesh();
-    }
-
     public void LoadBuild()
     {
         
