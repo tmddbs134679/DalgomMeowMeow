@@ -39,7 +39,9 @@ public class UI_Tutorial : UI_Popup
 
     private void OnClickSkip()
     {
-        TutorialManager.Instance?.SkipTutorial();
+        TutorialManager.Instance.SkipTutorial(); // 내부에서 모든 처리
+
+        this.gameObject.SetActive(false);
     }
 
     public void Show(string title, string description)
