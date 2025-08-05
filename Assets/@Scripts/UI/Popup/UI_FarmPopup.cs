@@ -40,7 +40,7 @@ public class UI_FarmPopup : UI_Popup
     }
     enum Images 
     {         
-        CabbageButtonLockImage,
+       // CabbageButtonLockImage,
         CarrotButtonLockImage,
         PumpkinButtonLockImage,
         PotatoButtonLockImage,

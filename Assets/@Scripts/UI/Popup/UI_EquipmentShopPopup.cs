@@ -107,8 +107,8 @@ public class UI_EquipmentShopPopup : UI_Popup
     }
     private void DoGacha(int count = 1)
     {
-        List<Equipment> equipment = new List<Equipment>();
-        equipment = Managers.Game.DoEquipmentGacha(count);
+        //List<Equipment> equipment = new List<Equipment>();
+        Managers.Game.DoEquipmentGacha(count);
     }
 
 

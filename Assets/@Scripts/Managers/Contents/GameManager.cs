@@ -407,7 +407,8 @@ public class GameManager
                 equipments.Add(Managers.Equipment.AddEquipment(key));
             }
 
-            popup.SetInfo(Managers.Equipment.AddEquipment(key));
+            Equipment equip = new Equipment(key);
+            popup.SetInfo(equip);
         }
 
 
