@@ -542,7 +542,7 @@ public class BuildingPlacer : MonoBehaviour
         {
             OriginTempOBJ.SetActive(true);
             OriginTempOBJ.GetComponent<DraggableObject>().isLongPress = true;
-            OriginTempOBJ.GetComponent<DraggableObject>().isDrag = true;
+            OriginTempOBJ.GetComponent<DraggableObject>().isDrag = false;
         }
         if (_PreviewOBJ != null)
         {
