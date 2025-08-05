@@ -8,11 +8,12 @@ using UnityEngine.Playables;
 public class QuestManager : MonoBehaviour
 {
     public static QuestManager Instance;
-    
+
     private Dictionary<string, Quest> _quests = new();
     private Dictionary<(Define.EQuestConditionType, Define.ETargetType), List<Quest>> _questIndex = new();
 
     private int checkCountNotify;
+
     public int CheckCountNotify
     {
         get => checkCountNotify;
@@ -28,6 +29,7 @@ public class QuestManager : MonoBehaviour
 
 
     private bool chapterNotify;
+
     public bool ChapterNotify
     {
         get => chapterNotify;
@@ -52,9 +54,6 @@ public class QuestManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
         else Destroy(gameObject);
-
-        
-        
     }
 
     private IEnumerator Start()
@@ -80,7 +79,7 @@ public class QuestManager : MonoBehaviour
             _questIndex[key].Add(quest);
         }
     }
-    
+
 
     public void UpdateQuestProgress(Define.EQuestConditionType condition, Define.ETargetType target)
     {
@@ -92,18 +91,17 @@ public class QuestManager : MonoBehaviour
             if (quest.State == QuestProgressState.InProgress)
             {
                 quest.AddProgress();
-                
+
                 // ✅ 퀘스트 목표에 도달했으면 즉시 콘텐츠 해금 조건 검사
                 if (quest.State == QuestProgressState.Completed)
                 {
                     CheckUnlockConditions(quest.QuestData.QuestId);
                     TryActivateNext(quest.QuestData.QuestId); // 다음 퀘스트도 활성화
-                    CheckCompleteChapterQuest();
                 }
             }
         }
+        CheckCompleteChapterQuest();
         OnQuestUpdated?.Invoke(); // 이벤트 호출
-
     }
 
     public void GiveReward(string questId)
@@ -114,13 +112,13 @@ public class QuestManager : MonoBehaviour
             CheckUnlockConditions(questId);
         }
     }
-    
+
     public void TryActivateNext(string completedQuestId)
     {
         if (!_quests.TryGetValue(completedQuestId, out var completedQuest)) return;
 
         int carriedProgress = completedQuest.Progress;
-        
+
         foreach (var quest in _quests.Values)
         {
             if (quest.State == QuestProgressState.NotStarted &&
@@ -131,7 +129,7 @@ public class QuestManager : MonoBehaviour
             }
         }
     }
-    
+
     public QuestSaveData GetAllQuestSaveData()
     {
         var data = new QuestSaveData();
@@ -140,16 +138,14 @@ public class QuestManager : MonoBehaviour
         {
             data.questRecords.Add(new QuestRecordWrapper
             {
-                QuestId = pair.Key,
-                Progress = pair.Value.Progress,
-                State = pair.Value.State
+                QuestId = pair.Key, Progress = pair.Value.Progress, State = pair.Value.State
             });
         }
 
         data.unlockedContentIds = UnlockedContent.ToList(); // 저장
         return data;
     }
-    
+
 
     public void LoadFromSaveData(QuestSaveData data)
     {
@@ -162,9 +158,9 @@ public class QuestManager : MonoBehaviour
             }
         }
 
-        UnlockedContent = new HashSet<string>(data.unlockedContentIds); 
+        UnlockedContent = new HashSet<string>(data.unlockedContentIds);
     }
-    
+
     public List<Quest> DailyQuests
     {
         get
@@ -175,10 +171,11 @@ public class QuestManager : MonoBehaviour
                 if (quest.QuestData.QuestType == Define.EQuestType.Daily)
                     list.Add(quest);
             }
+
             return list;
         }
     }
-    
+
     public List<Quest> AchievementQuests
     {
         get
@@ -189,10 +186,11 @@ public class QuestManager : MonoBehaviour
                 if (quest.QuestData.QuestType == Define.EQuestType.Achievement)
                     list.Add(quest);
             }
+
             return list;
         }
     }
-    
+
     // 챕터 언락 조건 체크
     private void CheckUnlockConditions(string completedQuestId)
     {
@@ -210,7 +208,7 @@ public class QuestManager : MonoBehaviour
             //TryUnlockContent(kvp.Key); // 모든 조건 재검사
         }
     }
-    
+
     public void TryUnlockByGold()
     {
         foreach (var kvp in Managers.Data.UnlockContentDic)
@@ -254,7 +252,7 @@ public class QuestManager : MonoBehaviour
             }
         }
     }
-    
+
     public void TryUnlockContent(string contentId)
     {
         if (!Managers.Data.UnlockContentDic.TryGetValue(contentId, out var data)) return;
@@ -280,10 +278,11 @@ public class QuestManager : MonoBehaviour
         if (allMet)
         {
             Unlock(contentId);
-            Managers.Game.IncreaseMaxCountInScene+=3;
+            Managers.Game.IncreaseMaxCountInScene += 3;
             Managers.UI.ShowToast("해금완료");
         }
     }
+
     public bool IsQuestCompleted(string questId)
     {
         if (!_quests.TryGetValue(questId, out var quest) || quest == null)
@@ -291,21 +290,21 @@ public class QuestManager : MonoBehaviour
 
         return quest.State == QuestProgressState.Completed || quest.State == QuestProgressState.Rewarded;
     }
-    
-    
+
+
     public void NotifyBuildingConstructed(string type)
     {
         UpdateQuestProgress(Define.EQuestConditionType.Build, Define.ETargetType.Build);
         // string → ETargetType 변환
         if (!Enum.TryParse(type, out Define.ETargetType targetType))
         {
-           // Debug.LogWarning($"[퀘스트] 알 수 없는 건물 타입: {type}");
+            // Debug.LogWarning($"[퀘스트] 알 수 없는 건물 타입: {type}");
             return;
         }
 
         UpdateQuestProgress(Define.EQuestConditionType.Build, targetType);
     }
-    
+
     private Define.ETargetType ConvertToTargetType(Define.EBuildingType type)
     {
         return type switch
@@ -318,6 +317,7 @@ public class QuestManager : MonoBehaviour
             _ => Define.ETargetType.None
         };
     }
+
     public HashSet<string> UnlockedContent = new(); // 콘텐츠 ID 저장
 
     public bool IsUnlocked(string contentId)
@@ -327,12 +327,11 @@ public class QuestManager : MonoBehaviour
 
     public void Unlock(string contentId)
     {
-
         if (!UnlockedContent.Contains(contentId))
         {
             UnlockedContent.Add(contentId);
 
-            
+
             // 🟢 콘텐츠 목록에 연결된 추가 해금 항목도 처리
             if (Managers.Data.UnlockContentDic.TryGetValue(contentId, out var unlockData))
             {
@@ -342,13 +341,14 @@ public class QuestManager : MonoBehaviour
                         Unlock(item.Id); // 재귀 호출로 실제 콘텐츠들 해금
                 }
             }
+
             UI_BuildPopup buildPopup = FindObjectOfType<UI_BuildPopup>();
             UI_FarmPopup FarmPopup = FindObjectOfType<UI_FarmPopup>();
             FarmPopup?.UpdateButtonStates();
             buildPopup?.UpdateButtonStates();
         }
     }
-    
+
     // 챕터 언락 조건 체크
     public void CheckChapterUnlock(string contentId)
     {
@@ -369,15 +369,15 @@ public class QuestManager : MonoBehaviour
                     break;
             }
         }
+
         if (allMet)
         {
             // 해금조건달성 알림 
             chapterNotify = true;
         }
-
     }
-    
-    
+
+
     public void CheckCompleteChapterQuest()
     {
         foreach (var kvp in Managers.Data.UnlockContentDic)
@@ -386,7 +386,7 @@ public class QuestManager : MonoBehaviour
             var data = kvp.Value;
             if (IsUnlocked(chapterId))
                 continue;
-            
+
             // 나머지 조건도 충족되는지 확인
             bool allMet = true;
             foreach (var condition in data.Conditions)
