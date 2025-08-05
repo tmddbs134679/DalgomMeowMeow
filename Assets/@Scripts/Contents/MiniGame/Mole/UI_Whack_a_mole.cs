@@ -16,10 +16,11 @@ public class UI_Whack_a_mole : UI_Popup
         CloseBtn,
     }
     #endregion
+    private MoleManager moleManager;
 
     public Button Startbtn;
     public Button Closebtn;
-
+    
     private void Awake()
     {
         Init();
@@ -42,6 +43,7 @@ public class UI_Whack_a_mole : UI_Popup
         Startbtn.gameObject.SetActive(true);
         GetObject((int)GameObjects.ScoreUI).SetActive(false);
         GetObject((int)GameObjects.TextUI).SetActive(true);
+        moleManager = GetObject((int)GameObjects.Mole_Manager).GetComponent<MoleManager>();
 
         return true;
     }
@@ -50,7 +52,7 @@ public class UI_Whack_a_mole : UI_Popup
     private void StartGame()
     {
         Managers.Sound.PlayButtonClick();
-        GetObject((int)GameObjects.Mole_Manager).GetComponent<MoleManager>().StartGame();
+        moleManager.StartGame();
         Startbtn.gameObject.SetActive(false);
     }
 
