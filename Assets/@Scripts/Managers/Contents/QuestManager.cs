@@ -278,7 +278,7 @@ public class QuestManager : MonoBehaviour
         if (allMet)
         {
             Unlock(contentId);
-            Managers.Game.IncreaseMaxCountInScene += 3;
+            Managers.Game.IncreaseMaxCountInScene += 2;
             Managers.UI.ShowToast("해금완료");
         }
     }
