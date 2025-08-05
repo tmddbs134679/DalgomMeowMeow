@@ -38,12 +38,12 @@ public class DraggableObject : MonoBehaviour, IDraggable
 public void OnDragStart(Vector3 hitPos)
 {
     // 이미 다른 오브젝트가 선택되어 있고, 그게 자신이 아니면 리턴
-    if (BuildingPlacer.Instance.tempDraggleOBJ != null &&
-        BuildingPlacer.Instance.tempDraggleOBJ != this)
-    {
-        // 다른 오브젝트가 선택 중이므로 무시
-        return;
-    }
+        if (BuildingPlacer.Instance.tempDraggleOBJ != null &&
+            BuildingPlacer.Instance.tempDraggleOBJ != this)
+        {
+            // 다른 오브젝트가 선택 중이므로 무시
+            return;
+        }
 
     if (BuildingPlacer.Instance.tempDraggleOBJ == this)
     {
@@ -109,6 +109,7 @@ public void OnDragStart(Vector3 hitPos)
     {
         if (EventSystem.current.IsPointerOverGameObject())
             return;
+                    if (BuildingPlacer.Instance.isSequenceRemove) return;
         if (this.GetComponent<BuildingBase>()?.CurrentState == BuildingState.Producing) return;
         if (isLongPress)
         {
