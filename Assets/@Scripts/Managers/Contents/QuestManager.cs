@@ -63,6 +63,7 @@ public class QuestManager : MonoBehaviour
         InitQuest();
         var saveData = SaveQuestSystem.Load();
         QuestManager.Instance.LoadFromSaveData(saveData);
+        Managers.Game.OnResourcesChagned += CheckCompleteChapterQuest;
     }
 
     public void InitQuest()
@@ -80,6 +81,10 @@ public class QuestManager : MonoBehaviour
         }
     }
 
+    public void OnDestroy()
+    {
+        Managers.Game.OnResourcesChagned -= CheckCompleteChapterQuest;
+    }
 
     public void UpdateQuestProgress(Define.EQuestConditionType condition, Define.ETargetType target)
     {
