@@ -40,7 +40,10 @@ public class UI_Tutorial : UI_Popup
     private void OnClickSkip()
     {
         TutorialManager.Instance?.SkipTutorial();
+
+        this.gameObject.SetActive(false);
     }
+
 
     public void Show(string title, string description)
     {
