@@ -379,6 +379,7 @@ public class GameManager
 
 
         newChar.Atk = Mathf.Floor(UnityEngine.Random.Range(statRange.AtkMin, statRange.AtkMax));
+        newChar.Atk = Mathf.Max(1, newChar.Atk);
 
         newChar.MoveSpeed = UnityEngine.Random.Range(statRange.MoveSpeedMin, statRange.MoveSpeedMax);
         newChar.MoveSpeed = (float)Math.Round(newChar.MoveSpeed, 1);
