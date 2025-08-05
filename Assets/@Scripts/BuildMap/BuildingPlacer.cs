@@ -131,11 +131,17 @@ public class BuildingPlacer : MonoBehaviour
                 Quaternion.identity);
 
             tempDraggleOBJ = _PreviewOBJ.GetComponent<DraggableObject>();
-            tempDraggleOBJ.SnapToGrid(groundHit.point);
+            StartCoroutine(SnapToGridAfterFrame(groundHit.point));
             tempDraggleOBJ.isDrag = true;
             tempDraggleOBJ.isLongPress = false;
         }
     }
+
+    private IEnumerator SnapToGridAfterFrame(Vector3 pos)
+{
+    yield return null; // 1프레임 대기
+    tempDraggleOBJ.SnapToGrid(pos);
+}
 
     /// <summary>
     /// DraggableObject에서 LongPress가 호출 될 시 현상태의 오브젝트 가져오기
@@ -542,6 +548,7 @@ public class BuildingPlacer : MonoBehaviour
         {
             _PreviewOBJ.GetComponent<PreviewColliderSensor>()?.CancelPreview();
             _PreviewOBJ.GetComponent<DraggableObject>().isDrag = false;
+         //   OriginTempOBJ.GetComponent<DraggableObject>().isDrag = false;
             Destroy(_PreviewOBJ);
         }
         _sumBuyMoney = 0;
