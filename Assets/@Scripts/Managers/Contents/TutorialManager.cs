@@ -188,9 +188,44 @@ public class TutorialManager : MonoBehaviour
             toggle.interactable = state;
         }
     }
+
+    public void SetAcitiveUIInteractable()
+    {
+        StartCoroutine(CoSetAllUIInteractable(true));
+    }
+    public IEnumerator CoSetAllUIInteractable(bool state)
+    {
+        yield return new WaitUntil(() =>
+        {
+            var canvas = GameObject.Find("Canvas");
+            if (canvas == null || !canvas.activeInHierarchy)
+                return false;
+
+            var buttons = canvas.GetComponentsInChildren<Button>(true);
+            var toggles = canvas.GetComponentsInChildren<Toggle>(true);
+            return buttons.Length > 0 || toggles.Length > 0;
+        });
+
+        yield return null; // 1프레임 대기
+
+        var foundButtons = GameObject.FindObjectsOfType<Button>(true);
+        foreach (var button in foundButtons)
+        {
+            button.interactable = state;
+            if (button.image != null)
+                button.image.raycastTarget = state;
+        }
+
+        var foundToggles = GameObject.FindObjectsOfType<Toggle>(true);
+        foreach (var toggle in foundToggles)
+        {
+            toggle.interactable = state;
+        }
+
+    }
     void FocusOnlyThis(GameObject target)
     {
-        SetAllUIInteractable(false); // 전체 비활성화
+        //SetAllUIInteractable(false); // 전체 비활성화
 
         var btn = target.GetComponent<Button>();
         if (btn != null)
