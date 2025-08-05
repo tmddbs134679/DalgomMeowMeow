@@ -25,7 +25,7 @@ public class MoleManager : MonoBehaviour
     private bool isGameStarted = false;
 
     private int _score;
-    private float HighScore
+    public float HighScore
     {
         get => PlayerPrefs.GetFloat("HighScore", 0);
         set

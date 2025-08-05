@@ -153,6 +153,7 @@ public class UI_StopMiniGame : UI_Popup
 
     public void PopupClose()
     {
+        Managers.Game.Gold += (60 - (int)Lefttime) * 100; // 남은 시간에 비례하여 골드 지급
         Managers.Sound.PlayPopupClose();
         Managers.UI.ClosePopupUI(this);
     }
