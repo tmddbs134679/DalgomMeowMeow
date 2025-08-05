@@ -36,6 +36,8 @@ public class CharacterStoreScene : BaseScene
         }
 
         Managers.UI.ShowSceneUI<UI_CharacterStoreScene>();
+
+        Managers.Sound.Play(Define.ESound.Bgm, "Store");
     }
 
 
