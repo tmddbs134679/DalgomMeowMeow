@@ -10,7 +10,7 @@ public class AICharacterStat : MonoBehaviour
     AICharacter AICharacter;
 
     public Character data;
-    
+
 
     public void Init(AICharacter _aiCharacter)
     {
@@ -18,7 +18,7 @@ public class AICharacterStat : MonoBehaviour
 
     }
 
-    
+
     #region 캐릭터 스탯 관련
     public void OnLevelUp()
     {
@@ -29,8 +29,10 @@ public class AICharacterStat : MonoBehaviour
         data.Atk += 2f; // 레벨업 시 공격력 증가
         data.MaxStamina += 5f; // 레벨업 시 최대 스태미너 증가
         data.Level++;
-
-        AICharacter.Effect.PlayLevelUpEffect(AICharacter.Interaction._camera);
+        if (Managers.Scene.CurrentScene is GameScene)
+        {
+            AICharacter.Effect.PlayLevelUpEffect(AICharacter.Interaction._camera);
+        }
 
         AICharacter.Levelup?.Invoke(data.Level);
 
