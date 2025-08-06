@@ -145,7 +145,7 @@ public class UI_StopMiniGame : UI_Popup
     {
         HighScoreTxt.text = $"현재 기록: {Lefttime:F2}s\n최단 기록: {FastestTime:F2}s";
         RewardUI.SetActive(true);
-        int money =(60 - (int)Lefttime)*100;    //남은시간 비례 돈
+        int money =(60 - (int)Lefttime)*200;    //남은시간 비례 돈
         RewardUI.GetComponentInChildren<TextMeshProUGUI>().text = "Reward\n" + money + "골드";
 
         //돈 입금
@@ -153,7 +153,7 @@ public class UI_StopMiniGame : UI_Popup
 
     public void PopupClose()
     {
-        Managers.Game.Gold += (60 - (int)Lefttime) * 100; // 남은 시간에 비례하여 골드 지급
+        Managers.Game.Gold += (60 - (int)Lefttime) * 200; // 남은 시간에 비례하여 골드 지급
         Managers.Sound.PlayPopupClose();
         Managers.UI.ClosePopupUI(this);
     }
