@@ -142,7 +142,7 @@ public class TutorialManager : MonoBehaviour
         
         StartCoroutine(EnableAllInteractablesAfterDelay());
         
-        Managers.UI.ShowToast("튜토리얼 완료");
+        Managers.UI.ShowToast("챕터를 완료하고 다양한 컨텐츠를 즐겨보세요");
         PlayerPrefs.SetInt("Tutorial_Completed", 1);
         PlayerPrefs.Save();
     }

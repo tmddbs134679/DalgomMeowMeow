@@ -86,12 +86,12 @@ public class UI_SlotMachinePopup : UI_Popup
             {
                 if (match.RewardGold > 0)
                 {
-                    rewardText = $" {a} x3 → +{match.RewardGold} Gold";
+                    rewardText = $" 축하합니다 {match.RewardGold} Gold";
                     Managers.Game.Gold += match.RewardGold;
                 }
                 else
                 {
-                    rewardText = $" {a} x3 → {match.RewardGold} Gold";
+                    rewardText = $" 꽝 {match.RewardGold} Gold";
                     Managers.Game.Gold += match.RewardGold;
                 }
             }
