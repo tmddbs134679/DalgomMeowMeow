@@ -129,22 +129,47 @@ public class ArrayBuildPos : ScriptableObject
         }
 
         string path = GetSavePath();
-        string json = JsonConvert.SerializeObject(saveData, Formatting.Indented);
-        File.WriteAllText(path, json);
+
+        string json = JsonConvert.SerializeObject(saveData, Formatting.Indented); 
+        try
+{
+    File.WriteAllText(path, json);
+    Debug.Log($"맵 저장 성공: {path}");
+}
+catch (Exception e)
+{
+    Debug.LogError($"맵 저장 실패: {e}");
+}
     }
 
     public async Task LoadMapDataAsyncParallel()
     {
-        UI_LoadingMap ui = Managers.UI.ShowPopupUI<UI_LoadingMap>();
-        ui.gameObject.SetActive(true);
+    UI_LoadingMap ui = Managers.UI.ShowPopupUI<UI_LoadingMap>();
+    ui.gameObject.SetActive(true);
 
-        string path = GetSavePath();
-        if (!File.Exists(path))
+    string path = GetSavePath();
+    Debug.Log($"로드 시도 경로: {path}");
+    Debug.Log($"파일 존재 여부: {File.Exists(path)}");
+
+    // ✅ 파일 없을 경우 Resources에서 복사 시도
+    if (!File.Exists(path))
+    {
+        Debug.LogWarning("저장된 맵 데이터가 없습니다. 기본 맵 데이터를 복사합니다.");
+
+        // Resources/Map/BaseMapData.json 에 있다고 가정
+        TextAsset baseData = Resources.Load<TextAsset>("Map/BaseMapData");
+        if (baseData != null)
         {
-            Debug.LogWarning("저장된 맵 데이터가 없습니다.");
+            File.WriteAllText(path, baseData.text);
+            Debug.Log($"기본 맵 데이터를 저장했습니다: {path}");
+        }
+        else
+        {
+            Debug.LogError("기본 맵 데이터(Resources)에서 로드 실패!");
             ui.gameObject.SetActive(false);
             return;
         }
+    }
 
         try
         {
@@ -199,7 +224,13 @@ public class ArrayBuildPos : ScriptableObject
     public void BindEvent()
     {
         if (BuildingPlacer.Instance != null)
-            BuildingPlacer.Instance.OnAutoSave += SaveMapData;
+        {
+            BuildingPlacer.Instance.OnAutoSave += () =>
+            {
+                Debug.Log("OnAutoSave 이벤트로 저장됨");
+                SaveMapData();
+            };
+        }
     }
 
     public void UnBindEvent()
