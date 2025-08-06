@@ -96,11 +96,11 @@
 
 | 이름               | 역할 및 담당                         |
 | ------------------ | ------------------------------------ |
-| **송승윤(팀장)**   | [보러가기](./Assets/SongReadme.md)   |
-| **전인우(부팀장)** | [보러가기](./Assets/InwooReadme.md)  |
-| **김성주**         | [보러가기](./Assets/SungJuReadme.md) |
-| **진주호**         | [보러가기](./Assets/JuhoReadme.md)   |
-| **김기현**         | [보러가기](./Assets/KihyunReadme.md) |
+| **송승윤(팀장)**   | [보러가기](./Assets/ReadMe/SongReadme.md)   |
+| **전인우(부팀장)** | [보러가기](./Assets/ReadMe/InwooReadme.md)  |
+| **김성주**         | [보러가기](./Assets/ReadMe/SungJuReadme.md) |
+| **진주호**         | [보러가기](./Assets/ReadMe/JuhoReadme.md)   |
+| **김기현**         | [보러가기](./Assets/ReadMe/KihyunReadme.md) |
 
 ---
 
