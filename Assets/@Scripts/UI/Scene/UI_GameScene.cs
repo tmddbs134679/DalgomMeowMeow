@@ -141,6 +141,7 @@ public class UI_GameScene : UI_Scene
 
         Refresh();
 
+        RefreshFood();
         return true;
     }
 
@@ -151,10 +152,6 @@ public class UI_GameScene : UI_Scene
         Init();
     }
 
-    private void OnEnable()
-    {
-        RefreshFood();
-    }
     public void OnDestroy()
     {
         if (Managers.Game != null)
