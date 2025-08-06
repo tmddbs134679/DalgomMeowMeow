@@ -264,8 +264,10 @@ Application.Quit();
             string[] files = Directory.GetFiles(_savePath);
             foreach (var file in files)
             {
-                if (file == "Player.log")
-                    continue;
+                Debug.Log(file);
+                if (file.EndsWith("Player.log"))
+                    continue;  
+
 
                 File.Delete(file);
                 Debug.Log($"파일 삭제: {file}");
