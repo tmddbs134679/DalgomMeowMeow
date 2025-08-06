@@ -105,6 +105,13 @@ public class UI_ForestPopup : UI_Popup
     private void OnClickBattleButton()
     {
         StageDataManager.Instance.PlayerCharacter = _selectedCharacters;
+        if(StageDataManager.Instance.PlayerCharacter[0] == null ||
+            StageDataManager.Instance.PlayerCharacter[1] == null ||
+            StageDataManager.Instance.PlayerCharacter[2] == null)
+        {
+            Managers.UI.ShowToast("캐릭터를 선택해주세요.");
+            return;
+        }
         Managers.Scene.LoadScene(Define.EScene.BattleScene);
     }
 

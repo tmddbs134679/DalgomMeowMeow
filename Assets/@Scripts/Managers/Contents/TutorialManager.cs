@@ -30,15 +30,24 @@ public class TutorialManager : MonoBehaviour
 
     void Awake() => Instance = this;
 
-    private void Start()
+    private IEnumerator Start()
     {
-        
         if (PlayerPrefs.GetInt("Tutorial_Completed", 0) == 1)
-            return;
-        
+            yield break;
+
         UI = Managers.UI.ShowPopupUI<UI_Tutorial>();
+        
+        yield return new WaitUntil(() =>
+        {
+            var gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
+            return gameSceneUI != null && gameSceneUI.gameObject.activeInHierarchy;
+        });
+        
+        yield return null; // 1프레임 대기하여 UI 초기화 보장
+        
         highlighter = UI.GetComponentInChildren<Highlighter>(true);
-        dimOverlay = UI.transform.Find("DimOverlay")?.GetComponent<Image>(); // 찾는 방식 주의
+        dimOverlay = UI.transform.Find("DimOverlay")?.GetComponent<Image>();
+    
         StartTutorial();
     }
 
@@ -174,13 +183,17 @@ public class TutorialManager : MonoBehaviour
         var uiFarm = Managers.UI.GetPopupUI<UI_FarmPopup>();
         if (uiFarm != null)
             Managers.UI.ClosePopupUI(uiFarm);
+        
+        var uiBuildAction = Managers.UI.GetPopupUI<UI_BuildAction>();
+        if (uiBuildAction != null)
+            Managers.UI.ClosePopupUI(uiBuildAction);
 
         // GameScene UI 켜기
         var gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
         if (gameSceneUI != null)
         {
             gameSceneUI.gameObject.SetActive(true);
-            StartCoroutine(EnableUIInteractionsWhenReady(gameSceneUI));
+            StartCoroutine(GameSceneUIInteractive(gameSceneUI,true));
         }
 
         Managers.UI.ShowToast("튜토리얼 완료");
@@ -200,14 +213,35 @@ public class TutorialManager : MonoBehaviour
     }
     public void SetAllUIInteractable(bool state)
     {
-        foreach (var button in FindObjectsOfType<Button>())
+        Debug.Log($"[튜토리얼] SetAllUIInteractable({state}) 호출");
+        var gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
+        if (gameSceneUI != null)
+        {
+            var buttons = gameSceneUI.GetComponentsInChildren<Button>(true);
+            var toggles = gameSceneUI.GetComponentsInChildren<Toggle>(true);
+
+
+            foreach (var button in buttons)
+            {
+                button.interactable = state;
+                if (button.image != null)
+                    button.image.raycastTarget = state;
+            }
+
+            foreach (var toggle in toggles)
+            {
+                toggle.interactable = state;
+            }
+        }
+            
+        foreach (var button in FindObjectsOfType<Button>(true))
         {
             button.interactable = state;
             if (button.image != null)
                 button.image.raycastTarget = state;
         }
 
-        foreach (var toggle in FindObjectsOfType<Toggle>())
+        foreach (var toggle in FindObjectsOfType<Toggle>(true))
         {
             toggle.interactable = state;
         }
@@ -249,6 +283,7 @@ public class TutorialManager : MonoBehaviour
     }
     void FocusOnlyThis(GameObject target)
     {
+        Debug.Log("[튜토리얼] FocusOnlyThis 실행됨");
         SetAllUIInteractable(false); // 전체 비활성화
 
         var btn = target.GetComponent<Button>();
@@ -288,7 +323,7 @@ public class TutorialManager : MonoBehaviour
             toggle.interactable = state;
         }
     }
-    public IEnumerator EnableUIInteractionsWhenReady(UI_GameScene gameSceneUI)
+    public IEnumerator GameSceneUIInteractive(UI_GameScene gameSceneUI,bool state)
     {
         // wait until ready
         yield return new WaitUntil(() => gameSceneUI.gameObject.activeInHierarchy);
@@ -298,27 +333,24 @@ public class TutorialManager : MonoBehaviour
         var cg = gameSceneUI.GetComponent<CanvasGroup>();
         if (cg != null)
         {
-            cg.interactable = true;
-            cg.blocksRaycasts = true;
+            cg.interactable = state;
+            cg.blocksRaycasts = state;
         }
 
         var buttons = gameSceneUI.GetComponentsInChildren<Button>(true);
         var toggles = gameSceneUI.GetComponentsInChildren<Toggle>(true);
 
-        Debug.Log($"[Tutorial] Found {buttons.Length} buttons and {toggles.Length} toggles in {gameSceneUI.name}");
 
         foreach (var button in buttons)
         {
-            Debug.Log($"[Tutorial] Enabling button: {button.name}");
-            button.interactable = true;
+            button.interactable = state;
             if (button.image != null)
-                button.image.raycastTarget = true;
+                button.image.raycastTarget = state;
         }
 
         foreach (var toggle in toggles)
         {
-            Debug.Log($"[Tutorial] Enabling toggle: {toggle.name}");
-            toggle.interactable = true;
+            toggle.interactable = state;
         }
     }
 }

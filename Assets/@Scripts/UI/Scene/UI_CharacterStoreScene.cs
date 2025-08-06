@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Unity.VisualScripting;
+using UnityEngine;
 using static Define;
 
 
@@ -162,7 +163,7 @@ public class UI_CharacterStoreScene : UI_Scene
     private void OnClickYes()
     {
 
-        if (Managers.Game.Dia >= 300)
+        if (Managers.Game.Dia >= 300 && Managers.Room.UnLockRoom < 3)
         {
             Managers.Room.UnLockRoom++;
             Managers.Game.Dia -= 300;
@@ -177,12 +178,11 @@ public class UI_CharacterStoreScene : UI_Scene
         else
         {
             Managers.UI.ShowToast("다이아가 부족합니다!");
+            GetObject((int)GameObjects.CheckImage).gameObject.SetActive(false);
         }
 
 
     }
-
-
 
     private void OnClickCheckOutButton()
     {
@@ -199,6 +199,7 @@ public class UI_CharacterStoreScene : UI_Scene
 
     private void OnClickHomeButton()
     {
+        Managers.Game.SaveGame();
         Managers.Scene.LoadScene(Define.EScene.GameScene, transform);
     }
 

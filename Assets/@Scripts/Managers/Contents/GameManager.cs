@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 using static Define;
 
 [Serializable]
@@ -145,6 +146,18 @@ public class GameManager
 
     #endregion
 
+
+
+    public void OnApplicationQuit()
+    {
+        Managers.Game.SaveGame();
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+Application.Quit();
+#endif
+    }
+
     #region Save
 
     string _path;
@@ -190,27 +203,12 @@ public class GameManager
         newChar.IsConfirmed = true;
         _characters[newChar.UniqueId] = newChar;
 
-        //var newCharTest = new Character();
-        //newCharTest.InMainScene = true; // 메인 씬에 존재하는 캐릭터로 설정
-        //newCharTest.Init("A10002", new Vector3(39f, 0, 27f)); // 위치 초기값
-        //newCharTest.SetInfo(Managers.Data.CreatureDic["A10002"]);
-        //newCharTest.IsConfirmed = true;
-        //_characters[newCharTest.UniqueId] = newCharTest;
-
-        //var newChar1 = new Character();
-        //newChar1.InMainScene = true; // 메인 씬에 존재하는 캐릭터로 설정
-        //newChar1.Init("A10006", new Vector3(38f, 0, 27f)); // 위치 초기값
-        //newChar1.SetInfo(Managers.Data.CreatureDic["A10006"]);
-        //newChar1.IsConfirmed = true;
-        //_characters[newChar1.UniqueId] = newChar1;
-
-
         AdvancedGachaOpenCount = 3;
 
         #endregion
 
-        Gold += 1000;
-
+        Gold += 100000;
+        Dia += 1000000;
         SaveGame();
         IsLoaded = true;
     }
@@ -249,8 +247,50 @@ public class GameManager
         return true;
     }
 
+
+    public void ResetAllData()
+    {
+        PlayerPrefs.DeleteAll(); // 모든 PlayerPrefs 데이터를 삭제
+
+        CharacterMap.Clear();
+        CharacterInMainScene.Clear();
+        _characters.Clear();
+        AllCharacter.Clear();
+
+        string _savePath = Application.persistentDataPath;
+
+        if (Directory.Exists(_savePath))
+        {
+            // 폴더 내 모든 파일 삭제
+            string[] files = Directory.GetFiles(_savePath);
+            foreach (var file in files)
+            {
+                File.Delete(file);
+                Debug.Log($"파일 삭제: {file}");
+            }
+
+            // 폴더 삭제
+            Directory.Delete(_savePath);
+            Debug.Log("폴더 삭제 완료");
+        }
+        else
+        {
+            Debug.LogWarning("파일이나 폴더가 존재하지 않습니다.");
+        }
+
+     
+        PlayerPrefs.Save(); // 변경 사항 저장
+
+        //BuildingPlacer.Instance.buildMap.ArrayBuildPos.ResetBuild();
+        //BuildingPlacer.Instance.gridMap.ArrayMapPos.ResetBuild();
+        Managers.Scene.LoadScene(Define.EScene.TitleScene);
+    }
+
     public void UpdateCharactersFromWorld()
     {
+        if (_characters == null)
+            return;
+
         foreach (var pair in _characters)
         {
             Character character = pair.Value;

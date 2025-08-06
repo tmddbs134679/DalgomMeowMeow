@@ -17,11 +17,12 @@ public class UI_Road : UI_Popup
     }
     enum Texts
     {
+        PlayerGoldTxt
     }
     enum Images {}
 
 
-
+ 
     public override bool Init()
     {
         if (!base.Init()) return false;
@@ -36,8 +37,11 @@ public class UI_Road : UI_Popup
         GetButton((int)Buttons.RoadRemoveButton).gameObject.BindEvent(OnClickRoadRemoveButton);
         GetButton((int)Buttons.CancelButton).gameObject.BindEvent(OnClickCancelBuildButton);
                         BuildingPlacer.Instance.OnBuildingCancel += OnClickCancelBuildButton;
+        GetText((int)Texts.PlayerGoldTxt).text = Managers.Game.Gold.ToString();
+
         return true;
     }
+ 
 
     public void OnDestroy()
     {

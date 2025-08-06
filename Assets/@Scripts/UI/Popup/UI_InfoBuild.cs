@@ -11,7 +11,7 @@ public class UI_InfoBuild : UI_Popup
     enum GameObjects
     {
         ContentObject,
-        EquippedObject
+       // EquippedObject
     }
 
     enum Buttons
@@ -29,7 +29,7 @@ public class UI_InfoBuild : UI_Popup
     enum Images
     {
         EquipmentImage,
-        EquipmentBackgroundImage
+       // EquipmentBackgroundImage
     }
     #endregion
     private BuildingBase _targetBuilding;

@@ -25,9 +25,11 @@ public class CharacterStoreScene : BaseScene
 
             var ai = Managers.Object.Spawn<AICharacter>(Vector3.zero, ch.DataId);
 
-            ai.Stat.data = ch;
+   
             ai.Init();
             ai.SetInfo(ch);
+            ai.Stat.data = ch;
+
             ai.transform.position = ch.RoomPos.ToVector3();
 
             Managers.Game.CharacterInMainScene[ch.UniqueId] = ai;
@@ -43,6 +45,5 @@ public class CharacterStoreScene : BaseScene
 
     public override void Clear()
     {
-        Managers.Game.SaveGame();
     }
 }

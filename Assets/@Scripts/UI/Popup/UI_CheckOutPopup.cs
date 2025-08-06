@@ -38,7 +38,7 @@ public class UI_CheckOutPopup : UI_Popup
     private void OnEnable()
     {
         PopupOpenAnimation(GetObject((int)GameObjects.ContentObject));
-        Managers.Game.OnResourcesChagned += Refresh;
+
     }
 
 
@@ -61,7 +61,7 @@ public class UI_CheckOutPopup : UI_Popup
 
         #endregion
 
-
+        Managers.Game.OnResourcesChagned += Refresh;
         Refresh();
 
         return true;
