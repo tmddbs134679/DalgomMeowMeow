@@ -207,8 +207,7 @@ Application.Quit();
 
         #endregion
 
-        Gold += 100000;
-        Dia += 1000000;
+        Gold += 1000;
         SaveGame();
         IsLoaded = true;
     }
