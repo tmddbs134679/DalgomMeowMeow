@@ -301,6 +301,7 @@ public class BuildingPlacer : MonoBehaviour
         isLongPressAcceptBuild = false;
         OriginTempOBJ = null;
         _PreviewOBJ = null;
+                MapBuildSave();
     }
 
     //여러개 삭제시에는 프레임이느려져서 네브매쉬가 destroy가 제대로 안된 상태에서 재생성 할 수 있음
@@ -441,7 +442,7 @@ public class BuildingPlacer : MonoBehaviour
         Managers.AI.AllRelocateToNearestNavMesh();
         OnBuildingAccepted?.Invoke(_saveBuildingSO);
         QuestManager.Instance.NotifyBuildingConstructed(((Define.EBuildingType)tempTypeNum).ToString());
-
+        MapBuildSave();
     }
 
     /// <summary>
@@ -470,7 +471,7 @@ public class BuildingPlacer : MonoBehaviour
             };
 
             _arrayBuildPos.GetBuildData(_buildData);//설치할 오브젝트
-            #if UNITY_EDITOR
+#if UNITY_EDITOR
             _arrayBuildPos.EditorOnly_SaveAsset();
 #endif
             _PreviewOBJ.GetComponent<DraggableObject>().SetTileIsBuild();//새롭게 설치할 오브젝트의 타일
@@ -485,7 +486,7 @@ public class BuildingPlacer : MonoBehaviour
             QuestManager.Instance.NotifyBuildingConstructed(buildType);
         }
         _PreviewOBJ.GetComponent<DraggableObject>().CheckTilesUnderBuilding(); //설치 이후 종료하는게 아니기 때문에 계속 타일 판별
-
+        MapBuildSave();
     }
 
     public void AcceptLongPressBuild()
@@ -502,7 +503,7 @@ public class BuildingPlacer : MonoBehaviour
                 UniqueId = uniqueId,
                 LV = LV,
             };
-            #if UNITY_EDITOR
+#if UNITY_EDITOR
             _arrayBuildPos.EditorOnly_SaveAsset();
 #endif
             _arrayBuildPos.RemoveBuildData(_CurBuildData);//기존에 있던 오브젝트 제거
@@ -528,6 +529,7 @@ public class BuildingPlacer : MonoBehaviour
             //     Managers.AI.ValidateNavMeshPosition(ai);
             // }
         }
+                MapBuildSave();
     }
     #endregion
     #region 건물 취소 및 삭제
@@ -573,6 +575,7 @@ public class BuildingPlacer : MonoBehaviour
         OriginTempOBJ = null;
         _PreviewOBJ = null;
         Managers.AI.AllRelocateToNearestNavMesh();
+                MapBuildSave();
     }
 
 
@@ -609,19 +612,28 @@ public class BuildingPlacer : MonoBehaviour
         gridMap.LoadMap(); //맵갱신
         buildMap.LoadBuild(); //오브젝트 갱신
         surface.BuildNavMesh(); //네브매쉬 깔기
+                MapBuildSave();
     }
     #endregion
     #region 저장 및 기타
 
     public void OnApplicationQuit()//유니티 내장 맨마지막에 불려지는 함수
     {
-        OnAutoSave?.Invoke();
+        _arrayBuildPos.SaveMapData();
+        _arrayMapPos.SaveMapTileData();
         Managers.Game.SaveGame();
     }
 //씬 종료전에 저장
     private void OnDisable()
     {
-                OnAutoSave?.Invoke();
+        _arrayBuildPos.SaveMapData();
+        _arrayMapPos.SaveMapTileData();
+    }
+
+    private void MapBuildSave()
+    {
+                _arrayBuildPos.SaveMapData();
+        _arrayMapPos.SaveMapTileData();
     }
     Vector2Int GridKey(float x, float z)
     {
