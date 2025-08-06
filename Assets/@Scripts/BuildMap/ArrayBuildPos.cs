@@ -215,10 +215,13 @@ catch (Exception e)
         {
             Debug.LogError($"맵 데이터 로드 중 예외 발생: {ex}");
         }
-        finally
-        {
-            ui.gameObject.SetActive(false);
-        }
+finally
+{
+    if (ui)
+    {
+        ui.gameObject.SetActive(false);
+    }
+}
     }
 
     public void BindEvent()
