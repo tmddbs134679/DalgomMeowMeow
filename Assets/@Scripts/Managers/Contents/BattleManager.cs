@@ -1,10 +1,27 @@
+using TMPro;
 using UnityEngine;
 
 public class BattleManager : MonoBehaviour
 {
     [SerializeField] private TeamCameraController _teamCameraController;
     [SerializeField] private TeamController _teamController;
-    public int EnemyCount;
+    [SerializeField] private TextMeshProUGUI _wavetxt;
+    private int _enemyCount;
+    public int EnemyCount
+    {
+        get => _enemyCount;
+        set
+        {
+            _enemyCount = value;
+
+            int killed = 9 - _enemyCount;
+
+            int waveIndex = (killed / 3) + 1;
+            if (waveIndex > 3) waveIndex = 3;
+
+            _wavetxt.text = $"{waveIndex}/3";
+        }
+    }
     public int PlayerCount;
     public bool Victory = false;
     public bool Lose = false;
