@@ -70,6 +70,7 @@ public class UI_ChapterPopup : UI_Popup
             QuestManager.Instance.TryUnlockContent(_currentChapterId);
 
         }
+ 
     }
 
     private void OnClickChapter4Button()

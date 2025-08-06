@@ -6,16 +6,14 @@
   <component name="ChangeListManager">
     <list default="true" id="f48e1cac-c49d-4f22-9686-b0c375630046" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DalgomMeowMeow/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DalgomMeowMeow/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Resources/Sprite/CharacterProfile_RT.renderTexture" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Resources/Sprite/CharacterProfile_RT.renderTexture" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scenes/TitleScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scenes/TitleScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/BuildMap/ScriptableOBJ/ArraySO/ArrayBuildPos.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/BuildMap/ScriptableOBJ/ArraySO/ArrayBuildPos.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/BuildMap/ScriptableOBJ/ArraySO/ArrayMapPos.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/BuildMap/ScriptableOBJ/ArraySO/ArrayMapPos.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Prefabs/Tutorial/Tutorial.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Prefabs/Tutorial/Tutorial.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Resources/UI/Popup/UI_Etc/UI_QuickMenu.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Resources/UI/Popup/UI_Etc/UI_QuickMenu.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Resources/UI/Popup/UI_Tutorial.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Resources/UI/Popup/UI_Tutorial.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Resources/UI/UI_GameScene.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Resources/UI/UI_GameScene.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Managers/Contents/TutorialManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Managers/Contents/TutorialManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Managers/Contents/TutorialManager.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Managers/Contents/TutorialManager.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/Popup/UI_Road.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/Popup/UI_Road.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/StreamingAssets/build_info" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/StreamingAssets/build_info" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF - Fallback.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF - Fallback.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/TimelineSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/TimelineSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/Popup/UI_BuildPopup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/Popup/UI_BuildPopup.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/Popup/UI_ChapterPopup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/Popup/UI_ChapterPopup.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/Scene/UI_Tutorial.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/Scene/UI_Tutorial.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,6 +31,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Contents/Building/SlotMachineBuilding.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Contents/Quest/Quest.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Contents/Tutorial/BuildCancleButtonTrigger.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Contents/Tutorial/ChapterButtonTrigger.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Contents/Tutorial/CookButtonTrigger.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Contents/Tutorial/RestButtonTrigger.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Contents/Tutorial/RoadButtonTrigger.cs" root0="FORCE_HIGHLIGHTING" />
@@ -143,7 +142,7 @@
       <method v="2" />
     </configuration>
     <configuration name="독립실행형 플레이어" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="$PROJECT_DIR$/../../../pcbuild/15\DalgomMeowMeow.exe" />
+      <option name="EXE_PATH" value="$PROJECT_DIR$/../../../pcbuild/33\DalgomMeowMeow.exe" />
       <option name="PROGRAM_PARAMETERS" value="" />
       <option name="WORKING_DIRECTORY" value="C:\UnityProjects\pcbuild" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -164,13 +163,15 @@
       <option name="PTY_MODE" value="Auto" />
       <method v="2" />
     </configuration>
-    <configuration name="Unity 에디터에 연결" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+    <configuration name="Unity 에디터에 연결" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="12820">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" />
+      <option name="pid" value="12820" />
       <option name="projectPathOnTarget" />
       <option name="runtimes">
-        <list />
+        <list>
+          <MonoRuntime />
+        </list>
       </option>
       <option name="selectedOptions">
         <list />
@@ -242,7 +243,7 @@
       <workItem from="1754209699155" duration="22441000" />
       <workItem from="1754268920822" duration="32530000" />
       <workItem from="1754348851071" duration="2760000" />
-      <workItem from="1754438493433" duration="9185000" />
+      <workItem from="1754438493433" duration="22732000" />
     </task>
     <servers />
   </component>
@@ -292,6 +293,32 @@
           </properties>
           <option name="timeStamp" value="35" />
         </breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/@Scripts/Managers/Contents/TutorialManager.cs</url>
+          <line>314</line>
+          <properties documentPath="C:\UnityProjects\git\waefwa\DalgomMeowMeow\Assets\@Scripts\Managers\Contents\TutorialManager.cs" containingFunctionPresentation="메서드 'FocusOnlyThis'">
+            <startOffsets>
+              <option value="9124" />
+            </startOffsets>
+            <endOffsets>
+              <option value="9131" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="43" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/@Scripts/Managers/Contents/TutorialManager.cs</url>
+          <line>313</line>
+          <properties documentPath="C:\UnityProjects\git\waefwa\DalgomMeowMeow\Assets\@Scripts\Managers\Contents\TutorialManager.cs" containingFunctionPresentation="메서드 'FocusOnlyThis'">
+            <startOffsets>
+              <option value="9057" />
+            </startOffsets>
+            <endOffsets>
+              <option value="9095" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="44" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>

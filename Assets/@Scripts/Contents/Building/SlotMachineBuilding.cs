@@ -39,6 +39,7 @@ public class SlotMachineBuilding : BuildingBase
     [SerializeField] private Sprite catIcon;
     
     private Vector2[] _originalPositions;
+    public System.Action OnAllSlotFinished;
 
     private void Awake()
     {
@@ -134,21 +135,34 @@ public class SlotMachineBuilding : BuildingBase
 
         seq.OnComplete(() =>
         {
-            // 보여진 스프라이트를 기준으로 Symbol 찾아 저장
-            SlotResult matched = _results.Find(r => r.Icon.name == finalSprite.name);
+            // 🔍 가장 anchoredPosition.y가 0에 가까운 이미지가 실제 가운데에 표시되는 슬롯
+            Transform center = null;
+            float closest = float.MaxValue;
+
+            for (int i = 0; i < content.childCount; i++)
+            {
+                var child = content.GetChild(i);
+                float dist = Mathf.Abs(child.localPosition.y); // 가운데는 0에 가까운 값
+                if (dist < closest)
+                {
+                    closest = dist;
+                    center = child;
+                }
+            }
+
+            Sprite centerSprite = center.GetComponent<Image>().sprite;
+
+            SlotResult matched = _results.Find(r => r.Icon.name == centerSprite.name);
             _currentResult[index] = matched != null ? matched.Symbol : "";
-            Debug.Log($"슬롯 {index + 1} 멈춤! 결과: {_currentResult[index]}");
+
+            _finishedCount++;
+            if (_finishedCount >= _slotCount)
+            {
+                _finishedCount = 0;
+                OnAllSlotFinished?.Invoke();
+            }
         });
         
-        if (finalSprite == null)
-        {
-            Debug.LogError($"[Slot Error] finalSprite is null at index {index}");
-        }
-        else
-        {
-            Debug.Log($"[Slot] Final sprite at index {index}: {finalSprite.name}");
-        }
-
         yield return seq.WaitForCompletion();
     }
 

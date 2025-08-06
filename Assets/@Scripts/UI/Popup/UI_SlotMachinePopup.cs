@@ -60,12 +60,13 @@ public class UI_SlotMachinePopup : UI_Popup
 
         Managers.Game.Gold -= 100;
 
-        _targetBuilding.SpinAllSlots(); // ⭐ 이미지 회전 효과 실행
+        _targetBuilding.OnAllSlotFinished = () =>
+        {
+            FinalizeRewardText();
+            _isSpinning = false;
+        };
 
-        yield return new WaitForSeconds(2.5f); // 대략적인 spin 시간 후 결과 처리
-
-        FinalizeRewardText();
-        _isSpinning = false;
+        _targetBuilding.SpinAllSlots();
 
     }
 
@@ -85,12 +86,12 @@ public class UI_SlotMachinePopup : UI_Popup
             {
                 if (match.RewardGold > 0)
                 {
-                    rewardText = $" {a} x3 → +{match.RewardGold} Gold";
+                    rewardText = $" 축하합니다 {match.RewardGold} Gold";
                     Managers.Game.Gold += match.RewardGold;
                 }
                 else
                 {
-                    rewardText = $" {a} x3 → {match.RewardGold} Gold";
+                    rewardText = $" 꽝 {match.RewardGold} Gold";
                     Managers.Game.Gold += match.RewardGold;
                 }
             }
