@@ -41,7 +41,7 @@ public class TutorialManager : MonoBehaviour
         
         var gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
        
-        // StartCoroutine( GameSceneUIInteractive(gameSceneUI, false));
+        StartCoroutine( GameSceneUIInteractive(gameSceneUI, false));
         
 
 
@@ -120,7 +120,7 @@ public class TutorialManager : MonoBehaviour
         }
         else
         {
-            SetAllUIInteractable(true); // 전체 비활성화
+            SetAllUIInteractable(true); // 전체 활성화
             highlighter.Hide();
             dimOverlay?.gameObject.SetActive(false);
         }
@@ -418,17 +418,18 @@ public class TutorialManager : MonoBehaviour
 
         foreach (var button in buttons)
         {
-            button.interactable = state;
-            if (button.image != null)
-                button.image.raycastTarget = state;
+            if (button.name != "RoadButton")
+            {
+                button.interactable = state;
+                if (button.image != null)
+                    button.image.raycastTarget = state;
+            }
         }
 
         foreach (var toggle in toggles)
         {
             toggle.interactable = state;
         }
-        var roadButton = gameSceneUI.transform.Find("RoadButton")?.GetComponent<Button>();
-        if (roadButton != null)
-            roadButton.interactable = true;
+
     }
 }
