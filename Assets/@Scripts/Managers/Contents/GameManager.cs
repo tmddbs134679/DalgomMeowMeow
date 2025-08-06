@@ -280,9 +280,7 @@ Application.Quit();
 
      
         PlayerPrefs.Save(); // 변경 사항 저장
-
-        //BuildingPlacer.Instance.buildMap.ArrayBuildPos.ResetBuild();
-        //BuildingPlacer.Instance.gridMap.ArrayMapPos.ResetBuild();
+        BuildingPlacer.Instance.ResetData();
         Managers.Scene.LoadScene(Define.EScene.TitleScene);
     }
 

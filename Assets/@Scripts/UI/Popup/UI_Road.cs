@@ -17,7 +17,8 @@ public class UI_Road : UI_Popup
     }
     enum Texts
     {
-        PlayerGoldTxt
+        PlayerGoldTxt,
+        DiaValueText
     }
     enum Images {}
 
@@ -38,15 +39,27 @@ public class UI_Road : UI_Popup
         GetButton((int)Buttons.CancelButton).gameObject.BindEvent(OnClickCancelBuildButton);
                         BuildingPlacer.Instance.OnBuildingCancel += OnClickCancelBuildButton;
         GetText((int)Texts.PlayerGoldTxt).text = Managers.Game.Gold.ToString();
-
+        Managers.Game.OnResourcesChagned += Refresh;
+        Refresh();
         return true;
     }
  
+    private void Refresh()
+    {
+        GetText((int)Texts.PlayerGoldTxt).text = Managers.Game.Gold.ToString();
+        GetText((int)Texts.DiaValueText).text = Managers.Game.Dia.ToString();
+    }
 
     public void OnDestroy()
     {
+        if (Managers.Game != null)
+        {
+            Managers.Game.OnResourcesChagned -= Refresh;
+
+        }
         BuildingPlacer.Instance.OnBuildingCancel -= OnClickCancelBuildButton;
     }
+
     private void OnClickRoadBuildButton()
     {
         BuildingPlacer.Instance.SelectBuildingType(Define.EBuildingType.Road);
