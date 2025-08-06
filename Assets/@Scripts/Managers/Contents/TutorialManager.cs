@@ -221,16 +221,13 @@ public class TutorialManager : MonoBehaviour
         if (targetCanvas != null)
         {
             targetCanvas.sortingOrder = 200; // 튜토리얼 UI보다 위로 올림
-            Debug.Log($"[Tutorial] Canvas '{targetCanvas.name}' sortingOrder = 200");
         }
     }
     public void SetAllUIInteractable(bool state)
     {
-        Debug.Log($"[튜토리얼] SetAllUIInteractable({state}) 호출");
         var gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
         if (gameSceneUI != null)
         {
-            Debug.Log($"[튜토리얼] gameSceneUI null이 아님");
             var buttons = gameSceneUI.GetComponentsInChildren<Button>(true);
             var toggles = gameSceneUI.GetComponentsInChildren<Toggle>(true);
 
@@ -311,7 +308,6 @@ public class TutorialManager : MonoBehaviour
     }
     void FocusOnlyThis(GameObject target)
     {
-        Debug.Log("[튜토리얼] FocusOnlyThis 실행됨");
         if (target == null) return;
         SetAllUIInteractable(false); // 전체 비활성화
         
@@ -397,10 +393,8 @@ public class TutorialManager : MonoBehaviour
         {
             toggle.interactable = state;
         }
-        Debug.Log($"게임씬UI{gameSceneUI} ");
         var roadButton = gameSceneUI.transform.Find("RoadButton")?.GetComponent<Button>();
         if (roadButton == null)
-            Debug.Log($"로드버튼{roadButton} 이 null입니다");
         if (roadButton != null)
             roadButton.interactable = true;
     }

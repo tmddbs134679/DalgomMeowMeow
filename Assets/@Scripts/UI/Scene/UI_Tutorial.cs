@@ -13,7 +13,7 @@ public class UI_Tutorial : UI_Popup
 
 
     enum Texts { DescriptionText }
-    enum Buttons { SkipButton,  }
+    enum Buttons {  }
     
     
     public override bool Init()
