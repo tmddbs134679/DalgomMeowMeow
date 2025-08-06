@@ -45,6 +45,5 @@ public class CharacterStoreScene : BaseScene
 
     public override void Clear()
     {
-        Managers.Game.SaveGame();
     }
 }

@@ -199,6 +199,7 @@ public class UI_CharacterStoreScene : UI_Scene
 
     private void OnClickHomeButton()
     {
+        Managers.Game.SaveGame();
         Managers.Scene.LoadScene(Define.EScene.GameScene, transform);
     }
 
