@@ -264,13 +264,14 @@ Application.Quit();
             string[] files = Directory.GetFiles(_savePath);
             foreach (var file in files)
             {
+                if (file == "Player.log")
+                    continue;
+
                 File.Delete(file);
                 Debug.Log($"파일 삭제: {file}");
             }
 
-            // 폴더 삭제
-            Directory.Delete(_savePath);
-            Debug.Log("폴더 삭제 완료");
+
         }
         else
         {
