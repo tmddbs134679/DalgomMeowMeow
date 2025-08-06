@@ -236,6 +236,8 @@ GameObject:
   - component: {fileID: 6423538090920229252}
   - component: {fileID: 7747767460068626999}
   - component: {fileID: 6821684653185094539}
+  - component: {fileID: 1808463552724411077}
+  - component: {fileID: 7155826174176685879}
   m_Layer: 5
   m_Name: QuickButton
   m_TagString: Untagged
@@ -361,6 +363,32 @@ MonoBehaviour:
   m_EffectColor: {r: 1, g: 1, b: 1, a: 0.5}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 1
+--- !u!114 &1808463552724411077
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1183035454274346431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa0ab7986e6129943926702e55b1d12d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RegisterKey: 
+--- !u!114 &7155826174176685879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1183035454274346431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9cf7f20c11681a47980140eca2609af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildButton: {fileID: 0}
 --- !u!1 &1512074019119741390
 GameObject:
   m_ObjectHideFlags: 0
