@@ -260,6 +260,7 @@ Application.Quit();
         CharacterInMainScene.Clear();
         _characters.Clear();
         AllCharacter.Clear();
+        Managers.Food.Clear();
 
         string _savePath = Application.persistentDataPath;
 
