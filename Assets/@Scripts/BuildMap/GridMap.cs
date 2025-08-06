@@ -18,9 +18,9 @@ public class GridMap : MonoBehaviour
     public GameObject[,] tile = null;
     [SerializeField] private ArrayMapPos _arrayMapPos;
     public ArrayMapPos ArrayMapPos{ get=>_arrayMapPos; set=>_arrayMapPos=value;}
-    void Awake()
+    async void Awake()
     {
-        _arrayMapPos.LoadMapTileData();
+        await _arrayMapPos.LoadMapTileDataAsyncParallel();
         width = _arrayMapPos.Width;
         height = _arrayMapPos.Height;
         tile = new GameObject[width, height];

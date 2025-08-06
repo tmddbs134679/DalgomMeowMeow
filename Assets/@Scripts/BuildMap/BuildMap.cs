@@ -178,6 +178,7 @@ public void ColliderAllOff()
         {
             Debug.LogWarning($"[BuildMap] 레벨 업데이트 실패: ID {uniqueId}를 찾을 수 없습니다.");
         }
+        _arrayBuildPos.SaveMapData();
     }
 
     Vector2Int GridKey(float x, float z)
