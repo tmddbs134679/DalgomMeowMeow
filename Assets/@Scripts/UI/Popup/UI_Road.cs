@@ -63,7 +63,6 @@ public class UI_Road : UI_Popup
         BuildingPlacer.Instance.buildMap.ColliderAllOn();
         Managers.UI.ClosePopupUI(this);
         (Managers.UI.SceneUI as UI_GameScene).gameObject.SetActive(true);
-        TutorialManager.Instance.SetAllUIInteractable(true); //튜토리얼 스킵시 버튼활성화
     }
 
 
