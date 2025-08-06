@@ -30,15 +30,24 @@ public class TutorialManager : MonoBehaviour
 
     void Awake() => Instance = this;
 
-    private void Start()
+    private IEnumerator Start()
     {
-        
         if (PlayerPrefs.GetInt("Tutorial_Completed", 0) == 1)
-            return;
-        
+            yield break;
+
         UI = Managers.UI.ShowPopupUI<UI_Tutorial>();
+        
+        yield return new WaitUntil(() =>
+        {
+            var gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
+            return gameSceneUI != null && gameSceneUI.gameObject.activeInHierarchy;
+        });
+        
+        yield return null; // 1프레임 대기하여 UI 초기화 보장
+        
         highlighter = UI.GetComponentInChildren<Highlighter>(true);
-        dimOverlay = UI.transform.Find("DimOverlay")?.GetComponent<Image>(); // 찾는 방식 주의
+        dimOverlay = UI.transform.Find("DimOverlay")?.GetComponent<Image>();
+    
         StartTutorial();
     }
 
@@ -156,12 +165,40 @@ public class TutorialManager : MonoBehaviour
     
     public void SkipTutorial()
     {
+        // EndTutorial();
         foreach (var step in Steps)
-        {
             step.OnComplete?.Invoke();
+
+        IsRunning = false;
+
+        // 팝업 닫기
+        var uiRoad = Managers.UI.GetPopupUI<UI_Road>();
+        if (uiRoad != null)
+            Managers.UI.ClosePopupUI(uiRoad);
+
+        var uiBuild = Managers.UI.GetPopupUI<UI_BuildPopup>();
+        if (uiBuild != null)
+            Managers.UI.ClosePopupUI(uiBuild);
+        
+        var uiFarm = Managers.UI.GetPopupUI<UI_FarmPopup>();
+        if (uiFarm != null)
+            Managers.UI.ClosePopupUI(uiFarm);
+        
+        var uiBuildAction = Managers.UI.GetPopupUI<UI_BuildAction>();
+        if (uiBuildAction != null)
+            Managers.UI.ClosePopupUI(uiBuildAction);
+
+        // GameScene UI 켜기
+        var gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
+        if (gameSceneUI != null)
+        {
+            gameSceneUI.gameObject.SetActive(true);
+            StartCoroutine(GameSceneUIInteractive(gameSceneUI,true));
         }
 
-        EndTutorial();
+        Managers.UI.ShowToast("튜토리얼 완료");
+        PlayerPrefs.SetInt("Tutorial_Completed", 1);
+        PlayerPrefs.Save();
     }
     public void FocusUI(GameObject go)
     {
@@ -176,20 +213,77 @@ public class TutorialManager : MonoBehaviour
     }
     public void SetAllUIInteractable(bool state)
     {
-        foreach (var button in FindObjectsOfType<Button>())
+        Debug.Log($"[튜토리얼] SetAllUIInteractable({state}) 호출");
+        var gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
+        if (gameSceneUI != null)
+        {
+            var buttons = gameSceneUI.GetComponentsInChildren<Button>(true);
+            var toggles = gameSceneUI.GetComponentsInChildren<Toggle>(true);
+
+
+            foreach (var button in buttons)
+            {
+                button.interactable = state;
+                if (button.image != null)
+                    button.image.raycastTarget = state;
+            }
+
+            foreach (var toggle in toggles)
+            {
+                toggle.interactable = state;
+            }
+        }
+            
+        foreach (var button in FindObjectsOfType<Button>(true))
         {
             button.interactable = state;
             if (button.image != null)
                 button.image.raycastTarget = state;
         }
 
-        foreach (var toggle in FindObjectsOfType<Toggle>())
+        foreach (var toggle in FindObjectsOfType<Toggle>(true))
         {
             toggle.interactable = state;
         }
     }
+
+    public void SetAcitiveUIInteractable()
+    {
+        StartCoroutine(CoSetAllUIInteractable(true));
+    }
+    public IEnumerator CoSetAllUIInteractable(bool state)
+    {
+        yield return new WaitUntil(() =>
+        {
+            var canvas = GameObject.Find("Canvas");
+            if (canvas == null || !canvas.activeInHierarchy)
+                return false;
+
+            var buttons = canvas.GetComponentsInChildren<Button>(true);
+            var toggles = canvas.GetComponentsInChildren<Toggle>(true);
+            return buttons.Length > 0 || toggles.Length > 0;
+        });
+
+        yield return null; // 1프레임 대기
+
+        var foundButtons = GameObject.FindObjectsOfType<Button>(true);
+        foreach (var button in foundButtons)
+        {
+            button.interactable = state;
+            if (button.image != null)
+                button.image.raycastTarget = state;
+        }
+
+        var foundToggles = GameObject.FindObjectsOfType<Toggle>(true);
+        foreach (var toggle in foundToggles)
+        {
+            toggle.interactable = state;
+        }
+
+    }
     void FocusOnlyThis(GameObject target)
     {
+        Debug.Log("[튜토리얼] FocusOnlyThis 실행됨");
         SetAllUIInteractable(false); // 전체 비활성화
 
         var btn = target.GetComponent<Button>();
@@ -229,5 +323,34 @@ public class TutorialManager : MonoBehaviour
             toggle.interactable = state;
         }
     }
+    public IEnumerator GameSceneUIInteractive(UI_GameScene gameSceneUI,bool state)
+    {
+        // wait until ready
+        yield return new WaitUntil(() => gameSceneUI.gameObject.activeInHierarchy);
+        yield return new WaitForSeconds(0.1f);
 
+        // canvas group unlock
+        var cg = gameSceneUI.GetComponent<CanvasGroup>();
+        if (cg != null)
+        {
+            cg.interactable = state;
+            cg.blocksRaycasts = state;
+        }
+
+        var buttons = gameSceneUI.GetComponentsInChildren<Button>(true);
+        var toggles = gameSceneUI.GetComponentsInChildren<Toggle>(true);
+
+
+        foreach (var button in buttons)
+        {
+            button.interactable = state;
+            if (button.image != null)
+                button.image.raycastTarget = state;
+        }
+
+        foreach (var toggle in toggles)
+        {
+            toggle.interactable = state;
+        }
+    }
 }
