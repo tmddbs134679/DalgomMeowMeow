@@ -154,7 +154,6 @@ public class SlotMachineBuilding : BuildingBase
 
             SlotResult matched = _results.Find(r => r.Icon.name == centerSprite.name);
             _currentResult[index] = matched != null ? matched.Symbol : "";
-            Debug.Log($"슬롯 {index + 1} 멈춤! 결과: {_currentResult[index]}");
 
             _finishedCount++;
             if (_finishedCount >= _slotCount)
