@@ -27,6 +27,7 @@ public class TutorialManager : MonoBehaviour
     private Dictionary<string, GameObject> _registeredTargets = new();
 
     public static TutorialManager Instance;
+    private GameObject _raycastBlocker;
 
     void Awake() => Instance = this;
 
@@ -37,13 +38,15 @@ public class TutorialManager : MonoBehaviour
 
         UI = Managers.UI.ShowPopupUI<UI_Tutorial>();
         
-        yield return new WaitUntil(() =>
-        {
-            var gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
-            return gameSceneUI != null && gameSceneUI.gameObject.activeInHierarchy;
-        });
         
-        yield return null; // 1프레임 대기하여 UI 초기화 보장
+        var gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
+       
+        // StartCoroutine( GameSceneUIInteractive(gameSceneUI, false));
+        
+
+
+        
+        yield return new WaitForSeconds(0.1f); // 1프레임 대기하여 UI 초기화 보장
         
         highlighter = UI.GetComponentInChildren<Highlighter>(true);
         dimOverlay = UI.transform.Find("DimOverlay")?.GetComponent<Image>();
@@ -89,6 +92,8 @@ public class TutorialManager : MonoBehaviour
 
     private IEnumerator CoActivateStep(TutorialStep step)
     {
+        
+        
         step.OnStart?.Invoke();
 
         UI.Init();
@@ -115,8 +120,16 @@ public class TutorialManager : MonoBehaviour
         }
         else
         {
+            SetAllUIInteractable(true); // 전체 비활성화
             highlighter.Hide();
             dimOverlay?.gameObject.SetActive(false);
+        }
+        if (currentStep == 0 && highlightTarget == null && string.IsNullOrEmpty(step.HighlightTargetKey))
+        {
+            // 첫 설명-only 단계라면 2초 뒤 자동으로 다음 단계로 진행
+            yield return new WaitForSeconds(2.0f);
+            CompleteStep();
+            yield break;
         }
     }
 
@@ -217,6 +230,7 @@ public class TutorialManager : MonoBehaviour
         var gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
         if (gameSceneUI != null)
         {
+            Debug.Log($"[튜토리얼] gameSceneUI null이 아님");
             var buttons = gameSceneUI.GetComponentsInChildren<Button>(true);
             var toggles = gameSceneUI.GetComponentsInChildren<Toggle>(true);
 
@@ -233,6 +247,20 @@ public class TutorialManager : MonoBehaviour
                 toggle.interactable = state;
             }
         }
+        
+        var buildActionUI = Managers.UI.GetPopupUI<UI_BuildAction>();
+        if (buildActionUI != null)
+        {
+            var buttons = buildActionUI.GetComponentsInChildren<Button>(true);
+            foreach (var button in buttons)
+            {
+                button.interactable = true;
+                if (button.image != null)
+                    button.image.raycastTarget = true;
+            }
+
+        }
+        
             
         foreach (var button in FindObjectsOfType<Button>(true))
         {
@@ -284,7 +312,24 @@ public class TutorialManager : MonoBehaviour
     void FocusOnlyThis(GameObject target)
     {
         Debug.Log("[튜토리얼] FocusOnlyThis 실행됨");
+        if (target == null) return;
         SetAllUIInteractable(false); // 전체 비활성화
+        
+        // var gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
+        // if (gameSceneUI != null)
+        // {
+        //     var buttons = gameSceneUI.GetComponentsInChildren<Button>(true);
+        //     var toggles = gameSceneUI.GetComponentsInChildren<Toggle>(true);
+        //
+        //
+        //     foreach (var button in buttons)
+        //     {
+        //         button.interactable = false;
+        //         if (button.image != null)
+        //             button.image.raycastTarget = false;
+        //     }
+        // }
+        
 
         var btn = target.GetComponent<Button>();
         if (btn != null)
@@ -352,5 +397,11 @@ public class TutorialManager : MonoBehaviour
         {
             toggle.interactable = state;
         }
+        Debug.Log($"게임씬UI{gameSceneUI} ");
+        var roadButton = gameSceneUI.transform.Find("RoadButton")?.GetComponent<Button>();
+        if (roadButton == null)
+            Debug.Log($"로드버튼{roadButton} 이 null입니다");
+        if (roadButton != null)
+            roadButton.interactable = true;
     }
 }

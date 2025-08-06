@@ -1584,6 +1584,8 @@ GameObject:
   - component: {fileID: 2027042196454365131}
   - component: {fileID: 5438972065133719492}
   - component: {fileID: 3252092394311685933}
+  - component: {fileID: 2196297212255001048}
+  - component: {fileID: 1879227107085500655}
   m_Layer: 5
   m_Name: ChapterButton
   m_TagString: Untagged
@@ -1694,6 +1696,32 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2196297212255001048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4023845522964740774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa0ab7986e6129943926702e55b1d12d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RegisterKey: 
+--- !u!114 &1879227107085500655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4023845522964740774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30def234d904aef428d6ca10d0cde381, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildButton: {fileID: 0}
 --- !u!1 &4092232210353834065
 GameObject:
   m_ObjectHideFlags: 0
