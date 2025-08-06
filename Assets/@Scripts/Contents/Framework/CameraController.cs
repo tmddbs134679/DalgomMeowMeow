@@ -20,11 +20,16 @@ public class CameraController : MonoBehaviour
 
     private bool isCatTouch;
 
-    void Start()
-    {
-        _cam = Camera.main;
-        _dragSpeed = 3f;
-    }
+void Start()
+{
+    _cam = Camera.main;
+
+#if UNITY_EDITOR || UNITY_STANDALONE
+    _dragSpeed = 3f;
+#else
+    _dragSpeed = 1f; // 모바일에서 너무 빠르니까 낮춰줌
+#endif
+}
 
     private bool _startedOnUI = false;
 
@@ -94,22 +99,23 @@ public class CameraController : MonoBehaviour
         zoomAmount = Input.GetAxis("Mouse ScrollWheel") * 10f;
 #endif
 
-        // 모바일에서 두 손가락으로 확대/축소
-        if (Input.touchCount == 2)
-        {
-            Touch touchZero = Input.GetTouch(0);
-            Touch touchOne = Input.GetTouch(1);
+     if (Input.touchCount == 2)
+{
+    Touch touchZero = Input.GetTouch(0);
+    Touch touchOne = Input.GetTouch(1);
 
-            Vector2 touchZeroPrevPos = touchZero.position - touchZero.deltaPosition;
-            Vector2 touchOnePrevPos = touchOne.position - touchOne.deltaPosition;
+    Vector2 touchZeroPrevPos = touchZero.position - touchZero.deltaPosition;
+    Vector2 touchOnePrevPos = touchOne.position - touchOne.deltaPosition;
 
-            float prevTouchDeltaMag = (touchZeroPrevPos - touchOnePrevPos).magnitude;
-            float touchDeltaMag = (touchZero.position - touchOne.position).magnitude;
+    float prevTouchDeltaMag = (touchZeroPrevPos - touchOnePrevPos).magnitude;
+    float touchDeltaMag = (touchZero.position - touchOne.position).magnitude;
 
-            float deltaMagnitudeDiff = prevTouchDeltaMag - touchDeltaMag;
+    float deltaMagnitudeDiff = prevTouchDeltaMag - touchDeltaMag;
 
-            zoomAmount = deltaMagnitudeDiff * 0.1f;
-        }
+    // 🔄 방향 반전
+    zoomAmount = -deltaMagnitudeDiff * 0.1f;
+}
+
 
         if (zoomAmount != 0)
         {
@@ -163,17 +169,24 @@ public class CameraController : MonoBehaviour
         }
     }
 
-    void ApplyCameraMove(Vector2 delta)
-    {
-        Vector3 move = new Vector3(-delta.x, 0, -delta.y) * _dragSpeed * Time.deltaTime;
-        move = _cam.transform.TransformDirection(move);
-        move.y = 0;
+void ApplyCameraMove(Vector2 delta)
+{
+#if UNITY_EDITOR || UNITY_STANDALONE
+    float dragMultiplier = _dragSpeed * Time.deltaTime;
+#else
+    float dragMultiplier = _dragSpeed * 0.01f; // 모바일은 더 작게
+#endif
 
-        Vector3 newPos = transform.position + move;
-        newPos.x = Mathf.Clamp(newPos.x, minLimit.x, maxLimit.x);
-        newPos.z = Mathf.Clamp(newPos.z, minLimit.y, maxLimit.y);
-        transform.position = newPos;
-    }
+    Vector3 move = new Vector3(-delta.x, 0, -delta.y) * dragMultiplier;
+    move = _cam.transform.TransformDirection(move);
+    move.y = 0;
+
+    Vector3 newPos = transform.position + move;
+    newPos.x = Mathf.Clamp(newPos.x, minLimit.x, maxLimit.x);
+    newPos.z = Mathf.Clamp(newPos.z, minLimit.y, maxLimit.y);
+    transform.position = newPos;
+}
+
 
     void ClickCat(Vector2 screenPos)
     {
