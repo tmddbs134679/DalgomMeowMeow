@@ -75,7 +75,7 @@ public class MoleManager : MonoBehaviour
             HighScore = _score; // 새로운 최고 점수 갱신
         }
         _scoreUI.GetComponentInChildren<TextMeshProUGUI>().text = $"HighScore\n{HighScore}\nScore\n{_score}";
-        _scoreUI.transform.Find("Reward").GetComponent<TextMeshProUGUI>().text = $"Reward\n{HighScore * 0.5} 골드"; // 보상 텍스트 갱신
+        _scoreUI.transform.Find("Reward").GetComponent<TextMeshProUGUI>().text = $"Today's Reward\n{HighScore * 0.5} 골드"; // 보상 텍스트 갱신
         _scoreUI.SetActive(true); // 점수 UI 활성화
     }
 

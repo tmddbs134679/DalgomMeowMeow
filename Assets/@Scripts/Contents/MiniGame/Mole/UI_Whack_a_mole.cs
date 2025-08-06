@@ -59,7 +59,9 @@ public class UI_Whack_a_mole : UI_Popup
     
     public void PopupClose()
     {
+#if !UNITY_ANDROID || !UNITY_IOS
         Managers.Game.Gold += moleManager.HighScore * 0.5f;
+#endif
         Managers.Sound.PlayPopupClose();
         Managers.UI.ClosePopupUI(this);
     }
