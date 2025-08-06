@@ -150,6 +150,11 @@ public class UI_GameScene : UI_Scene
     {
         Init();
     }
+
+    private void OnEnable()
+    {
+        RefreshFood();
+    }
     public void OnDestroy()
     {
         if (Managers.Game != null)
@@ -241,6 +246,16 @@ public class UI_GameScene : UI_Scene
     {
         UI_FoodItem item = Managers.UI.MakeSubItem<UI_FoodItem>(GetObject((int)GameObjects.StorageObject).transform);
         item.SetInfo(food);
+    }
+
+    public void RefreshFood()
+    {
+        foreach (var food in Managers.Food._foodList)
+        {
+            UI_FoodItem item = Managers.UI.MakeSubItem<UI_FoodItem>(GetObject((int)GameObjects.StorageObject).transform);
+            item.SetInfo(food);
+        }
+
     }
 
     public void RemoveSlotAnimated(UI_FoodItem slot)

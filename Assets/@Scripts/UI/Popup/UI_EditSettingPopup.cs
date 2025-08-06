@@ -83,7 +83,7 @@ public class UI_EditSettingPopup : UI_Popup
 
     private void OnExitButton()
     {
-        BuildingPlacer.Instance.OnApplicationQuit();
+        Managers.Game.OnApplicationQuit();
     }
 
     private void OnClickSoundOnButton()

@@ -16,7 +16,7 @@ public class UI_BuildingPopup : UI_Popup
         UpgreadeButton,
     }
     enum Texts { CurrentLevelText, NextLevelText, LevelUpCost,CurrentlLevelCookPrice, NextLevelCookPrice }
-    enum Images { Building }
+   // enum Images { Building }
 
     private BuildingBase _targetBuilding;
     public GameObject target;
@@ -31,7 +31,7 @@ public class UI_BuildingPopup : UI_Popup
 
         BindText(typeof(Texts));
         BindButton(typeof(Buttons));
-        BindImage(typeof(Images));
+      //  BindImage(typeof(Images));
 
         GetButton((int)Buttons.BackgroundCloseButton).gameObject.BindEvent(OnClickBackgroundButton);
         GetButton((int)Buttons.UpgreadeButton).gameObject.BindEvent(UpgreadeButton);

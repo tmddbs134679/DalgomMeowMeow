@@ -145,6 +145,18 @@ public class GameManager
 
     #endregion
 
+
+
+    public void OnApplicationQuit()
+    {
+        Managers.Game.SaveGame();
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+Application.Quit();
+#endif
+    }
+
     #region Save
 
     string _path;
