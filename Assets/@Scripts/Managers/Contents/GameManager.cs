@@ -225,6 +225,10 @@ Application.Quit();
 
         string jsonStr = JsonConvert.SerializeObject(_gameData);
         File.WriteAllText(_path, jsonStr);
+
+        var data = QuestManager.Instance.GetAllQuestSaveData();
+        SaveQuestSystem.Save(data);
+
     }
     private bool LoadGame()
     {
@@ -251,6 +255,7 @@ Application.Quit();
     {
         PlayerPrefs.DeleteAll(); // 모든 PlayerPrefs 데이터를 삭제
 
+        Gold = 0;
         CharacterMap.Clear();
         CharacterInMainScene.Clear();
         _characters.Clear();
