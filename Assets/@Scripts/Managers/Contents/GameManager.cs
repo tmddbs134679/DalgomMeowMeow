@@ -225,6 +225,10 @@ Application.Quit();
 
         string jsonStr = JsonConvert.SerializeObject(_gameData);
         File.WriteAllText(_path, jsonStr);
+
+        var data = QuestManager.Instance.GetAllQuestSaveData();
+        SaveQuestSystem.Save(data);
+
     }
     private bool LoadGame()
     {
@@ -251,6 +255,7 @@ Application.Quit();
     {
         PlayerPrefs.DeleteAll(); // 모든 PlayerPrefs 데이터를 삭제
 
+        Gold = 0;
         CharacterMap.Clear();
         CharacterInMainScene.Clear();
         _characters.Clear();
@@ -264,8 +269,10 @@ Application.Quit();
             string[] files = Directory.GetFiles(_savePath);
             foreach (var file in files)
             {
-                if (file == "Player.log")
-                    continue;
+                Debug.Log(file);
+                if (file.EndsWith("Player.log"))
+                    continue;  
+
 
                 File.Delete(file);
                 Debug.Log($"파일 삭제: {file}");
@@ -280,9 +287,7 @@ Application.Quit();
 
      
         PlayerPrefs.Save(); // 변경 사항 저장
-
-        //BuildingPlacer.Instance.buildMap.ArrayBuildPos.ResetBuild();
-        //BuildingPlacer.Instance.gridMap.ArrayMapPos.ResetBuild();
+        BuildingPlacer.Instance.ResetData();
         Managers.Scene.LoadScene(Define.EScene.TitleScene);
     }
 
