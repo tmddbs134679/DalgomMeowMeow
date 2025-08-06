@@ -97,5 +97,10 @@ public class FoodManager
         Enqueue(food);
     }
 
+    public void Clear()
+    {
+        _foodList.Clear();
+        _nodeMap.Clear();
+    }
 
 }
