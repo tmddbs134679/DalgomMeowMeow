@@ -27,7 +27,7 @@ public class CameraController : MonoBehaviour
 #if UNITY_EDITOR || UNITY_STANDALONE
         3f;
 #else
-        1f;
+        1.5f;
 #endif
 
     void Start()
