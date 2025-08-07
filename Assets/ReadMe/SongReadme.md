@@ -99,7 +99,7 @@
 
 | Script명               | 설명                                                         |
 | ---------------------- | ------------------------------------------------------------ |
-| [UI_TextAnimation](../@Scripts/UI/UI_TextAnimation.cs.meta)   | `DOTween`을 활용하여 건물 종류에 따라 다양한 시각적 피드백 애니메이션을 텍스트로 표현하는 시스템 |
+| [UI_TextAnimation](../@Scripts/UI/UI_TextAnimation.cs)   | `DOTween`을 활용하여 건물 종류에 따라 다양한 시각적 피드백 애니메이션을 텍스트로 표현하는 시스템 |
 | [UI_ButtonAnimation](../@Scripts/UI/UI_ButtonAnimation.cs) | 버튼 클릭 시 크기 변화를 통해 사용자 피드백을 제공하는 직관적인 UI 애니메이션 구현 |
 
 
