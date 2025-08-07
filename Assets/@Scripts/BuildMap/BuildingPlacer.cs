@@ -110,6 +110,7 @@ public class BuildingPlacer : MonoBehaviour
         if (!CheckBuildGold(type))
         {
             Managers.UI.ShowToast("돈이 부족합니다.");
+                    buildMap.ColliderAllOn();
             return;
         }
         _sumBuyMoney += BuyMoney;
