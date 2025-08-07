@@ -4,60 +4,74 @@ using System.Collections.Generic;
 
 public class CameraController : MonoBehaviour
 {
-    private float _dragSpeed;
     public Vector2 minLimit = new Vector2(-10, -10);
     public Vector2 maxLimit = new Vector2(10, 10);
-    public float _clickThreshold = 10f;
+    public float clickThreshold = 10f;
 
     [SerializeField] private DragController dragController;
     [SerializeField] private BuildingPlacer buildingplacer;
+    [SerializeField] private LayerMask layerMask;
 
-    private Camera _cam;
-    private Vector3 _dragOrigin;
+    private Camera cam;
+    private Vector3 dragOrigin;
+    private Vector2 touchStartPos;
     private bool isDragging = false;
-    private Vector2 _touchStartPos;
+    private bool startedOnUI = false;
+    private bool isCatTouch = false;
+    private bool isAI = false;
 
-    public LayerMask layerMask;
-    private bool isAI;
-    private bool isCatTouch;
-    private bool _startedOnUI = false;
+    private const float minZoom = 6f;
+    private const float maxZoom = 10f;
+
+    private float dragSpeed =>
+#if UNITY_EDITOR || UNITY_STANDALONE
+        3f;
+#else
+        1f;
+#endif
 
     void Start()
     {
-        _cam = Camera.main;
-
-#if UNITY_EDITOR || UNITY_STANDALONE
-        _dragSpeed = 3f;
-#else
-        _dragSpeed = 1f; // 모바일/웹에서 낮춤
-#endif
+        cam = Camera.main;
     }
 
     void Update()
     {
+        HandleZoom();
+
 #if UNITY_EDITOR || UNITY_STANDALONE || UNITY_WEBGL
+        HandleMouseInput();
+#else
+        HandleTouchInput();
+#endif
+    }
+
+    #region Input Handlers
+
+    void HandleMouseInput()
+    {
         if (Input.GetMouseButtonDown(0))
         {
-            _startedOnUI = IsPointerOverUI();
-            if (_startedOnUI) return;
+            startedOnUI = IsPointerOverUI();
+            if (startedOnUI) return;
 
             ClickCat(Input.mousePosition);
-            _dragOrigin = Input.mousePosition;
-            _touchStartPos = _dragOrigin;
+            dragOrigin = Input.mousePosition;
+            touchStartPos = dragOrigin;
             isDragging = false;
         }
         else if (Input.GetMouseButton(0))
         {
-            if (_startedOnUI || buildingplacer?.isSelect == true || isAI) return;
+            if (startedOnUI || buildingplacer?.isSelect == true || isAI) return;
 
-            Vector3 delta = Input.mousePosition - _dragOrigin;
-            float dist = Vector2.Distance(Input.mousePosition, _touchStartPos);
+            Vector3 delta = Input.mousePosition - dragOrigin;
+            float dist = Vector2.Distance(Input.mousePosition, touchStartPos);
 
-            if (dist > _clickThreshold)
+            if (dist > clickThreshold)
             {
                 isDragging = true;
                 ApplyCameraMove(delta);
-                _dragOrigin = Input.mousePosition;
+                dragOrigin = Input.mousePosition;
             }
         }
         else if (Input.GetMouseButtonUp(0))
@@ -65,68 +79,37 @@ public class CameraController : MonoBehaviour
             if (!isDragging && !isCatTouch)
                 ClickBuilding(Input.mousePosition);
 
-            isCatTouch = false;
-            _startedOnUI = false;
-            isDragging = false;
-            isAI = false;
+            ResetFlags();
         }
-#endif
+    }
 
-        float zoomAmount = 0f;
-
-#if UNITY_EDITOR || UNITY_STANDALONE
-        if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return;
-#if UNITY_EDITOR
-        if (!Application.isFocused) return;
-#endif
-        zoomAmount = Input.GetAxis("Mouse ScrollWheel") * 10f;
-#endif
-
-        if (Input.touchCount == 2)
-        {
-            Touch touchZero = Input.GetTouch(0);
-            Touch touchOne = Input.GetTouch(1);
-
-            Vector2 touchZeroPrev = touchZero.position - touchZero.deltaPosition;
-            Vector2 touchOnePrev = touchOne.position - touchOne.deltaPosition;
-
-            float prevMag = (touchZeroPrev - touchOnePrev).magnitude;
-            float currMag = (touchZero.position - touchOne.position).magnitude;
-
-            float deltaMag = prevMag - currMag;
-            zoomAmount = -deltaMag * 0.1f;
-        }
-
-        if (zoomAmount != 0)
-        {
-            Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize - zoomAmount, 6f, 10f);
-        }
-
+    void HandleTouchInput()
+    {
         if (Input.touchCount == 1)
         {
             Touch touch = Input.GetTouch(0);
 
             if (touch.phase == TouchPhase.Began)
             {
-                _startedOnUI = IsPointerOverUI(touch.fingerId);
-                if (_startedOnUI) return;
+                startedOnUI = IsPointerOverUI(touch.fingerId);
+                if (startedOnUI) return;
 
-                _dragOrigin = touch.position;
-                _touchStartPos = _dragOrigin;
+                dragOrigin = touch.position;
+                touchStartPos = dragOrigin;
                 isDragging = false;
             }
             else if (touch.phase == TouchPhase.Moved)
             {
-                if (_startedOnUI || buildingplacer?.isSelect == true || isAI) return;
+                if (startedOnUI || buildingplacer?.isSelect == true || isAI) return;
 
-                Vector3 delta = (Vector3)touch.position - _dragOrigin;
-                float dist = Vector2.Distance(touch.position, _touchStartPos);
+                Vector3 delta = (Vector3)touch.position - dragOrigin;
+                float dist = Vector2.Distance(touch.position, touchStartPos);
 
-                if (dist > _clickThreshold)
+                if (dist > clickThreshold)
                 {
                     isDragging = true;
                     ApplyCameraMove(delta);
-                    _dragOrigin = touch.position;
+                    dragOrigin = touch.position;
                 }
             }
             else if (touch.phase == TouchPhase.Ended)
@@ -134,18 +117,71 @@ public class CameraController : MonoBehaviour
                 if (!isDragging && !isCatTouch)
                     ClickBuilding(touch.position);
 
-                isCatTouch = false;
-                _startedOnUI = false;
-                isDragging = false;
-                isAI = false;
+                ResetFlags();
             }
+        }
+        else if (Input.touchCount == 2)
+        {
+            Touch t0 = Input.GetTouch(0);
+            Touch t1 = Input.GetTouch(1);
+
+            float prevMag = (t0.position - t0.deltaPosition - (t1.position - t1.deltaPosition)).magnitude;
+            float currMag = (t0.position - t1.position).magnitude;
+
+            float delta = prevMag - currMag;
+            ApplyZoom(delta * 0.01f); // 감도 조절
         }
     }
 
+    #endregion
+
+    #region Zoom
+
+void HandleZoom()
+{
+#if UNITY_EDITOR || UNITY_STANDALONE
+    if (!Application.isFocused || EventSystem.current?.IsPointerOverGameObject() == true)
+        return;
+
+    float scroll = Input.GetAxis("Mouse ScrollWheel");
+    if (Mathf.Abs(scroll) > 0.01f)
+        ApplyZoom(-scroll * 1f);
+#endif
+
+#if UNITY_WEBGL && !UNITY_EDITOR
+    if (EventSystem.current?.IsPointerOverGameObject() == true) return;
+
+    float scroll = Input.mouseScrollDelta.y;
+    if (Mathf.Abs(scroll) > 0.01f)
+    {
+        ApplyZoom(scroll * 1f); // 감도는 조절 가능
+        return;
+    }
+
+    // 키보드 백업
+    if (Input.GetKey(KeyCode.Equals) || Input.GetKey(KeyCode.KeypadPlus)) // +
+        ApplyZoom(-0.5f);
+    else if (Input.GetKey(KeyCode.Minus) || Input.GetKey(KeyCode.KeypadMinus)) // -
+        ApplyZoom(0.5f);
+#endif
+}
+
+
+    void ApplyZoom(float delta)
+    {
+        if (cam == null) return;
+
+        cam.orthographicSize = Mathf.Clamp(cam.orthographicSize - delta, minZoom, maxZoom);
+    }
+
+    #endregion
+
+    #region Camera Move
+
     void ApplyCameraMove(Vector2 delta)
     {
-        Vector3 move = new Vector3(-delta.x, 0, -delta.y) * _dragSpeed * Time.deltaTime;
-        move = _cam.transform.TransformDirection(move);
+        Vector3 move = new Vector3(-delta.x, 0, -delta.y) * dragSpeed * Time.deltaTime;
+        move = cam.transform.TransformDirection(move);
         move.y = 0;
 
         Vector3 newPos = transform.position + move;
@@ -154,12 +190,16 @@ public class CameraController : MonoBehaviour
         transform.position = newPos;
     }
 
+    #endregion
+
+    #region Click Logic
+
     void ClickCat(Vector2 screenPos)
     {
         if (IsPointerOverUI()) return;
         if (BuildingPlacer.Instance.isSequenceRemove) return;
 
-        Ray ray = _cam.ScreenPointToRay(screenPos);
+        Ray ray = cam.ScreenPointToRay(screenPos);
         RaycastHit[] hits = Physics.RaycastAll(ray, 100f, layerMask);
 
         foreach (var hit in hits)
@@ -168,8 +208,7 @@ public class CameraController : MonoBehaviour
             {
                 isAI = true;
                 Managers.Debug.Log($" ClickCat:Cat Clicked: {hit.collider.name}", Define.EDebugType.None);
-                var clickable = hit.collider.GetComponent<BaseObject>();
-                clickable?.OnClick();
+                hit.collider.GetComponent<BaseObject>()?.OnClick();
                 isCatTouch = true;
                 break;
             }
@@ -181,7 +220,7 @@ public class CameraController : MonoBehaviour
         if (IsPointerOverUI()) return;
         if (BuildingPlacer.Instance.isSequenceRemove) return;
 
-        Ray ray = _cam.ScreenPointToRay(screenPos);
+        Ray ray = cam.ScreenPointToRay(screenPos);
         RaycastHit[] hits = Physics.RaycastAll(ray, 100f, layerMask);
 
         foreach (var hit in hits)
@@ -190,12 +229,15 @@ public class CameraController : MonoBehaviour
                 hit.collider.gameObject.layer == LayerMask.NameToLayer("Stage"))
             {
                 Managers.Debug.Log($" ClickBuilding:Building Clicked: {hit.collider.name}", Define.EDebugType.None);
-                var clickable = hit.collider.GetComponent<BaseObject>();
-                clickable?.OnClick();
+                hit.collider.GetComponent<BaseObject>()?.OnClick();
                 break;
             }
         }
     }
+
+    #endregion
+
+    #region Utility
 
     bool IsPointerOverUI(int fingerId = -1)
     {
@@ -213,4 +255,14 @@ public class CameraController : MonoBehaviour
         return EventSystem.current.IsPointerOverGameObject(fingerId);
 #endif
     }
+
+    void ResetFlags()
+    {
+        isCatTouch = false;
+        startedOnUI = false;
+        isDragging = false;
+        isAI = false;
+    }
+
+    #endregion
 }

@@ -18,7 +18,6 @@ public class UI_CheckOutItem : UI_Base
     {
         DayValueText,
         RewardValueText,
-        ItemText
     }
 
     enum Images
@@ -139,7 +138,7 @@ public class UI_CheckOutItem : UI_Base
         _rewardValue = Managers.Data.CheckOutDataDic[_dayCount].RewardItemValue;
 
         GetText((int)Texts.DayValueText).text = _dayCount.ToString();
-        GetText((int)Texts.RewardValueText).text = _rewardValue.ToString();
+       GetText((int)Texts.RewardValueText).text = _rewardValue.ToString();
         GetImage((int)Images.RewardItemImage).sprite = Managers.Resource.Load<Sprite>(Managers.Data.MaterialDic[_itemID].SpriteName);
     }
 }
