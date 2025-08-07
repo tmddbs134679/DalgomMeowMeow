@@ -287,9 +287,10 @@ Application.Quit();
         }
 
      
+        SaveQuestSystem.Reset();
+        QuestManager.Instance.UnlockedContent.Clear();
+        QuestManager.Instance.InitQuest();
         PlayerPrefs.Save(); // 변경 사항 저장
-        var saveData = SaveQuestSystem.Load();
-        QuestManager.Instance.LoadFromSaveData(saveData);
         BuildingPlacer.Instance.ResetData();
         Managers.Scene.LoadScene(Define.EScene.TitleScene);
     }
