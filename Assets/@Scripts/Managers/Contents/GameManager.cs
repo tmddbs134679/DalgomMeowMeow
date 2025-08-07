@@ -263,6 +263,7 @@ Application.Quit();
         PlayerPrefs.DeleteAll(); // 모든 PlayerPrefs 데이터를 삭제
 
         Gold = 0;
+        _gameData.MaxGold = 0;
         CharacterMap.Clear();
         CharacterInMainScene.Clear();
         _characters.Clear();

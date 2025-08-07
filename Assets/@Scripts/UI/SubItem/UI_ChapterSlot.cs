@@ -54,7 +54,7 @@ public class UI_ChapterSlot : UI_Base
             switch (condition.Type)
             {
                 case UnlockConditionType.Gold:
-                    float currentGold = Managers.Game.Gold;
+                    float currentGold = Managers.Game.MaxGold;
                     title = $"누적 골드  {Managers.Game.MaxGold}/{condition.RequiredGold}";
                     CompleteCheckColor = currentGold >= condition.RequiredGold ? Color.white : Color.clear;
                     break;
