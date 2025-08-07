@@ -334,7 +334,7 @@ public DateTime LastDayNightCheckTime
     public int CalculateOfflineGold()
     {
         // 마지막 보상 시각부터 현재까지 경과시간
-        int totalMinutes = (int)TimeSinceLastQuit.TotalMinutes;
+        int totalMinutes = (int)Math.Round(TimeSinceLastQuit.TotalMinutes);
 
         // 골드 계산
         int totalGold = totalMinutes * Define.GOLD_PER_MINUTE;
