@@ -53,7 +53,7 @@ public class DragController : MonoBehaviour
 
             if (!isGaugeFilled)
             {
-                  //  ShowGauge(true);
+                //  ShowGauge(true);
                 if (pointerDownTimer >= longPressThreshold)
                 {
                     isGaugeFilled = true;
@@ -97,12 +97,17 @@ public class DragController : MonoBehaviour
         {
             isDelay = true;
             ResetPressState();
-
             // 땅 클릭 처리
             if (Physics.Raycast(ray, out var groundHit, 1000f, groundLayer))
             {
                 BuildingPlacer.Instance.OnGroundTouched(groundHit.point);
                 BuildingPlacer.Instance.OnGroundTouchedSecond(groundHit.point); // 하나로 통합 가능성 있음
+            }
+            // "Player" 레이어만 포함된 마스크
+            int layer = LayerMask.GetMask("Player");
+            if (Physics.Raycast(ray, out var playerhit, 1000f, layer))
+            {
+                return;//플레이어 감지시 리턴
             }
 
             // 오브젝트 감지
@@ -158,7 +163,9 @@ public class DragController : MonoBehaviour
 
     private void OnLongPress()
     {
-        if (currentTarget is MonoBehaviour mb && mb.gameObject.layer == LayerMask.NameToLayer("Stage"))
+        if (currentTarget is MonoBehaviour mb && mb.gameObject.layer == LayerMask.NameToLayer("Stage")) //스테이지는 못하게 막기
+            return;
+        if (currentTarget is MonoBehaviour mb2 && mb2.gameObject.layer == LayerMask.NameToLayer("Player")) //플레이어가 감지됐을시에는 못하게 하기
             return;
 
         currentTarget?.OnLongPress();
@@ -170,7 +177,7 @@ public class DragController : MonoBehaviour
         pointerDownTimer = 0f;
         postFillTimer = 0f;
         isGaugeFilled = false;
-       // ShowGauge(false);
+        // ShowGauge(false);
     }
 
     private void ShowGauge(bool show)
