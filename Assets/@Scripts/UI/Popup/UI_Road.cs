@@ -72,12 +72,14 @@ public class UI_Road : UI_Popup
 
     private void OnClickRoadRemoveButton()
     {
+        if (!GetButton((int)Buttons.RoadRemoveButton).interactable) return; // 튜토리얼 비활성화
         BuildingPlacer.Instance.SelectBuildingType(Define.EBuildingType.None);
         this.gameObject.SetActive(false);
     }
 
     private void OnClickCancelBuildButton()
     {
+        if (!GetButton((int)Buttons.CancelButton).interactable) return;// 튜토리얼 비활성화
         BuildingPlacer.Instance.buildMap.ColliderAllOn();
         Managers.UI.ClosePopupUI(this);
         (Managers.UI.SceneUI as UI_GameScene).gameObject.SetActive(true);

@@ -260,6 +260,7 @@ Application.Quit();
         CharacterInMainScene.Clear();
         _characters.Clear();
         AllCharacter.Clear();
+        Managers.Food.Clear();
 
         string _savePath = Application.persistentDataPath;
 
@@ -286,6 +287,9 @@ Application.Quit();
         }
 
      
+        SaveQuestSystem.Reset();
+        QuestManager.Instance.UnlockedContent.Clear();
+        QuestManager.Instance.InitQuest();
         PlayerPrefs.Save(); // 변경 사항 저장
         BuildingPlacer.Instance.ResetData();
         Managers.Scene.LoadScene(Define.EScene.TitleScene);

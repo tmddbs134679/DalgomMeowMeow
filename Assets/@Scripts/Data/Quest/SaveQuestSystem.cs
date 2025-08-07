@@ -19,4 +19,9 @@ public static class SaveQuestSystem
         string json = File.ReadAllText(SavePath);
         return JsonUtility.FromJson<QuestSaveData>(json);
     }
+    public static void Reset()
+    {
+        if (File.Exists(SavePath))
+            File.Delete(SavePath);
+    }
 }

@@ -41,7 +41,7 @@ public class TutorialManager : MonoBehaviour
         
         var gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
        
-        // StartCoroutine( GameSceneUIInteractive(gameSceneUI, false));
+        StartCoroutine( GameSceneUIInteractive(gameSceneUI, false));
         
 
 
@@ -120,7 +120,7 @@ public class TutorialManager : MonoBehaviour
         }
         else
         {
-            SetAllUIInteractable(true); // 전체 비활성화
+            SetAllUIInteractable(true); // 전체 활성화
             highlighter.Hide();
             dimOverlay?.gameObject.SetActive(false);
         }
@@ -244,7 +244,6 @@ public class TutorialManager : MonoBehaviour
                 toggle.interactable = state;
             }
         }
-        
         var buildActionUI = Managers.UI.GetPopupUI<UI_BuildAction>();
         if (buildActionUI != null)
         {
@@ -257,7 +256,42 @@ public class TutorialManager : MonoBehaviour
             }
 
         }
+        var buildUI = Managers.UI.GetPopupUI<UI_BuildPopup>();
+        if (buildUI != null)
+        {
+            var buttons = buildUI.GetComponentsInChildren<Button>(true);
+            foreach (var button in buttons)
+            {
+                button.interactable = state;
+                if (button.image != null)
+                    button.image.raycastTarget = state;
+            }
+        }
         
+        var farmUI = Managers.UI.GetPopupUI<UI_FarmPopup>();
+        if (farmUI != null)
+        {
+            var buttons = farmUI.GetComponentsInChildren<Button>(true);
+            foreach (var button in buttons)
+            {
+                button.interactable = state;
+                if (button.image != null)
+                    button.image.raycastTarget = state;
+            }
+        }
+
+        var roadUI = Managers.UI.GetPopupUI<UI_Road>();
+        if (roadUI != null)
+        {
+            var buttons = roadUI.GetComponentsInChildren<Button>(true);
+            foreach (var button in buttons)
+            {
+                button.interactable = state;
+                if (button.image != null)
+                    button.image.raycastTarget = state;
+            }
+        }
+            
             
         foreach (var button in FindObjectsOfType<Button>(true))
         {
@@ -265,7 +299,7 @@ public class TutorialManager : MonoBehaviour
             if (button.image != null)
                 button.image.raycastTarget = state;
         }
-
+        
         foreach (var toggle in FindObjectsOfType<Toggle>(true))
         {
             toggle.interactable = state;
@@ -294,7 +328,7 @@ public class TutorialManager : MonoBehaviour
         var foundButtons = GameObject.FindObjectsOfType<Button>(true);
         foreach (var button in foundButtons)
         {
-            button.interactable = state;
+            button.enabled = state;
             if (button.image != null)
                 button.image.raycastTarget = state;
         }
@@ -384,18 +418,18 @@ public class TutorialManager : MonoBehaviour
 
         foreach (var button in buttons)
         {
-            button.interactable = state;
-            if (button.image != null)
-                button.image.raycastTarget = state;
+            if (button.name != "RoadButton")
+            {
+                button.interactable = state;
+                if (button.image != null)
+                    button.image.raycastTarget = state;
+            }
         }
 
         foreach (var toggle in toggles)
         {
             toggle.interactable = state;
         }
-        var roadButton = gameSceneUI.transform.Find("RoadButton")?.GetComponent<Button>();
-        if (roadButton == null)
-        if (roadButton != null)
-            roadButton.interactable = true;
+
     }
 }

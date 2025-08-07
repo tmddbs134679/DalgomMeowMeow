@@ -141,6 +141,7 @@ public class UI_GameScene : UI_Scene
 
         Refresh();
 
+        RefreshFood();
         return true;
     }
 
@@ -151,10 +152,6 @@ public class UI_GameScene : UI_Scene
         Init();
     }
 
-    private void OnEnable()
-    {
-        RefreshFood();
-    }
     public void OnDestroy()
     {
         if (Managers.Game != null)
@@ -181,6 +178,7 @@ public class UI_GameScene : UI_Scene
 
     private void OnClickNoticeButton()
     {
+        if (!GetButton((int)Buttons.QuickButton).interactable) return; //튜토리얼 버튼비활성화
         Managers.Sound.PlayButtonClick();
         _uiNotiPopup.gameObject.SetActive(true);
     }
@@ -235,6 +233,7 @@ public class UI_GameScene : UI_Scene
 
     private void OnClickQuickButton()
     {
+        if (!GetButton((int)Buttons.QuickButton).interactable) return; //튜토리얼 버튼비활성화
         Managers.Sound.PlayButtonClick();
         _quickMenuPopupUI.gameObject.SetActive(true);
     }
