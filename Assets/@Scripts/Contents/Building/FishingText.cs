@@ -97,12 +97,12 @@ public class FishingText : MonoBehaviour
                 text.text = "MISS...";
                 break;
             case FishingResult.Normal:
-                text.text = $"+500";
-                Managers.Game.Gold += 500;
+                text.text = $"+2500";
+                Managers.Game.Gold += 2500;
                 break;
             case FishingResult.Jackpot:
-                text.text = $"+100";
-                Managers.Game.Dia += 100;
+                text.text = $"+500";
+                Managers.Game.Dia += 500;
                 break;
         }
         iconImage.sprite = icons[(int)result];

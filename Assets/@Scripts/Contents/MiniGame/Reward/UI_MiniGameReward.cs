@@ -55,7 +55,7 @@ public class UI_MiniGameReward : UI_Popup
         _scoreText.text = $"Score\n{score}";
         _timeText.text = $"Time\n{time}s";
         _scoreRewardText.text = $"{(int)(score * 0.5f)}G";
-        _timeRewardText.text = $"{(60 - (int)time) * 100}G";
+        _timeRewardText.text = $"{(60 - (int)time) * 200}G";
     }
 
 
