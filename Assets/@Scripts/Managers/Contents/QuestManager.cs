@@ -272,7 +272,7 @@ public class QuestManager : MonoBehaviour
                         allMet = false;
                     break;
                 case Data.UnlockConditionType.Gold:
-                    if (Managers.Game.Gold < condition.RequiredGold)
+                    if (Managers.Game.MaxGold < condition.RequiredGold)
                         allMet = false;
                     break;
             }
@@ -417,5 +417,10 @@ public class QuestManager : MonoBehaviour
                 chapterNotify = true;
             }
         }
+    }
+    public Quest GetQuest(string questId)
+    {
+        _quests.TryGetValue(questId, out var quest);
+        return quest;
     }
 }

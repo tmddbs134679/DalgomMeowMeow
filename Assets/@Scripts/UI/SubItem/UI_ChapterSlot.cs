@@ -30,14 +30,14 @@ public class UI_ChapterSlot : UI_Base
             switch (condition.Type)
             {
                 case UnlockConditionType.Gold:
-                    title = $"골드 조건 {condition.RequiredGold}";
+                    title = $"누적 골드 {Managers.Game.MaxGold}/{condition.RequiredGold}";
                     break;
 
                 case UnlockConditionType.Quest:
                     if (!string.IsNullOrEmpty(condition.QuestId) &&
                         Managers.Data.QuestDataDic.TryGetValue(condition.QuestId, out var questData))
                     {
-                        title = $"{questData.Title}";
+                        title = $"{questData.Title} ";
                     }
                     else
                     {
@@ -54,8 +54,8 @@ public class UI_ChapterSlot : UI_Base
             switch (condition.Type)
             {
                 case UnlockConditionType.Gold:
-                    float currentGold = Managers.Game.Gold;
-                    title = $"골드 조건 {condition.RequiredGold}";
+                    float currentGold = Managers.Game.MaxGold;
+                    title = $"누적 골드  {Managers.Game.MaxGold}/{condition.RequiredGold}";
                     CompleteCheckColor = currentGold >= condition.RequiredGold ? Color.white : Color.clear;
                     break;
 
@@ -64,7 +64,8 @@ public class UI_ChapterSlot : UI_Base
                     if (!string.IsNullOrEmpty(condition.QuestId) &&
                         Managers.Data.QuestDataDic.TryGetValue(condition.QuestId, out var questData))
                     {
-                        title = $"{questData.Title}";
+                        var quest = QuestManager.Instance.GetQuest(condition.QuestId);
+                        title = $"{questData.Title} ({quest.Progress}/{quest.QuestData.GoalCount})";
                     }
                     else
                     {

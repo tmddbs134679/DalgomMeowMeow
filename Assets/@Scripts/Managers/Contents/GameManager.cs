@@ -15,6 +15,7 @@ public class GameData
     public float Gold = 0;
     public int Dia = 0;
     public int Ticket = 0;
+    public float MaxGold = 0;
 
     //public List <캐릭터들>
 
@@ -53,6 +54,7 @@ public class GameManager
     public bool RewardMinigame = false;
     // 씬에 존재하는 최대 캐릭터 수, 5명으로 제한
     public int MainSceneCount = 0; // 메인 씬에 존재하는 캐릭터 수
+    public float MaxGold => _gameData.MaxGold;
 
     #region Action
 
@@ -67,7 +69,12 @@ public class GameManager
     {
         get { return _gameData.Gold; }
         set
-        {
+        {        
+            if (value > _gameData.Gold)
+            {
+                float delta = value - _gameData.Gold;
+                _gameData.MaxGold += delta;
+            }
             _gameData.Gold = value;
             SaveGame();
             OnResourcesChagned?.Invoke();
@@ -256,6 +263,7 @@ Application.Quit();
         PlayerPrefs.DeleteAll(); // 모든 PlayerPrefs 데이터를 삭제
 
         Gold = 0;
+        _gameData.MaxGold = 0;
         CharacterMap.Clear();
         CharacterInMainScene.Clear();
         _characters.Clear();
@@ -287,9 +295,10 @@ Application.Quit();
         }
 
      
+        SaveQuestSystem.Reset();
+        QuestManager.Instance.UnlockedContent.Clear();
+        QuestManager.Instance.InitQuest();
         PlayerPrefs.Save(); // 변경 사항 저장
-        var saveData = SaveQuestSystem.Load();
-        QuestManager.Instance.LoadFromSaveData(saveData);
         BuildingPlacer.Instance.ResetData();
         Managers.Scene.LoadScene(Define.EScene.TitleScene);
     }
