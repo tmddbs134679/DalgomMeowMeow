@@ -17,6 +17,12 @@ NavMesh 기반의 FSM(Finite State Machine) 구조와
 | [CharacterAction.cs](../@Scripts/Contents/AI/CharacaterAction/CharacterAction.cs) | 외부에서 FSM 상태를 명확하게 트리거할 수 있도록 각 행동별(Idle, Cook, Deliver 등) 액션 함수와 이벤트를 제공하도록 구현하였습니다
 
 
+![Dalgom2Hi](https://github.com/user-attachments/assets/c2e650c4-9c17-4b91-9da7-5fc617639d7b)
+
+
+![battletest](https://github.com/user-attachments/assets/ee575607-8fe0-478f-b2da-a4a580888b3c)
+
+
 
 
 ------
@@ -56,6 +62,7 @@ GameManager에 가챠(Gacha) 시스템을 구현하였습니다.
 뽑기 결과가 즉시 게임 데이터와 UI에 반영되도록 처리하였으며,
 저장까지 통합적으로 관리할 수 있도록 구현하였습니다.
 
+![123](https://github.com/user-attachments/assets/e94502e1-f2df-4090-89d7-68ac0cdc3fd0)
 
 
 ------
@@ -80,9 +87,11 @@ GameManager에 가챠(Gacha) 시스템을 구현하였습니다.
 | [RoomManager.cs](../@Scripts/Managers/Contents/RoomManager.cs) | **캐릭터 창고의 공간(룸)**을 생성하고 관리하는 매니저로, 해금된 방 개수에 따라 배치 가능한 Room 오브젝트를 동적으로 생성합니 |
 | [UI_ChangePopup.cs](../@Scripts/UI/Popup/UI_ChangePopup.cs) | 캐릭터의 메인 씬 배치 여부를 변경하는 팝업 UI. 슬롯을 클릭해 InMainScene 여부를 변경하고, 확인 시 반영합니다 |
 | [UI_ChangeCharacterSlot.cs](../@Scripts/UI/SubItem/UI_ChangeCharacterSlot.cs) | 	슬롯별 캐릭터 정보와 전환 UI 처리, 캐릭터 아이콘, 속도 등 시각 정보 제공 및 슬롯 클릭 시 선택 상태 처리합니 |
+![123](https://github.com/user-attachments/assets/08139fc6-ef3d-481c-89f1-0f475f846331)
 
 
 ------
 <br>
+
 
 
