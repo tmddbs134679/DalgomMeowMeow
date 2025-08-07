@@ -12,9 +12,9 @@ NavMesh 기반의 FSM(Finite State Machine) 구조와
 
 | Script명          | 설명                                                         |
 | ----------------- | ------------------------------------------------------------ |
-| [AICharacter.cs](../@Scripts/Contents/Character/AICharacter.cs)   | FSM, Stat, 상호작용, 이펙트 등 캐릭터 기능을 일원화하여 관리할 수 있도록 모든 컴포넌트의 중앙 허브로 구현하였습니다.
-| [AIController.cs](../@Scripts/Contents/Character/AIController.cs) | 캐릭터가 자율적으로 행동하고 상태를 전환할 수 있도록 FSM 상태 전환, 행동 우선순위, 이동/건물 탐색 로직을 통합 관리하도록 구현하였습니다.
-| [CharacterAction.cs](../@Scripts/Contents/Character/CharacterAction.cs) | 외부에서 FSM 상태를 명확하게 트리거할 수 있도록 각 행동별(Idle, Cook, Deliver 등) 액션 함수와 이벤트를 제공하도록 구현하였습니다
+| [AICharacter.cs](../@Scripts/Contents/AI/AICharacter.cs)   | FSM, Stat, 상호작용, 이펙트 등 캐릭터 기능을 일원화하여 관리할 수 있도록 모든 컴포넌트의 중앙 허브로 구현하였습니다.
+| [AIController.cs](../@Scripts/Contents/AI/FSM/Controller/AIController.cs) | 캐릭터가 자율적으로 행동하고 상태를 전환할 수 있도록 FSM 상태 전환, 행동 우선순위, 이동/건물 탐색 로직을 통합 관리하도록 구현하였습니다.
+| [CharacterAction.cs](../@Scripts/Contents/AI/CharacaterAction/CharacterAction.cs) | 외부에서 FSM 상태를 명확하게 트리거할 수 있도록 각 행동별(Idle, Cook, Deliver 등) 액션 함수와 이벤트를 제공하도록 구현하였습니다
 
 
 
@@ -84,3 +84,4 @@ GameManager에 가챠(Gacha) 시스템을 구현하였습니다.
 
 ------
 <br>
+
