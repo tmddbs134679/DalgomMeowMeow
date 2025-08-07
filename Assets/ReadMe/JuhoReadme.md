@@ -40,7 +40,7 @@ GameManager에 가챠(Gacha) 시스템을 구현하였습니다.
 
 | Script명             | 설명                                                         |
 | -------------------- | ------------------------------------------------------------ |
-| [GameManager.cs](../@Scripts/Managers/Core/GameManager.cs) | 캐릭터 및 장비의 가챠 뽑기 기능을 담당하며, 확률에 따른 랜덤 생성, 획득 처리, 창고 연동까지 통합적으로 관리할 수 있도록 구현하였습니다.	 |
+| [GameManager.cs](../@Scripts/Managers/Contents/GameManager.cs) | 캐릭터 및 장비의 가챠 뽑기 기능을 담당하며, 확률에 따른 랜덤 생성, 획득 처리, 창고 연동까지 통합적으로 관리할 수 있도록 구현하였습니다.	 |
 
 
 
@@ -77,11 +77,12 @@ GameManager에 가챠(Gacha) 시스템을 구현하였습니다.
 | Script명        | 설명                                                         |
 | --------------- | ------------------------------------------------------------ |
 | [CharacterStoreScene.cs](../@Scripts/Scenes/CharacterStoreScene.cs) | 	캐릭터 스토어 씬의 초기화 및 캐릭터 배치를 담당. 저장된 RoomPos를 기반으로 비주얼 배치를 처리하며, 창고에 있는 캐릭터만 스폰합니 |
-| [RoomManager.cs](../@Scripts/Managers/Core/RoomManager.cs) | **캐릭터 창고의 공간(룸)**을 생성하고 관리하는 매니저로, 해금된 방 개수에 따라 배치 가능한 Room 오브젝트를 동적으로 생성합니 |
+| [RoomManager.cs](../@Scripts/Managers/Contents/RoomManager.cs) | **캐릭터 창고의 공간(룸)**을 생성하고 관리하는 매니저로, 해금된 방 개수에 따라 배치 가능한 Room 오브젝트를 동적으로 생성합니 |
 | [UI_ChangePopup.cs](../@Scripts/UI/Popup/UI_ChangePopup.cs) | 캐릭터의 메인 씬 배치 여부를 변경하는 팝업 UI. 슬롯을 클릭해 InMainScene 여부를 변경하고, 확인 시 반영합니다 |
 | [UI_ChangeCharacterSlot.cs](../@Scripts/UI/SubItem/UI_ChangeCharacterSlot.cs) | 	슬롯별 캐릭터 정보와 전환 UI 처리, 캐릭터 아이콘, 속도 등 시각 정보 제공 및 슬롯 클릭 시 선택 상태 처리합니 |
 
 
 ------
 <br>
+
 
