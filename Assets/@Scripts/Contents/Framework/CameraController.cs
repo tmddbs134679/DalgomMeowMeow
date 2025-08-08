@@ -27,7 +27,7 @@ void Start()
 #if UNITY_EDITOR || UNITY_STANDALONE
     _dragSpeed = 3f;
 #else
-    _dragSpeed = 1f; // 모바일에서 너무 빠르니까 낮춰줌
+    _dragSpeed = 1.5f; // 모바일에서 너무 빠르니까 낮춰줌
 #endif
 }
 
@@ -127,45 +127,79 @@ void Start()
         {
             Touch touch = Input.GetTouch(0);
 
-            if (touch.phase == TouchPhase.Began)
-            {
-                _startedOnUI = IsPointerOverUI(touch.fingerId); // UI 위에서 눌렀는지 확인
-                if (_startedOnUI) return;
+       if (touch.phase == TouchPhase.Began)
+{
+    _startedOnUI = IsPointerOverUI(touch.fingerId); // UI 위에서 눌렀는지 확인
+    Debug.Log($"[Touch Began] fingerId: {touch.fingerId}, position: {touch.position}, isOverUI: {_startedOnUI}");
 
-                _dragOrigin = touch.position;
-                _touchStartPos = _dragOrigin;
-                isDragging = false;
-            }
-            else if (touch.phase == TouchPhase.Moved)
-            {
-                if (_startedOnUI) return; // UI 위에서 시작했으면 아예 이동 막기
-                if (buildingplacer == null) return;
-                if (buildingplacer.isSelect) return;
-                if (isAI) return;
+    if (_startedOnUI)
+    {
+        Debug.Log("[Touch Began] 터치가 UI 위에서 시작됨 → 드래그 차단");
+        return;
+    }
+        ClickCat(touch.position);
+    _dragOrigin = touch.position;
+    _touchStartPos = _dragOrigin;
+    isDragging = false;
+}
+else if (touch.phase == TouchPhase.Moved)
+{
+    if (_startedOnUI)
+    {
+        Debug.Log("[Touch Moved] 처음에 UI에서 시작됨 → 드래그 차단");
+        return;
+    }
 
-                Vector3 delta = (Vector3)touch.position - _dragOrigin;
-                float dist = Vector2.Distance(touch.position, _touchStartPos);
+    if (buildingplacer == null)
+    {
+        Debug.LogWarning("[Touch Moved] buildingplacer가 null임");
+        return;
+    }
 
-                if (dist > _clickThreshold)
-                {
-                    isDragging = true;
-                    ApplyCameraMove(delta);
-                    _dragOrigin = touch.position;
-                }
-            }
-            else if (touch.phase == TouchPhase.Ended)
-            {
-                if (!isDragging && !isCatTouch) ClickBuilding(touch.position); // 건물일 때만
-                isCatTouch = false;
-                if (_startedOnUI)
-                {
-                    _startedOnUI = false; // 다시 초기화
-                    return;
-                }
+    if (buildingplacer.isSelect)
+    {
+        Debug.Log("[Touch Moved] 건물 선택 중이므로 드래그 차단");
+        return;
+    }
 
-                isDragging = false;
-                isAI = false;
-            }
+    if (isAI)
+    {
+        Debug.Log("[Touch Moved] AI 상호작용 중이므로 드래그 차단");
+        return;
+    }
+
+    Vector3 delta = (Vector3)touch.position - _dragOrigin;
+    float dist = Vector2.Distance(touch.position, _touchStartPos);
+
+    if (dist > _clickThreshold)
+    {
+        Debug.Log($"[Touch Moved] 드래그 시작됨 - 이동 거리: {dist}");
+        isDragging = true;
+        ApplyCameraMove(delta);
+        _dragOrigin = touch.position;
+    }
+}
+else if (touch.phase == TouchPhase.Ended)
+{
+    if (_startedOnUI)
+    {
+        Debug.Log("[Touch Ended] UI 위에서 시작했으므로 클릭 처리 생략");
+        _startedOnUI = false;
+        return;
+    }
+
+    if (!isDragging && !isCatTouch)
+    {
+        Debug.Log("[Touch Ended] 드래그 아님 + 고양이 터치 아님 → 건물 클릭 시도");
+        ClickBuilding(touch.position);
+    }
+
+    isDragging = false;
+    isAI = false;
+    isCatTouch = false;
+    _startedOnUI = false;
+}
+
         }
     }
 
