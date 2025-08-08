@@ -61,7 +61,8 @@ public class ForestRegion : BaseObject
 
     public override void OnClick()
     {
-            if (EventSystem.current.IsPointerOverGameObject()) return;
+        if (InputUtility.IsPointerOverUI())
+            return;
         if (!QuestManager.Instance.IsUnlocked("Content_Battle"))
         {
             Managers.UI.ShowToast("아직 열리지 않았습니다");

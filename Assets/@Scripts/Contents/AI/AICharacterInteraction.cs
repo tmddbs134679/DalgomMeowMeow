@@ -50,7 +50,7 @@ public class AICharacterInteraction : MonoBehaviour
 
     public void LongPressClick()
     {
-        if (EventSystem.current.IsPointerOverGameObject())
+        if (InputUtility.IsPointerOverUI())
             return;
         if (Input.GetMouseButton(0))
         {

@@ -27,7 +27,7 @@ void Start()
 #if UNITY_EDITOR || UNITY_STANDALONE
     _dragSpeed = 3f;
 #else
-    _dragSpeed = 1.5f; // 모바일에서 너무 빠르니까 낮춰줌
+    _dragSpeed = 2.5f; // 모바일에서 너무 빠르니까 낮춰줌
 #endif
 }
 
@@ -83,7 +83,7 @@ void Start()
 
 #if UNITY_EDITOR || UNITY_STANDALONE
         // PC에서 마우스 스크롤로 확대/축소 처리
-        if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+        if (EventSystem.current != null && InputUtility.IsPointerOverUI())
         {
             return;
         }
@@ -224,7 +224,7 @@ void ApplyCameraMove(Vector2 delta)
 
     void ClickCat(Vector2 screenPos)
     {
-        if (EventSystem.current.IsPointerOverGameObject()) return;
+        if (InputUtility.IsPointerOverUI()) return;
         if (BuildingPlacer.Instance.isSequenceRemove) return;
         Ray ray = _cam.ScreenPointToRay(screenPos);
         RaycastHit[] hits = Physics.RaycastAll(ray, 100f, layerMask);
@@ -245,7 +245,7 @@ void ApplyCameraMove(Vector2 delta)
 
     void ClickBuilding(Vector2 screenPos)
     {
-        if (EventSystem.current.IsPointerOverGameObject()) return;
+        if (InputUtility.IsPointerOverUI()) return;
         if (BuildingPlacer.Instance.isSequenceRemove) return;
         Ray ray = _cam.ScreenPointToRay(screenPos);
         RaycastHit[] hits = Physics.RaycastAll(ray, 100f, layerMask);
