@@ -16,7 +16,12 @@
 | [BuildingManager](../@Scripts/Managers/Contents/BuildingManager.cs)       | 씬 내 건물들을 관리하고, 생산·보상·상태 업데이트를 일괄 처리하는 매니저 |
 
 
- 
+
+
+
+
+------
+<br>
 ## 2.  퀘스트 & 콘텐츠 해금 시스템
 
 이 시스템은 **플레이어의 진행 상황에 따라 새로운 콘텐츠(챕터, 건물 등)를 해금**하는 기능을 제공합니다.  
@@ -33,8 +38,8 @@ UI(`UI_ChapterPopup`, `UI_BuildPopup`)와 데이터가 항상 동기화되도록
 | Script명              | 설명 |
 | --------------------- | ---- |
 | [QuestManager](../@Scripts/Managers/Contents/QuestManager.cs)      | 퀘스트 진행 상황과 콘텐츠 해금 조건을 관리하고, 조건 충족 시 해금 처리 및 UI 갱신 |
-| [UI_ChapterPopup](../@Scripts/Popup/UI/UI_ChapterPopup.cs)   | 챕터별 해금 조건 및 상태를 UI에 표시하고, 해금 가능 여부에 따라 버튼 활성/비활성 |
-| [UnlockCondition](../@Scripts/Managers/Contents/BuildingManager.cs)   | 각 콘텐츠의 해금 조건(퀘스트, 누적 골드 등)을 데이터 구조로 정의 |
+| [UI_ChapterPopup](../@Scripts/Popup/UI/ChapterPopup.cs)   | 챕터별 해금 조건 및 상태를 UI에 표시하고, 해금 가능 여부에 따라 버튼 활성/비활성 |
+
 
 
 
@@ -59,9 +64,11 @@ UI(`UI_ChapterPopup`, `UI_BuildPopup`)와 데이터가 항상 동기화되도록
 | Script명              | 설명 |
 | --------------------- | ---- |
 | [TutorialManager](../@Scripts/Managers/Contents/TutorialManager.cs)   | 튜토리얼 전체 진행 관리, 단계 전환, 하이라이트/딤 처리, 상호작용 제한 로직 담당 |
-| [TutorialStep](../@Scripts/Managers/Contents/BuildingManager.cs)      | 각 튜토리얼 단계의 데이터(설명, 하이라이트 대상, 시작/완료 이벤트) 정의 |
-| [Highlighter](../@Scripts/Managers/Contents/BuildingManager.cs)       | 지정된 UI 요소를 시각적으로 강조하는 하이라이트 효과 구현 |
-| [UI_Tutorial](../@Scripts/Managers/Contents/BuildingManager.cs)       | 튜토리얼 설명 텍스트 및 이미지 출력, 단계별 UI 표시 관리 |
+| [Highlighter](../@Scripts/Contents/Tutorial/Highlighter.cs)       | 지정된 UI 요소를 시각적으로 강조하는 하이라이트 효과 구현 |
+| [UI_Tutorial](../@Scripts/UI/Scene/UI_Tutorial.cs)       | 튜토리얼 설명 텍스트 및 이미지 출력, 단계별 UI 표시 관리 |
+
+
+
 
 
 ------
@@ -84,8 +91,9 @@ UI(`UI_ChapterPopup`, `UI_BuildPopup`)와 데이터가 항상 동기화되도록
 
 | Script명                | 설명 |
 | ----------------------- | ---- |
-| [SlotMachineBuilding](../@Scripts/Managers/Contents/BuildingManager.cs) | 슬롯머신 건물의 회전, 결과 산출, 보상 지급, 애니메이션 제어를 담당 |
-| [UI_SlotMachinePopup](../@Scripts/Managers/Contents/BuildingManager.cs) | 슬롯머신 UI 인터페이스 관리, 시작 버튼, 결과 표시, 보상 수령 처리 |
-| [SlotResult](../@Scripts/Managers/Contents/BuildingManager.cs)          | 슬롯 결과 데이터 구조(아이콘, 보상 금액, 확률 가중치 등) 정의 |
+| [SlotMachineBuilding](../@Scripts/Contents/Building/SlotMachineBuilding.cs) | 슬롯머신 건물의 회전, 결과 산출, 보상 지급, 애니메이션 제어를 담당 |
+| [UI_SlotMachinePopup](../@Scripts/UI/Popup/UI_SlotMachinePopup.cs) | 슬롯머신 UI 인터페이스 관리, 시작 버튼, 결과 표시, 보상 수령 처리 |
+
+
 
 
