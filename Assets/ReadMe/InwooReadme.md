@@ -86,21 +86,24 @@ BuildingPlacer는 건물 설치에 관련된 UI/프리뷰/연속 설치/롱프�
 | ------------- | --------------------------------------------------- |
 | [DayNightCycleManager](../@Scripts/DayNightCycle/DayNightCycleManager.cs) |하루(낮/밤) 주기를 관리하는 매니저,AmbientCycle,LightCycle,ParticleCycle을 관리함 |
 | [AmbientCycle](../@Scripts/DayNightCycle/AmbientCycle.cs) | AmbientCycle주변 환경광(ambient light)의 밝기를 낮과 밤에 맞게 부드럽게 조절,DayNightCycleManager에서 시간 정보를 받아와 현재 낮인지 밤인지 판단 |
+| [LightCycle](../@Scripts/DayNightCycle/LightCycle.cs) |Directional Light의 색상 및 밝기를 낮과 밤에 맞게 부드럽게 조절, DayNightCycleManager에서 시간 정보를 받아와 현재 낮인지 밤인지 판단 |
+| [ParticleCycle](../@Scripts/DayNightCycle/ParticleCycle.cs) |하낮/밤 분위기에 맞춰 파티클(예: 반딧불, 먼지 등)의 활성/비활성 상태를 조절, DayNightCycleManager에서 시간 정보를 받아와 현재 낮인지 밤인지 판단 |
 
 ------
 <br>
-
+Assets/@Scripts/DayNightCycle/LightCycle.cs
+Assets/@Scripts/DayNightCycle/ParticleCycle.cs
 
 ## 5. 툰셰이더
-유니버설 렌더 파이프라인(URP)용 셀 셰이딩(툰 셰이딩) 기본 셰이더
-기본 텍스처와 색상, 그림자, 스페큘러 하이라이트, 림라이트, 그리고 외곽선(아웃라인)을 포함하는 복합 조명 효과 제공
+유니버설 렌더 파이프라인(URP)용 셀 셰이딩(툰 셰이딩) 기본 커스텀 셰이더
 
 ## 🧱 코드
 
 | Script명      | 설명                                                |
 | ------------- | --------------------------------------------------- |
-| [ToonLightBase](../@Shader/ToonLightBase.shader) |하루(낮/밤) 주기를 관리하는 매니저,AmbientCycle,LightCycle,ParticleCycle을 관리함 |
+| [ToonLightBase](../@Shader/ToonLightBase.shader) |기본 텍스처와 색상, 그림자, 스페큘러 하이라이트, 림라이트, 그리고 외곽선(아웃라인)을 포함하는 복합 조명 효과 제공 |
 
 ------
 <br>
+
 
