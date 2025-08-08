@@ -196,6 +196,7 @@ public class UI_BuildPopup : UI_Popup
 
     private void ShowUIFarmPopup()
     {
+        if (!GetButton((int)Buttons.FarmButton).interactable) return; //튜토리얼 버튼 비활성화
         // 이미 열려 있다면 닫기
         if (_farmPopup != null)
         {
