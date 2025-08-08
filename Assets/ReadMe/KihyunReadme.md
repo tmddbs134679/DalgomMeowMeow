@@ -22,6 +22,9 @@
 
 ------
 <br>
+
+
+
 ## 2.  퀘스트 & 콘텐츠 해금 시스템
 
 이 시스템은 **플레이어의 진행 상황에 따라 새로운 콘텐츠(챕터, 건물 등)를 해금**하는 기능을 제공합니다.  
@@ -93,6 +96,7 @@ UI(`UI_ChapterPopup`, `UI_BuildPopup`)와 데이터가 항상 동기화되도록
 | ----------------------- | ---- |
 | [SlotMachineBuilding](../@Scripts/Contents/Building/SlotMachineBuilding.cs) | 슬롯머신 건물의 회전, 결과 산출, 보상 지급, 애니메이션 제어를 담당 |
 | [UI_SlotMachinePopup](../@Scripts/UI/Popup/UI_SlotMachinePopup.cs) | 슬롯머신 UI 인터페이스 관리, 시작 버튼, 결과 표시, 보상 수령 처리 |
+
 
 
 
