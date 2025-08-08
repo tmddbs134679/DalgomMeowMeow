@@ -61,20 +61,13 @@ BuildingPlacer는 건물 설치에 관련된 UI/프리뷰/연속 설치/롱프�
 
 |  BuildingPlacer/도로 관련 주요 함수     | 설명                                                         |
 | --------------- | ------------------------------------------------------------ |
-| 도로 생성 | ------------------------------------------------------------ |
+| 도로 생성 ||
 | [OnGroundTouched](../@Scripts/BuildMap/BuildingPlacer.cs#L208) | 연속 설치 모드에서 터치한 지점에 도로 프리뷰 생성 |
 | [SaveandRemoveRoad](../@Scripts/BuildMap/BuildingPlacer.cs#L366) | 도로 프리뷰 위치 저장, 중복 방지 및 UI 업데이트 |
 | [AcceptSequenceBuild](../@Scripts/BuildMap/BuildingPlacer.cs#L405) | 연속 건물 설치 확정, 여러 위치에 한꺼번에 설치 및 저장 |
-| 도로 삭제 | ------------------------------------------------------------ |
+| 도로 삭제 ||
 | [OnGroundTouchedSecond](../@Scripts/BuildMap/BuildingPlacer.cs#L229) | 연속 삭제 모드에서 터치한 지점에 도로 삭제 프리뷰 생성 |
 | [RemoveRoad](../@Scripts/BuildMap/BuildingPlacer.cs#L252) | 도로 삭제 처리, 해당 도로 오브젝트 및 데이터 제거 |
-
-
-
-
-
-
-
 
 
 
@@ -91,32 +84,22 @@ BuildingPlacer는 건물 설치에 관련된 UI/프리뷰/연속 설치/롱프�
 
 | Script명      | 설명                                                |
 | ------------- | --------------------------------------------------- |
-| [UIManager](../@Scripts/Managers/Core/UIManager.cs) | 씬UI, 팝업, 토스트까지 통합 관리하는 중앙 UI 시스템 |
-
-
+| [DayNightCycleManager](../@Scripts/DayNightCycle/DayNightCycleManager.cs) |하루(낮/밤) 주기를 관리하는 매니저,AmbientCycle,LightCycle,ParticleCycle을 관리함 |
+| [AmbientCycle](../@Scripts/DayNightCycle/AmbientCycle.cs) | AmbientCycle주변 환경광(ambient light)의 밝기를 낮과 밤에 맞게 부드럽게 조절,DayNightCycleManager에서 시간 정보를 받아와 현재 낮인지 밤인지 판단 |
 
 ------
 <br>
 
 
-## 5. 두투윈 활용 건물 텍스트 애니메이션, 버튼 애니메이션
-각 건물의 기능을 직관적으로 보여주기 위해 애니메이션을 부여함으로써, 유저가 어떤 활동이 이루어지고 있는지 시각적으로 파악할 수 있도록 구현하였습니다. 
-
-요리, 농사, 휴식, 놀이, 낚시 건물마다 각각 다른 방식의 텍스트 애니메이션이 동작합니다.
-
-
+## 5. 툰셰이더
+유니버설 렌더 파이프라인(URP)용 셀 셰이딩(툰 셰이딩) 기본 셰이더
+기본 텍스처와 색상, 그림자, 스페큘러 하이라이트, 림라이트, 그리고 외곽선(아웃라인)을 포함하는 복합 조명 효과 제공
 
 ## 🧱 코드
 
-| Script명               | 설명                                                         |
-| ---------------------- | ------------------------------------------------------------ |
-| [UI_TextAnimation](../@Scripts/UI/UI_TextAnimation.cs)   | `DOTween`을 활용하여 건물 종류에 따라 다양한 시각적 피드백 애니메이션을 텍스트로 표현하는 시스템 |
-| [UI_ButtonAnimation](../@Scripts/UI/UI_ButtonAnimation.cs) | 버튼 클릭 시 크기 변화를 통해 사용자 피드백을 제공하는 직관적인 UI 애니메이션 구현 |
-
-
-<img width="436" height="229" alt="건물 휮넉" src="https://github.com/user-attachments/assets/2499b26a-92a1-4581-81d3-e956c4a62d4b" />
-
-<img width="436" height="229" alt="xx" src="https://github.com/user-attachments/assets/0d9b4cea-b181-4c51-aeaf-8f828645f60f" />
+| Script명      | 설명                                                |
+| ------------- | --------------------------------------------------- |
+| [ToonLightBase](../@Shader/ToonLightBase.shader) |하루(낮/밤) 주기를 관리하는 매니저,AmbientCycle,LightCycle,ParticleCycle을 관리함 |
 
 ------
 <br>
@@ -192,6 +175,7 @@ Addressables를 통한 비동기 로딩과 오브젝트 풀링을 결합하여 �
 <img width="250" height="250" alt="노티" src="https://github.com/user-attachments/assets/c1462dcb-e1e5-4c28-8474-a165b18776fb" />
 
 -----
+
 
 
 
