@@ -13,8 +13,8 @@
 
 | Script명          | 설명                                                         |
 | ----------------- | ------------------------------------------------------------ |
-| [FoodManager]()   | **음식 리스트 관리**와 **음식 판매 시스템**을 담당하며, `Enqueue`를 통해 **음식을 추가**하고, **자동 판매** 기능을 제공 |
-| [IngredientSet]() | **음식 생산에 사용되는 재료**와 그 **밭 건물 레벨**을 관리하며, **평균 밭 레벨**에 따라 **가격 보정 계수**를 계산하고 재료를 추가하거나 초기화하는 기능 |
+| [FoodManager](../@Scripts/Managers/Contents/FoodManager.cs)   | **음식 리스트 관리**와 **음식 판매 시스템**을 담당하며, `Enqueue`를 통해 **음식을 추가**하고, **자동 판매** 기능을 제공 |
+| [IngredientSet](../@Scripts/Contents/Building/CookingBuilding.cs) | **음식 생산에 사용되는 재료**와 그 **밭 건물 레벨**을 관리하며, **평균 밭 레벨**에 따라 **가격 보정 계수**를 계산하고 재료를 추가하거나 초기화하는 기능 |
 
 
 <img width="1571" height="188" alt="음식" src="https://github.com/user-attachments/assets/840e42f5-d3c4-43f5-80a8-a45138c41efa" />
@@ -38,7 +38,7 @@
 
 | Script명             | 설명                                                         |
 | -------------------- | ------------------------------------------------------------ |
-| [EquipmentManager]() | 캐릭터의 **장비 착용, 미리보기, 탈착**을 관리하며, **장비의 외형 변화**를 실시간으로 반영하고 **UI/UX**를 향상시키는 시스템 |
+| [EquipmentManager](../@Scripts/Managers/Contents/EquipmentManager.cs) | 캐릭터의 **장비 착용, 미리보기, 탈착**을 관리하며, **장비의 외형 변화**를 실시간으로 반영하고 **UI/UX**를 향상시키는 시스템 |
 
 
 
@@ -61,7 +61,7 @@
 
 | Script명        | 설명                                                         |
 | --------------- | ------------------------------------------------------------ |
-| [TimeManager]() | 게임의 출석, 오프라인 보상, 일일 초기화, 시간 기반 콘텐츠를 통합적으로 관리하는 시간 시스템 |
+| [TimeManager](../@Scripts/Managers/Contents/TimeManager.cs) | 게임의 출석, 오프라인 보상, 일일 초기화, 시간 기반 콘텐츠를 통합적으로 관리하는 시간 시스템 |
 
 <img width="320" height="300" alt="출석체크" src="https://github.com/user-attachments/assets/a4904684-1704-4dea-9423-8922c19d2b4b" />
 <img width="350" height="300" alt="오프라인" src="https://github.com/user-attachments/assets/e5ab416f-0413-4d48-a7aa-cd2052e75f7d" />
@@ -80,7 +80,7 @@
 
 | Script명      | 설명                                                |
 | ------------- | --------------------------------------------------- |
-| [UIManager]() | 씬UI, 팝업, 토스트까지 통합 관리하는 중앙 UI 시스템 |
+| [UIManager](../@Scripts/Managers/Core/UIManager.cs) | 씬UI, 팝업, 토스트까지 통합 관리하는 중앙 UI 시스템 |
 
 
 
@@ -99,8 +99,8 @@
 
 | Script명               | 설명                                                         |
 | ---------------------- | ------------------------------------------------------------ |
-| [UI_TextAnimation]()   | `DOTween`을 활용하여 건물 종류에 따라 다양한 시각적 피드백 애니메이션을 텍스트로 표현하는 시스템 |
-| [UI_ButtonAnimation]() | 버튼 클릭 시 크기 변화를 통해 사용자 피드백을 제공하는 직관적인 UI 애니메이션 구현 |
+| [UI_TextAnimation](../@Scripts/UI/UI_TextAnimation.cs)   | `DOTween`을 활용하여 건물 종류에 따라 다양한 시각적 피드백 애니메이션을 텍스트로 표현하는 시스템 |
+| [UI_ButtonAnimation](../@Scripts/UI/UI_ButtonAnimation.cs) | 버튼 클릭 시 크기 변화를 통해 사용자 피드백을 제공하는 직관적인 UI 애니메이션 구현 |
 
 
 <img width="436" height="229" alt="건물 휮넉" src="https://github.com/user-attachments/assets/2499b26a-92a1-4581-81d3-e956c4a62d4b" />
@@ -120,7 +120,7 @@
 
 | Script명         | 설명                                                         |
 | ---------------- | ------------------------------------------------------------ |
-| [ObjectManger]() | 다양한 게임 오브젝트를 동적으로 일관성 있게 생성하고 초기화하는 범용 오브젝트 생성 매니저 |
+| [ObjectManger](../@Scripts/Managers/Core/ObjectManager.cs) | 다양한 게임 오브젝트를 동적으로 일관성 있게 생성하고 초기화하는 범용 오브젝트 생성 매니저 |
 
 ------
 <br>
@@ -136,7 +136,7 @@ Addressables를 통한 비동기 로딩과 오브젝트 풀링을 결합하여 �
 
 | Script명            | 설명                                                         |
 | ------------------- | ------------------------------------------------------------ |
-| [ResourceManager]() | 동기/비동기 리소스 로딩과 오브젝트 풀링을 통합 관리하는 범용 리소스 매니저 |
+| [ResourceManager](../@Scripts/Managers/Core/ResourceManager.cs) | 동기/비동기 리소스 로딩과 오브젝트 풀링을 통합 관리하는 범용 리소스 매니저 |
 
 
 ------
@@ -151,9 +151,9 @@ Addressables를 통한 비동기 로딩과 오브젝트 풀링을 결합하여 �
 
 | Script명            | 설명                                                         |
 | ------------------- | ------------------------------------------------------------ |
-| [DebugManager]()    | 조건부 컴파일(UNITY_EDITOR, DEVELOPMENT_BUILD)로 필터링된 로그 출력 관리 도구 |
-| [GameDataEditor]()  | 에디터 창에서 저장된 게임 데이터를 직접 초기화하거나 골드 값 증가 등의 디버그 동작 수행 |
-| [DataTransformer]() | Excel(.csv) 기반 게임 데이터들을 JSON으로 자동 변환 및 저장, JsonData 생성 자동화 |
+| [DebugManager](../@Scripts/Managers/Edit/DebugManager.cs)    | 조건부 컴파일(UNITY_EDITOR, DEVELOPMENT_BUILD)로 필터링된 로그 출력 관리 도구 |
+| [GameDataEditor](../@Scripts/Editor/GameDataEditor.cs)  | 에디터 창에서 저장된 게임 데이터를 직접 초기화하거나 골드 값 증가 등의 디버그 동작 수행 |
+| [DataTransformer](../@Scripts/Editor/DataTransformer.cs) | Excel(.csv) 기반 게임 데이터들을 JSON으로 자동 변환 및 저장, JsonData 생성 자동화 |
 
 <img width="300" height="268" alt="디버그" src="https://github.com/user-attachments/assets/74dd7812-e5ed-467f-b178-ad8209a5dc89" />
 <img width="335" height="268" alt="게임데이터" src="https://github.com/user-attachments/assets/4f315242-18d7-4121-bb34-863e4c3de596" />
@@ -169,9 +169,9 @@ Addressables를 통한 비동기 로딩과 오브젝트 풀링을 결합하여 �
 
 | Script명             | 설명                                                         |
 | -------------------- | ------------------------------------------------------------ |
-| [UI_PurchasePopup]() | **수량 조절**과 **재화 환전**을 동시에 지원하는 구매 전용 팝업 UI |
-| [BackgroundMove]()   | RawImage의 UV 좌표를 이동시켜 배경 이미지에 자연스러운 흐름을 주는 스크롤 효과 구현 클래스 |
-| [SoundManager]()     | 사운드 타입별 AudioSource를 분리 관리하고, 리소스를 캐싱하여 효율적으로 재생하는 게임 전용 사운드 매니저 |
+| [UI_PurchasePopup](../@Scripts/UI/Popup/UI_PurchasePopup.cs) | **수량 조절**과 **재화 환전**을 동시에 지원하는 구매 전용 팝업 UI |
+| [BackgroundMove](../@Scripts/UI/Etc/BackgroundMove.cs)   | RawImage의 UV 좌표를 이동시켜 배경 이미지에 자연스러운 흐름을 주는 스크롤 효과 구현 클래스 |
+| [SoundManager](../@Scripts/Managers/Core/SoundManager.cs)     | 사운드 타입별 AudioSource를 분리 관리하고, 리소스를 캐싱하여 효율적으로 재생하는 게임 전용 사운드 매니저 |
 
 - Notify 기능 : 캐릭터, 장비, 퀘스트 뽑기 완료 시 알림 기능을 하는 Notify 기능 구현
 
