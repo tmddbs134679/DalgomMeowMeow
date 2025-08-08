@@ -14,12 +14,6 @@
 |[GridMap](../@Scripts/BuildMap/GridMap.cs)|타일 맵 초기화, 타일에 색상 및 건설 가능 여부 적용|
 
 
-ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ사용법
-Assets/@Scripts/BuildMap/GridMap.cs
-[BuildMap](../@Scripts/BuildMap/BuildMap.cs)
-
-ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-
 ------
 <br>
 
@@ -66,6 +60,7 @@ BuildingPlacer는 건물 설치에 관련된 UI/프리뷰/연속 설치/롱프�
 | [RemoveBuild](../@Scripts/BuildMap/BuildingPlacer.cs#L564) | 기존 건물 삭제, 데이터 제거 및 씬 오브젝트 정리 |
 
 |  BuildingPlacer/도로 관련 주요 함수     | 설명                                                         |
+| --------------- | ------------------------------------------------------------ |
 | 도로 생성 | ------------------------------------------------------------ |
 | [OnGroundTouched](../@Scripts/BuildMap/BuildingPlacer.cs#L208) | 연속 설치 모드에서 터치한 지점에 도로 프리뷰 생성 |
 | [SaveandRemoveRoad](../@Scripts/BuildMap/BuildingPlacer.cs#L366) | 도로 프리뷰 위치 저장, 중복 방지 및 UI 업데이트 |
@@ -197,6 +192,7 @@ Addressables를 통한 비동기 로딩과 오브젝트 풀링을 결합하여 �
 <img width="250" height="250" alt="노티" src="https://github.com/user-attachments/assets/c1462dcb-e1e5-4c28-8474-a165b18776fb" />
 
 -----
+
 
 
 
