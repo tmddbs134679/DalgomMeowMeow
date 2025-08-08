@@ -56,11 +56,32 @@ BuildingPlacer는 건물 설치에 관련된 UI/프리뷰/연속 설치/롱프�
 
 | Script명        | 설명                                                         |
 | --------------- | ------------------------------------------------------------ |
-| [BuildingPlacer](../@Scripts/BuildMap/BuildingPlacer.cs#L300) | 게임의 출석, 오프라인 보상, 일일 초기화, 시간 기반 콘텐츠를 통합적으로 관리하는 시간 시스템 |
-
-|  BuildingPlacer 안에 함수 설명       | 설명                                                         |
-| --------------- | ------------------------------------------------------------ |
 | [BuildingPlacer](../@Scripts/BuildMap/BuildingPlacer.cs) | 게임의 출석, 오프라인 보상, 일일 초기화, 시간 기반 콘텐츠를 통합적으로 관리하는 시간 시스템 |
+
+|  BuildingPlacer/건물 설치 관련 주요 함수      | 설명                                                         |
+| --------------- | ------------------------------------------------------------ |
+| [SelectBuildingType](../@Scripts/BuildMap/BuildingPlacer.cs#L107) | 건물 선택 시, 화면 중앙 기준으로 프리뷰 생성 및 설치 준비 |
+| [AcceptBuild](../@Scripts/BuildMap/BuildingPlacer.cs#L452) | 한 개 건물 설치 확정, 실제 설치 및 데이터 저장 |
+| [CancelBuild](../@Scripts/BuildMap/BuildingPlacer.cs#L540) | 설치 취소 처리, 임시 프리뷰 오브젝트 제거 및 상태 초기화 |
+| [RemoveBuild](../@Scripts/BuildMap/BuildingPlacer.cs#L564) | 기존 건물 삭제, 데이터 제거 및 씬 오브젝트 정리 |
+
+|  BuildingPlacer/도로 관련 주요 함수     | 설명                                                         |
+| 도로 생성 | ------------------------------------------------------------ |
+| [OnGroundTouched](../@Scripts/BuildMap/BuildingPlacer.cs#L208) | 연속 설치 모드에서 터치한 지점에 도로 프리뷰 생성 |
+| [SaveandRemoveRoad](../@Scripts/BuildMap/BuildingPlacer.cs#L366) | 도로 프리뷰 위치 저장, 중복 방지 및 UI 업데이트 |
+| [AcceptSequenceBuild](../@Scripts/BuildMap/BuildingPlacer.cs#L405) | 연속 건물 설치 확정, 여러 위치에 한꺼번에 설치 및 저장 |
+| 도로 삭제 | ------------------------------------------------------------ |
+| [OnGroundTouchedSecond](../@Scripts/BuildMap/BuildingPlacer.cs#L229) | 연속 삭제 모드에서 터치한 지점에 도로 삭제 프리뷰 생성 |
+| [RemoveRoad](../@Scripts/BuildMap/BuildingPlacer.cs#L252) | 도로 삭제 처리, 해당 도로 오브젝트 및 데이터 제거 |
+
+
+
+
+
+
+
+
+
 
 ------
 <br>
@@ -176,6 +197,7 @@ Addressables를 통한 비동기 로딩과 오브젝트 풀링을 결합하여 �
 <img width="250" height="250" alt="노티" src="https://github.com/user-attachments/assets/c1462dcb-e1e5-4c28-8474-a165b18776fb" />
 
 -----
+
 
 
 
