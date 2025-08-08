@@ -83,10 +83,9 @@ public class UI_PotPopup : UI_Popup
 
     void Refresh()
     {
-        TimeSpan offlineTime = DateTime.Now - Managers.Time.LastRewardTime;
 
+        int totalMinutes = (int)Math.Round(Managers.Time.TimeSinceLastQuit.TotalMinutes);
 
-        int totalMinutes = (int)offlineTime.TotalMinutes;
         int totalGold = totalMinutes * Define.GOLD_PER_MINUTE;
 
         GetText((int)Texts.RewardValueText).text = totalGold.ToString();
