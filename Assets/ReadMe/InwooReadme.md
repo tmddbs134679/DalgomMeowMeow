@@ -4,76 +4,63 @@
 맵의 빌딩 위치 데이터와 타일의 빌드 가능 여부를 포함하여, **Addressables와 Unity의 비동기 시스템을 활용해 효율적인 리소스 관리를 지원**합니다.  
 또한, 에디터 모드에서의 초기화 및 저장 기능도 포함되어 있어 개발 및 테스트 편의성을 높였습니다.
 
-
 ### 🧱 코드
 
 | Script명          | 설명                                                                |
 |-------------------|-------------------------------------------------------------------|
 |[ArrayBuildPos](../@Scripts/BuildMap/ArrayBuildPos.cs)| 빌딩 위치 데이터(ScriptableObject)를 JSON으로 저장, Addressables 비동기 로드 및 관리  |
-| ArrayMapPos.cs     | 타일 맵 데이터 저장/불러오기, 타일 빌드 가능 여부 관리                        |
-| BuildData.cs       | 빌딩 데이터 구조체                                                    |
-| MapSaveData.cs     | 저장 시 빌딩 데이터 리스트를 포함하는 JSON 직렬화용 클래스                       |
-| TileRow.cs, TileData.cs | 타일 행 및 개별 타일 데이터 구조체                                        |
-| MapTileSaveData.cs | 타일 맵 저장/로드에 사용되는 JSON 직렬화용 클래스   
-
-[ArrayBuildPos](../@Scripts/BuildMap/ArrayBuildPos.cs)
-## 🧱 코드
-[](../)  Assets/@Scripts/BuildMap/ArrayBuildPos.cs
-| Script명          | 설명                                                         |
-| ----------------- | ------------------------------------------------------------ |
-| [FoodManager](../@Scripts/Managers/Contents/FoodManager.cs)   | **음식 리스트 관리**와 **음식 판매 시스템**을 담당하며, `Enqueue`를 통해 **음식을 추가**하고, **자동 판매** 기능을 제공 |
-| [IngredientSet](../@Scripts/Contents/Building/CookingBuilding.cs) | **음식 생산에 사용되는 재료**와 그 **밭 건물 레벨**을 관리하며, **평균 밭 레벨**에 따라 **가격 보정 계수**를 계산하고 재료를 추가하거나 초기화하는 기능 |
+|[ArrayMapPos](../@Scripts/BuildMap/ArrayMapPos.cs)| 타일 맵 데이터 저장/불러오기, 타일 빌드 가능 여부 관리                        |
+|[BuildMap](../@Scripts/BuildMap/BuildMap.cs)| 저장된 빌딩 데이터 로드, 씬에 오브젝트 배치 및 NavMesh 갱신, Collider 일괄 제어      |
+|[GridMap](../@Scripts/BuildMap/GridMap.cs)|타일 맵 초기화, 타일에 색상 및 건설 가능 여부 적용|
 
 
-<img width="1571" height="188" alt="음식" src="https://github.com/user-attachments/assets/840e42f5-d3c4-43f5-80a8-a45138c41efa" />
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ사용법
+Assets/@Scripts/BuildMap/GridMap.cs
+[BuildMap](../@Scripts/BuildMap/BuildMap.cs)
 
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
 ------
 <br>
 
+## 2. 카메라 및 드래그 시스템 (with DraggableObject)
 
-## 2. 캐릭터 장비 관리 시스템 (미리보기)
+이 기능은 유저가 씬에서 마우스로 드래그하여 오브젝트를 선택 및 조작하고,
+카메라는 이동 가능하며, 각 오브젝트는 개별적으로 드래그에 반응하도록 구성되어 있습니다.
 
-이 시스템은 **캐릭터 장비**를 관리하는 핵심 기능으로, **장비 착용, 장비 미리보기, 장비 탈착**을 처리합니다.
- 특히 **미리보기 기능**을 통해 플레이어는 장비를 장착하기 전에 **캐릭터 모델에 적용된 장비**를 실시간으로 확인할 수 있습니다.
- 이 기능은 게임의 **UI/UX**를 향상시키며, **장비 선택**에 대한 직관적인 경험을 제공합니다.
+### 🧱 코드
 
-
-
-
-
-## 🧱 코드
-
-| Script명             | 설명                                                         |
-| -------------------- | ------------------------------------------------------------ |
-| [EquipmentManager](../@Scripts/Managers/Contents/EquipmentManager.cs) | 캐릭터의 **장비 착용, 미리보기, 탈착**을 관리하며, **장비의 외형 변화**를 실시간으로 반영하고 **UI/UX**를 향상시키는 시스템 |
-
-
-
-<img width="800" height="400" alt="장비" src="https://github.com/user-attachments/assets/a9f3572a-af5f-442f-9016-770a0c19c83f" />
-
-
+| Script명          | 설명                                                                |
+|-------------------|-------------------------------------------------------------------|
+|[CameraController](../@Scripts/Contents/Framework/CameraController.cs)| [모바일,pc,웹] 모두 대응 가능한 구성으로 카메라를 이동+오브젝트 상호작용을 함,minLimit과 maxLimit으로 이동 영역 제한|
+|[DragController](../@Scripts/BuildMap/Touch&Mouse/DragController.cs)| 마우스 클릭과 드래그 시작/종료 감지,LayerMask를 활용해 드래그 가능한 오브젝트 필터링,드래그한 범위 내의 오브젝트를 감지하여 DraggableObject에게 이벤트 전달|
+|[DraggableObject](../@Scripts/BuildMap/Touch&Mouse/DraggableObject.cs)|실제로 드래그에 반응하는 오브젝트이며 해당 오브젝트 밑에 타일의 정보를 넘겨주고 DragController에 관리되어진다|
 
 ------
 <br>
 
-## 3. 출석체크 & 오프라인 보상 시스템 & 여행 시스템
+## 3. 건물 설치 시스템
 
-게임 내 시간 기반 컨텐츠(출석 보상, 오프라인 보상, 일일 초기화, 여행 시간 등)를 일관되게 관리하기 위해 **중앙 집중형 시간 관리 매니저**가 필요했습니다.
- `TimeManager`는 플레이어의 로그인 시간, 종료 시간, 보상 수령 시간 등을 추적하고, 다양한 타임 이벤트를 처리하는 역할을 합니다.
+BuildingPlacer는 건물 설치에 관련된 UI/프리뷰/연속 설치/롱프레스 드래그 및 NavMesh 갱신, 설치 취소, 저장까지 전반적인 설치 흐름을 관리하는 매니저입니다.
 
+건물 선택 시 프리뷰 오브젝트를 생성하고, 그 위치에 맞춰 설치 가능한지 여부를 판단합니다.
 
+연속 설치(도로 등)와 롱프레스 설치(기존 건물 교체)를 지원하며, 설치 시 NavMesh 갱신도 자동 수행합니다.
+
+저장은 맵 좌표 및 타일 정보를 JSON 파일로 저장하여 게임 상태를 유지합니다.
+
+플레이어의 골드를 사용하여 건설이 제한되며, 골드 부족 시 UI 알림도 포함됩니다.
 
 
 ## 🧱 코드
 
 | Script명        | 설명                                                         |
 | --------------- | ------------------------------------------------------------ |
-| [TimeManager](../@Scripts/Managers/Contents/TimeManager.cs) | 게임의 출석, 오프라인 보상, 일일 초기화, 시간 기반 콘텐츠를 통합적으로 관리하는 시간 시스템 |
+| [BuildingPlacer](../@Scripts/BuildMap/BuildingPlacer.cs)#L300 | 게임의 출석, 오프라인 보상, 일일 초기화, 시간 기반 콘텐츠를 통합적으로 관리하는 시간 시스템 |
 
-<img width="320" height="300" alt="출석체크" src="https://github.com/user-attachments/assets/a4904684-1704-4dea-9423-8922c19d2b4b" />
-<img width="350" height="300" alt="오프라인" src="https://github.com/user-attachments/assets/e5ab416f-0413-4d48-a7aa-cd2052e75f7d" />
-<img width="310" height="300" alt="여행" src="https://github.com/user-attachments/assets/fc820639-42f0-4b52-96a6-ed44f202a7ba" />
+|  BuildingPlacer 안에 함수 설명       | 설명                                                         |
+| --------------- | ------------------------------------------------------------ |
+| [BuildingPlacer](../@Scripts/BuildMap/BuildingPlacer.cs) | 게임의 출석, 오프라인 보상, 일일 초기화, 시간 기반 콘텐츠를 통합적으로 관리하는 시간 시스템 |
 
 ------
 <br>
@@ -189,4 +176,5 @@ Addressables를 통한 비동기 로딩과 오브젝트 풀링을 결합하여 �
 <img width="250" height="250" alt="노티" src="https://github.com/user-attachments/assets/c1462dcb-e1e5-4c28-8474-a165b18776fb" />
 
 -----
+
 
