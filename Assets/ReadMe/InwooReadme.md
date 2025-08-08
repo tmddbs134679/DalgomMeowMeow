@@ -56,7 +56,7 @@ BuildingPlacer는 건물 설치에 관련된 UI/프리뷰/연속 설치/롱프�
 
 | Script명        | 설명                                                         |
 | --------------- | ------------------------------------------------------------ |
-| [BuildingPlacer](../@Scripts/BuildMap/BuildingPlacer.cs)#L300 | 게임의 출석, 오프라인 보상, 일일 초기화, 시간 기반 콘텐츠를 통합적으로 관리하는 시간 시스템 |
+| [BuildingPlacer](../@Scripts/BuildMap/BuildingPlacer.cs#L300) | 게임의 출석, 오프라인 보상, 일일 초기화, 시간 기반 콘텐츠를 통합적으로 관리하는 시간 시스템 |
 
 |  BuildingPlacer 안에 함수 설명       | 설명                                                         |
 | --------------- | ------------------------------------------------------------ |
@@ -176,5 +176,6 @@ Addressables를 통한 비동기 로딩과 오브젝트 풀링을 결합하여 �
 <img width="250" height="250" alt="노티" src="https://github.com/user-attachments/assets/c1462dcb-e1e5-4c28-8474-a165b18776fb" />
 
 -----
+
 
 
