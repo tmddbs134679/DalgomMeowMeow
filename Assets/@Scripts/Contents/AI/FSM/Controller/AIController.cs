@@ -320,19 +320,19 @@ public class AIController : BaseController<AICharacter>
         character.View.Nav.updateRotation = true;
     }
 
-    public async void Move(Vector3 destination)
-    {
-        if (character.View.Nav == null)
-            return;
+public async void Move(Vector3 destination)
+{
+    if (character.View.Nav == null)
+        return;
 
-        if (!character.View.Nav.enabled || !character.View.Nav.isOnNavMesh) return;
-        await Task.Delay(10);
+    if (!character.View.Nav.enabled || !character.View.Nav.isOnNavMesh)
+        return;
 
-
-    
-        character.View.Nav.ResetPath();
-        character.View.Nav.SetDestination(destination);
-    }
+    await Task.Yield(); //  WebGL 안정화 1프레임
+    character.View.Nav.ResetPath();
+    await Task.Yield(); //  ResetPath 후 반드시 1프레임 대기
+    character.View.Nav.SetDestination(destination);
+}
 
     public void PatrolMove(float patrolDelay)
     {
