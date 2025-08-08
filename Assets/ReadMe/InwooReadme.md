@@ -1,16 +1,24 @@
-## 1. 음식 생산 시스템
+## 1. 맵 및 타일 저장/불러오기 
 
-이 시스템은 **게임 내 다양한 재료를 활용하여 음식을 생산**하고, 이를 통해 **게임 진행에 필요한 자원을 생성**하는 기능을 제공합니다.
-플레이어는 **요리 건물**에 다양한 **재료**를 넣어 **음식을 만들고, 그 음식을 판매하여 재화를 얻**을 수 있습니다. 이 시스템은 **자동화된 생산 시스템**을 구현하여, 
-
-플레이어가 수동으로 관리하지 않아도 음식을 지속적으로 생산하고 판매할 수 있게 합니다.
-
+이 기능은 게임 내 맵과 타일 데이터를 **JSON 파일로 저장 및 비동기 로드**하는 기능을 제공합니다.  
+맵의 빌딩 위치 데이터와 타일의 빌드 가능 여부를 포함하여, **Addressables와 Unity의 비동기 시스템을 활용해 효율적인 리소스 관리를 지원**합니다.  
+또한, 에디터 모드에서의 초기화 및 저장 기능도 포함되어 있어 개발 및 테스트 편의성을 높였습니다.
 
 
+### 🧱 코드
 
+| Script명          | 설명                                                                |
+|-------------------|-------------------------------------------------------------------|
+|[ArrayBuildPos](../@Scripts/BuildMap/ArrayBuildPos.cs)| 빌딩 위치 데이터(ScriptableObject)를 JSON으로 저장, Addressables 비동기 로드 및 관리  |
+| ArrayMapPos.cs     | 타일 맵 데이터 저장/불러오기, 타일 빌드 가능 여부 관리                        |
+| BuildData.cs       | 빌딩 데이터 구조체                                                    |
+| MapSaveData.cs     | 저장 시 빌딩 데이터 리스트를 포함하는 JSON 직렬화용 클래스                       |
+| TileRow.cs, TileData.cs | 타일 행 및 개별 타일 데이터 구조체                                        |
+| MapTileSaveData.cs | 타일 맵 저장/로드에 사용되는 JSON 직렬화용 클래스   
 
+[ArrayBuildPos](../@Scripts/BuildMap/ArrayBuildPos.cs)
 ## 🧱 코드
-
+[](../)  Assets/@Scripts/BuildMap/ArrayBuildPos.cs
 | Script명          | 설명                                                         |
 | ----------------- | ------------------------------------------------------------ |
 | [FoodManager](../@Scripts/Managers/Contents/FoodManager.cs)   | **음식 리스트 관리**와 **음식 판매 시스템**을 담당하며, `Enqueue`를 통해 **음식을 추가**하고, **자동 판매** 기능을 제공 |
@@ -181,3 +189,4 @@ Addressables를 통한 비동기 로딩과 오브젝트 풀링을 결합하여 �
 <img width="250" height="250" alt="노티" src="https://github.com/user-attachments/assets/c1462dcb-e1e5-4c28-8474-a165b18776fb" />
 
 -----
+
