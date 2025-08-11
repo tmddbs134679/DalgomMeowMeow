@@ -81,7 +81,7 @@
 
 
 
-### 건물  코드 기본 구성 설명
+# 건물  코드 기본 구성 설명
 [건물 로직 설명](https://velog.io/@nwoorang/%EA%B1%B4%EB%AC%BC-%EA%B4%80%EB%A0%A8-%EB%A1%9C%EC%A7%81-%ED%95%B5%EC%8B%AC-%EA%B8%B0%EB%8A%A5-%EC%84%A4%EB%AA%85)
 
 
@@ -134,6 +134,7 @@
 이 섹션에서는 플랫폼 특성에 맞게 기능 동작을 조정하고, 빌드 및 실행 시 환경별 차이를 관리하는 방식을 다룹니다.
 
 <img width="128" height="128" alt="ChatGPT Image 2025년 8월 8일 오전 10_22_06 (1)" src="https://github.com/user-attachments/assets/3b04e32f-14e0-48cf-9966-4e12e10548c5" />
+
 
 
 
