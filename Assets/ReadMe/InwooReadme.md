@@ -72,6 +72,14 @@
 | [OnGroundTouchedSecond](../@Scripts/BuildMap/BuildingPlacer.cs#L229) | 연속 삭제 모드에서 터치한 지점에 도로 삭제 프리뷰 생성 |
 | [RemoveRoad](../@Scripts/BuildMap/BuildingPlacer.cs#L252) | 도로 삭제 처리, 해당 도로 오브젝트 및 데이터 제거 |
 
+![Honeycam 2025-08-11 12-58-40](https://github.com/user-attachments/assets/4b962178-76a7-45ec-b8f8-340c7063b184)
+![Honeycam 2025-08-11 12-58-20](https://github.com/user-attachments/assets/0b1bded5-05e0-48ea-9c83-40a5266e16de)
+![Honeycam 2025-08-11 12-57-57](https://github.com/user-attachments/assets/20654c85-af14-43df-a59c-4d61ab59fa26)
+![Honeycam 2025-08-11 12-57-43](https://github.com/user-attachments/assets/ba1507b4-843f-4410-9c3f-9e0944938334)
+
+
+
+
 ### 건물  코드 기본 구성 설명
 [건물 로직 설명](https://velog.io/@nwoorang/%EA%B1%B4%EB%AC%BC-%EA%B4%80%EB%A0%A8-%EB%A1%9C%EC%A7%81-%ED%95%B5%EC%8B%AC-%EA%B8%B0%EB%8A%A5-%EC%84%A4%EB%AA%85)
 
@@ -119,6 +127,7 @@
 ## 6. 플랫폼별 맞춤 코드 리빌딩
 모바일, 웹, PC, 에디터 등 각 플랫폼마다 환경과 제약이 다르기 때문에, 코드도 그에 맞춰 별도의 분기 처리와 최적화가 필요합니다.
 이 섹션에서는 플랫폼 특성에 맞게 기능 동작을 조정하고, 빌드 및 실행 시 환경별 차이를 관리하는 방식을 다룹니다.
+
 
 
 
