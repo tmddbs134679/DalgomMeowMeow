@@ -104,6 +104,9 @@
 | [LightCycle](../@Scripts/DayNightCycle/LightCycle.cs) |Directional Light의 색상 및 밝기를 낮과 밤에 맞게 부드럽게 조절, DayNightCycleManager에서 시간 정보를 받아와 현재 낮인지 밤인지 판단 |
 | [ParticleCycle](../@Scripts/DayNightCycle/ParticleCycle.cs) |하낮/밤 분위기에 맞춰 파티클(예: 반딧불, 먼지 등)의 활성/비활성 상태를 조절, DayNightCycleManager에서 시간 정보를 받아와 현재 낮인지 밤인지 판단 |
 
+
+![Honeycam 2025-08-11 13-07-08](https://github.com/user-attachments/assets/e0cb9320-dbb3-4b13-88fc-16f196721b10)
+
 ------
 <br>
 
@@ -128,6 +131,7 @@
 ## 6. 플랫폼별 맞춤 코드 리빌딩
 모바일, 웹, PC, 에디터 등 각 플랫폼마다 환경과 제약이 다르기 때문에, 코드도 그에 맞춰 별도의 분기 처리와 최적화가 필요합니다.
 이 섹션에서는 플랫폼 특성에 맞게 기능 동작을 조정하고, 빌드 및 실행 시 환경별 차이를 관리하는 방식을 다룹니다.
+
 
 
 
