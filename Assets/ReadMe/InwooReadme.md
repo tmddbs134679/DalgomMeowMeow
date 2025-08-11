@@ -30,7 +30,7 @@
 |[DragController](../@Scripts/BuildMap/Touch&Mouse/DragController.cs)| 마우스 클릭과 드래그 시작/종료 감지,LayerMask를 활용해 드래그 가능한 오브젝트 필터링,드래그한 범위 내의 오브젝트를 감지하여 DraggableObject에게 이벤트 전달|
 |[DraggableObject](../@Scripts/BuildMap/Touch&Mouse/DraggableObject.cs)|실제로 드래그에 반응하는 오브젝트이며 해당 오브젝트 밑에 타일의 정보를 넘겨주고 DragController에 관리되어진다|
 
-https://private-user-images.githubusercontent.com/89909664/476421895-9893af11-ba75-4247-95ea-69226fc104d5.gif?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTQ4ODQ2NzEsIm5iZiI6MTc1NDg4NDM3MSwicGF0aCI6Ii84OTkwOTY2NC80NzY0MjE4OTUtOTg5M2FmMTEtYmE3NS00MjQ3LTk1ZWEtNjkyMjZmYzEwNGQ1LmdpZj9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA4MTElMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwODExVDAzNTI1MVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTNjODM0ODhmMzlhNzA5MTljMTgwYTE4YzU4YjhjNzA3ODFhZTZhNjViYjViZjM2YWYxM2Q4MmQwMWFmMWFiNDcmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.yOzRg8okf_47BjCyvZ0qP2sOr5rKyNe3CN-vIh1IrIs
+![Image](https://github.com/user-attachments/assets/9893af11-ba75-4247-95ea-69226fc104d5)
 
 
 ------
@@ -119,6 +119,7 @@ https://private-user-images.githubusercontent.com/89909664/476421895-9893af11-ba
 ## 6. 플랫폼별 맞춤 코드 리빌딩
 모바일, 웹, PC, 에디터 등 각 플랫폼마다 환경과 제약이 다르기 때문에, 코드도 그에 맞춰 별도의 분기 처리와 최적화가 필요합니다.
 이 섹션에서는 플랫폼 특성에 맞게 기능 동작을 조정하고, 빌드 및 실행 시 환경별 차이를 관리하는 방식을 다룹니다.
+
 
 
 
