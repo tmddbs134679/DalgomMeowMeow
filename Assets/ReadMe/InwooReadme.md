@@ -72,9 +72,8 @@
 | [OnGroundTouchedSecond](../@Scripts/BuildMap/BuildingPlacer.cs#L229) | 연속 삭제 모드에서 터치한 지점에 도로 삭제 프리뷰 생성 |
 | [RemoveRoad](../@Scripts/BuildMap/BuildingPlacer.cs#L252) | 도로 삭제 처리, 해당 도로 오브젝트 및 데이터 제거 |
 
-
-<img src="https://github.com/user-attachments/assets/20654c85-af14-43df-a59c-4d61ab59fa26" width="300" height="300" />
-<img src="https://github.com/user-attachments/assets/ba1507b4-843f-4410-9c3f-9e0944938334" width="300" height="300" />
+<img src="https://github.com/user-attachments/assets/ba1507b4-843f-4410-9c3f-9e0944938334" width="300" height="400" />
+<img src="https://github.com/user-attachments/assets/20654c85-af14-43df-a59c-4d61ab59fa26" width="300" height="400" />
 <img src="https://github.com/user-attachments/assets/4b962178-76a7-45ec-b8f8-340c7063b184" width="700" height="400" />
 <img src="https://github.com/user-attachments/assets/0b1bded5-05e0-48ea-9c83-40a5266e16de" width="700" height="400" />
 
@@ -128,6 +127,7 @@
 ## 6. 플랫폼별 맞춤 코드 리빌딩
 모바일, 웹, PC, 에디터 등 각 플랫폼마다 환경과 제약이 다르기 때문에, 코드도 그에 맞춰 별도의 분기 처리와 최적화가 필요합니다.
 이 섹션에서는 플랫폼 특성에 맞게 기능 동작을 조정하고, 빌드 및 실행 시 환경별 차이를 관리하는 방식을 다룹니다.
+
 
 
 
