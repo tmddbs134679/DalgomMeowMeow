@@ -488,6 +488,10 @@ public class BuildingPlacer : MonoBehaviour
             OnBuildingAccepted?.Invoke(_saveBuildingSO);
             QuestManager.Instance.NotifyBuildingConstructed(buildType);
         }
+        else
+        {
+            Managers.UI.ShowToast("건설불가! 물위나 빈 장소에 지어주세요.");
+        }
         _PreviewOBJ.GetComponent<DraggableObject>().CheckTilesUnderBuilding(); //설치 이후 종료하는게 아니기 때문에 계속 타일 판별
         MapBuildSave(); //맵,타일 데이터 저장
     }
