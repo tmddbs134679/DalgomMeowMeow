@@ -113,13 +113,15 @@ public class BuildingPlacer : MonoBehaviour
                     buildMap.ColliderAllOn();
             return;
         }
+
         _sumBuyMoney += BuyMoney;
-        uI_BuildAction.CountGold(_sumBuyMoney);
-        if (RemoveRoadSelectBuildingType(type)) return;
+        uI_BuildAction.CountGold(_sumBuyMoney); //건물 가격 보여주는 UI 갱신
+        if (RemoveRoadSelectBuildingType(type)) return; //다른 건물 선택 분기점 처리
         if (SequenceSelectBuildingType(type)) return;
         isAI = true;
         buildMap.ColliderAllOff();
-        Camera cam = Camera.main;
+
+        Camera cam = Camera.main;//카메라 중심좌표를 스크린좌표로 이동후 레이 쏘기 이후 오브젝트 생성
         Vector3 screenCenter = new Vector3(Screen.width / 2f, Screen.height / 2f, cam.nearClipPlane);
         Ray ray = Camera.main.ScreenPointToRay(screenCenter);
 
@@ -462,7 +464,7 @@ public class BuildingPlacer : MonoBehaviour
             _sumBuyMoney = 0;
             uI_BuildAction.CountGold(_sumBuyMoney);
             int hash = Guid.NewGuid().GetHashCode();
-            _buildData = new BuildData
+            _buildData = new BuildData //값을 넣어줄 buildData 생성 
             {
                 posX = _PreviewOBJ.transform.position.x,
                 posZ = _PreviewOBJ.transform.position.z,
@@ -487,7 +489,7 @@ public class BuildingPlacer : MonoBehaviour
             QuestManager.Instance.NotifyBuildingConstructed(buildType);
         }
         _PreviewOBJ.GetComponent<DraggableObject>().CheckTilesUnderBuilding(); //설치 이후 종료하는게 아니기 때문에 계속 타일 판별
-        MapBuildSave();
+        MapBuildSave(); //맵,타일 데이터 저장
     }
 
     public void AcceptLongPressBuild()
@@ -560,7 +562,9 @@ public class BuildingPlacer : MonoBehaviour
         isLongPressAcceptBuild = false;
         ClearTempPreviewObjects();
     }
-
+/// <summary>
+/// 건물 삭제
+/// </summary>
     public void RemoveBuild()
     {
         _arrayBuildPos.RemoveBuildData(_CurBuildData);//기존에 있던 오브젝트 제거
