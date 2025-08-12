@@ -4,19 +4,15 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 public static class InputUtility
 {
-    public static bool IsPointerOverUI(int fingerId = -1)
-{
-    if (EventSystem.current == null)
-        return false;
-
-#if UNITY_EDITOR || UNITY_STANDALONE
-    PointerEventData eventData = new PointerEventData(EventSystem.current);
-    eventData.position = Input.mousePosition;
-    var results = new System.Collections.Generic.List<RaycastResult>();
-    EventSystem.current.RaycastAll(eventData, results);
-    return results.Count > 0;
+    public static bool IsPointerOverUI()
+    {
+#if UNITY_ANDROID || UNITY_IOS
+        if (Input.touchCount > 0)
+            return EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId);
+        else
+            return false;
 #else
-    return EventSystem.current.IsPointerOverGameObject(fingerId);
+        return EventSystem.current.IsPointerOverGameObject();
 #endif
-}
+    }
 }
