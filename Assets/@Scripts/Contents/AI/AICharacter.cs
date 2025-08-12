@@ -166,7 +166,7 @@ public class AICharacter : BaseObject
     #region 클릭 상호작용
     public override void OnClick()
     {
-        if (EventSystem.current.IsPointerOverGameObject())
+        if (InputUtility.IsPointerOverUI())
             return;
 
         if (!Interaction.isClicked && Controller.CurrentState() is not CharacterHelloState)

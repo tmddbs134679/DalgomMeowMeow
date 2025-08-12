@@ -127,26 +127,31 @@ public class BuildMap : MonoBehaviour
         }
                 _spawnedBuilds.Remove(key);
     }
+/// <summary>
+/// 건물 관련 실행시 다른 오브젝트 ray에 맞게 콜라이더 On 복구
+/// </summary>
 public void ColliderAllOn()
-{
-    foreach (BuildData data in _arrayBuildPos.baseBuilding)
     {
-        int key = data.UniqueId;
-        if (_spawnedBuilds.TryGetValue(key, out GameObject obj) && obj != null)
+        foreach (BuildData data in _arrayBuildPos.baseBuilding)
         {
-            Collider col = obj.GetComponent<Collider>();
-            if (col != null)
+            int key = data.UniqueId;
+            if (_spawnedBuilds.TryGetValue(key, out GameObject obj) && obj != null)
             {
-                col.enabled = true; //  콜라이더 켜기
-            }
-            else
-            {
-                Managers.Debug.Log("ColliderAllOn null 발생", Define.EDebugType.Building);
+                Collider col = obj.GetComponent<Collider>();
+                if (col != null)
+                {
+                    col.enabled = true; //  콜라이더 켜기
+                }
+                else
+                {
+                    Managers.Debug.Log("ColliderAllOn null 발생", Define.EDebugType.Building);
+                }
             }
         }
     }
-}
-
+/// <summary>
+/// 건물 관련 실행시 다른 오브젝트 ray에 맞지않게 콜라이더 OFF 설정
+/// </summary>
 public void ColliderAllOff()
 {
     foreach (BuildData data in _arrayBuildPos.baseBuilding)

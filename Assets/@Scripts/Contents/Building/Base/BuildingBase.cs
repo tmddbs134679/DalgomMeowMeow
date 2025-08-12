@@ -37,6 +37,7 @@ public abstract class BuildingBase : BaseObject
 
     public Action OnAutoSave;
 
+        public Action OnLvUp;
     protected virtual void Start()
     {
         if (Timer == null)
@@ -137,7 +138,7 @@ public abstract class BuildingBase : BaseObject
         CurrentLevel++;
         _buildMap.UpdateBuildLevel(UniqueId, CurrentLevel);
         ApplyLevel();
-        
+        OnLvUp?.Invoke();
         return true;
     }
     protected virtual void ApplyLevel()
