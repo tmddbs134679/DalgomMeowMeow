@@ -33,8 +33,8 @@
 |                              | 데이터 초기화 기능 요청             | 게임 종료 버튼 옆 ‘데이터 초기화’ 버튼 추가 → 모든 데이터 Reset 기능 구현        | 테스트 및 디버깅 편의성 향상        |
 
 
-<img width="500" height="500" alt="image" src="https://github.com/user-attachments/assets/e08840d1-1e91-4b48-b0c8-61ab4bb843e9" />
-<img width="500" height="500" alt="image" src="https://github.com/user-attachments/assets/b829fe1d-26d7-44f1-abf5-5aef9a116cdd" />
+<img width="400" height="400" alt="image" src="https://github.com/user-attachments/assets/e08840d1-1e91-4b48-b0c8-61ab4bb843e9" />
+<img width="400" height="400" alt="image" src="https://github.com/user-attachments/assets/b829fe1d-26d7-44f1-abf5-5aef9a116cdd" />
 
 
 ---
