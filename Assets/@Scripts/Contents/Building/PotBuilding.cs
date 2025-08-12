@@ -14,7 +14,8 @@ public class PotBuilding : BuildingBase
 
     public override void OnClick()
     {
-
+        if (InputUtility.IsPointerOverUI())
+            return;
         if (Managers.Time._claimedThisSession || Managers.Time.CalculateOfflineGold() <= 0)
         {
             //  최근에 이미 보상 받음

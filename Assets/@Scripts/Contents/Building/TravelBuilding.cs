@@ -7,6 +7,8 @@ public class TravelBuilding : BuildingBase
 {
     public override void OnClick()
     {
+                if (InputUtility.IsPointerOverUI())
+            return;
         List<Character> characters = Managers.Game.Characters;
         bool hasTravelModeCharacter = characters.Any(c => c.IsTravelMode);
         if (!hasTravelModeCharacter)

@@ -95,13 +95,13 @@ public void OnDragStart(Vector3 hitPos)
     //드래그 드롭
     public void OnDragEnd()
     {
-        
+        if(!BuildingPlacer.Instance.isLongPressAcceptBuild)BuildingPlacer.Instance.tempDraggleOBJ = null;
             BuildingPlacer.Instance.isSelect = false;
     }
     //드래그 하지않고 눌렀다 떼기
     public void OnClickRelease()
     {
-
+        if(!BuildingPlacer.Instance.isLongPressAcceptBuild)BuildingPlacer.Instance.tempDraggleOBJ = null;
             BuildingPlacer.Instance.isSelect = false;
     }
     //꾹누르기

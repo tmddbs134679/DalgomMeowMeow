@@ -304,6 +304,7 @@ public class BuildingPlacer : MonoBehaviour
         isLongPressAcceptBuild = false;
         OriginTempOBJ = null;
         _PreviewOBJ = null;
+                    tempDraggleOBJ = null;
         MapBuildSave();
     }
 
@@ -440,7 +441,7 @@ public class BuildingPlacer : MonoBehaviour
         buildMap.LoadBuild(); //오브젝트 갱신
         surface.BuildNavMesh(); //네브매쉬 깔기
         isLongPressAcceptBuild = false;
-
+            tempDraggleOBJ = null;
         buildMap.ColliderAllOn();
         Managers.AI.AllRelocateToNearestNavMesh();
         OnBuildingAccepted?.Invoke(_saveBuildingSO);
@@ -486,6 +487,7 @@ public class BuildingPlacer : MonoBehaviour
             buildMap.ColliderAllOn();
             Managers.AI.AllRelocateToNearestNavMesh();
             OnBuildingAccepted?.Invoke(_saveBuildingSO);
+                        tempDraggleOBJ = null;
             QuestManager.Instance.NotifyBuildingConstructed(buildType);
         }
         else
@@ -527,7 +529,7 @@ public class BuildingPlacer : MonoBehaviour
             surface.BuildNavMesh(); //네브매쉬 깔기
             isLongPressAcceptBuild = false;
             buildMap.ColliderAllOn();
-
+            tempDraggleOBJ = null;
             Managers.AI.AllRelocateToNearestNavMesh();
 
             // foreach (var ai in AIManager.Instance.AllCharacters)
@@ -565,10 +567,11 @@ public class BuildingPlacer : MonoBehaviour
         buildMap.ColliderAllOn();
         isLongPressAcceptBuild = false;
         ClearTempPreviewObjects();
+        tempDraggleOBJ = null;
     }
-/// <summary>
-/// 건물 삭제
-/// </summary>
+    /// <summary>
+    /// 건물 삭제
+    /// </summary>
     public void RemoveBuild()
     {
         _arrayBuildPos.RemoveBuildData(_CurBuildData);//기존에 있던 오브젝트 제거
@@ -585,6 +588,7 @@ public class BuildingPlacer : MonoBehaviour
         _PreviewOBJ = null;
         Managers.AI.AllRelocateToNearestNavMesh();
         MapBuildSave();
+        tempDraggleOBJ = null;
     }
 
 
