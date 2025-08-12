@@ -11,7 +11,7 @@ public class ShopBuilding : BuildingBase
 
     public override void OnClick()
     {
-        if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+        if (InputUtility.IsPointerOverUI())
             return;
          Managers.UI.ShowPopupUI<UI_ShopPopup>();
     }

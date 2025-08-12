@@ -151,7 +151,7 @@ catch (Exception e)
     Debug.Log($"로드 시도 경로: {path}");
     Debug.Log($"파일 존재 여부: {File.Exists(path)}");
 
-    // ✅ 파일 없을 경우 Resources에서 복사 시도
+    //  파일 없을 경우 Resources에서 복사 시도
     if (!File.Exists(path))
     {
         Debug.LogWarning("저장된 맵 데이터가 없습니다. 기본 맵 데이터를 복사합니다.");

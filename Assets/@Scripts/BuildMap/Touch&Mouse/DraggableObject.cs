@@ -107,7 +107,7 @@ public void OnDragStart(Vector3 hitPos)
     //꾹누르기
     public void OnLongPress()
     {
-        if (EventSystem.current.IsPointerOverGameObject())
+        if (InputUtility.IsPointerOverUI())
             return;
                     if (BuildingPlacer.Instance.isSequenceRemove) return;
         if (this.GetComponent<BuildingBase>()?.CurrentState == BuildingState.Producing) return;

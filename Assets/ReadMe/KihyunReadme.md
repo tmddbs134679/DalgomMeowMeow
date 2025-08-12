@@ -12,20 +12,12 @@
 
 | Script명                  | 설명 |
 | ------------------------- | ---- |
-| [BuildingBase](../@Scripts/Contents/Building/Base/BuildingBase.cs)          | 모든 건물의 공통 속성과 동작(상태 관리, 타이머, 생산 로직)을 정의한 기본 클래스 |
-| [BuildingManager](../@Scripts/Managers/Contents/BuildingManager.cs)       | 씬 내 건물들을 관리하고, 생산·보상·상태 업데이트를 일괄 처리하는 매니저 |
+| [BuildingBase]()          | 모든 건물의 공통 속성과 동작(상태 관리, 타이머, 생산 로직)을 정의한 기본 클래스 |
+| [BuildingManager]()       | 씬 내 건물들을 관리하고, 생산·보상·상태 업데이트를 일괄 처리하는 매니저 |
+| [UI_BuildPopup]()         | 건물 건설 및 업그레이드 UI, 콘텐츠 해금 여부에 따른 버튼 활성/비활성 관리 |
+| [UI_BuildingProgress]()   | 건물 생산 진행 상황을 시각적으로 표시하는 UI 컴포넌트 |
 
-
-
-
-
-
-------
-<br>
-
-
-
-## 2.  퀘스트 & 콘텐츠 해금 시스템
+ 
 
 이 시스템은 **플레이어의 진행 상황에 따라 새로운 콘텐츠(챕터, 건물 등)를 해금**하는 기능을 제공합니다.  
 퀘스트 완료, 누적 골드 달성 등 다양한 조건을 만족하면 해당 콘텐츠가 해금되며,  
@@ -40,9 +32,10 @@ UI(`UI_ChapterPopup`, `UI_BuildPopup`)와 데이터가 항상 동기화되도록
 
 | Script명              | 설명 |
 | --------------------- | ---- |
-| [QuestManager](../@Scripts/Managers/Contents/QuestManager.cs)      | 퀘스트 진행 상황과 콘텐츠 해금 조건을 관리하고, 조건 충족 시 해금 처리 및 UI 갱신 |
-| [UI_ChapterPopup](../@Scripts/Popup/UI/ChapterPopup.cs)   | 챕터별 해금 조건 및 상태를 UI에 표시하고, 해금 가능 여부에 따라 버튼 활성/비활성 |
-
+| [QuestManager]()      | 퀘스트 진행 상황과 콘텐츠 해금 조건을 관리하고, 조건 충족 시 해금 처리 및 UI 갱신 |
+| [UI_ChapterPopup]()   | 챕터별 해금 조건 및 상태를 UI에 표시하고, 해금 가능 여부에 따라 버튼 활성/비활성 |
+| [UI_BuildPopup]()     | 건물 해금 여부를 확인하여 건설 버튼 상태를 변경하고, 해금 시 건물 건설 가능 처리 |
+| [UnlockCondition]()   | 각 콘텐츠의 해금 조건(퀘스트, 누적 골드 등)을 데이터 구조로 정의 |
 
 
 
@@ -66,12 +59,10 @@ UI(`UI_ChapterPopup`, `UI_BuildPopup`)와 데이터가 항상 동기화되도록
 
 | Script명              | 설명 |
 | --------------------- | ---- |
-| [TutorialManager](../@Scripts/Managers/Contents/TutorialManager.cs)   | 튜토리얼 전체 진행 관리, 단계 전환, 하이라이트/딤 처리, 상호작용 제한 로직 담당 |
-| [Highlighter](../@Scripts/Contents/Tutorial/Highlighter.cs)       | 지정된 UI 요소를 시각적으로 강조하는 하이라이트 효과 구현 |
-| [UI_Tutorial](../@Scripts/UI/Scene/UI_Tutorial.cs)       | 튜토리얼 설명 텍스트 및 이미지 출력, 단계별 UI 표시 관리 |
-
-
-
+| [TutorialManager]()   | 튜토리얼 전체 진행 관리, 단계 전환, 하이라이트/딤 처리, 상호작용 제한 로직 담당 |
+| [TutorialStep]()      | 각 튜토리얼 단계의 데이터(설명, 하이라이트 대상, 시작/완료 이벤트) 정의 |
+| [Highlighter]()       | 지정된 UI 요소를 시각적으로 강조하는 하이라이트 효과 구현 |
+| [UI_Tutorial]()       | 튜토리얼 설명 텍스트 및 이미지 출력, 단계별 UI 표시 관리 |
 
 
 ------
@@ -94,10 +85,6 @@ UI(`UI_ChapterPopup`, `UI_BuildPopup`)와 데이터가 항상 동기화되도록
 
 | Script명                | 설명 |
 | ----------------------- | ---- |
-| [SlotMachineBuilding](../@Scripts/Contents/Building/SlotMachineBuilding.cs) | 슬롯머신 건물의 회전, 결과 산출, 보상 지급, 애니메이션 제어를 담당 |
-| [UI_SlotMachinePopup](../@Scripts/UI/Popup/UI_SlotMachinePopup.cs) | 슬롯머신 UI 인터페이스 관리, 시작 버튼, 결과 표시, 보상 수령 처리 |
-
-
-
-
-
+| [SlotMachineBuilding]() | 슬롯머신 건물의 회전, 결과 산출, 보상 지급, 애니메이션 제어를 담당 |
+| [UI_SlotMachinePopup]() | 슬롯머신 UI 인터페이스 관리, 시작 버튼, 결과 표시, 보상 수령 처리 |
+| [SlotResult]()          | 슬롯 결과 데이터 구조(아이콘, 보상 금액, 확률 가중치 등) 정의 |

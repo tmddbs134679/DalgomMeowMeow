@@ -85,7 +85,7 @@ public class FarmBuilding : BuildingBase
     }
     public override void OnClick()
     {
-        if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+        if (InputUtility.IsPointerOverUI())
             return;
         UI_BuildContent popup = Managers.UI.ShowPopupUI<UI_BuildContent>();
         popup.SetTarget(gameObject);
