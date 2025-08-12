@@ -15,6 +15,8 @@ public class ForestRegion : BaseObject
 
     [SerializeField] private GameObject lockOverlay; // 잠김 표시용 UI/이펙트
 
+    public static readonly List<ForestRegion> All = new();
+    
     private void Start()
     {
         LoadUnlockState();
@@ -22,6 +24,15 @@ public class ForestRegion : BaseObject
         //UpdateVisual();
     }
 
+    private void OnEnable()
+    {
+        if (!All.Contains(this)) All.Add(this);
+    }
+
+    private void OnDisable()
+    {
+        All.Remove(this);
+    }
     // 전투에서 승리하면 외부에서 이 함수 호출
     public void Unlock()
     {
