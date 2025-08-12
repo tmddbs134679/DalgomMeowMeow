@@ -6,14 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="f48e1cac-c49d-4f22-9686-b0c375630046" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DalgomMeowMeow/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DalgomMeowMeow/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Prefabs/Tutorial/Tutorial.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Prefabs/Tutorial/Tutorial.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Resources/UI/Popup/UI_Etc/UI_QuickMenu.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Resources/UI/Popup/UI_Etc/UI_QuickMenu.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Resources/UI/Popup/UI_Tutorial.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Resources/UI/Popup/UI_Tutorial.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Resources/UI/UI_GameScene.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Resources/UI/UI_GameScene.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Managers/Contents/TutorialManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Managers/Contents/TutorialManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/Popup/UI_BuildPopup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/Popup/UI_BuildPopup.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/Popup/UI_ChapterPopup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/Popup/UI_ChapterPopup.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/Scene/UI_Tutorial.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/Scene/UI_Tutorial.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Contents/Building/ForestRegion.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Contents/Building/ForestRegion.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Contents/Building/ForestUnlocker.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Contents/Building/ForestUnlocker.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/StreamingAssets/build_info" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/StreamingAssets/build_info" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,6 +22,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Contents/Building/PotBuilding.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Contents/Building/SlotMachineBuilding.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Contents/Quest/Quest.cs" root0="FORCE_HIGHLIGHTING" />
@@ -41,6 +37,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Data/Quest/SaveQuestSystem.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Editor/BuildingDataInporter.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Editor/DataTransformer.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Editor/GameDataEditor.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Managers/Contents/FoodManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Managers/Contents/QuestManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/UI/Popup/UI_BuildingPopup.cs" root0="FORCE_HIGHLIGHTING" />
@@ -68,6 +65,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/17d9ce77f27a4bd2afb5ba32c9bea97646ac00/65/edc56958/KeyValuePair`2.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/17d9ce77f27a4bd2afb5ba32c9bea97646ac00/72/d175c69b/ValueTuple`2.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/17d9ce77f27a4bd2afb5ba32c9bea97646ac00/9a/96a80bbf/RuntimeGPtrArrayHandle.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/17d9ce77f27a4bd2afb5ba32c9bea97646ac00/9f/68a9384f/ExceptionDispatchInfo.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/17d9ce77f27a4bd2afb5ba32c9bea97646ac00/a4/c864e28a/ConstructorInfo.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/17d9ce77f27a4bd2afb5ba32c9bea97646ac00/a6/ae75fa6c/EqualityComparer`1.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/17d9ce77f27a4bd2afb5ba32c9bea97646ac00/b2/bd12c88d/RuntimeTypeHandle.cs" root0="FORCE_HIGHLIGHTING" />
@@ -142,7 +140,7 @@
       <method v="2" />
     </configuration>
     <configuration name="독립실행형 플레이어" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="$PROJECT_DIR$/../../../pcbuild/33\DalgomMeowMeow.exe" />
+      <option name="EXE_PATH" value="$PROJECT_DIR$/../../../pcbuild/38\DalgomMeowMeow.exe" />
       <option name="PROGRAM_PARAMETERS" value="" />
       <option name="WORKING_DIRECTORY" value="C:\UnityProjects\pcbuild" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -163,10 +161,10 @@
       <option name="PTY_MODE" value="Auto" />
       <method v="2" />
     </configuration>
-    <configuration name="Unity 에디터에 연결" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="12820">
+    <configuration name="Unity 에디터에 연결" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="14244">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="12820" />
+      <option name="pid" value="14244" />
       <option name="projectPathOnTarget" />
       <option name="runtimes">
         <list>
@@ -244,6 +242,7 @@
       <workItem from="1754268920822" duration="32530000" />
       <workItem from="1754348851071" duration="2760000" />
       <workItem from="1754438493433" duration="22732000" />
+      <workItem from="1754976158313" duration="2414000" />
     </task>
     <servers />
   </component>
@@ -296,12 +295,12 @@
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/@Scripts/Managers/Contents/TutorialManager.cs</url>
           <line>314</line>
-          <properties documentPath="C:\UnityProjects\git\waefwa\DalgomMeowMeow\Assets\@Scripts\Managers\Contents\TutorialManager.cs" containingFunctionPresentation="메서드 'FocusOnlyThis'">
+          <properties documentPath="C:\UnityProjects\git\waefwa\DalgomMeowMeow\Assets\@Scripts\Managers\Contents\TutorialManager.cs" containingFunctionPresentation="메서드 'CoSetAllUIInteractable'">
             <startOffsets>
-              <option value="9124" />
+              <option value="9113" />
             </startOffsets>
             <endOffsets>
-              <option value="9131" />
+              <option value="9516" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="43" />
@@ -309,12 +308,12 @@
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/@Scripts/Managers/Contents/TutorialManager.cs</url>
           <line>313</line>
-          <properties documentPath="C:\UnityProjects\git\waefwa\DalgomMeowMeow\Assets\@Scripts\Managers\Contents\TutorialManager.cs" containingFunctionPresentation="메서드 'FocusOnlyThis'">
+          <properties documentPath="C:\UnityProjects\git\waefwa\DalgomMeowMeow\Assets\@Scripts\Managers\Contents\TutorialManager.cs" containingFunctionPresentation="메서드 'CoSetAllUIInteractable'">
             <startOffsets>
-              <option value="9057" />
+              <option value="9103" />
             </startOffsets>
             <endOffsets>
-              <option value="9095" />
+              <option value="9104" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="44" />
