@@ -1,232 +1,205 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using System.Collections.Generic;
 
 public class CameraController : MonoBehaviour
 {
-    private float _dragSpeed;
     public Vector2 minLimit = new Vector2(-10, -10);
     public Vector2 maxLimit = new Vector2(10, 10);
-    public float _clickThreshold = 10f; // 	클릭 or 미세한 움직임 판단범위
+    public float clickThreshold = 10f;
 
     [SerializeField] private DragController dragController;
     [SerializeField] private BuildingPlacer buildingplacer;
-    private Camera _cam;
-    private Vector3 _dragOrigin;
+    [SerializeField] private LayerMask layerMask;
+
+    private Camera cam;
+    private Vector3 dragOrigin;
+    private Vector2 touchStartPos;
     private bool isDragging = false;
-    private Vector2 _touchStartPos;
+    private bool startedOnUI = false;
+    private bool isCatTouch = false;
+    private bool isAI = false;
 
-    public LayerMask layerMask;
-    private bool isAI;
+    private const float minZoom = 6f;
+    private const float maxZoom = 10f;
 
-    private bool isCatTouch;
-
-void Start()
-{
-    _cam = Camera.main;
-
+    private float dragSpeed =>
 #if UNITY_EDITOR || UNITY_STANDALONE
-    _dragSpeed = 3f;
+        3f;
 #else
-    _dragSpeed = 3f; // 모바일에서 너무 빠르니까 낮춰줌
+        1.5f;
 #endif
-}
 
-    private bool _startedOnUI = false;
+    void Start()
+    {
+        cam = Camera.main;
+    }
 
     void Update()
     {
-#if UNITY_EDITOR || UNITY_STANDALONE
-        // PC 또는 에디터에서 마우스로 드래그 처리
+        HandleZoom();
+
+#if UNITY_EDITOR || UNITY_STANDALONE || UNITY_WEBGL
+        HandleMouseInput();
+#else
+        HandleTouchInput();
+#endif
+    }
+
+    #region Input Handlers
+
+    void HandleMouseInput()
+    {
         if (Input.GetMouseButtonDown(0))
         {
-            _startedOnUI = IsPointerOverUI(); // UI 위에서 눌렀는지 기록
-            if (_startedOnUI) return;
+            startedOnUI = IsPointerOverUI();
+            if (startedOnUI) return;
 
-            ClickCat(Input.mousePosition); // 고양이일 때만
-            _dragOrigin = Input.mousePosition;
-            _touchStartPos = _dragOrigin;
+            ClickCat(Input.mousePosition);
+            dragOrigin = Input.mousePosition;
+            touchStartPos = dragOrigin;
             isDragging = false;
         }
         else if (Input.GetMouseButton(0))
         {
-            if (_startedOnUI) return; // UI 위에서 시작했으면 아예 이동 막기
-            if (buildingplacer == null) return;
-            if (buildingplacer.isSelect) return;
-            if (isAI) return;
+            if (startedOnUI || buildingplacer?.isSelect == true || isAI) return;
 
-            Vector3 delta = Input.mousePosition - _dragOrigin;
-            float dist = Vector2.Distance(Input.mousePosition, _touchStartPos);
+            Vector3 delta = Input.mousePosition - dragOrigin;
+            float dist = Vector2.Distance(Input.mousePosition, touchStartPos);
 
-            if (dist > _clickThreshold)
+            if (dist > clickThreshold)
             {
                 isDragging = true;
                 ApplyCameraMove(delta);
-                _dragOrigin = Input.mousePosition;
+                dragOrigin = Input.mousePosition;
             }
         }
         else if (Input.GetMouseButtonUp(0))
         {
-            if (!isDragging && !isCatTouch) ClickBuilding(Input.mousePosition); // 건물일 때만
-            isCatTouch = false;
-            if (_startedOnUI)
-            {
-                _startedOnUI = false; // 다시 초기화
-                return;
-            }
+            if (!isDragging && !isCatTouch)
+                ClickBuilding(Input.mousePosition);
 
-            isDragging = false;
-            isAI = false;
+            ResetFlags();
         }
-#endif
+    }
 
-        float zoomAmount = 0;
-
-#if UNITY_EDITOR || UNITY_STANDALONE
-        // PC에서 마우스 스크롤로 확대/축소 처리
-        if (EventSystem.current != null && InputUtility.IsPointerOverUI())
-        {
-            return;
-        }
-
-        // 에디터 게임뷰 포커스 아닐 때도 무시
-#if UNITY_EDITOR
-        if (!Application.isFocused)
-        {
-            return;
-        }
-#endif
-
-        zoomAmount = Input.GetAxis("Mouse ScrollWheel") * 10f;
-#endif
-
-     if (Input.touchCount == 2)
-{
-    Touch touchZero = Input.GetTouch(0);
-    Touch touchOne = Input.GetTouch(1);
-
-    Vector2 touchZeroPrevPos = touchZero.position - touchZero.deltaPosition;
-    Vector2 touchOnePrevPos = touchOne.position - touchOne.deltaPosition;
-
-    float prevTouchDeltaMag = (touchZeroPrevPos - touchOnePrevPos).magnitude;
-    float touchDeltaMag = (touchZero.position - touchOne.position).magnitude;
-
-    float deltaMagnitudeDiff = prevTouchDeltaMag - touchDeltaMag;
-
-    // 🔄 방향 반전
-    zoomAmount = -deltaMagnitudeDiff * 0.1f;
-}
-
-
-        if (zoomAmount != 0)
-        {
-            Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize - zoomAmount, 6f, 10f);
-        }
-
-        // 모바일에서 터치로 카메라 드래그 처리
+    void HandleTouchInput()
+    {
         if (Input.touchCount == 1)
         {
             Touch touch = Input.GetTouch(0);
 
-       if (touch.phase == TouchPhase.Began)
-{
-    _startedOnUI = IsPointerOverUI(touch.fingerId); // UI 위에서 눌렀는지 확인
-    Debug.Log($"[Touch Began] fingerId: {touch.fingerId}, position: {touch.position}, isOverUI: {_startedOnUI}");
+            if (touch.phase == TouchPhase.Began)
+            {
+                startedOnUI = IsPointerOverUI(touch.fingerId);
+                if (startedOnUI) return;
 
-    if (_startedOnUI)
-    {
-        Debug.Log("[Touch Began] 터치가 UI 위에서 시작됨 → 드래그 차단");
-        return;
-    }
-        ClickCat(touch.position);
-    _dragOrigin = touch.position;
-    _touchStartPos = _dragOrigin;
-    isDragging = false;
-}
-else if (touch.phase == TouchPhase.Moved)
-{
-    if (_startedOnUI)
-    {
-        Debug.Log("[Touch Moved] 처음에 UI에서 시작됨 → 드래그 차단");
-        return;
-    }
+                dragOrigin = touch.position;
+                touchStartPos = dragOrigin;
+                isDragging = false;
+            }
+            else if (touch.phase == TouchPhase.Moved)
+            {
+                if (startedOnUI || buildingplacer?.isSelect == true || isAI) return;
 
-    if (buildingplacer == null)
-    {
-        Debug.LogWarning("[Touch Moved] buildingplacer가 null임");
-        return;
-    }
+                Vector3 delta = (Vector3)touch.position - dragOrigin;
+                float dist = Vector2.Distance(touch.position, touchStartPos);
 
-    if (buildingplacer.isSelect)
-    {
-        Debug.Log("[Touch Moved] 건물 선택 중이므로 드래그 차단");
-        return;
-    }
+                if (dist > clickThreshold)
+                {
+                    isDragging = true;
+                    ApplyCameraMove(delta);
+                    dragOrigin = touch.position;
+                }
+            }
+            else if (touch.phase == TouchPhase.Ended)
+            {
+                if (!isDragging && !isCatTouch)
+                    ClickBuilding(touch.position);
 
-    if (isAI)
-    {
-        Debug.Log("[Touch Moved] AI 상호작용 중이므로 드래그 차단");
-        return;
-    }
+                ResetFlags();
+            }
+        }
+        else if (Input.touchCount == 2)
+        {
+            Touch t0 = Input.GetTouch(0);
+            Touch t1 = Input.GetTouch(1);
 
-    Vector3 delta = (Vector3)touch.position - _dragOrigin;
-    float dist = Vector2.Distance(touch.position, _touchStartPos);
+            float prevMag = (t0.position - t0.deltaPosition - (t1.position - t1.deltaPosition)).magnitude;
+            float currMag = (t0.position - t1.position).magnitude;
 
-    if (dist > _clickThreshold)
-    {
-        Debug.Log($"[Touch Moved] 드래그 시작됨 - 이동 거리: {dist}");
-        isDragging = true;
-        ApplyCameraMove(delta);
-        _dragOrigin = touch.position;
-    }
-}
-else if (touch.phase == TouchPhase.Ended)
-{
-    if (_startedOnUI)
-    {
-        Debug.Log("[Touch Ended] UI 위에서 시작했으므로 클릭 처리 생략");
-        _startedOnUI = false;
-        return;
-    }
-
-    if (!isDragging && !isCatTouch)
-    {
-        Debug.Log("[Touch Ended] 드래그 아님 + 고양이 터치 아님 → 건물 클릭 시도");
-        ClickBuilding(touch.position);
-    }
-
-    isDragging = false;
-    isAI = false;
-    isCatTouch = false;
-    _startedOnUI = false;
-}
-
+            float delta = prevMag - currMag;
+            ApplyZoom(delta * 0.01f); // 감도 조절
         }
     }
 
-void ApplyCameraMove(Vector2 delta)
+    #endregion
+
+    #region Zoom
+
+void HandleZoom()
 {
 #if UNITY_EDITOR || UNITY_STANDALONE
-    float dragMultiplier = _dragSpeed * Time.deltaTime;
-#else
-    float dragMultiplier = _dragSpeed * 0.01f; // 모바일은 더 작게
+    if (!Application.isFocused || EventSystem.current?.IsPointerOverGameObject() == true)
+        return;
+
+    float scroll = Input.GetAxis("Mouse ScrollWheel");
+    if (Mathf.Abs(scroll) > 0.01f)
+        ApplyZoom(-scroll * 1f);
 #endif
 
-    Vector3 move = new Vector3(-delta.x, 0, -delta.y) * dragMultiplier;
-    move = _cam.transform.TransformDirection(move);
-    move.y = 0;
+#if UNITY_WEBGL && !UNITY_EDITOR
+    if (EventSystem.current?.IsPointerOverGameObject() == true) return;
 
-    Vector3 newPos = transform.position + move;
-    newPos.x = Mathf.Clamp(newPos.x, minLimit.x, maxLimit.x);
-    newPos.z = Mathf.Clamp(newPos.z, minLimit.y, maxLimit.y);
-    transform.position = newPos;
+    float scroll = Input.mouseScrollDelta.y;
+    if (Mathf.Abs(scroll) > 0.01f)
+    {
+        ApplyZoom(scroll * 1f); // 감도는 조절 가능
+        return;
+    }
+
+    // 키보드 백업
+    if (Input.GetKey(KeyCode.Equals) || Input.GetKey(KeyCode.KeypadPlus)) // +
+        ApplyZoom(-0.5f);
+    else if (Input.GetKey(KeyCode.Minus) || Input.GetKey(KeyCode.KeypadMinus)) // -
+        ApplyZoom(0.5f);
+#endif
 }
 
 
+    void ApplyZoom(float delta)
+    {
+        if (cam == null) return;
+
+        cam.orthographicSize = Mathf.Clamp(cam.orthographicSize - delta, minZoom, maxZoom);
+    }
+
+    #endregion
+
+    #region Camera Move
+
+    void ApplyCameraMove(Vector2 delta)
+    {
+        Vector3 move = new Vector3(-delta.x, 0, -delta.y) * dragSpeed * Time.deltaTime;
+        move = cam.transform.TransformDirection(move);
+        move.y = 0;
+
+        Vector3 newPos = transform.position + move;
+        newPos.x = Mathf.Clamp(newPos.x, minLimit.x, maxLimit.x);
+        newPos.z = Mathf.Clamp(newPos.z, minLimit.y, maxLimit.y);
+        transform.position = newPos;
+    }
+
+    #endregion
+
+    #region Click Logic
+
     void ClickCat(Vector2 screenPos)
     {
-        if (InputUtility.IsPointerOverUI()) return;
+        if (IsPointerOverUI()) return;
         if (BuildingPlacer.Instance.isSequenceRemove) return;
-        Ray ray = _cam.ScreenPointToRay(screenPos);
+
+        Ray ray = cam.ScreenPointToRay(screenPos);
         RaycastHit[] hits = Physics.RaycastAll(ray, 100f, layerMask);
 
         foreach (var hit in hits)
@@ -235,47 +208,61 @@ void ApplyCameraMove(Vector2 delta)
             {
                 isAI = true;
                 Managers.Debug.Log($" ClickCat:Cat Clicked: {hit.collider.name}", Define.EDebugType.None);
-                var clickable = hit.collider.GetComponent<BaseObject>();
-                clickable?.OnClick();
+                hit.collider.GetComponent<BaseObject>()?.OnClick();
                 isCatTouch = true;
-                break; // 가장 가까운 Player만 처리하고 끝냄
+                break;
             }
         }
     }
 
     void ClickBuilding(Vector2 screenPos)
     {
-        if (InputUtility.IsPointerOverUI()) return;
+        if (IsPointerOverUI()) return;
         if (BuildingPlacer.Instance.isSequenceRemove) return;
-        Ray ray = _cam.ScreenPointToRay(screenPos);
+
+        Ray ray = cam.ScreenPointToRay(screenPos);
         RaycastHit[] hits = Physics.RaycastAll(ray, 100f, layerMask);
 
         foreach (var hit in hits)
         {
-            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Building"))
+            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Building") ||
+                hit.collider.gameObject.layer == LayerMask.NameToLayer("Stage"))
             {
                 Managers.Debug.Log($" ClickBuilding:Building Clicked: {hit.collider.name}", Define.EDebugType.None);
-                var clickable = hit.collider.GetComponent<BaseObject>();
-                clickable?.OnClick();
-                break; // 가장 가까운 Building만 처리
-            }
-            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Stage"))
-            {
-                Managers.Debug.Log($" ClickBuilding:Building Clicked: {hit.collider.name}", Define.EDebugType.None);
-                var clickable = hit.collider.GetComponent<BaseObject>();
-                clickable?.OnClick();
-                break; // 가장 가까운 Building만 처리
+                hit.collider.GetComponent<BaseObject>()?.OnClick();
+                break;
             }
         }
     }
 
+    #endregion
+
+    #region Utility
+
     bool IsPointerOverUI(int fingerId = -1)
     {
         if (EventSystem.current == null) return false;
-#if UNITY_EDITOR
-        return EventSystem.current.IsPointerOverGameObject();
+
+#if UNITY_WEBGL && !UNITY_EDITOR
+        PointerEventData pointerData = new PointerEventData(EventSystem.current)
+        {
+            position = Input.mousePosition
+        };
+        var raycastResults = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(pointerData, raycastResults);
+        return raycastResults.Count > 0;
 #else
         return EventSystem.current.IsPointerOverGameObject(fingerId);
 #endif
     }
+
+    void ResetFlags()
+    {
+        isCatTouch = false;
+        startedOnUI = false;
+        isDragging = false;
+        isAI = false;
+    }
+
+    #endregion
 }
