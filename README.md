@@ -5,9 +5,7 @@
 > 내일배움캠프 최종프로젝트 1조 달곰냥냥마을 팀 프로젝트입니다.
 
 ---
-<img src="https://github.com/user-attachments/assets/f1c860cc-8c82-4632-922b-3d31477ddd5f" width="600"/>
-
-<img src="https://github.com/user-attachments/assets/5e02f486-c68c-45f5-9325-6526c7b30270" width="600"/>
+![Honeycam2025-08-1414-00-18-ezgif com-resize](https://github.com/user-attachments/assets/c47348fd-2b6c-4833-8028-6693a40d3372)
 
 
 <br>
