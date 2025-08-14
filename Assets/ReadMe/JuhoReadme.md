@@ -1,0 +1,103 @@
+## 1. AI 캐릭터 FSM 및 상호작용 시스템
+
+게임 내 캐릭터가 상황에 따라 스스로 행동하고, 플레이어와 자연스럽게 상호작용하는 시스템이 필요했기 때문에
+NavMesh 기반의 FSM(Finite State Machine) 구조와
+클릭/롱프레스/카메라 상호작용, 레벨업 이펙트까지 포함한 AI 캐릭터 통합 시스템을 구현하였습니다.
+
+
+
+
+
+## 🧱 코드
+
+| Script명          | 설명                                                         |
+| ----------------- | ------------------------------------------------------------ |
+| [AICharacter.cs](../@Scripts/Contents/AI/AICharacter.cs)   | FSM, Stat, 상호작용, 이펙트 등 캐릭터 기능을 일원화하여 관리할 수 있도록 모든 컴포넌트의 중앙 허브로 구현하였습니다.
+| [AIController.cs](../@Scripts/Contents/AI/FSM/Controller/AIController.cs) | 캐릭터가 자율적으로 행동하고 상태를 전환할 수 있도록 FSM 상태 전환, 행동 우선순위, 이동/건물 탐색 로직을 통합 관리하도록 구현하였습니다.
+| [CharacterAction.cs](../@Scripts/Contents/AI/CharacaterAction/CharacterAction.cs) | 외부에서 FSM 상태를 명확하게 트리거할 수 있도록 각 행동별(Idle, Cook, Deliver 등) 액션 함수와 이벤트를 제공하도록 구현하였습니다
+| [CharacterIdleState.cs](../@Scripts/Contents/AI/FSM/Controller/State/CharacterIdleState.cs) | 외부에서 FSM 상태를 명확하게 트리거할 수 있도록 각 행동별(Idle, Cook, Deliver 등) 액션 함수와 이벤트를 제공하도록 구현하였습니다
+
+
+![Dalgom2Hi](https://github.com/user-attachments/assets/c2e650c4-9c17-4b91-9da7-5fc617639d7b)
+
+
+![battletest](https://github.com/user-attachments/assets/ee575607-8fe0-478f-b2da-a4a580888b3c)
+
+
+
+
+------
+<br>
+
+
+## 2. 가챠 시스템 
+
+게임 내에서 새로운 캐릭터를 랜덤하게 획득할 수 있는 보상 경험이 필요했기 때문에,
+GameManager에 가챠(Gacha) 시스템을 구현하였습니다.
+
+이 시스템은 확률 기반으로 캐릭터를 뽑을 수 있도록 하며,
+캐릭터의 고유 스탯을 랜덤으로 부여하여(스태미나,이동속도,HP,공격력)
+획득한 캐릭터가 씬의 최대 등장 수를 초과할 경우,
+자동으로 고양이 창고(보관함) 시스템과 연동되어 관리됩니다.
+
+
+
+
+
+## 🧱 코드
+
+| Script명             | 설명                                                         |
+| -------------------- | ------------------------------------------------------------ |
+| [GameManager.cs](../@Scripts/Managers/Contents/GameManager.cs) | 캐릭터 및 장비의 가챠 뽑기 기능을 담당하며, 확률에 따른 랜덤 생성, 획득 처리, 창고 연동까지 통합적으로 관리할 수 있도록 구현하였습니다.	 |
+
+
+
+주요 특징 
+확률 기반 보상 설계
+다양한 캐릭터를 유저에게 랜덤으로 제공하여 수집과 뽑기의 재미를 높였습니다.
+
+보관 시스템과 자동 연동 
+씬에 등장 가능한 캐릭터 수를 초과할 경우,
+자동으로 보관함(창고)으로 이동하도록 하여 관리의 편의성과 UX를 강화하였습니다.
+
+즉시 반영 및 데이터 동기화 
+뽑기 결과가 즉시 게임 데이터와 UI에 반영되도록 처리하였으며,
+저장까지 통합적으로 관리할 수 있도록 구현하였습니다.
+
+![123](https://github.com/user-attachments/assets/e94502e1-f2df-4090-89d7-68ac0cdc3fd0)
+
+
+------
+<br>
+
+## 3. 캐릭터 창고(보관) 시스템
+
+게임 내에서 획득한 캐릭터를 관리하고 보관할 수 있는 시스템이 필요했기 때문에, RoomManager와 CharacterStoreScene을 기반으로 한 캐릭터 창고 시스템을 구현하였습니다.
+이 시스템을 통해 플레이어는 획득한 고양이 캐릭터들을 보관하거나 메인 씬으로 배치할 수 있으며,
+시각적으로 배치된 캐릭터를 확인하고, 직관적인 슬롯 UI를 통해 구성을 조정할 수 있습니다.
+
+또한, 창고 내의 각 캐릭터는 Room 객체를 기반으로 공간에 배치되며, 창고 확장을 통해 수용 공간을 늘릴 수 있는 기능도 함께 제공됩니다.
+
+
+
+
+## 🧱 코드
+
+| Script명        | 설명                                                         |
+| --------------- | ------------------------------------------------------------ |
+| [CharacterStoreScene.cs](../@Scripts/Scenes/CharacterStoreScene.cs) | 	캐릭터 스토어 씬의 초기화 및 캐릭터 배치를 담당. 저장된 RoomPos를 기반으로 비주얼 배치를 처리하며, 창고에 있는 캐릭터만 스폰합니 |
+| [RoomManager.cs](../@Scripts/Managers/Contents/RoomManager.cs) | **캐릭터 창고의 공간(룸)**을 생성하고 관리하는 매니저로, 해금된 방 개수에 따라 배치 가능한 Room 오브젝트를 동적으로 생성합니 |
+| [UI_ChangePopup.cs](../@Scripts/UI/Popup/UI_ChangePopup.cs) | 캐릭터의 메인 씬 배치 여부를 변경하는 팝업 UI. 슬롯을 클릭해 InMainScene 여부를 변경하고, 확인 시 반영합니다 |
+| [UI_ChangeCharacterSlot.cs](../@Scripts/UI/SubItem/UI_ChangeCharacterSlot.cs) | 	슬롯별 캐릭터 정보와 전환 UI 처리, 캐릭터 아이콘, 속도 등 시각 정보 제공 및 슬롯 클릭 시 선택 상태 처리합니 |
+
+
+![123](https://github.com/user-attachments/assets/08139fc6-ef3d-481c-89f1-0f475f846331)
+
+
+------
+<br>
+
+
+
+
+
