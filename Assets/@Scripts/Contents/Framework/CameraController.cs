@@ -145,7 +145,7 @@ void HandleZoom()
 
     float scroll = Input.GetAxis("Mouse ScrollWheel");
     if (Mathf.Abs(scroll) > 0.01f)
-        ApplyZoom(-scroll * 1f);
+        ApplyZoom(scroll * 5f);
 #endif
 
 #if UNITY_WEBGL && !UNITY_EDITOR
