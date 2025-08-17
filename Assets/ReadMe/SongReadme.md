@@ -32,7 +32,7 @@
 | ----------------- | ------------------------------------------------------------ |
 | [FoodManager](../@Scripts/Managers/Contents/FoodManager.cs)   | **음식 리스트 관리**와 **음식 판매 시스템**을 담당하며, `Enqueue`를 통해 **음식을 추가**하고, **자동 판매** 기능을 제공 |
 | [IngredientSet](../@Scripts/Contents/Building/CookingBuilding.cs) | **음식 생산에 사용되는 재료**와 그 **밭 건물 레벨**을 관리하며, **평균 밭 레벨**에 따라 **가격 보정 계수**를 계산하고 재료를 추가하거나 초기화하는 기능 |
-
+| [UI_GameScene](../@Scripts/UI/Scene/UI_GameScene.cs) | **음식 UI 관리**하여 판매 상호작용 담당, 전반적인 GameScene UI 상호작용 관리 |
 
 <img width="1571" height="188" alt="음식" src="https://github.com/user-attachments/assets/840e42f5-d3c4-43f5-80a8-a45138c41efa" />
 
